@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <RimForge.AlloyDef>
+    <defName>RF_BronzeAlloy</defName>
+    <label>make bronze</label>
+    <description>Make bronze, an alloy of copper and tin, that has been in use since ancient times.
+Makes for very good tools, weapons and armor, at the cost of beauty and construction time.</description>
+    
+    <input>
+      <li>
+        <resource>RF_Copper</resource>
+        <count>9</count>
+      </li>
+      <li>
+        <resource>RF_Tin</resource>
+        <count>1</count>
+      </li>
+    </input>
+
+    <output>
+      <resource>RF_Bronze</resource>
+      <count>10</count>
+    </output>
+  </RimForge.AlloyDef>
+
+  <RimForge.AlloyDef>
+    <defName>RF_Adamantium</defName>
+    <label>make bronze</label>
+    <description>Make adamantium, a complex alloy of Bronze, Staballoy and Gilded Plasteel.
+It is unbelievably strong, and can be sharpened to a razor's edge without risk of it fracturing.
+It's dark surface is strangely beautiful.</description>
+    
+    <input>
+      <li>
+        <resource>RF_Bronze</resource>
+        <count>1</count>
+      </li>
+      <li>
+        <resource>RF_Staballoy</resource>
+        <count>2</count>
+      </li>
+      <li>
+        <resource>RF_GildedPlasteel</resource>
+        <count>2</count>
+      </li>
+    </input>
+
+    <output>
+      <resource>RF_Adamantium</resource>
+      <count>4</count>
+    </output>
+  </RimForge.AlloyDef>
+
+</Defs>

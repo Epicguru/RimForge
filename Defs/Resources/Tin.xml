@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RF_Tin</defName>
+    <label>tin</label>
+    <stackLimit>200</stackLimit>
+    <description>Pure tin. Essential for the production of bronze and other alloys.
+In this pure state, it is a very soft metal, and so is not well suited for weapons, tools or armor.</description>
+    <graphicData>
+      <texPath>RF/GoldDore</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Metal_Drop</soundDrop>
+    <useHitPoints>false</useHitPoints>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <tradeability>Sellable</tradeability>
+    <statBases>
+      <MarketValue>5</MarketValue>
+      <Mass>0.6</Mass>
+      <StuffPower_Armor_Sharp>0.4</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.7</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>0.9</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>1</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>1</StuffPower_Insulation_Heat>
+      <SharpDamageMultiplier>0.6</SharpDamageMultiplier>
+      <BluntDamageMultiplier>1.1</BluntDamageMultiplier>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <deepCommonality>3</deepCommonality>
+    <deepCountPerPortion>70</deepCountPerPortion>
+    <deepLumpSizeRange>40~45</deepLumpSizeRange>
+    <burnableByRecipe>false</burnableByRecipe>
+    <smeltable>true</smeltable>
+    <stuffProps>
+      <categories>
+        <li>Metallic</li>
+      </categories>
+      <commonality>0.25</commonality>
+      <constructEffect>ConstructMetal</constructEffect>
+      <color>(209, 198, 184)</color>
+      <soundImpactStuff>BulletImpact_Metal</soundImpactStuff>
+      <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
+      <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
+      <statFactors>
+        <MaxHitPoints>0.5</MaxHitPoints>
+        <Beauty>0.6</Beauty>
+        <Flammability>0.2</Flammability>
+        <WorkToMake>0.8</WorkToMake>
+        <WorkToBuild>0.8</WorkToBuild>
+      </statFactors>
+    </stuffProps>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+
+    <modExtensions>
+      <li Class="RimForge.Extension">
+        <meltingPoint>230</meltingPoint> <!-- A bit lower than IRL, but it's to allow simple forge setups to make bronze, in tribal colonies -->
+      </li>
+    </modExtensions>
+
+  </ThingDef>
+
+</Defs>

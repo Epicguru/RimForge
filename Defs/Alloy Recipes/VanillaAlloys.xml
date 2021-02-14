@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <RimForge.AlloyDef>
+    <defName>RF_GoldDoreAlloy</defName>
+    <label>make gold doré</label>
+    <description>Make gold doré, a semi-pure alloy of gold and silver. Not very useful as a material due to it's softness, but exceedingly beautiful.</description>
+    
+    <input>
+      <li>
+        <resource>Gold</resource>
+        <count>7</count>
+      </li>
+      <li>
+        <resource>Silver</resource>
+        <count>3</count>
+      </li>
+    </input>
+
+    <output>
+      <resource>RF_GoldDore</resource>
+      <count>8</count>
+    </output>
+  </RimForge.AlloyDef>
+
+  <RimForge.AlloyDef>
+    <defName>RF_GildedPlasteel</defName>
+    <label>make gilded plasteel</label>
+    <description>Make gilded plasteel, an alloy of plasteel and gold.
+Retains the toughness of plasteel but becomes more malleable, leading to faster construction times. It's also very pretty to look at.</description>
+  
+    <input>
+      <li>
+        <resource>Plasteel</resource>
+        <count>2</count>
+      </li>
+      <li>
+        <resource>Gold</resource>
+        <count>1</count>
+      </li>
+    </input>
+
+    <output>
+      <resource>RF_GildedPlasteel</resource>
+      <count>2</count>
+    </output>
+  </RimForge.AlloyDef>
+
+  <RimForge.AlloyDef>
+    <defName>RF_StaballoyAlloy</defName>
+    <label>make staballoy</label>
+    <description>Incredibly dense and resitant to blunt and sharp damage, but very ugly to look at.
+It's strength allows to to be forged into wickedly sharp bladed weapons, but the wielder may find the weight overwhelming.</description>
+  
+    <input>
+      <li>
+        <resource>Uranium</resource>
+        <count>9</count>
+      </li>
+      <li>
+        <resource>Plasteel</resource>
+        <count>1</count>
+      </li>
+    </input>
+
+    <output>
+      <resource>RF_Staballoy</resource>
+      <count>10</count>
+    </output>
+  </RimForge.AlloyDef>
+
+</Defs>

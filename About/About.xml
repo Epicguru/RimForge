@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>co.uk.epicguru.rimforge</packageId>
+  <name>RimForge</name>
+  <author>Epicguru (James B)</author>
+  <supportedVersions>
+    <li>1.2</li>
+  </supportedVersions>
+  <url>https://github.com/Epicguru/RimForge</url>
+  <description>Adds a forge, new ores, and alloys to rimworld.</description>
+</ModMetaData>
