@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef Name="RF_HeatingElementBase" ParentName="RF_BuildingBase" Abstract="True">
+    <size>(2, 2)</size>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsProduction</li>
+    </thingCategories>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <comps>
+      <li Class="CompProperties_HeatPusher">
+        <compClass>RimForge.Comps.CompHeatingElementHeatPusher</compClass>
+        <heatPerSecond>0</heatPerSecond>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <RimForge.HeatingElementDef ParentName="RF_HeatingElementBase">
+    <defName>RF_WoodHeatingElement</defName>
+    <thingClass>RimForge.Buildings.Building_WoodHeatingElement</thingClass>
+    <label>wood-fired heating element</label>
+    <description>A heating element, to provide heat to a forge.
+This one burns wood to produce heat.</description>
+    <graphicData>
+      <texPath>AntimatterAnnihilation/Buildings/AlloyFusionMachine/Idle</texPath>
+    </graphicData>
+    <costList>
+      <Steel>350</Steel>
+      <ComponentIndustrial>8</ComponentIndustrial>
+    </costList>
+
+    <!-- Means that with 2 wood-fired heaters, it is possible to make bronze, for tribal playthroughs. -->
+    <maxAddedHeat>450</maxAddedHeat>
+
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>200.0</fuelConsumptionRate>
+        <fuelCapacity>200.0</fuelCapacity>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
+        <initialConfigurableTargetFuelLevel>75</initialConfigurableTargetFuelLevel>
+        <fuelFilter>
+          <thingDefs>
+            <li>WoodLog</li>
+          </thingDefs>
+        </fuelFilter>
+        <consumeFuelOnlyWhenUsed>false</consumeFuelOnlyWhenUsed>
+        <autoRefuelPercent>1</autoRefuelPercent>
+        <showFuelGizmo>true</showFuelGizmo>
+        <drawOutOfFuelOverlay>true</drawOutOfFuelOverlay>
+        <drawFuelGaugeInMap>true</drawFuelGaugeInMap>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>5</glowRadius>
+        <glowColor>(255, 138, 20, 0)</glowColor>
+      </li>
+    </comps>    
+
+  </RimForge.HeatingElementDef>
+
+</Defs>

@@ -7,7 +7,7 @@ namespace RimForge.Buildings
 {
     public class Building_Forge : Building
     {
-        public CompRefuelable FuelComp => _fuelComp ?? (_fuelComp = GetComp<CompRefuelable>());
+        public CompRefuelable FuelComp => _fuelComp ??= GetComp<CompRefuelable>();
         private CompRefuelable _fuelComp;
 
         public ThingDef CurrentFuelType
@@ -35,9 +35,11 @@ namespace RimForge.Buildings
         public IntVec3 OutputPos => InteractionCell;
 
         public AlloyDef CurrentAlloyDef;
+        public float CurrentTemperature { get; protected set; }
 
-        private Dictionary<ThingDef, int> storedResources = new Dictionary<ThingDef, int>();
+        private readonly Dictionary<ThingDef, int> storedResources = new Dictionary<ThingDef, int>();
         private int requestCount = 50;
+        private HeatingElement elementA, elementB;
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
@@ -54,6 +56,8 @@ namespace RimForge.Buildings
         public override void Tick()
         {
             base.Tick();
+
+            UpdateTemperature();
 
             if (CurrentAlloyDef != null)
             {
@@ -82,6 +86,20 @@ namespace RimForge.Buildings
                     PlaceOutput(CurrentFuelType, count);
                 }
             }
+        }
+
+        public virtual void UpdateTemperature()
+        {
+            float fromA = GetLeftHeatingElement()?.GetProvidedHeat() ?? 0f;
+            float fromB = GetRightHeatingElement()?.GetProvidedHeat() ?? 0f;
+
+            float ambient = AmbientTemperature;
+
+            // Final forge temperature is ambient + created.
+
+            float finalTemp = ambient + fromA + fromB;
+
+            CurrentTemperature = Mathf.MoveTowards(CurrentTemperature, finalTemp, 3);
         }
 
         /// <summary>
@@ -148,6 +166,38 @@ namespace RimForge.Buildings
                 PlaceOutput(pair.Key, pair.Value);
             }
             storedResources.Clear();
+        }
+
+        public HeatingElement GetLeftHeatingElement()
+        {
+            return GetHeatingElement(ref elementA, false);
+        }
+
+        public HeatingElement GetRightHeatingElement()
+        {
+            return GetHeatingElement(ref elementB, true);
+        }
+
+        private HeatingElement GetHeatingElement(ref HeatingElement element, bool right)
+        {
+            if (element != null)
+            {
+                if (element.Destroyed)
+                    element = null;
+                else if (!element.Spawned)
+                    element = null;
+            }
+
+            if (element == null)
+            {
+                // Find spot.
+                IntVec3 spot = Position + Rotation.RighthandCell * (right ? 2 : -2);
+                var heater = Map.thingGrid.ThingAt<HeatingElement>(spot);
+                Log.Message($"Looking in {spot}, found {heater?.LabelCap ?? "<null>"}");
+                element = heater;
+            }
+
+            return element;
         }
 
         public virtual void ProcessCurrentRecipe(int maxIterations = int.MaxValue)
@@ -269,7 +319,7 @@ namespace RimForge.Buildings
             if (storedResources.Count == 0)
                 stored = "None";
 
-            return $"{root}\nCan output: {expectedOutput}{(missing.resource == null ? "" : $" (missing {missing.resource.LabelCap} x{missing.count})")}\nStored:\n{stored}";
+            return $"{root}\nForge Temp.: {CurrentTemperature.ToStringTemperature()}\nStored:\n{stored}";
         }
 
         public override IEnumerable<Gizmo> GetGizmos()

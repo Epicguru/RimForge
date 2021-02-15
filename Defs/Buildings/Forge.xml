@@ -17,10 +17,10 @@
     <rotatable>true</rotatable>
     <statBases>
       <MaxHitPoints>400</MaxHitPoints>
-      <WorkToBuild>35000</WorkToBuild>
-      <Flammability>3.0</Flammability>
-      <Beauty>2</Beauty>
-      <Cleanliness>10</Cleanliness>
+      <WorkToBuild>30000</WorkToBuild>
+      <Flammability>0.25</Flammability>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-2</Cleanliness>
       <Mass>80</Mass>
     </statBases>
     <building>

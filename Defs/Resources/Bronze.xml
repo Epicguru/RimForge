@@ -56,7 +56,7 @@ Makes for very good tools, weapons and armor, at the cost of beauty and construc
 
     <modExtensions>
       <li Class="RimForge.Extension">
-        <meltingPoint>1000</meltingPoint> <!-- A bit lower than IRL, but it's to allow simple forge setups to make bronze, in tribal colonies -->
+        <meltingPoint>900</meltingPoint> <!-- Lower than IRL, but it's to allow simple forge setups to make bronze, in tribal colonies -->
       </li>
     </modExtensions>
 

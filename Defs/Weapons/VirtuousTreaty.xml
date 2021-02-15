@@ -17,6 +17,7 @@ Memories from another time stir within its pearly blade.</description>
     <costList>
       <ComponentIndustrial>12</ComponentIndustrial>
       <ComponentSpacer>2</ComponentSpacer>
+      <RF_GildedPlasteel>50</RF_GildedPlasteel>
     </costList>
     <costStuffCount>100</costStuffCount>
     <stuffCategories>
@@ -31,7 +32,7 @@ Memories from another time stir within its pearly blade.</description>
       <li>RewardStandardQualitySuper</li>
     </thingSetMakerTags>
     <statBases>
-      <WorkToMake>35000</WorkToMake>
+      <WorkToMake>30000</WorkToMake>
       <Mass>8</Mass>
     </statBases>
     <equippedStatOffsets>
@@ -59,7 +60,7 @@ Memories from another time stir within its pearly blade.</description>
         <capacities>
           <li>Cut</li>
         </capacities>
-        <power>45</power>
+        <power>40</power>
         <armorPenetration>0.9</armorPenetration>
         <cooldownTime>2.5</cooldownTime>
       </li>
