@@ -9,8 +9,8 @@
 Retains the toughness of plasteel but becomes more malleable, leading to faster construction times.
 It's also very pretty to look at.</description>
     <graphicData>
-      <texPath>RF/GoldDore</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <texPath>RF/Resources/GildedPlasteel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
     <soundDrop>Metal_Drop</soundDrop>

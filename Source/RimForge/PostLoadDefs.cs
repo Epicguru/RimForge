@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using Verse;
 
 namespace RimForge
@@ -17,7 +19,7 @@ namespace RimForge
             }
             catch (Exception e)
             {
-                Core.Error("Failed while processing defs. This could result in incorrect or missing detail in descriptions.", e);
+                Core.Error("Failed while processing defs. This could result in incorrect or missing detail in descriptions, and other bugs.", e);
             }
             watch.Stop();
 
@@ -26,19 +28,44 @@ namespace RimForge
             Core.Log(RFDefOf.RF_GoldDoreAlloy.ToString(true));
         }
 
-        static void ProcessDefs()
+        private static void ProcessDefs()
         {
             foreach (var def in DefDatabase<ThingDef>.AllDefsListForReading)
             {
-                if (def == null)
-                    continue; // Dunno, just in case.
-
-                var extension = def.GetModExtension<Extension>();
+                var extension = def?.GetModExtension<Extension>();
                 if (extension == null)
                     continue;
 
+                AlloyHelper.AllRimForgeResources.Add(def);
                 float meltingPoint = def.GetMeltingPoint();
-                def.description += $"\n\n<color=#ff5c87><b>RimForge</b>\nMelting point: {meltingPoint.ToStringTemperature(format: "F0")}</color>";
+                def.description += $"\n\n<color=#ffb499><b>{"RF.ModName".Translate()}</b>\n{"RF.MeltingPoint".Translate()}: {meltingPoint.ToStringTemperature(format: "F0")}</color>";
+                if (extension.equivalentTo != null)
+                {
+                    AlloyHelper.AddEquivalentResource(def, extension.equivalentTo);
+                }
+            }
+
+            StringBuilder str = new StringBuilder();
+            foreach (var def in AlloyHelper.AllRimForgeResources)
+            {
+                var equivalents = AlloyHelper.GetEquivalentResources(def);
+                if (equivalents == null || equivalents.Count <= 1)
+                    continue;
+
+                str.Clear();
+                str.Append("RF.EquivalentTo".Translate()).AppendLine(":");
+                foreach (var item in equivalents)
+                {
+                    if (item == def)
+                        continue;
+                    str.Append("  -");
+                    str.AppendLine(item.ModLabelCap());
+
+                    def.descriptionHyperlinks ??= new List<DefHyperlink>();
+                    def.descriptionHyperlinks.Add(new DefHyperlink(item));
+                }
+                def.description += $"\n<color=#ffb499>{str.ToString().TrimEnd()}</color>";
+
             }
         }
     }

@@ -13,7 +13,7 @@ namespace RimForge
 
         public static AlloyDef RF_GoldDoreAlloy;
         public static ThingDef RF_GoldDore;
-        public static ThingDef Steel;
-        public static ThingDef Plasteel;
+        public static ThingDef Gold;
+        public static ThingDef Silver;
     }
 }

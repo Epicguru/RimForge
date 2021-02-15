@@ -9,8 +9,8 @@
 Incredibly dense and resitant to blunt and sharp damage, but very ugly to look at.
 It's strength allows to to be forged into wickedly sharp bladed weapons, but the wielder may find the weight overwhelming.</description>
     <graphicData>
-      <texPath>RF/GoldDore</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <texPath>RF/Resources/Staballoy</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
     <soundDrop>Metal_Drop</soundDrop>

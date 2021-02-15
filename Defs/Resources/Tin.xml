@@ -8,8 +8,8 @@
     <description>Pure tin. Essential for the production of bronze and other alloys.
 In this pure state, it is a very soft metal, and so is not well suited for weapons, tools or armor.</description>
     <graphicData>
-      <texPath>RF/GoldDore</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <texPath>RF/Resources/Tin</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
     <soundDrop>Metal_Drop</soundDrop>

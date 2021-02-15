@@ -7,8 +7,8 @@
     <stackLimit>200</stackLimit>
     <description>A semi-pure alloy of gold and silver. Not very useful as a material due to it's softness, but exceedingly beautiful.</description>
     <graphicData>
-      <texPath>RF/GoldDore</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <texPath>RF/Resources/GoldDore</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
     <soundDrop>Metal_Drop</soundDrop>

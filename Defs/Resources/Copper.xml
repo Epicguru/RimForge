@@ -8,8 +8,8 @@
     <description>Pure copper. Great for alloying with other metals, but a poor material for construction or tools in this pure state.
 However, it is very malleable, making it fast to work with.</description>
     <graphicData>
-      <texPath>RF/GoldDore</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <texPath>RF/Resources/Copper</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
     <soundDrop>Metal_Drop</soundDrop>

@@ -5,6 +5,6 @@
     <label>alloys</label>
     <parent>Root</parent>
     <resourceReadoutRoot>true</resourceReadoutRoot>
-    <iconPath>UI/Icons/ThingCategories/ResourcesRaw</iconPath>
+    <iconPath>RF/Resources/Copper</iconPath>
   </ThingCategoryDef>
 </Defs>

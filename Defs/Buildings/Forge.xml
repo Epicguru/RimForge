@@ -42,9 +42,11 @@
     <drawerType>RealtimeOnly</drawerType>
     <selectable>true</selectable>
     <size>(3, 2)</size>
+    <hasInteractionCell>True</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
     <costList>
       <Steel>350</Steel>
-      <ComponentSpacer>8</ComponentSpacer>
+      <ComponentIndustrial>8</ComponentIndustrial>
     </costList>
     <minifiedDef>MinifiedThing</minifiedDef>
     <thingCategories>

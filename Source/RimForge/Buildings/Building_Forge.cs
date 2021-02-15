@@ -12,16 +12,24 @@ namespace RimForge.Buildings
 
         public ThingDef CurrentFuelType
         {
-            get => FuelComp.Props.fuelFilter.AllowedThingDefs.FirstOrFallback();
+            get
+            {
+                // If there are more than one equivalent inputs, return the one from RimForge.
+                var found = FuelComp.Props.fuelFilter.AllowedThingDefs.FirstOrFallback(t => t.modContentPack == Core.ContentPack);
+                return found ?? FuelComp.Props.fuelFilter.AllowedThingDefs.FirstOrFallback();
+            }
             set
             {
                 var filter = FuelComp.Props.fuelFilter;
                 filter.SetDisallowAll();
-                if(value != null)
-                    filter.SetAllow(value, true);
-
-                // TODO allow anything within the equivalent-to types.
-                // Then once inserted, convert to 'base' type.
+                if (value != null)
+                {
+                    var equivalents = AlloyHelper.GetEquivalentResources(value);
+                    foreach (var item in equivalents)
+                    {
+                        filter.SetAllow(item, true);
+                    }
+                }
             }
         }
         public IntVec3 OutputPos => InteractionCell;
@@ -77,6 +85,28 @@ namespace RimForge.Buildings
         }
 
         /// <summary>
+        /// Converts a resource into the most suitable type.
+        /// For example, converts other mod's copper into RimForge copper.
+        /// Uses the EquivalentResource system. See <see cref="AlloyHelper.AddEquivalentResource(ThingDef, ThingDef)"/>.
+        /// If there are no equivalent resources available, or 
+        /// </summary>
+        /// <param name="def"></param>
+        /// <returns></returns>
+        public virtual ThingDef ConvertResource(ThingDef def)
+        {
+            if (def == null)
+                return null;
+
+            // TODO optimize.
+            var options = AlloyHelper.GetEquivalentResources(def);
+            if (options.Count == 1)
+                return def;
+
+            var found = options.FirstOrFallback(t => t.modContentPack == Core.ContentPack);
+            return found ?? options.FirstOrFallback(); // Return the first item, which is generally the 'best fit'.
+        }
+
+        /// <summary>
         /// Called when a pawn has refueled this forge with a material.
         /// Return true to accept the material, and reset the fuel component ready to accept more fuel.
         /// Returning false will reject the input, placing it back into the world.
@@ -85,9 +115,12 @@ namespace RimForge.Buildings
         {
             // TODO check if this is the expected input.
 
+            // Convert the type...
+            ThingDef newType = ConvertResource(rawInput);
+
             requestCount = Rand.RangeInclusive(10, 50);
-            CurrentFuelType = Rand.Chance(0.5f) ? RFDefOf.Plasteel : RFDefOf.Steel;
-            Core.Log($"Input: {rawInput.LabelCap} x{count}. Now requesting {CurrentFuelType.LabelCap} x{requestCount}");
+            CurrentFuelType = Rand.Chance(0.5f) ? RFDefOf.Gold : RFDefOf.Silver;
+            Core.Log($"Input: {newType.LabelCap} x{count}. Now requesting {CurrentFuelType.LabelCap} x{requestCount}");
 
             ChangeStored(rawInput, count);
 
@@ -102,6 +135,46 @@ namespace RimForge.Buildings
             Thing thing = ThingMaker.MakeThing(def);
             thing.stackCount = count;
             GenPlace.TryPlaceThing(thing, OutputPos, this.Map, ThingPlaceMode.Near);
+        }
+
+        /// <summary>
+        /// Dumps all stored resources onto the ground.
+        /// This is potentially a cheeky way to convert equivalent resources.
+        /// </summary>
+        public void DumpAllStored()
+        {
+            foreach (var pair in storedResources)
+            {
+                PlaceOutput(pair.Key, pair.Value);
+            }
+            storedResources.Clear();
+        }
+
+        public virtual void ProcessCurrentRecipe(int maxIterations = int.MaxValue)
+        {
+            if (CurrentAlloyDef == null || !CurrentAlloyDef.IsValid)
+            {
+                Core.Error("Cannot process current recipe, recipe is null.");
+                return;
+            }
+
+            int max = GetPossibleIterationCount(CurrentAlloyDef, out _);
+            int realMax = Mathf.Min(max, maxIterations);
+            if (realMax <= 0)
+            {
+                Core.Warn($"Called ProcessCurrentRecipe, but it is not possible to do even a single processing iteration (requested {maxIterations}).");
+                return;
+            }
+
+            foreach (var resource in CurrentAlloyDef.input)
+            {
+                int toRemove = resource.count * realMax;
+                ChangeStored(resource.resource, -toRemove);
+                Core.Log($"Removed {resource.resource.ModLabelCap()} x{toRemove}...");
+            }
+            int toPlace = CurrentAlloyDef.output.count * realMax;
+            PlaceOutput(CurrentAlloyDef.output.resource, toPlace);
+            Core.Log($"Placed output: {CurrentAlloyDef.output.resource} x{toPlace}");
         }
 
         public virtual bool ShouldAutoRefuelNow()
@@ -197,6 +270,28 @@ namespace RimForge.Buildings
                 stored = "None";
 
             return $"{root}\nCan output: {expectedOutput}{(missing.resource == null ? "" : $" (missing {missing.resource.LabelCap} x{missing.count})")}\nStored:\n{stored}";
+        }
+
+        public override IEnumerable<Gizmo> GetGizmos()
+        {
+            foreach (var gizmo in base.GetGizmos())
+                yield return gizmo;
+
+            if (Prefs.DevMode)
+            {
+                yield return new Command_Action()
+                {
+                    action = DumpAllStored,
+                    defaultLabel = "dump all",
+                    defaultDesc = "dumps all stored resources on to the ground."
+                };
+                yield return new Command_Action()
+                {
+                    action = () => ProcessCurrentRecipe(),
+                    defaultLabel = "place output",
+                    defaultDesc = "processes the current alloy recipe."
+                };
+            }
         }
     }
 }

@@ -6,9 +6,16 @@ namespace RimForge
 {
     public class Core : Mod
     {
+        public static ModContentPack ContentPack { get; private set; }
+
         internal static void Log(string msg)
         {
             Verse.Log.Message($"<color=#b7ff1c>[RimForge]</color> {msg ?? "<null>"}");
+        }
+
+        internal static void Warn(string msg)
+        {
+            Verse.Log.Warning($"[RimForge] {msg ?? "<null>"}");
         }
 
         internal static void Error(string msg, Exception exception = null)
@@ -21,6 +28,7 @@ namespace RimForge
         public Core(ModContentPack content) : base(content)
         {
             Log("Hello, world!");
+            ContentPack = content;
 
             // Apply harmony patches.
             var harmony = new Harmony("co.uk.epicguru.rimforge");

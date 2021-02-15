@@ -38,6 +38,16 @@
   </Operation>
 
   <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/ThingDef[defName="Jade"]</xpath>
+    <value>
+      <li Class="RimForge.Extension">
+        <meltingPoint>2000</meltingPoint>
+        <equivalentTo>Plasteel</equivalentTo>
+      </li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAddModExtension">
     <xpath>Defs/ThingDef[defName="Uranium"]</xpath>
     <value>
       <li Class="RimForge.Extension">
