@@ -1,6 +1,7 @@
 ﻿using RimForge.Buildings;
 using System.Collections.Generic;
 using System.Linq;
+using RimForge.Comps;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -9,6 +10,15 @@ namespace RimForge.Power
 {
     public class PowerChannel : IExposable
     {
+        private static readonly Color[] Colors = 
+        {
+            Color.green,
+            Color.magenta,
+            Color.cyan,
+            Color.red,
+            Color.blue
+        };
+
         public int Id;
         public string Name;
         public bool Destroyed;
@@ -18,7 +28,7 @@ namespace RimForge.Power
         /// However, some of these pylons may be switched off or disconnected from a network.
         /// See <see cref="ActiveReceivers"/> to filter those out.
         /// </summary>
-        public List<Building_WirelessPowerPylon> Receivers
+        public List<CompWirelessPower> Receivers
         {
             get
             {
@@ -31,7 +41,7 @@ namespace RimForge.Power
         /// However, some of these pylons may be switched off or disconnected from a network.
         /// See <see cref="ActiveTransmitters"/> to filter those out.
         /// </summary>
-        public List<Building_WirelessPowerPylon> Transmitters
+        public List<CompWirelessPower> Transmitters
         {
             get
             {
@@ -39,7 +49,7 @@ namespace RimForge.Power
                 return _transmitters;
             }
         }
-        public IEnumerable<Building_WirelessPowerPylon> ActiveReceivers
+        public IEnumerable<CompWirelessPower> ActiveReceivers
         {
             get
             {
@@ -50,7 +60,7 @@ namespace RimForge.Power
                 }
             }
         }
-        public IEnumerable<Building_WirelessPowerPylon> ActiveTransmitters
+        public IEnumerable<CompWirelessPower> ActiveTransmitters
         {
             get
             {
@@ -99,11 +109,11 @@ namespace RimForge.Power
             }
         }
 
-        private List<Building_WirelessPowerPylon> _receivers = new List<Building_WirelessPowerPylon>();
-        private List<Building_WirelessPowerPylon> _transmitters = new List<Building_WirelessPowerPylon>();
+        private List<CompWirelessPower> _receivers = new List<CompWirelessPower>();
+        private List<CompWirelessPower> _transmitters = new List<CompWirelessPower>();
         private HashSet<PowerNet> tempNets = new HashSet<PowerNet>();
 
-        private void Sanitize(List<Building_WirelessPowerPylon> pylons)
+        private void Sanitize(List<CompWirelessPower> pylons)
         {
             if (pylons == null)
                 return;
@@ -115,7 +125,7 @@ namespace RimForge.Power
 
                 if (pylon == null)
                     remove = true;
-                else if (pylon.Destroyed || !pylon.Spawned)
+                else if (pylon.parent.DestroyedOrNull() || !pylon.parent.Spawned)
                     remove = true;
 
                 if (remove)
@@ -126,6 +136,8 @@ namespace RimForge.Power
             }
         }
 
+        public Color GetColor() => Colors[Id % Colors.Length];
+
         public void MarkDestroyed()
         {
             Destroyed = true;
@@ -134,7 +146,7 @@ namespace RimForge.Power
             tempNets = null;
         }
 
-        public void Register(Building_WirelessPowerPylon pylon)
+        public void Register(CompWirelessPower pylon)
         {
             if (pylon == null)
                 return;
@@ -157,7 +169,7 @@ namespace RimForge.Power
             }
         }
 
-        public void UnRegister(Building_WirelessPowerPylon pylon)
+        public void UnRegister(CompWirelessPower pylon)
         {
             if (pylon == null)
                 return;
@@ -234,9 +246,9 @@ namespace RimForge.Power
             Scribe_Values.Look(ref Destroyed, "destroyed", false);
 
             Scribe_Collections.Look(ref _receivers, "receivers", LookMode.Reference);
-            _receivers ??= new List<Building_WirelessPowerPylon>();
+            _receivers ??= new List<CompWirelessPower>();
             Scribe_Collections.Look(ref _transmitters, "transmitters", LookMode.Reference);
-            _transmitters ??= new List<Building_WirelessPowerPylon>();
+            _transmitters ??= new List<CompWirelessPower>();
         }
     }
 }

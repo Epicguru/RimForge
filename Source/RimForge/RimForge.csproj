@@ -68,12 +68,16 @@
     <Compile Include="Buildings\Building_FueledHeatingElement.cs" />
     <Compile Include="Buildings\Building_PoweredHeatingElement.cs" />
     <Compile Include="Buildings\Building_WirelessPowerPylon.cs" />
+    <Compile Include="Comps\CompProperties_WirelessPower.cs" />
+    <Compile Include="Comps\CompWirelessPower.cs" />
     <Compile Include="Buildings\HeatingElement.cs" />
     <Compile Include="Comps\CompHeatingElementHeatPusher.cs" />
+    <Compile Include="Content.cs" />
     <Compile Include="Defs\AlloyDef.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Defs\HeatingElementDef.cs" />
     <Compile Include="Extension.cs" />
+    <Compile Include="Patches\Patch_CompGlower_ShouldBeLitNow.cs" />
     <Compile Include="Patches\Patch_Refuelable_TargetFuelLevel.cs" />
     <Compile Include="Patches\Patch_Refuelable_ShouldAutoRefuelNow.cs" />
     <Compile Include="PostLoadDefs.cs" />

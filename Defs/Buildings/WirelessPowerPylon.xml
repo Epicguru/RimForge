@@ -7,9 +7,10 @@
     <label>wireless power pylon</label>
     <description>Transmits or receives electrical power wirelessly. No more ugly cables.</description>
     <graphicData>
-      <texPath>AntimatterAnnihilation/Buildings/AlloyFusionMachine/Idle</texPath>
+      <texPath>RF/Buildings/PylonIdle</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(1,1)</drawSize>
+      <drawSize>(1,2)</drawSize>
+      <drawOffset>(0, 0, 0.5)</drawOffset>
     </graphicData>
     <passability>PassThroughOnly</passability>
     <designationCategory>Power</designationCategory>
@@ -25,7 +26,8 @@
     <size>(1, 1)</size>
     <costList>
       <Steel>20</Steel>
-      <ComponentIndustrial>5</ComponentIndustrial>
+      <ComponentIndustrial>3</ComponentIndustrial>
+      <RF_Copper>30</RF_Copper>
     </costList>
     <statBases>
         <MaxHitPoints>100</MaxHitPoints>
@@ -41,8 +43,8 @@
     </thingCategories>
     <comps>
       <li Class="CompProperties_Glower">
-        <glowRadius>2</glowRadius>
-        <glowColor>(3,255,238,255)</glowColor>
+        <glowRadius>3</glowRadius>
+        <glowColor>(200,200,255,255)</glowColor>
       </li>
       <li Class="CompProperties_Flickable"/>
       <li Class="CompProperties_Power">
@@ -51,8 +53,21 @@
         <shortCircuitInRain>false</shortCircuitInRain>
         <basePowerConsumption>0</basePowerConsumption>
       </li>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <transmitsPower>true</transmitsPower>
+        <shortCircuitInRain>false</shortCircuitInRain>
+        <basePowerConsumption>0</basePowerConsumption>
+      </li>
+      <li Class="RimForge.Comps.CompProperties_WirelessPower">
+        <buildingName>pylon</buildingName>
+        <canSendPower>true</canSendPower>
+      </li>
     </comps>
     <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+    <researchPrerequisites>
+      <li>MicroelectronicsBasics</li>
+    </researchPrerequisites>
   </ThingDef>
 
 </Defs>

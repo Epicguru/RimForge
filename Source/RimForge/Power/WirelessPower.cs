@@ -1,6 +1,7 @@
 ﻿using RimWorld.Planet;
 using System.Collections.Generic;
 using RimForge.Buildings;
+using RimForge.Comps;
 using Verse;
 
 namespace RimForge.Power
@@ -21,7 +22,7 @@ namespace RimForge.Power
             CreateNewChannel("JamesNet");
         }
 
-        public IEnumerable<PowerChannel> GetAvailableChannels(Building_WirelessPowerPylon pylon)
+        public IEnumerable<PowerChannel> GetAvailableChannels(CompWirelessPower pylon)
         {
             if (pylon == null)
                 yield break;
