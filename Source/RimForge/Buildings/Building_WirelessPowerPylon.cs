@@ -2,6 +2,8 @@
 using RimForge.Power;
 using RimWorld;
 using System.Collections.Generic;
+using RimWorld.Planet;
+using RuntimeAudioClipLoader;
 using UnityEngine;
 using Verse;
 
@@ -9,6 +11,8 @@ namespace RimForge.Buildings
 {
     public class Building_WirelessPowerPylon : Building
     {
+        public WirelessPower Manager => Current.Game?.World?.GetComponent<WirelessPower>();
+
         public CompPowerTrader Power { get; private set; }
         public CompFlickable Flick { get; private set; }
 
@@ -32,7 +36,13 @@ namespace RimForge.Buildings
         public bool IsPowered => Power?.PowerOn ?? false;
         public float Watts => Power?.PowerOutput ?? 0;
 
-        public int ReceiverRequestedWatts;
+        /// <summary>
+        /// Used to forcibly disable when there is a receiver and transmitter on the
+        /// same power grid, leading to an infinite feedback loop.
+        /// </summary>
+        public bool ForceDisable { get; set; }
+
+        public int TargetWatts = 200;
         public int ReceiverPriority;
 
         private float currentPower;
@@ -45,7 +55,7 @@ namespace RimForge.Buildings
 
             if (!respawningAfterLoad)
             {
-                Type = PylonType.Receiver;
+                SwitchType(PylonType.Receiver);
             }
         }
 
@@ -82,13 +92,67 @@ namespace RimForge.Buildings
 
         public override string GetInspectString()
         {
-            return SummaryString();
+            return $"{base.GetInspectString()}\n{SummaryString()}";
         }
 
         public override IEnumerable<Gizmo> GetGizmos()
         {
-            return base.GetGizmos();
-            // TODO implement
+            foreach (var item in base.GetGizmos())
+                yield return item;
+
+            yield return new Command_Action()
+            {
+                action = () =>
+                {
+                    if (Type == PylonType.Receiver)
+                        SwitchType(PylonType.Transmitter);
+                    else
+                        SwitchType(PylonType.Receiver);
+                },
+                defaultLabel = "Change mode",
+                defaultDesc = $"Current: {Type}"
+            };
+            yield return new Command_Action()
+            {
+                action = () =>
+                {
+                    Find.WindowStack.Add(new ConfigWindow(){Pylon = this});
+                },
+                defaultLabel = "Configure",
+                defaultDesc = $"Configure this pylon"
+            };
+            yield return new Command_Action()
+            {
+                action = () =>
+                {
+                    TargetWatts += 100;
+                    if (TargetWatts > 2000)
+                        TargetWatts = 0;
+                },
+                defaultLabel = "Change power",
+                defaultDesc = $"Current: {TargetWatts}"
+            };
+            yield return new Command_Action()
+            {
+                action = () =>
+                {
+                    var options = new List<FloatMenuOption>();
+                    if (Manager != null)
+                    {
+                        foreach (var item in Manager.GetAvailableChannels(this))
+                        {
+                            var op = new FloatMenuOption(item.Name, () =>
+                            {
+                                SwitchToChannel(item);
+                            });
+                            options.Add(op);
+                        }
+                    }
+                    Find.WindowStack.Add((Window)new FloatMenu(options));
+                },
+                defaultLabel = "Set channel",
+                defaultDesc = $"Current: {Channel?.Name ?? "None"}"
+            };
         }
 
         public void SwitchToChannel(PowerChannel channel)
@@ -96,14 +160,44 @@ namespace RimForge.Buildings
             var current = this.Channel;
             current?.UnRegister(this);
 
-            channel.Register(this); // Will register as a receiver or transmitter depending on current type.
-            this.Channel = channel;
+            if (channel != null && !channel.Destroyed)
+            {
+                channel.Register(this); // Will register as a receiver or transmitter depending on current type.
+                this.Channel = channel;
+            }
+            else
+            {
+                this.Channel = null;
+            }
         }
 
-        public string SummaryString()
+        public void SwitchType(PylonType newType)
         {
+            if (newType == PylonType.None)
+            {
+                Core.Error("Cannot switch to PylonType.None");
+                return;
+            }
+
+            Type = newType;
+            Channel?.Register(this); // This will swap types within the channel.
+            Core.Log($"Changed type to {Type}");
+        }
+
+        public string SummaryString(bool richText = true)
+        {
+            string InColor(string txt, string color)
+            {
+                return !richText ? txt : $"<color={color}>{txt}</color>";
+            }
+
             bool Common(out string msg)
             {
+                if (ForceDisable && Channel != null && Type == PylonType.Receiver)
+                {
+                    msg = "RF.Pylon.ForceDisabled".Translate(Channel.Name);
+                    return true;
+                }
                 if (!HasPowerNet)
                 {
                     msg = "RF.Pylon.NoNetwork".Translate();
@@ -123,21 +217,25 @@ namespace RimForge.Buildings
                 return false;
             }
 
+            const string GREEN = "#97ff57";
+            const string YELLOW = "#ffdf4f";
+            const string RED = "#ff5757";
+
             switch (Type)
             {
                 case PylonType.Receiver:
 
                     if (Common(out string msg))
                         return msg;
-                    bool hasFull = Math.Abs(ReceiverRequestedWatts - currentPower) < 0.5f;
+                    bool hasFull = Math.Abs(TargetWatts - currentPower) < 0.5f;
                     bool isEmpty = currentPower < 0.5f;
                     string channelName = Channel.Name;
                     int powerInt = Mathf.RoundToInt(currentPower);
                     if (hasFull)
-                        return "RF.Pylon.ReceivingFull".Translate(powerInt, channelName);
+                        return "RF.Pylon.ReceivingFull".Translate(InColor($"{TargetWatts}W", GREEN), channelName);
                     if (isEmpty)
-                        return "RF.Pylon.ReceivingNone".Translate(channelName);
-                    return "RF.Pylon.ReceivingPart".Translate(powerInt, ReceiverRequestedWatts, channelName);
+                        return "RF.Pylon.ReceivingNone".Translate(InColor("0W", RED), channelName);
+                    return "RF.Pylon.ReceivingPart".Translate(InColor($"{powerInt}/{TargetWatts}W", YELLOW), channelName);
 
                 case PylonType.Transmitter:
 
@@ -149,8 +247,8 @@ namespace RimForge.Buildings
                     channelName = Channel.Name;
 
                     if (sending)
-                        return "RF.Pylon.SendingFull".Translate(-powerInt, channelName);
-                    return "RF.Pylon.SendingNone".Translate(channelName);
+                        return "RF.Pylon.SendingFull".Translate(InColor($"{-powerInt}W", GREEN), channelName);
+                    return "RF.Pylon.SendingNone".Translate(InColor("0W", RED), channelName);
 
                 default:
                     return "RF.Pylon.InvalidState".Translate();
@@ -164,5 +262,173 @@ namespace RimForge.Buildings
         None,
         Transmitter,
         Receiver
+    }
+
+    public class ConfigWindow : Window
+    {
+        public override Vector2 InitialSize => new Vector2(810, 200);
+        public Building_WirelessPowerPylon Pylon;
+
+        private string wattsBuffer;
+
+        public ConfigWindow()
+        {
+            optionalTitle = "RF.Pylon.ConfigureTitle".Translate();
+            drawShadow = true;
+            draggable = true;
+            preventCameraMotion = false;
+            resizeable = false;
+            doCloseButton = false;
+            doCloseX = true;
+            closeOnClickedOutside = false;
+        }
+
+        public override void DoWindowContents(Rect inRect)
+        {
+            if (Pylon == null || Pylon.Destroyed || !Pylon.Spawned || Pylon.Type == PylonType.None)
+            {
+                Core.Warn("Pylon was destroyed or invalid, closing config window.");
+                Close();
+                return;
+            }
+            Text.Font = GameFont.Medium;
+
+            const float h = 28;
+            const float p = 6;
+            float x = inRect.x;
+            float y = inRect.y;
+
+            bool isSending = Pylon.Type == PylonType.Transmitter;
+            string channelName = Pylon.Channel?.Name ?? "None";
+
+            string txt = isSending ? "RF.Pylon.Sending".Translate() : "RF.Pylon.Requesting".Translate();
+            if (Widgets.ButtonText(new Rect(x, y, 150, h), txt))
+            {
+                Pylon.SwitchType(isSending ? PylonType.Receiver : PylonType.Transmitter);
+            }
+            x += 150 + p;
+            int amount = Pylon.TargetWatts;
+            Widgets.IntEntry(new Rect(x, y, 250, h), ref amount, ref wattsBuffer);
+            Pylon.TargetWatts = Mathf.Clamp(amount, 0, 999999); // Allow up to (almost) a megawatt.
+            wattsBuffer = Pylon.TargetWatts.ToString();
+            x += 250 + p;
+            txt = "RF.Pylon.On".Translate();
+            var size = Text.CalcSize(txt);
+            Widgets.Label(new Rect(x, y, size.x, h), txt);
+            x += size.x + p;
+            if (Widgets.ButtonText(new Rect(x, y, 200, h), channelName))
+            {
+                var options = new List<FloatMenuOption>();
+                if (Pylon.Manager != null)
+                {
+                    foreach (var item in Pylon.Manager.GetAvailableChannels(Pylon))
+                    {
+                        var op = new FloatMenuOption(item.Name, () =>
+                        {
+                            Pylon.SwitchToChannel(item);
+                        });
+                        options.Add(op);
+                    }
+                }
+
+                options.Add(new FloatMenuOption("RF.Pylon.CreateNewChannel".Translate(), () =>
+                {
+                    Find.WindowStack.Add(new NewChannelWindow() {Manager = Pylon.Manager, CreateNewChannel = name =>
+                    {
+                        Core.Log($"User created new channel '{name}'");
+                        int id = Pylon.Manager.CreateNewChannel(name);
+                        var newChannel = Pylon.Manager.TryGetChannel(id);
+
+                        if (newChannel == null)
+                            Core.Error("Create new channel, but TryGetChannel returned null!? Why?");
+
+                        Pylon.SwitchToChannel(newChannel);
+                    }});
+                }));
+                Find.WindowStack.Add(new FloatMenu(options));
+            }
+
+            var channel = Pylon.Channel;
+            if (channel == null || channel.Destroyed)
+                return;
+
+            Text.Font = GameFont.Small;
+            x = 0;
+            y += h + 10;
+            int input = (int) channel.TotalInputWatts;
+            int requested = (int) channel.TotalRequestedWatts;
+            int balanceInt = input - requested;
+            string balance = balanceInt > 0 ? $"<color=green>+{balanceInt}W</color>" : balanceInt < 0 ? $"<color=red>{balanceInt}W</color>" : "0W";
+            Widgets.Label(new Rect(x, y, inRect.width, inRect.height - y), $"{"RF.Pylon.ChannelInfoHeader".Translate(channel.Name)}\n" +
+                                                                           $"{"RF.Pylon.ChannelInfoInput".Translate(channel.ActiveTransmitterCount, input)}\n" +
+                                                                           $"{"RF.Pylon.ChannelInfoOutput".Translate(channel.ActiveReceiversCount, requested)}\n" +
+                                                                           $"{"RF.Pylon.ChannelInfoBalance".Translate(balance)}" + 
+                                                                           (channel.UnsatisfiedReceivers > 0 ? "\n" + (string)"RF.Pylon.ChannelInfoUnsatisfied".Translate(channel.UnsatisfiedReceivers) : ""));
+        }
+    }
+
+    public class NewChannelWindow : Window
+    {
+        public override Vector2 InitialSize => new Vector2(560, 65);
+
+        public WirelessPower Manager;
+        public Action<string> CreateNewChannel;
+
+        private string name;
+
+        public NewChannelWindow()
+        {
+            closeOnClickedOutside = true;
+            resizeable = false;
+            drawShadow = true;
+            doCloseButton = false;
+            doCloseX = false;
+        }
+
+        public override void PostOpen()
+        {
+            base.PostOpen();
+            windowRect.y -= 165;
+        }
+
+        public override void DoWindowContents(Rect inRect)
+        {
+            if (Manager == null)
+            {
+                Core.Error("Missing Manager in this NewChannelWindow, closing.");
+                Close();
+                return;
+            }
+
+            if (name == null)
+            {
+                name = MakeDefaultName();
+            }
+
+            Text.Font = GameFont.Medium;
+            string txt = "RF.Pylon.NewChannelName".Translate();
+            Vector2 size = Text.CalcSize(txt);
+            float x = inRect.x;
+            float y = inRect.y;
+            Widgets.Label(new Rect(x, y, size.x, size.y), txt);
+            x += size.x + 10;
+            name = Widgets.TextField(new Rect(x, y, 220, size.y), name);
+            if (name.Length > 20)
+                name = name.Substring(0, 20);
+            x += 230;
+
+            bool validName = Manager.IsValidNewChannelName(name);
+            if (Widgets.ButtonText(new Rect(x, y, 100, size.y), "RF.Pylon.NewChannelCreate".Translate()))
+            {
+                string finalName = name.Trim();
+                Close();
+                CreateNewChannel?.Invoke(finalName);
+            }
+        }
+
+        public string MakeDefaultName()
+        {
+            return $"Channel #{Manager.MaxChannelId}";
+        }
     }
 }

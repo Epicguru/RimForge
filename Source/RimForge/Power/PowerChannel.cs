@@ -1,6 +1,7 @@
 ﻿using RimForge.Buildings;
 using System.Collections.Generic;
 using System.Linq;
+using RimWorld;
 using UnityEngine;
 
 namespace RimForge.Power
@@ -80,8 +81,26 @@ namespace RimForge.Power
             }
         }
 
+        /// <summary>
+        /// Gets the total current requested watts, from
+        /// all active receivers.
+        /// </summary>
+        public float TotalRequestedWatts
+        {
+            get
+            {
+                float sum = 0;
+                foreach (var trs in ActiveReceivers)
+                {
+                    sum += trs.TargetWatts;
+                }
+                return sum;
+            }
+        }
+
         private List<Building_WirelessPowerPylon> _receivers = new List<Building_WirelessPowerPylon>();
         private List<Building_WirelessPowerPylon> _transmitters = new List<Building_WirelessPowerPylon>();
+        private HashSet<PowerNet> tempNets = new HashSet<PowerNet>();
 
         private void Sanitize(List<Building_WirelessPowerPylon> pylons)
         {
@@ -111,6 +130,7 @@ namespace RimForge.Power
             Destroyed = true;
             _transmitters = null;
             _receivers = null;
+            tempNets = null;
         }
 
         public void Register(Building_WirelessPowerPylon pylon)
@@ -149,8 +169,22 @@ namespace RimForge.Power
 
         public void Tick()
         {
-            float wattsToDistribute = TotalInputWatts;
+            tempNets.Clear();
 
+            foreach (var pylon in Transmitters)
+            {
+                // Yes, this is pretty stupid, the pylon could just do this in it's own tick.
+                // However, this is more consistent with the way the receivers are handled.
+                pylon.SetTransmitterInput(pylon.TargetWatts);
+
+                // It also allows me to do this necessary feedback-loop prevention code:
+                pylon.ForceDisable = false;
+                var net = pylon.Power?.PowerNet;
+                if (net != null)
+                    tempNets.Add(net);
+            }
+
+            float wattsToDistribute = TotalInputWatts;
             UnsatisfiedReceivers = 0;
             Receivers.Sort((a, b) => a.ReceiverPriority - b.ReceiverPriority);
             foreach (var pylon in Receivers)
@@ -161,8 +195,18 @@ namespace RimForge.Power
                     pylon.SetReceiverOutput(0f); 
                     continue;
                 }
+                var net = pylon.Power.PowerNet;
+                if (tempNets.Contains(net))
+                {
+                    // There is a transmitter on the same power grid as this receiver...
+                    // No good.
+                    pylon.ForceDisable = true;
+                    pylon.SetReceiverOutput(0f);
+                    continue;
+                }
 
-                float requested = Mathf.Max(0, pylon.ReceiverRequestedWatts);
+                pylon.ForceDisable = false;
+                float requested = Mathf.Max(0, pylon.TargetWatts);
                 if (wattsToDistribute >= requested)
                 {
                     // There is enough power to give to this pylon, nice.

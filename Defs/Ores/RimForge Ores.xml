@@ -20,7 +20,7 @@ Copper is also used in complex electronics.</description>
       <isResourceRock>true</isResourceRock>
       <mineableThing>RF_Copper</mineableThing>
       <mineableYield>60</mineableYield>
-      <mineableScatterCommonality>0.6</mineableScatterCommonality>
+      <mineableScatterCommonality>0.5</mineableScatterCommonality>
       <mineableScatterLumpSizeRange>20~30</mineableScatterLumpSizeRange>
     </building>
   </ThingDef>
@@ -44,7 +44,7 @@ Tin is a soft metal with a low melting point, making it unsuitable for use as an
       <isResourceRock>true</isResourceRock>
       <mineableThing>RF_Tin</mineableThing>
       <mineableYield>50</mineableYield>
-      <mineableScatterCommonality>0.55</mineableScatterCommonality>
+      <mineableScatterCommonality>0.5</mineableScatterCommonality>
       <mineableScatterLumpSizeRange>15~30</mineableScatterLumpSizeRange>
     </building>
   </ThingDef>

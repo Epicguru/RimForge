@@ -47,6 +47,7 @@
       <li Class="CompProperties_Flickable"/>
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
+        <transmitsPower>true</transmitsPower>
         <shortCircuitInRain>false</shortCircuitInRain>
         <basePowerConsumption>0</basePowerConsumption>
       </li>

@@ -17,12 +17,23 @@
 <RF.Pylon.NoChannel>Idle, no channel selected.</RF.Pylon.NoChannel>
 <RF.Pylon.NoNetwork>Idle, not connected to power grid.</RF.Pylon.NoNetwork>
 <RF.Pylon.NoFlick>Idle, switched off.</RF.Pylon.NoFlick>
-
-<RF.Pylon.ReceivingFull>Receiving {0}W from '{1}'</RF.Pylon.ReceivingFull>
-<RF.Pylon.ReceivingPart>Receiving {0}/{1}W from '{2}'</RF.Pylon.ReceivingPart>
-<RF.Pylon.ReceivingNone>Receiving 0W from '{0}', not enough power!</RF.Pylon.ReceivingNone>
-
-<RF.Pylon.SendingFull>Sending {0}W to '{1}'</RF.Pylon.SendingFull>
-<RF.Pylon.SendingNone>Sending 0W to '{0}', not enough power!</RF.Pylon.SendingNone>
+<RF.Pylon.ForceDisabled>Invalid, cannot receive power from '{0}' because there is a transmitter on the same power grid.</RF.Pylon.ForceDisabled>
+<RF.Pylon.ReceivingFull>Receiving {0} from '{1}'</RF.Pylon.ReceivingFull>
+<RF.Pylon.ReceivingPart>Receiving {0} from '{1}'</RF.Pylon.ReceivingPart>
+<RF.Pylon.ReceivingNone>Receiving {0} from '{1}', not enough power!</RF.Pylon.ReceivingNone>
+<RF.Pylon.SendingFull>Sending {0} to '{1}'</RF.Pylon.SendingFull>
+<RF.Pylon.SendingNone>Sending {0} to '{1}', not enough power!</RF.Pylon.SendingNone>
+<RF.Pylon.ConfigureTitle>Configure pylon</RF.Pylon.ConfigureTitle>
+<RF.Pylon.Sending>Sending</RF.Pylon.Sending>
+<RF.Pylon.Requesting>Requesting</RF.Pylon.Requesting>
+<RF.Pylon.On>watts on channel</RF.Pylon.On>
+<RF.Pylon.ChannelInfoHeader>Channel '{0}':</RF.Pylon.ChannelInfoHeader>
+<RF.Pylon.ChannelInfoInput>{0} active transmitters, total {1}W input</RF.Pylon.ChannelInfoInput>
+<RF.Pylon.ChannelInfoOutput>{0} active receivers, requesting total {1}W</RF.Pylon.ChannelInfoOutput>
+<RF.Pylon.ChannelInfoBalance>Excess: {0}</RF.Pylon.ChannelInfoBalance>
+<RF.Pylon.ChannelInfoUnsatisfied>Due to insufficuent input, {0} receivers are not getting the power they requested.</RF.Pylon.ChannelInfoUnsatisfied>
+<RF.Pylon.CreateNewChannel>Create new channel...</RF.Pylon.CreateNewChannel>
+<RF.Pylon.NewChannelName>New channel name:</RF.Pylon.NewChannelName>
+<RF.Pylon.NewChannelCreate>Create!</RF.Pylon.NewChannelCreate>
 
  </LanguageData>
