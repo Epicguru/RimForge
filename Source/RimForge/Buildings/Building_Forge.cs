@@ -36,6 +36,7 @@ namespace RimForge.Buildings
 
         public AlloyDef CurrentAlloyDef;
         public float CurrentTemperature { get; protected set; }
+        public bool WantsTemperatureIncrease { get; protected set; }
 
         private readonly Dictionary<ThingDef, int> storedResources = new Dictionary<ThingDef, int>();
         private int requestCount = 50;
@@ -314,12 +315,13 @@ namespace RimForge.Buildings
                 i++;
             }
 
-            int expectedOutput = GetPossibleOutputCount(CurrentAlloyDef, out var missing);
-
             if (storedResources.Count == 0)
                 stored = "None";
 
-            return $"{root}\nForge Temp.: {CurrentTemperature.ToStringTemperature()}\nStored:\n{stored}";
+            string connectedStatus =
+                $"Connected:\n -{GetLeftHeatingElement()?.GetInspectorQuickString() ?? "None"}\n -{GetRightHeatingElement()?.GetInspectorQuickString() ?? "None"}";
+
+            return $"{root}\nForge Temp.: {CurrentTemperature.ToStringTemperature()}\n{connectedStatus}\nStored:\n{stored}";
         }
 
         public override IEnumerable<Gizmo> GetGizmos()
@@ -340,6 +342,12 @@ namespace RimForge.Buildings
                     action = () => ProcessCurrentRecipe(),
                     defaultLabel = "place output",
                     defaultDesc = "processes the current alloy recipe."
+                };
+                yield return new Command_Action()
+                {
+                    action = () => { WantsTemperatureIncrease = !WantsTemperatureIncrease; },
+                    defaultLabel = "toggle wants temperature increase",
+                    defaultDesc = $"Current: {WantsTemperatureIncrease}"
                 };
             }
         }

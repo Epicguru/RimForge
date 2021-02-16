@@ -61,7 +61,8 @@
   <ItemGroup>
     <Compile Include="AlloyHelper.cs" />
     <Compile Include="Buildings\Building_Forge.cs" />
-    <Compile Include="Buildings\Building_WoodHeatingElement.cs" />
+    <Compile Include="Buildings\Building_FueledHeatingElement.cs" />
+    <Compile Include="Buildings\Building_PoweredHeatingElement.cs" />
     <Compile Include="Buildings\HeatingElement.cs" />
     <Compile Include="Comps\CompHeatingElementHeatPusher.cs" />
     <Compile Include="Defs\AlloyDef.cs" />

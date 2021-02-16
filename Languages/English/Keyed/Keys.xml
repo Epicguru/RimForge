@@ -5,4 +5,12 @@
 <RF.MeltingPoint>Melting point</RF.MeltingPoint>
 <RF.EquivalentTo>Equivalent to</RF.EquivalentTo>
 
+<RF.ConnectedToForge>Connected to forge.</RF.ConnectedToForge>
+<RF.ConnectedToForgeActive>Connected to forge, providing {0}.</RF.ConnectedToForgeActive>
+<RF.NotConnectedToForge>Not connected to forge.</RF.NotConnectedToForge>
+
+<RF.CurrentPowerLevel>Current power level: {0}</RF.CurrentPowerLevel>
+<RF.Active>Active</RF.Active>
+<RF.NotActive>Not active</RF.NotActive>
+
  </LanguageData>

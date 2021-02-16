@@ -58,7 +58,6 @@
         <glowRadius>6</glowRadius>
         <glowColor>(255,248,214,255)</glowColor>
       </li>
-
       <li Class="CompProperties_Refuelable">
         <fuelConsumptionRate>0</fuelConsumptionRate>
         <fuelCapacity>1000.0</fuelCapacity>
@@ -71,6 +70,10 @@
 
     </comps>
     <constructionSkillPrerequisite>10</constructionSkillPrerequisite>
+    <placeWorkers>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+      <li>PlaceWorker_Heater</li>
+    </placeWorkers>
   </ThingDef>
 
 </Defs>

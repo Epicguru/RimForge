@@ -17,11 +17,14 @@
         <heatPerSecond>0</heatPerSecond>
       </li>
     </comps>
+    <placeWorkers>
+      <li>PlaceWorker_Heater</li>
+    </placeWorkers>
   </ThingDef>
 
   <RimForge.HeatingElementDef ParentName="RF_HeatingElementBase">
     <defName>RF_WoodHeatingElement</defName>
-    <thingClass>RimForge.Buildings.Building_WoodHeatingElement</thingClass>
+    <thingClass>RimForge.Buildings.Building_FueledHeatingElement</thingClass>
     <label>wood-fired heating element</label>
     <description>A heating element, to provide heat to a forge.
 This one burns wood to produce heat.</description>
@@ -35,24 +38,96 @@ This one burns wood to produce heat.</description>
 
     <!-- Means that with 2 wood-fired heaters, it is possible to make bronze, for tribal playthroughs. -->
     <maxAddedHeat>450</maxAddedHeat>
+    <activeFuelBurnRate>200</activeFuelBurnRate>
 
     <comps>
       <li Class="CompProperties_Refuelable">
-        <fuelConsumptionRate>200.0</fuelConsumptionRate>
+        <fuelConsumptionRate>0.0</fuelConsumptionRate>
         <fuelCapacity>200.0</fuelCapacity>
-        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
-        <initialConfigurableTargetFuelLevel>75</initialConfigurableTargetFuelLevel>
         <fuelFilter>
           <thingDefs>
             <li>WoodLog</li>
           </thingDefs>
         </fuelFilter>
         <consumeFuelOnlyWhenUsed>false</consumeFuelOnlyWhenUsed>
-        <autoRefuelPercent>1</autoRefuelPercent>
+        <autoRefuelPercent>0.75</autoRefuelPercent>
         <showFuelGizmo>true</showFuelGizmo>
         <drawOutOfFuelOverlay>true</drawOutOfFuelOverlay>
         <drawFuelGaugeInMap>true</drawFuelGaugeInMap>
         <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>5</glowRadius>
+        <glowColor>(255, 138, 20, 0)</glowColor>
+      </li>
+    </comps>    
+
+  </RimForge.HeatingElementDef>
+
+  <RimForge.HeatingElementDef ParentName="RF_HeatingElementBase">
+    <defName>RF_ChemfuelHeatingElement</defName>
+    <thingClass>RimForge.Buildings.Building_FueledHeatingElement</thingClass>
+    <label>chemfuel heating element</label>
+    <description>A heating element, to provide heat to a forge.
+This one burns chemfuel to produce heat, an upgrade from burning wood.</description>
+    <graphicData>
+      <texPath>AntimatterAnnihilation/Buildings/AlloyFusionMachine/Idle</texPath>
+    </graphicData>
+    <costList>
+      <Steel>350</Steel>
+      <ComponentIndustrial>8</ComponentIndustrial>
+    </costList>
+
+    <maxAddedHeat>750</maxAddedHeat>
+    <activeFuelBurnRate>200</activeFuelBurnRate>
+
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>0.0</fuelConsumptionRate>
+        <fuelCapacity>200.0</fuelCapacity>
+        <fuelFilter>
+          <thingDefs>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </fuelFilter>
+        <consumeFuelOnlyWhenUsed>false</consumeFuelOnlyWhenUsed>
+        <autoRefuelPercent>0.75</autoRefuelPercent>
+        <showFuelGizmo>true</showFuelGizmo>
+        <drawOutOfFuelOverlay>true</drawOutOfFuelOverlay>
+        <drawFuelGaugeInMap>true</drawFuelGaugeInMap>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>5</glowRadius>
+        <glowColor>(255, 138, 20, 0)</glowColor>
+      </li>
+    </comps>    
+
+  </RimForge.HeatingElementDef>
+
+  <RimForge.HeatingElementDef ParentName="RF_HeatingElementBase">
+    <defName>RF_PoweredHeatingElement</defName>
+    <thingClass>RimForge.Buildings.Building_PoweredHeatingElement</thingClass>
+    <label>arc-furnace heating element</label>
+    <description>A heating element, to provide heat to a forge.
+Makes use of an electric arc to directly heat the forge contents. Very high peak temperature at the cost of a large power consumption.
+Only consumes power when the forge is active.</description>
+    <graphicData>
+      <texPath>AntimatterAnnihilation/Buildings/AlloyFusionMachine/Idle</texPath>
+    </graphicData>
+    <costList>
+      <Steel>350</Steel>
+      <ComponentSpacer>2</ComponentSpacer>
+    </costList>
+
+    <maxAddedHeat>900</maxAddedHeat>
+    <activePowerDraw>2000</activePowerDraw> <!-- Uses 2KW at 100% power -->
+
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <shortCircuitInRain>false</shortCircuitInRain>
+        <basePowerConsumption>20</basePowerConsumption>
       </li>
       <li Class="CompProperties_Glower">
         <glowRadius>5</glowRadius>
