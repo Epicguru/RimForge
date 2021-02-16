@@ -42,6 +42,7 @@ This one burns wood to produce heat.</description>
 
     <comps>
       <li Class="CompProperties_Refuelable">
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
         <fuelConsumptionRate>0.0</fuelConsumptionRate>
         <fuelCapacity>200.0</fuelCapacity>
         <fuelFilter>
@@ -49,7 +50,6 @@ This one burns wood to produce heat.</description>
             <li>WoodLog</li>
           </thingDefs>
         </fuelFilter>
-        <consumeFuelOnlyWhenUsed>false</consumeFuelOnlyWhenUsed>
         <autoRefuelPercent>0.75</autoRefuelPercent>
         <showFuelGizmo>true</showFuelGizmo>
         <drawOutOfFuelOverlay>true</drawOutOfFuelOverlay>
@@ -83,6 +83,7 @@ This one burns chemfuel to produce heat, an upgrade from burning wood.</descript
 
     <comps>
       <li Class="CompProperties_Refuelable">
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
         <fuelConsumptionRate>0.0</fuelConsumptionRate>
         <fuelCapacity>200.0</fuelCapacity>
         <fuelFilter>
@@ -90,7 +91,6 @@ This one burns chemfuel to produce heat, an upgrade from burning wood.</descript
             <li>Chemfuel</li>
           </thingDefs>
         </fuelFilter>
-        <consumeFuelOnlyWhenUsed>false</consumeFuelOnlyWhenUsed>
         <autoRefuelPercent>0.75</autoRefuelPercent>
         <showFuelGizmo>true</showFuelGizmo>
         <drawOutOfFuelOverlay>true</drawOutOfFuelOverlay>

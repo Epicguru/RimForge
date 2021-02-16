@@ -194,8 +194,15 @@ namespace RimForge.Buildings
                 // Find spot.
                 IntVec3 spot = Position + Rotation.RighthandCell * (right ? 2 : -2);
                 var heater = Map.thingGrid.ThingAt<HeatingElement>(spot);
-                Log.Message($"Looking in {spot}, found {heater?.LabelCap ?? "<null>"}");
-                element = heater;
+                if (heater != null && (heater.ConnectedForge == null || heater.ConnectedForge == this))
+                {
+                    element = heater;
+                    element.ConnectedForge = this;
+                }
+                else
+                {
+                    element = null;
+                }
             }
 
             return element;

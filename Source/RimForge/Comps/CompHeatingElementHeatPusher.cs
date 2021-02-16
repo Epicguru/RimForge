@@ -5,7 +5,7 @@ namespace RimForge.Comps
 {
     public class CompHeatingElementHeatPusher : CompHeatPusher
     {
-        public const float HEAT_PUSH_COEF = 0.05f;
+        public const float HEAT_PUSH_COEF = 0.025f;
 
         public HeatingElement Heater { get; protected set; }
         protected override bool ShouldPushHeatNow => GetHeatToPush() != 0f;
@@ -25,7 +25,7 @@ namespace RimForge.Comps
 
         public virtual float GetHeatToPush()
         {
-            return Heater.GetProvidedHeat() * HEAT_PUSH_COEF; // 1000 deg arc furnace pushed 500C per second.
+            return Heater.GetProvidedHeat() * HEAT_PUSH_COEF;
         }
     }
 }

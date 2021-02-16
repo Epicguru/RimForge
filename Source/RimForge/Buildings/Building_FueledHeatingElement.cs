@@ -13,6 +13,9 @@ namespace RimForge.Buildings
         {
             IsBurningFuel = ShouldBurnFuelNow();
             FuelComp.Props.fuelConsumptionRate = IsBurningFuel ? HEDef.activeFuelBurnRate : 0f;
+            if (IsBurningFuel)
+                FuelComp.ConsumeFuel(FuelComp.Props.fuelConsumptionRate / 60000f);
+
             base.Tick();
         }
 

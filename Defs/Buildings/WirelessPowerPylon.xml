@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RF_WirelessPowerPylon</defName>
+    <thingClass>RimForge.Buildings.Building_WirelessPowerPylon</thingClass>
+    <label>wireless power pylon</label>
+    <description>Transmits or receives electrical power wirelessly. No more ugly cables.</description>
+    <graphicData>
+      <texPath>AntimatterAnnihilation/Buildings/AlloyFusionMachine/Idle</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <passability>PassThroughOnly</passability>
+    <designationCategory>Power</designationCategory>
+    <drawerType>RealtimeOnly</drawerType>
+    <selectable>true</selectable>
+    <canOverlapZones>true</canOverlapZones>
+    <castEdgeShadows>true</castEdgeShadows>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <tickerType>Normal</tickerType>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <pathCost>20</pathCost>
+    <size>(1, 1)</size>
+    <costList>
+      <Steel>20</Steel>
+      <ComponentIndustrial>5</ComponentIndustrial>
+    </costList>
+    <statBases>
+        <MaxHitPoints>100</MaxHitPoints>
+        <WorkToBuild>5000</WorkToBuild>
+        <Flammability>0.25</Flammability>
+        <Beauty>-2</Beauty>
+        <Cleanliness>1</Cleanliness>
+        <Mass>10</Mass>
+      </statBases>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsPower</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>2</glowRadius>
+        <glowColor>(3,255,238,255)</glowColor>
+      </li>
+      <li Class="CompProperties_Flickable"/>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <shortCircuitInRain>false</shortCircuitInRain>
+        <basePowerConsumption>0</basePowerConsumption>
+      </li>
+    </comps>
+    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+  </ThingDef>
+
+</Defs>
