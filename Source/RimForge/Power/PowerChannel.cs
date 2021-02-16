@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using UnityEngine;
+using Verse;
 
 namespace RimForge.Power
 {
-    public class PowerChannel
+    public class PowerChannel : IExposable
     {
         public int Id;
         public string Name;
@@ -222,6 +223,20 @@ namespace RimForge.Power
                     UnsatisfiedReceivers++;
                 }
             }
+        }
+
+        public void ExposeData()
+        {
+            Scribe_Values.Look(ref Id, "id", -1);
+            if (Id == -1)
+                Core.Error("Channel '{Name}' exposed data, Id came back as -1.");
+            Scribe_Values.Look(ref Name, "name", "<ERR_MISSING_NAME>");
+            Scribe_Values.Look(ref Destroyed, "destroyed", false);
+
+            Scribe_Collections.Look(ref _receivers, "receivers", LookMode.Reference);
+            _receivers ??= new List<Building_WirelessPowerPylon>();
+            Scribe_Collections.Look(ref _transmitters, "transmitters", LookMode.Reference);
+            _transmitters ??= new List<Building_WirelessPowerPylon>();
         }
     }
 }

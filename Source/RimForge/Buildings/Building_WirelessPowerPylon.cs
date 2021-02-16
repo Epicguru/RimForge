@@ -59,6 +59,23 @@ namespace RimForge.Buildings
             }
         }
 
+        public override void ExposeData()
+        {
+            base.ExposeData();
+
+            Scribe_Values.Look(ref TargetWatts, "targetWatts", 200);
+            Scribe_Values.Look(ref currentPower, "currentPower", 0);
+            Scribe_Values.Look(ref ReceiverPriority, "receiverPriority", 0);
+
+            var type = Type;
+            Scribe_Values.Look(ref type, "type", PylonType.Receiver);
+            SwitchType(type);
+
+            int channelId = Channel?.Id ?? -1;
+            Scribe_Values.Look(ref channelId, "channelId", -1);
+            Channel = Manager.TryGetChannel(channelId);
+        }
+
         public void SetReceiverOutput(float watts)
         {
             // targetPower should be positive.

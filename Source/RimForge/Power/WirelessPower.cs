@@ -1,6 +1,7 @@
 ﻿using RimWorld.Planet;
 using System.Collections.Generic;
 using RimForge.Buildings;
+using Verse;
 
 namespace RimForge.Power
 {
@@ -39,6 +40,15 @@ namespace RimForge.Power
                 return found;
 
             return null;
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+
+            Scribe_Values.Look(ref maxId, "maxId", 0);
+            Scribe_Collections.Look(ref channels, "channels", LookMode.Undefined, LookMode.Deep);
+            channels ??= new Dictionary<int, PowerChannel>();
         }
 
         public int CreateNewChannel(string name)
