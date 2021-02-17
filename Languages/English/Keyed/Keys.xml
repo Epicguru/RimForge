@@ -38,5 +38,22 @@
 <RF.Pylon.NewChannelCreate>Create!</RF.Pylon.NewChannelCreate>
 <RF.Pylon.ConfigureLabel>Configure {0}</RF.Pylon.ConfigureLabel>
 <RF.Pylon.ConfigureDesc>Change this {0}'s settings, such as what channel to connect to and the amount of power sent or received.</RF.Pylon.ConfigureDesc>
+<RF.Pylon.DisabledMultipleSelected>Cannot configure multiple {0}s at once. Configure one, and then use the copy-paste buttons.</RF.Pylon.DisabledMultipleSelected>
+<RF.Pylon.DisabledCopyMultipleSelected>Cannot copy config from multiple {0}s at once.</RF.Pylon.DisabledCopyMultipleSelected>
+<RF.Pylon.DisabledCopyInvalid>Invalid config, cannot copy.</RF.Pylon.DisabledCopyInvalid>
+<RF.Pylon.CopyLabel>Copy config</RF.Pylon.CopyLabel>
+<RF.Pylon.CopyDesc>Copy this {0}'s wireless settings.</RF.Pylon.CopyDesc>
+<RF.Pylon.PasteLabel>Paste config</RF.Pylon.PasteLabel>
+<RF.Pylon.PasteDesc>Paste wireless settings.</RF.Pylon.PasteDesc>
+<RF.Pylon.PasteSuccess>Applied config to {0} {1}s!</RF.Pylon.PasteSuccess>
+<RF.Pylon.PasteError>Applied config to {0} of {1} {2}s, {3} failed...</RF.Pylon.PasteError>
+<RF.Pylon.PasteDisabled>Cannot paste config, the clipboard is empty!</RF.Pylon.PasteDisabled>
+
+<RF.Pylon.CopySuccess>Copied wireless settings: [{0}]</RF.Pylon.CopySuccess>
+<RF.Pylon.Send>Send</RF.Pylon.Send>
+<RF.Pylon.Request>Request</RF.Pylon.Request>
+<RF.Pylon.From>from</RF.Pylon.From>
+<RF.Pylon.To>to</RF.Pylon.To>
+
 
  </LanguageData>

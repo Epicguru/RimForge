@@ -32,6 +32,7 @@ Memories from another time stir within its pearly blade.</description>
       <li>RewardStandardQualitySuper</li>
     </thingSetMakerTags>
     <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
       <WorkToMake>30000</WorkToMake>
       <Mass>8</Mass>
     </statBases>

@@ -53,12 +53,6 @@
         <shortCircuitInRain>false</shortCircuitInRain>
         <basePowerConsumption>0</basePowerConsumption>
       </li>
-      <li Class="CompProperties_Power">
-        <compClass>CompPowerTrader</compClass>
-        <transmitsPower>true</transmitsPower>
-        <shortCircuitInRain>false</shortCircuitInRain>
-        <basePowerConsumption>0</basePowerConsumption>
-      </li>
       <li Class="RimForge.Comps.CompProperties_WirelessPower">
         <buildingName>pylon</buildingName>
         <canSendPower>true</canSendPower>

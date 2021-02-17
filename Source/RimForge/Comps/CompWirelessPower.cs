@@ -9,6 +9,9 @@ namespace RimForge.Comps
 {
     public class CompWirelessPower : ThingComp
     {
+        private static int pasteFailed;
+        private static int pasteTotal;
+
         public WirelessPower Manager => Current.Game?.World?.GetComponent<WirelessPower>();
 
         public CompPowerTrader Power { get; private set; }
@@ -29,12 +32,12 @@ namespace RimForge.Comps
         private PowerChannel _channel;
         public CompProperties_WirelessPower Props => base.props as CompProperties_WirelessPower;
 
-        public PylonType Type { get; private set; } = PylonType.None;
+        public WirelessType Type { get; private set; } = WirelessType.None;
         public bool IsFlickedOn => Flick?.SwitchIsOn ?? false;
         public bool HasPowerNet => Power?.PowerNet != null;
         public bool IsPowered => Power?.PowerOn ?? false;
         public float Watts => Power?.PowerOutput ?? 0;
-        public bool IsActive => IsFlickedOn && (currentPower != 0 && (Type != PylonType.Transmitter || IsPowered));
+        public bool IsActive => IsFlickedOn && (currentPower != 0 && (Type != WirelessType.Transmitter || IsPowered));
 
         /// <summary>
         /// Used to forcibly disable when there is a receiver and transmitter on the
@@ -56,8 +59,8 @@ namespace RimForge.Comps
 
             if (!respawningAfterLoad)
             {
-                SwitchType(PylonType.Receiver);
-                Core.Log($"Props: {Props?.buildingName ?? "null"}");
+                SwitchType(WirelessType.Receiver);
+                SwitchToChannel(Manager?.TryGetDefaultChannel());
             }
         }
 
@@ -70,7 +73,7 @@ namespace RimForge.Comps
             Scribe_Values.Look(ref ReceiverPriority, "receiverPriority", 0);
 
             var type = Type;
-            Scribe_Values.Look(ref type, "type", PylonType.Receiver);
+            Scribe_Values.Look(ref type, "type", WirelessType.Receiver);
             SwitchType(type);
 
             int channelId = Channel?.Id ?? -1;
@@ -102,6 +105,23 @@ namespace RimForge.Comps
         {
             base.CompTick();
 
+            // Show paste result message, if necessary.
+            if (pasteTotal > 0)
+            {
+                if (pasteFailed > 0)
+                {
+                    int worked = pasteTotal - pasteFailed;
+                    Messages.Message("RF.Pylon.PasteError".Translate(worked, pasteTotal, Props.buildingName, pasteFailed), MessageTypeDefOf.SilentInput);
+
+                }
+                else
+                {
+                    Messages.Message("RF.Pylon.PasteSuccess".Translate(pasteTotal, Props.buildingName), MessageTypeDefOf.SilentInput);
+                }
+                pasteFailed = 0;
+                pasteTotal = 0;
+            }
+
             if (Props.fixedPowerLevel != null)
                 TargetWatts = Props.fixedPowerLevel.Value;
 
@@ -125,6 +145,8 @@ namespace RimForge.Comps
             foreach (var item in base.CompGetGizmosExtra())
                 yield return item;
 
+            bool moreThanOneSelected = Find.Selector?.SelectedObjects != null && Find.Selector.SelectedObjects.Count > 1;
+
             yield return new Command_Action()
             {
                 action = () =>
@@ -135,7 +157,41 @@ namespace RimForge.Comps
                 defaultDesc = "RF.Pylon.ConfigureDesc".Translate(Props.buildingName),
                 icon = Content.SignalIcon,
                 defaultIconColor = Channel?.GetColor() ?? Color.grey,
-                alsoClickIfOtherInGroupClicked = false
+                disabled = moreThanOneSelected,
+                disabledReason = "RF.Pylon.DisabledMultipleSelected".Translate(Props.buildingName)
+            };
+
+            yield return new Command_Action()
+            {
+                action = () =>
+                {
+                    var data = new WirelessPower.CopyPasteData(this);
+                    Manager.CurrentCopyPasteData = data;
+                    Messages.Message("RF.Pylon.CopySuccess".Translate(data.ToString()), MessageTypeDefOf.SilentInput);
+                },
+                defaultLabel = "RF.Pylon.CopyLabel".Translate(),
+                defaultDesc = "RF.Pylon.CopyDesc".Translate(Props.buildingName),
+                icon = Content.CopyIcon,
+                disabled = moreThanOneSelected || Channel == null,
+                disabledReason = moreThanOneSelected ? "RF.Pylon.DisabledCopyMultipleSelected".Translate(Props.buildingName) : "RF.Pylon.DisabledCopyInvalid".Translate()
+            };
+
+            var currentData = Manager.CurrentCopyPasteData;
+            yield return new Command_Action()
+            {
+                action = () =>
+                {
+                    bool worked = currentData.TryApply(this);
+                    pasteTotal++;
+                    if (!worked)
+                        pasteFailed++;
+                    Core.Log($"Pasted, total now {pasteTotal}");
+                },
+                defaultLabel = "RF.Pylon.PasteLabel".Translate(),
+                defaultDesc = "RF.Pylon.PasteDesc".Translate(Props.buildingName),
+                icon = Content.PasteIcon,
+                disabled = currentData == null || !currentData.IsValid(Manager),
+                disabledReason = "RF.Pylon.PasteDisabled".Translate()
             };
         }
 
@@ -147,13 +203,13 @@ namespace RimForge.Comps
 
         public void DrawConnectionLines()
         {
-            if (Channel == null || Type == PylonType.None)
+            if (Channel == null || Type == WirelessType.None)
                 return;
 
             Vector3 selfPos = parent.DrawPos;
             Map selfMap = parent.Map;
 
-            if (Type == PylonType.Receiver)
+            if (Type == WirelessType.Receiver)
             {
                 // Draw lines to all the transmitters.
                 foreach (var item in Channel.Transmitters)
@@ -189,14 +245,14 @@ namespace RimForge.Comps
             }
         }
 
-        public void SwitchType(PylonType newType)
+        public void SwitchType(WirelessType newType)
         {
-            if (newType == PylonType.None)
+            if (newType == WirelessType.None)
             {
                 Core.Error("Cannot switch to PylonType.None");
                 return;
             }
-            if (newType == PylonType.Transmitter && !Props.canSendPower)
+            if (newType == WirelessType.Transmitter && !Props.canSendPower)
             {
                 Core.Error("Tried to set type to transmitter, but Props.canSendPower is false.");
                 return;
@@ -217,7 +273,7 @@ namespace RimForge.Comps
 
             bool Common(out string msg)
             {
-                if (ForceDisable && Channel != null && Type == PylonType.Receiver)
+                if (ForceDisable && Channel != null && Type == WirelessType.Receiver)
                 {
                     msg = "RF.Pylon.ForceDisabled".Translate(Channel.Name);
                     return true;
@@ -247,7 +303,7 @@ namespace RimForge.Comps
 
             switch (Type)
             {
-                case PylonType.Receiver:
+                case WirelessType.Receiver:
 
                     if (Common(out string msg))
                         return msg;
@@ -261,7 +317,7 @@ namespace RimForge.Comps
                         return "RF.Pylon.ReceivingNone".Translate(InColor("0W", RED), channelName);
                     return "RF.Pylon.ReceivingPart".Translate(InColor($"{powerInt}/{TargetWatts}W", YELLOW), channelName);
 
-                case PylonType.Transmitter:
+                case WirelessType.Transmitter:
 
                     if (Common(out msg))
                         return msg;
@@ -281,7 +337,7 @@ namespace RimForge.Comps
         }
     }
 
-    public enum PylonType
+    public enum WirelessType
     {
         None,
         Transmitter,
@@ -306,7 +362,7 @@ namespace RimForge.Comps
             resizeable = false;
             doCloseButton = false;
             doCloseX = true;
-            closeOnClickedOutside = false;
+            closeOnClickedOutside = true;
         }
 
         public override void PreClose()
@@ -318,7 +374,7 @@ namespace RimForge.Comps
 
         public override void DoWindowContents(Rect inRect)
         {
-            if (Comp == null || Comp.parent.DestroyedOrNull() || !Comp.parent.Spawned || Comp.Type == PylonType.None)
+            if (Comp == null || Comp.parent.DestroyedOrNull() || !Comp.parent.Spawned || Comp.Type == WirelessType.None)
             {
                 Core.Warn("Pylon was destroyed or invalid, closing config window.");
                 Close();
@@ -331,14 +387,14 @@ namespace RimForge.Comps
             float x = inRect.x;
             float y = inRect.y;
 
-            bool isSending = Comp.Type == PylonType.Transmitter;
+            bool isSending = Comp.Type == WirelessType.Transmitter;
             string channelName = Comp.Channel?.Name ?? "None";
 
             bool canChangeMode = Comp.Props.canSendPower;
             string txt = isSending ? "RF.Pylon.Sending".Translate() : "RF.Pylon.Requesting".Translate();
             if (Widgets.ButtonText(new Rect(x, y, 150, h), txt, active: canChangeMode))
             {
-                Comp.SwitchType(isSending ? PylonType.Receiver : PylonType.Transmitter);
+                Comp.SwitchType(isSending ? WirelessType.Receiver : WirelessType.Transmitter);
             }
             x += 150 + p;
 

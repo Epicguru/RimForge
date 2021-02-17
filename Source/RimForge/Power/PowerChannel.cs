@@ -1,8 +1,7 @@
-﻿using RimForge.Buildings;
+﻿using RimForge.Comps;
+using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
-using RimForge.Comps;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -12,11 +11,11 @@ namespace RimForge.Power
     {
         private static readonly Color[] Colors = 
         {
-            Color.green,
             Color.magenta,
+            Color.green,
             Color.cyan,
-            Color.red,
-            Color.blue
+            Color.blue,
+            Color.red
         };
         private static List<ThingWithComps> tempIOThings = new List<ThingWithComps>();
 
@@ -151,10 +150,10 @@ namespace RimForge.Power
         {
             if (pylon == null)
                 return;
-            if (pylon.Type == PylonType.None)
+            if (pylon.Type == WirelessType.None)
                 return;
 
-            if (pylon.Type == PylonType.Receiver)
+            if (pylon.Type == WirelessType.Receiver)
             {
                 if (_transmitters.Contains(pylon))
                     _transmitters.Remove(pylon);
