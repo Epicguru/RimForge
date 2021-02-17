@@ -37,6 +37,6 @@
 <RF.Pylon.NewChannelName>New channel name:</RF.Pylon.NewChannelName>
 <RF.Pylon.NewChannelCreate>Create!</RF.Pylon.NewChannelCreate>
 <RF.Pylon.ConfigureLabel>Configure {0}</RF.Pylon.ConfigureLabel>
-<RF.Pylon.ConfigureDesc>Change this {0}s settings, such as what channel to connect to and the amount of power sent or received.</RF.Pylon.ConfigureDesc>
+<RF.Pylon.ConfigureDesc>Change this {0}'s settings, such as what channel to connect to and the amount of power sent or received.</RF.Pylon.ConfigureDesc>
 
  </LanguageData>

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
+  <StuffCategoryDef>
+    <defName>RF_WeaponAlloy</defName>
+    <label>weapon-grade alloy</label>
+    <destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
+    <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
+    <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
+  </StuffCategoryDef>
+
   <RimForge.AlloyDef>
     <defName>RF_BronzeAlloy</defName>
     <label>make bronze</label>

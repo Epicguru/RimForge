@@ -18,6 +18,7 @@ namespace RimForge.Power
             Color.red,
             Color.blue
         };
+        private static List<ThingWithComps> tempIOThings = new List<ThingWithComps>();
 
         public int Id;
         public string Name;
@@ -245,10 +246,35 @@ namespace RimForge.Power
             Scribe_Values.Look(ref Name, "name", "<ERR_MISSING_NAME>");
             Scribe_Values.Look(ref Destroyed, "destroyed", false);
 
-            Scribe_Collections.Look(ref _receivers, "receivers", LookMode.Reference);
-            _receivers ??= new List<CompWirelessPower>();
-            Scribe_Collections.Look(ref _transmitters, "transmitters", LookMode.Reference);
-            _transmitters ??= new List<CompWirelessPower>();
+            ExposeComps(_transmitters, "transmitters");
+            ExposeComps(_receivers, "receivers");
+        }
+
+        /// <summary>
+        /// Exposes the list of comps.
+        /// LookMode.Reference cannot be used with components, because they are not registered in the load
+        /// system the same way Things are.
+        /// Therefore, it is necessary to save a reference to the comp's parent, and then extract the comp afterwards.
+        /// </summary>
+        private void ExposeComps(List<CompWirelessPower> comps, string label)
+        {
+            tempIOThings.Clear();
+            foreach (var comp in comps)
+                tempIOThings.Add(comp.parent);
+
+            Scribe_Collections.Look(ref tempIOThings, label, LookMode.Reference);
+            tempIOThings ??= new List<ThingWithComps>();
+
+            comps.Clear();
+            foreach (var thing in tempIOThings)
+            {
+                var comp = thing.GetComp<CompWirelessPower>();
+                if (comp != null)
+                    comps.Add(comp);
+                else
+                    Core.Error($"Failed to find CompWirelessPower on loading thing: {thing}");
+            }
+            tempIOThings.Clear();
         }
     }
 }

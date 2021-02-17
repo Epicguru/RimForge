@@ -9,7 +9,7 @@ It has more spikey bits to make it easier to poke people with.</description>
     <graphicData>
       <texPath>RF/Weapons/GaeBulg</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(1.6,1.6)</drawSize>
+      <drawSize>(1.65,1.65)</drawSize>
     </graphicData>
 
     <costList>
@@ -28,7 +28,7 @@ It has more spikey bits to make it easier to poke people with.</description>
     <equippedStatOffsets>
       <MoveSpeed>0.1</MoveSpeed> <!-- Gives +0.1 cps movement boost. Because I can. -->
     </equippedStatOffsets>    
-    <equippedAngleOffset>0</equippedAngleOffset>
+    <equippedAngleOffset>20</equippedAngleOffset>
     <recipeMaker>
       <researchPrerequisite>LongBlades</researchPrerequisite>
       <skillRequirements>
@@ -46,6 +46,9 @@ It has more spikey bits to make it easier to poke people with.</description>
         <cooldownTime>1.5</cooldownTime>
       </li>
     </tools>
+    <comps>
+      <li Class="CompOversizedWeapon.CompProperties_OversizedWeapon"></li>
+    </comps>
   </ThingDef>
 
 </Defs>

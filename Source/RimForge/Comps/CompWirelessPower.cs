@@ -57,6 +57,7 @@ namespace RimForge.Comps
             if (!respawningAfterLoad)
             {
                 SwitchType(PylonType.Receiver);
+                Core.Log($"Props: {Props?.buildingName ?? "null"}");
             }
         }
 
@@ -128,7 +129,7 @@ namespace RimForge.Comps
             {
                 action = () =>
                 {
-                    Find.WindowStack.Add(new ConfigWindow(){Comp = this});
+                    Find.WindowStack.Add(new ConfigWindow(this));
                 },
                 defaultLabel = "RF.Pylon.ConfigureLabel".Translate(Props.buildingName),
                 defaultDesc = "RF.Pylon.ConfigureDesc".Translate(Props.buildingName),
@@ -289,14 +290,15 @@ namespace RimForge.Comps
 
     public class ConfigWindow : Window
     {
-        public override Vector2 InitialSize => new Vector2(820, 200);
-        public CompWirelessPower Comp;
+        public override Vector2 InitialSize => new Vector2(850, 200);
+        public readonly CompWirelessPower Comp;
 
         private string wattsBuffer;
         private Window tempWindow;
 
-        public ConfigWindow()
+        public ConfigWindow(CompWirelessPower comp)
         {
+            Comp = comp;
             optionalTitle = "RF.Pylon.ConfigureTitle".Translate(Comp.Props.buildingName);
             drawShadow = true;
             draggable = true;
@@ -340,14 +342,14 @@ namespace RimForge.Comps
             }
             x += 150 + p;
 
-            bool canChange = Comp.Props.fixedPowerLevel != null;
+            bool canChange = Comp.Props.fixedPowerLevel == null;
             int amount = Comp.TargetWatts;
             GUI.enabled = canChange;
-            Widgets.IntEntry(new Rect(x, y, 260, h), ref amount, ref wattsBuffer, 10);
+            Widgets.IntEntry(new Rect(x, y, 290, h), ref amount, ref wattsBuffer, 10);
             GUI.enabled = true;
-            Comp.TargetWatts = Mathf.Clamp(amount, 0, 999999); // Allow up to (almost) a megawatt.
+            Comp.TargetWatts = Mathf.Clamp(amount, 0, Comp.Props.maxPower);
             wattsBuffer = Comp.TargetWatts.ToString();
-            x += 260 + p;
+            x += 290 + p;
 
             txt = "RF.Pylon.On".Translate();
             var size = Text.CalcSize(txt);

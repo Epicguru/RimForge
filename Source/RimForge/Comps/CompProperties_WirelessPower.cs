@@ -7,6 +7,7 @@ namespace RimForge.Comps
         public string buildingName = "pylon";
         public bool canSendPower = false;
         public int? fixedPowerLevel = null;
+        public int maxPower = 999999;
 
         public CompProperties_WirelessPower()
         {

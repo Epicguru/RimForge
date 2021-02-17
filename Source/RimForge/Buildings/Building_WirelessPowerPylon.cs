@@ -4,6 +4,7 @@ using Verse;
 
 namespace RimForge.Buildings
 {
+    [StaticConstructorOnStartup] // Just to get rimworld to shut up about it.
     public class Building_WirelessPowerPylon : Building
     {
         private static Graphic activeGraphic, idleGraphic;
