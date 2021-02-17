@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 using Verse;
 
 namespace RimForge
@@ -141,6 +142,16 @@ namespace RimForge
 
             index = -1;
             return null;
+        }
+
+        public static Vector2 WorldToFlat(this Vector3 worldPos)
+        {
+            return new Vector2(worldPos.x, worldPos.z);
+        }
+
+        public static Vector3 FlatToWorld(this Vector2 flatPos, float y)
+        {
+            return new Vector3(flatPos.x, y, flatPos.y);
         }
     }
 }

@@ -125,10 +125,7 @@ namespace RimForge.Power
 
         public PowerChannel TryGetChannel(int id)
         {
-            if (channels.TryGetValue(id, out var found))
-                return found;
-
-            return null;
+            return channels.TryGetValue(id, out var found) ? found : null;
         }
 
         public override void ExposeData()
