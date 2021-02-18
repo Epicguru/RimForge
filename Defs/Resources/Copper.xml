@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <ThingDef ParentName="ResourceBase">
+  <ThingDef ParentName="RF_AlloyResource">
     <defName>RF_Copper</defName>
     <label>copper</label>
-    <stackLimit>200</stackLimit>
     <description>Pure copper. Great for alloying with other metals, but a poor material for construction or tools in this pure state.
 However, it is very malleable, making it fast to work with.</description>
     <graphicData>
       <texPath>RF/Resources/Copper</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
-    <soundInteract>Metal_Drop</soundInteract>
-    <soundDrop>Metal_Drop</soundDrop>
-    <useHitPoints>false</useHitPoints>
-    <healthAffectsPrice>false</healthAffectsPrice>
-    <tradeability>Sellable</tradeability>
     <statBases>
       <MarketValue>5</MarketValue>
       <Mass>0.6</Mass>
@@ -33,18 +26,12 @@ However, it is very malleable, making it fast to work with.</description>
     <deepCommonality>3</deepCommonality>
     <deepCountPerPortion>60</deepCountPerPortion>
     <deepLumpSizeRange>30~40</deepLumpSizeRange>
-    <burnableByRecipe>false</burnableByRecipe>
-    <smeltable>true</smeltable>
     <stuffProps>
       <categories>
         <li>Metallic</li>
       </categories>
       <commonality>0.1</commonality>
-      <constructEffect>ConstructMetal</constructEffect>
       <color>(212, 191, 138)</color>
-      <soundImpactStuff>BulletImpact_Metal</soundImpactStuff>
-      <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
-      <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
       <statFactors>
         <MaxHitPoints>0.8</MaxHitPoints>
         <Beauty>0.9</Beauty>

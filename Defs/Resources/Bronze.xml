@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <ThingDef ParentName="ResourceBase">
+  <ThingDef ParentName="RF_AlloyResource">
     <defName>RF_Bronze</defName>
     <label>bronze</label>
-    <stackLimit>200</stackLimit>
     <description>An alloy of copper and tin, has been in use since ancient times.
 Makes for very good tools, weapons and armor, at the cost of beauty and construction time.</description>
     <graphicData>
       <texPath>RF/Resources/Bronze</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
-    <soundInteract>Metal_Drop</soundInteract>
-    <soundDrop>Metal_Drop</soundDrop>
-    <useHitPoints>false</useHitPoints>
-    <healthAffectsPrice>false</healthAffectsPrice>
-    <tradeability>Sellable</tradeability>
     <statBases>
       <MarketValue>6</MarketValue>
       <Mass>0.6</Mass>
@@ -31,18 +24,12 @@ Makes for very good tools, weapons and armor, at the cost of beauty and construc
       <li>Alloys</li>
     </thingCategories>
     <deepCommonality>0</deepCommonality>
-    <burnableByRecipe>false</burnableByRecipe>
-    <smeltable>true</smeltable>
     <stuffProps>
       <categories>
         <li>Metallic</li>
       </categories>
       <commonality>0</commonality>
-      <constructEffect>ConstructMetal</constructEffect>
       <color>(184, 106, 7)</color>
-      <soundImpactStuff>BulletImpact_Metal</soundImpactStuff>
-      <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
-      <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
       <statFactors>
         <MaxHitPoints>1.4</MaxHitPoints>
         <Beauty>0.5</Beauty>

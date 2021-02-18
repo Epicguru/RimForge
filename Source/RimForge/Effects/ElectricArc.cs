@@ -46,8 +46,6 @@ namespace RimForge.Effects
                     Vector2 finalPos = basePos + normal * offset;
                     AllPoints[i] = finalPos;
                 }
-
-                //MoteMaker.ThrowLightningGlow(End.FlatToWorld(Depth), map, 1);
             }
 
             AllPoints[0] = Start;

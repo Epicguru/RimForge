@@ -208,8 +208,8 @@ namespace RimForge.Power
                     pylon.SetReceiverOutput(0f); 
                     continue;
                 }
-                var net = pylon.Power.PowerNet;
-                if (tempNets.Contains(net))
+                var net = pylon.Power?.PowerNet;
+                if (net != null && tempNets.Contains(net))
                 {
                     // There is a transmitter on the same power grid as this receiver...
                     // No good.

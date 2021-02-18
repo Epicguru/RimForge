@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -30,7 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
@@ -67,12 +67,16 @@
     <Compile Include="Buildings\Building_Forge.cs" />
     <Compile Include="Buildings\Building_FueledHeatingElement.cs" />
     <Compile Include="Buildings\Building_PoweredHeatingElement.cs" />
+    <Compile Include="Buildings\Building_TeslaCoil.cs" />
     <Compile Include="Buildings\Building_WirelessPowerPylon.cs" />
+    <Compile Include="Comps\CompProperties_ShowAlloyInfo.cs" />
     <Compile Include="Comps\CompProperties_WirelessPower.cs" />
+    <Compile Include="Comps\CompShowAlloyInfo.cs" />
     <Compile Include="Comps\CompWirelessPower.cs" />
     <Compile Include="Buildings\HeatingElement.cs" />
     <Compile Include="Comps\CompHeatingElementHeatPusher.cs" />
     <Compile Include="Content.cs" />
+    <Compile Include="Damage\DamageWorker_Electrical.cs" />
     <Compile Include="Defs\AlloyDef.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Defs\HeatingElementDef.cs" />
@@ -91,6 +95,7 @@
     <Compile Include="Defs\RatioHolder.cs" />
     <Compile Include="RFDefOf.cs" />
     <Compile Include="Power\WirelessPower.cs" />
+    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

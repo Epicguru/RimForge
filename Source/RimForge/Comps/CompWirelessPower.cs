@@ -33,11 +33,13 @@ namespace RimForge.Comps
         public CompProperties_WirelessPower Props => base.props as CompProperties_WirelessPower;
 
         public WirelessType Type { get; private set; } = WirelessType.None;
-        public bool IsFlickedOn => Flick?.SwitchIsOn ?? false;
-        public bool HasPowerNet => Power?.PowerNet != null;
-        public bool IsPowered => Power?.PowerOn ?? false;
-        public float Watts => Power?.PowerOutput ?? 0;
-        public bool IsActive => IsFlickedOn && (currentPower != 0 && (Type != WirelessType.Transmitter || IsPowered));
+
+        // Note: if Power component is null, this is running in 'internal' mode.
+        public bool IsFlickedOn => Flick?.SwitchIsOn ?? true;
+        public bool HasPowerNet => Power == null || Power.PowerNet != null;
+        public bool IsPowered => Power?.PowerOn ?? true;
+        public float Watts => Power?.PowerOutput ?? currentPower;
+        public bool IsActive => IsFlickedOn && (Power == null ? currentPower >= TargetWatts : currentPower != 0) && (Type != WirelessType.Transmitter || IsPowered);
 
         /// <summary>
         /// Used to forcibly disable when there is a receiver and transmitter on the
@@ -61,6 +63,11 @@ namespace RimForge.Comps
             {
                 SwitchType(WirelessType.Receiver);
                 SwitchToChannel(Manager?.TryGetDefaultChannel());
+            }
+
+            if (Power == null && Props.canSendPower)
+            {
+                Core.Error("CompWirelessPower error: PowerTrader component not found (assuming internal mode), so canSendPower should be false, but it's not! Change def.");
             }
         }
 
@@ -131,7 +138,8 @@ namespace RimForge.Comps
             if(lastFramePower != currentPower)
                 parent.GetComp<CompGlower>()?.UpdateLit(parent.Map);
             
-            Power.powerOutputInt = currentPower;
+            if(Power != null)
+                Power.powerOutputInt = currentPower;
             lastFramePower = currentPower;
         }
 
@@ -476,6 +484,12 @@ namespace RimForge.Comps
 
     public class NewChannelWindow : Window
     {
+        public static char[] InvalidCharacters = new char[] // To avoid breaking when saving to xml. Not comprehensive!
+        {
+            '<', '>', '\\', '/'
+        };
+
+
         public override Vector2 InitialSize => new Vector2(560, 65);
 
         public WirelessPower Manager;
@@ -514,10 +528,7 @@ namespace RimForge.Comps
                 return;
             }
 
-            if (name == null)
-            {
-                name = MakeDefaultName();
-            }
+            name ??= MakeDefaultName();
 
             Text.Font = GameFont.Medium;
             string txt = "RF.Pylon.NewChannelName".Translate();
@@ -529,10 +540,12 @@ namespace RimForge.Comps
             name = Widgets.TextField(new Rect(x, y, 220, size.y), name);
             if (name.Length > 20)
                 name = name.Substring(0, 20);
+            foreach (var c in InvalidCharacters)
+                name = name.Replace(c.ToString(), "");
             x += 230;
 
             bool validName = Manager.IsValidNewChannelName(name);
-            if (Widgets.ButtonText(new Rect(x, y, 100, size.y), "RF.Pylon.NewChannelCreate".Translate()))
+            if (Widgets.ButtonText(new Rect(x, y, 100, size.y), "RF.Pylon.NewChannelCreate".Translate(), active: validName))
             {
                 string finalName = name.Trim();
                 Close();

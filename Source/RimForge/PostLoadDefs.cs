@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using RimForge.Comps;
 using Verse;
 
 namespace RimForge
@@ -23,13 +23,50 @@ namespace RimForge
             }
             watch.Stop();
 
-
             Core.Log($"Completed def processing in {watch.ElapsedMilliseconds} milliseconds.");
-            Core.Log(RFDefOf.RF_GoldDoreAlloy.ToString(true));
+            Core.Log($"There are {AlloyHelper.AllAlloyDefs.Count} recipes ({AlloyHelper.AllCraftableAlloys.Count} craftable alloys), and {AlloyHelper.AllRimForgeResources.Count} general resources.");
         }
 
         private static void ProcessDefs()
         {
+            foreach (var def in DefDatabase<AlloyDef>.AllDefsListForReading)
+            {
+                if (!def.IsValid)
+                    continue;
+
+                AlloyHelper.AllAlloyDefs.Add(def);
+
+                var output = def.output.resource;
+                AlloyHelper.AllCraftableAlloys.Add(output, def);
+
+                foreach (var input in def.input)
+                {
+                    if (AlloyHelper.UsedToMake.TryGetValue(input.resource, out var list))
+                    {
+                        list.Add(def.output.resource);
+                    }
+                    else
+                    {
+                        list = new List<ThingDef>();
+                        list.Add(def.output.resource);
+                        AlloyHelper.UsedToMake.Add(input.resource, list);
+                    }
+
+                    if (!input.resource.HasComp(typeof(CompShowAlloyInfo)))
+                    {
+                        input.resource.comps.Add(new CompProperties_ShowAlloyInfo());
+                        Core.Log($"Since {input.resource.LabelCap} is an ingredient in '{def.LabelCap}', it has been given the ShowAlloyInfo component.");
+                    }
+                }
+                if (!output.HasComp(typeof(CompShowAlloyInfo)))
+                {
+                    output.comps.Add(new CompProperties_ShowAlloyInfo());
+                    Core.Log($"Since {output.LabelCap} is the output of '{def.LabelCap}', it has been given the ShowAlloyInfo component.");
+                }
+            }
+
+            // Loop through every single ThingDef, see if it has the Extension on it, if it does
+            // then it is considered 'part' of this mod's resources.
             foreach (var def in DefDatabase<ThingDef>.AllDefsListForReading)
             {
                 var extension = def?.GetModExtension<Extension>();
@@ -37,35 +74,10 @@ namespace RimForge
                     continue;
 
                 AlloyHelper.AllRimForgeResources.Add(def);
-                float meltingPoint = def.GetMeltingPoint();
-                def.description += $"\n\n<color=#ffb499><b>{"RF.ModName".Translate()}</b>\n{"RF.MeltingPoint".Translate()}: {meltingPoint.ToStringTemperature(format: "F0")}</color>";
                 if (extension.equivalentTo != null)
                 {
                     AlloyHelper.AddEquivalentResource(def, extension.equivalentTo);
                 }
-            }
-
-            StringBuilder str = new StringBuilder();
-            foreach (var def in AlloyHelper.AllRimForgeResources)
-            {
-                var equivalents = AlloyHelper.GetEquivalentResources(def);
-                if (equivalents == null || equivalents.Count <= 1)
-                    continue;
-
-                str.Clear();
-                str.Append("RF.EquivalentTo".Translate()).AppendLine(":");
-                foreach (var item in equivalents)
-                {
-                    if (item == def)
-                        continue;
-                    str.Append("  -");
-                    str.AppendLine(item.ModLabelCap());
-
-                    def.descriptionHyperlinks ??= new List<DefHyperlink>();
-                    def.descriptionHyperlinks.Add(new DefHyperlink(item));
-                }
-                def.description += $"\n<color=#ffb499>{str.ToString().TrimEnd()}</color>";
-
             }
         }
     }

@@ -21,7 +21,7 @@
     <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
     <tickerType>Normal</tickerType>
     <category>Building</category>
-    <altitudeLayer>Building</altitudeLayer>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
     <pathCost>20</pathCost>
     <size>(1, 1)</size>
     <costList>

@@ -2,8 +2,6 @@
 <LanguageData>
 
 <RF.ModName>RimForge</RF.ModName>
-<RF.MeltingPoint>Melting point</RF.MeltingPoint>
-<RF.EquivalentTo>Equivalent to</RF.EquivalentTo>
 
 <RF.ConnectedToForge>Connected to forge.</RF.ConnectedToForge>
 <RF.ConnectedToForgeActive>Connected to forge, providing {0}.</RF.ConnectedToForgeActive>
@@ -48,12 +46,35 @@
 <RF.Pylon.PasteSuccess>Applied config to {0} {1}s!</RF.Pylon.PasteSuccess>
 <RF.Pylon.PasteError>Applied config to {0} of {1} {2}s, {3} failed...</RF.Pylon.PasteError>
 <RF.Pylon.PasteDisabled>Cannot paste config, the clipboard is empty!</RF.Pylon.PasteDisabled>
-
 <RF.Pylon.CopySuccess>Copied wireless settings: [{0}]</RF.Pylon.CopySuccess>
 <RF.Pylon.Send>Send</RF.Pylon.Send>
 <RF.Pylon.Request>Request</RF.Pylon.Request>
 <RF.Pylon.From>from</RF.Pylon.From>
 <RF.Pylon.To>to</RF.Pylon.To>
 
+<RF.Coil.Ready>Ready to fire.</RF.Coil.Ready>
+<RF.Coil.NoPower>No power, will not fire!</RF.Coil.NoPower>
+<RF.Coil.Blocked>Link blocked by {0}, will not fire!</RF.Coil.Blocked>
+<RF.Coil.NotLinked>Not linked, will not fire!\nNote: this coil may be the 'passive' coil.</RF.Coil.NotLinked>
+<RF.Coil.OnCooldown>On cooldown, {0} hours remaining.</RF.Coil.OnCooldown>
+<RF.Coil.LinkLabel>Link to other coil</RF.Coil.LinkLabel>
+<RF.Coil.LinkDesc>Links this tesla coil to another.\nThis coil becomes the 'active' coil, and the other is 'passive'. Read coil description for more info.</RF.Coil.LinkDesc>
+<RF.Coil.LinkSuccess>Linked successfuly!</RF.Coil.LinkSuccess>
+<RF.Coil.UnLinkSuccess>Unlinked coil.</RF.Coil.UnLinkSuccess>
+<RF.Coil.UnlinkLabel>Unlink this tesla coil.</RF.Coil.UnlinkLabel>
+<RF.Coil.AlreadyLinked>The target coil is already linked to this one (this one is the 'passive').</RF.Coil.AlreadyLinked>
+<RF.Coil.TooFar>The target coil is too far away.</RF.Coil.TooFar>
+<RF.Coil.NotInLine>The target coil must be .</RF.Coil.NotInLine>
+
+<RF.Stats.MadeUsing>Made using</RF.Stats.MadeUsing>
+<RF.Stats.MadeUsingDesc>This is an alloy that is created at a Forge, using the following materials:</RF.Stats.MadeUsingDesc>
+<RF.Stats.MeltingPoint>Melting point</RF.Stats.MeltingPoint>
+<RF.Stats.MeltingPointDesc>The melting point of this material, relevant when trying to make alloys out of it in a Forge.</RF.Stats.MeltingPointDesc>
+<RF.Stats.UsedToMake>Used to make</RF.Stats.UsedToMake>
+<RF.Stats.UsedToMakeDesc>This resource is needed to make the following alloys at a Forge:</RF.Stats.UsedToMakeDesc>
+<RF.Stats.EquivalentTo>Equivalent to</RF.Stats.EquivalentTo>
+<RF.Stats.EquivalentToText>{0} items</RF.Stats.EquivalentToText>
+<RF.Stats.EquivalentToDesc>Equivalent materials are interchangable in forge recipes.
+This is done to allow larger mod compatibility, in the cases where other mods add their own version of resources added by RimForge.</RF.Stats.EquivalentToDesc>
 
  </LanguageData>

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
+  <!-- MISC CATEGORY DEFS -->
+
+  <StatCategoryDef>
+    <defName>RF_RimForgeStats</defName>
+    <label>RimForge</label>
+    <displayOrder>110</displayOrder>
+  </StatCategoryDef>
+
   <StuffCategoryDef>
     <defName>RF_WeaponAlloy</defName>
     <label>weapon-grade alloy</label>
@@ -8,6 +16,8 @@
     <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
     <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
   </StuffCategoryDef>
+
+  <!-- Alloys -->
 
   <RimForge.AlloyDef>
     <defName>RF_BronzeAlloy</defName>

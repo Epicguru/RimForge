@@ -10,13 +10,28 @@ namespace RimForge
 
         /// <summary>
         /// A list of all RimForge compatible resources.
-        /// These are resources (materials, metals) that have melting points, meaning that they can be used in alloys.
+        /// These are resources (materials, metals) that have the ModExtension.
         /// </summary>
         public static readonly List<ThingDef> AllRimForgeResources = new List<ThingDef>();
+        /// <summary>
+        /// A list of all found alloy defs.
+        /// </summary>
+        public static readonly List<AlloyDef> AllAlloyDefs = new List<AlloyDef>();
+        /// <summary>
+        /// A map of all known alloy defs and their corresponding recipe def.
+        /// Technically, there could be more than one recipe for a single alloy,
+        /// but that isn't accounted for here.
+        /// </summary>
+        public static readonly Dictionary<ThingDef, AlloyDef> AllCraftableAlloys = new Dictionary<ThingDef, AlloyDef>();
+        /// <summary>
+        /// A dictionary where they key is an input material, and the value is a list of alloys that it is used in.
+        /// </summary>
+        public static readonly Dictionary<ThingDef, List<ThingDef>> UsedToMake = new Dictionary<ThingDef, List<ThingDef>>();
 
         private static readonly Dictionary<ThingDef, int> bagMap = new Dictionary<ThingDef, int>();
         private static readonly List<List<ThingDef>> bags = new List<List<ThingDef>>();
         private static readonly List<ThingDef> tempReturnList = new List<ThingDef>();
+
 
         /// <summary>
         /// Gets the melting point of this resource.

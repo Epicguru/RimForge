@@ -11,9 +11,11 @@ namespace RimForge
             DefOfHelper.EnsureInitializedInCtor(typeof(RFDefOf));
         }
 
+        public static DamageDef RF_Electrocution;
         public static AlloyDef RF_GoldDoreAlloy;
         public static ThingDef RF_GoldDore;
         public static ThingDef Gold;
         public static ThingDef Silver;
+        public static StatCategoryDef RF_RimForgeStats;
     }
 }

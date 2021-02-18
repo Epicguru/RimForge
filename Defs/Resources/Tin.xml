@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <ThingDef ParentName="ResourceBase">
+  <ThingDef ParentName="RF_AlloyResource">
     <defName>RF_Tin</defName>
     <label>tin</label>
-    <stackLimit>200</stackLimit>
     <description>Pure tin. Essential for the production of bronze and other alloys.
 In this pure state, it is a very soft metal, and so is not well suited for weapons, tools or armor.</description>
     <graphicData>
       <texPath>RF/Resources/Tin</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
-    <soundInteract>Metal_Drop</soundInteract>
-    <soundDrop>Metal_Drop</soundDrop>
-    <useHitPoints>false</useHitPoints>
-    <healthAffectsPrice>false</healthAffectsPrice>
-    <tradeability>Sellable</tradeability>
     <statBases>
       <MarketValue>5</MarketValue>
       <Mass>0.6</Mass>
@@ -33,18 +26,11 @@ In this pure state, it is a very soft metal, and so is not well suited for weapo
     <deepCommonality>3</deepCommonality>
     <deepCountPerPortion>70</deepCountPerPortion>
     <deepLumpSizeRange>40~45</deepLumpSizeRange>
-    <burnableByRecipe>false</burnableByRecipe>
-    <smeltable>true</smeltable>
     <stuffProps>
       <categories>
         <li>Metallic</li>
       </categories>
       <commonality>0.25</commonality>
-      <constructEffect>ConstructMetal</constructEffect>
-      <color>(209, 198, 184)</color>
-      <soundImpactStuff>BulletImpact_Metal</soundImpactStuff>
-      <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
-      <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
       <statFactors>
         <MaxHitPoints>0.5</MaxHitPoints>
         <Beauty>0.6</Beauty>
