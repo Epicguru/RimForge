@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 using Verse;
 
 namespace RimForge
@@ -46,7 +47,79 @@ namespace RimForge
         public List<RatioHolder> input;
         public RatioHolder output;
 
+        public RatioHolder LargestRatio
+        {
+            get
+            {
+                if (input == null || input.Count == 0)
+                    return null;
+
+                RatioHolder largest = null;
+                foreach (var ratio in input)
+                {
+                    if (largest == null || ratio.count > largest.count)
+                        largest = ratio;
+                }
+                return largest;
+            }
+        }
+
         private float? minTemperature = null;
+
+        public Color? GetMoltenColor(int index)
+        {
+            if (!IsValid)
+                return null;
+
+            if (index > 3)
+                return null;
+
+            Color fallback = new Color32(255, 87, 20, 255);
+            if (index == 3)
+            {
+                return output.resource.GetMoltenColor() ?? fallback;
+            }
+
+            int count = input.Count;
+            var largest = LargestRatio;
+
+            if (index == 0)
+            {
+                // If there are only 2 inputs, there should be nothing in the middle.
+
+                if (count < 3)
+                    return null;
+
+                return largest.resource.GetMoltenColor() ?? fallback;
+            }
+            else
+            {
+                if (count < 3)
+                    return input[index - 1].resource.GetMoltenColor() ?? fallback;
+
+                if(index == 1)
+                {
+                    for (int i = 0; i < input.Count; i++)
+                    {
+                        if (input[i] == largest)
+                            continue;
+                        return input[i].resource.GetMoltenColor() ?? fallback;
+                    }
+                }
+                else
+                {
+                    for (int i = input.Count - 1; i >= 0; i--)
+                    {
+                        if (input[i] == largest)
+                            continue;
+                        return input[i].resource.GetMoltenColor() ?? fallback;
+                    }
+                }
+
+                Core.Error("???? FIXME");
+                return null;
+            }
+        }
 
         public override IEnumerable<string> ConfigErrors()
         {

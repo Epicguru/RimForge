@@ -35,9 +35,10 @@
     <label>forge</label>
     <description>A metal-smelting forge. Melts down metals, to create alloys out of them.</description>
     <graphicData>
-      <texPath>AntimatterAnnihilation/Buildings/AlloyFusionMachine/Idle</texPath>
+      <texPath>RF/Buildings/ForgeIdle</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(3,2)</drawSize>
+      <drawSize>(3,3)</drawSize>
+      <drawOffset>(0,0,0.5)</drawOffset>
     </graphicData>
     <drawerType>RealtimeOnly</drawerType>
     <selectable>true</selectable>

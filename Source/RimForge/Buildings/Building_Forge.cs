@@ -7,8 +7,14 @@ namespace RimForge.Buildings
 {
     public class Building_Forge : Building
     {
+        // 0.437
+        [TweakValue("RimForge", 0, 1)]
+        private static float forgeLerp;
+
         public CompRefuelable FuelComp => _fuelComp ??= GetComp<CompRefuelable>();
         private CompRefuelable _fuelComp;
+
+        public override Graphic Graphic => GetCurrentGraphic();
 
         public ThingDef CurrentFuelType
         {
@@ -41,6 +47,7 @@ namespace RimForge.Buildings
         private readonly Dictionary<ThingDef, int> storedResources = new Dictionary<ThingDef, int>();
         private int requestCount = 50;
         private HeatingElement elementA, elementB;
+        private int graphic;
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
@@ -86,6 +93,13 @@ namespace RimForge.Buildings
                     // Reject this input, spit it back out.
                     PlaceOutput(CurrentFuelType, count);
                 }
+            }
+
+            forgeLerp += Time.deltaTime * 0.2f;
+            if (forgeLerp >= 1.4f && CurrentAlloyDef != null)
+            {
+                forgeLerp = -0.5f;
+                PlaceOutput(CurrentAlloyDef.output.resource, 100);
             }
         }
 
@@ -167,6 +181,65 @@ namespace RimForge.Buildings
                 PlaceOutput(pair.Key, pair.Value);
             }
             storedResources.Clear();
+        }
+
+        public virtual Graphic GetCurrentGraphic()
+        {
+            bool isIdle = graphic == 0;
+            bool isMeltingSides = graphic == 1;
+            bool isMeltingAll = graphic == 2;
+
+            if (Content.ForgeIdle == null)
+                Content.LoadForgeTextures(this);
+
+            if (isIdle)
+                return Content.ForgeIdle;
+            if (isMeltingSides)
+                return Content.ForgeGlowSides;
+            if (isMeltingAll)
+                return Content.ForgeGlowAll;
+
+            return Content.ForgeIdle;
+        }
+
+        public override void Draw()
+        {
+            base.Draw();
+
+            if (CurrentAlloyDef == null || !CurrentAlloyDef.IsValid)
+                return;
+
+            var pos = DrawPos;
+            pos.y += 0.0001f;
+
+            // 1: hidden
+            // 0: full show
+            float lerp = Mathf.Lerp(1f, 0f, forgeLerp);
+
+            // TODO make shader 
+            void DrawMetal(Graphic graphic, Color color, float lerp)
+            {
+                color.a = 0.7f;
+                graphic.MatSouth.color = color;
+                float worldOffset = 3f * -lerp;
+                Vector2 texOffset = new Vector2(0f, lerp);
+                graphic.MatSouth.SetTextureOffset("_MainTex", texOffset);
+                graphic.Draw(pos + new Vector3(0, 0, -worldOffset), Rotation, this);
+            }
+
+            Color? colorLeft = CurrentAlloyDef.GetMoltenColor(1);
+            Color? colorRight = CurrentAlloyDef.GetMoltenColor(2);
+            Color? colorMiddle = CurrentAlloyDef.input.Count > 2 ? CurrentAlloyDef.GetMoltenColor(0) : null;
+            Color? colorOutput = CurrentAlloyDef.GetMoltenColor(3);
+
+            if(colorLeft != null)
+                DrawMetal(Content.ForgeMetalLeft, colorLeft.Value, lerp);
+            if (colorRight != null)
+                DrawMetal(Content.ForgeMetalRight, colorRight.Value, lerp);
+            if (colorMiddle != null)
+                DrawMetal(Content.ForgeMetalMiddle, colorMiddle.Value, lerp);
+            if (colorOutput != null)
+                DrawMetal(Content.ForgeMetalOut, colorOutput.Value, lerp);
         }
 
         public HeatingElement GetLeftHeatingElement()
@@ -355,6 +428,34 @@ namespace RimForge.Buildings
                     action = () => { WantsTemperatureIncrease = !WantsTemperatureIncrease; },
                     defaultLabel = "toggle wants temperature increase",
                     defaultDesc = $"Current: {WantsTemperatureIncrease}"
+                };
+                yield return new Command_Action()
+                {
+                    action = () =>
+                    {
+                        graphic++;
+                        graphic %= 3;
+                    },
+                    defaultLabel = "next graphic",
+                    defaultDesc = "dumps all stored resources on to the ground."
+                };
+                yield return new Command_Action()
+                {
+                    action = () =>
+                    {
+                        CurrentAlloyDef = AlloyHelper.AllAlloyDefs.RandomElement();
+                    },
+                    defaultLabel = "next alloy",
+                    defaultDesc = "dumps all stored resources on to the ground."
+                };
+                yield return new Command_Action()
+                {
+                    action = () =>
+                    {
+                        forgeLerp = -1f;
+                    },
+                    defaultLabel = "reset lerp",
+                    defaultDesc = "dumps all stored resources on to the ground."
                 };
             }
         }

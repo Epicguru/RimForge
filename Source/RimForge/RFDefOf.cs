@@ -17,5 +17,6 @@ namespace RimForge
         public static ThingDef Gold;
         public static ThingDef Silver;
         public static StatCategoryDef RF_RimForgeStats;
+        public static ShaderTypeDef TransparentPostLight;
     }
 }

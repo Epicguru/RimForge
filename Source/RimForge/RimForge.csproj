@@ -87,6 +87,7 @@
     <Compile Include="Extension.cs" />
     <Compile Include="Patches\Patch_CompGlower_ShouldBeLitNow.cs" />
     <Compile Include="Patches\Patch_DynamicDrawManager_DrawDynamicThings.cs" />
+    <Compile Include="Patches\Patch_MaterialPool_MatFrom.cs" />
     <Compile Include="Patches\Patch_Refuelable_TargetFuelLevel.cs" />
     <Compile Include="Patches\Patch_Refuelable_ShouldAutoRefuelNow.cs" />
     <Compile Include="PostLoadDefs.cs" />

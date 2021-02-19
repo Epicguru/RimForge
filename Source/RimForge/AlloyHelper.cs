@@ -51,6 +51,11 @@ namespace RimForge
             return DEFAULT_MELTING_POINT;
         }
 
+        public static Color? GetMoltenColor(this ThingDef def)
+        {
+            return def?.stuffProps?.color;
+        }
+
         /// <summary>
         /// Gets a version of this thing's LabelCap, but including the name
         /// of the mod that adds it.
