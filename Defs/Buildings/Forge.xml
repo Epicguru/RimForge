@@ -41,6 +41,7 @@
       <drawOffset>(0,0,0.5)</drawOffset>
     </graphicData>
     <drawerType>RealtimeOnly</drawerType>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
     <selectable>true</selectable>
     <size>(3, 2)</size>
     <hasInteractionCell>True</hasInteractionCell>

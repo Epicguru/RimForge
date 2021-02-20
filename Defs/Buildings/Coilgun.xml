@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <RimForge.CoilgunDef ParentName="BuildingBase">
+    <defName>RF_Coilgun</defName>
+    <thingClass>RimForge.Buildings.Building_Coilgun</thingClass>
+    <label>coilgun</label>
+    <description>A coilgun, also called a gauss rifle, accelerates a kinetic projectile using an electrical current similarly to the way a railgun works.
+This particular coilgun is a huge mounted cannon, firing a 4kg staballoy armor piercing slug at over 5000 m/s, capable of literally firing through a mountain.
+
+When fired, it's projectile will pass through everything and anything along it's path, including normally un-penetrable surfaces such as walls or even mountains.
+However, damage is reduced after passing through solid objects.</description>
+    <uiIconPath>RF/Buildings/Coilgun/Icon</uiIconPath>
+    <graphicData>
+      <texPath>RF/Buildings/Coilgun/Base</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(5, 5)</drawSize>
+    </graphicData>
+    <drawerType>RealtimeOnly</drawerType>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <stealable>false</stealable>
+    <rotatable>false</rotatable>
+    <size>(5,5)</size>
+    <statBases>
+      <MaxHitPoints>1400</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <WorkToBuild>15000</WorkToBuild>
+      <Mass>400</Mass>
+      <Beauty>-25</Beauty>
+    </statBases>
+    <tickerType>Normal</tickerType>
+    <passability>PassThroughOnly</passability>
+    <pathCost>150</pathCost>
+    <fillPercent>0.8</fillPercent>
+    <hasTooltip>true</hasTooltip>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <designationCategory>Security</designationCategory>
+    <constructionSkillPrerequisite>14</constructionSkillPrerequisite>
+    <building>
+      <ai_combatDangerous>true</ai_combatDangerous>
+    </building>
+    <designationHotKey>Misc3</designationHotKey>
+    <uiIconScale>1</uiIconScale>
+  </RimForge.CoilgunDef>
+
+</Defs>

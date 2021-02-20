@@ -64,12 +64,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlloyHelper.cs" />
-    <Compile Include="Buildings\Building_CoilGun.cs" />
+    <Compile Include="Buildings\Building_Coilgun.cs" />
     <Compile Include="Buildings\Building_Forge.cs" />
     <Compile Include="Buildings\Building_FueledHeatingElement.cs" />
     <Compile Include="Buildings\Building_PoweredHeatingElement.cs" />
     <Compile Include="Buildings\Building_TeslaCoil.cs" />
     <Compile Include="Buildings\Building_WirelessPowerPylon.cs" />
+    <Compile Include="Buildings\DrawPart.cs" />
     <Compile Include="Comps\CompProperties_ShowAlloyInfo.cs" />
     <Compile Include="Comps\CompProperties_WirelessPower.cs" />
     <Compile Include="Comps\CompShowAlloyInfo.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Damage\DamageWorker_Electrical.cs" />
     <Compile Include="Defs\AlloyDef.cs" />
     <Compile Include="Core.cs" />
+    <Compile Include="Defs\CoilgunDef.cs" />
     <Compile Include="Defs\HeatingElementDef.cs" />
     <Compile Include="Effects\ElectricArc.cs" />
     <Compile Include="Effects\LinearElectricArc.cs" />

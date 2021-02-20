@@ -12,13 +12,8 @@ namespace RimForge.Patches
 
         public static void TryRegisterListener(Action<Map> method)
         {
-            if (anyListener)
-            {
-                Core.Error("There is already a listener.");
-                return;
-            }
-
             anyListener = true;
+            onLateDraw = null;
             onLateDraw = method;
             Core.Log("Registered map late draw listener.");
         }
