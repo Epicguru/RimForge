@@ -21,6 +21,9 @@
     <altitudeLayer>BuildingOnTop</altitudeLayer>
     <pathCost>20</pathCost>
     <size>(1, 1)</size>
+    <building>
+      <ai_combatDangerous>true</ai_combatDangerous>
+    </building>
     <costList>
       <Steel>20</Steel>
       <ComponentIndustrial>10</ComponentIndustrial>
