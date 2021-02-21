@@ -77,4 +77,7 @@
 <RF.Stats.EquivalentToDesc>Equivalent materials are interchangable in forge recipes.
 This is done to allow larger mod compatibility, in the cases where other mods add their own version of resources added by RimForge.</RF.Stats.EquivalentToDesc>
 
+<RF.Coilgun.AttackLabel>Fire at target...</RF.Coilgun.AttackLabel>
+<RF.Coilgun.AttackDesc>Choose a target and fire at it.</RF.Coilgun.AttackDesc>
+
  </LanguageData>

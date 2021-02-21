@@ -18,5 +18,7 @@ namespace RimForge
         public static ThingDef Silver;
         public static StatCategoryDef RF_RimForgeStats;
         public static ShaderTypeDef TransparentPostLight;
+        public static SoundDef RF_Sound_CoilgunFire;
+        public static ThingDef RF_Motes_MuzzleFlash;
     }
 }

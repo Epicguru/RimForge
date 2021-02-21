@@ -1,26 +1,53 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using RimForge.Effects;
+using RimWorld;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Verse;
+using Verse.Sound;
 
 namespace RimForge.Buildings
 {
     public class Building_Coilgun : Building
     {
-        [TweakValue("_TEMP", -8, 5)]
-        private static float OffA, OffB, OffD, OffE;
-        [TweakValue("_TEMP", -180, 180)]
-        private static float OffC, TurretRot;
+        [TweakValue("RimForge", 0, 20)]
+        public static float CoilgunRecoil = 1.2f;
+
+        private const float TurretTurnSpeed = 60f / 60f;
+        private const int FINISH_READYING = 120;
+        private const int FINISH_FIRE = FINISH_READYING + 60 * 4;
+        private const int FINISH_PAUSE = FINISH_FIRE + 60 * 4;
+        private const int FINISH_UNREADYING = FINISH_PAUSE + 60 * 5;
+        public enum State
+        {
+            Idle,
+            Readying,
+            Paused,
+            UnReadying
+        }
 
         public CoilgunDef Def => def as CoilgunDef;
 
-        [TweakValue("_TEMP", 0, 1f)]
-        public static float ArmLerp = 0f;
+        public float ArmLerp;
+        public float TurretRotation;
+        public float TargetRotation;
+        public float Recoil;
+        public float RecoilVel;
+
+        public State CurrentState = State.Idle;
+        public int FireTicks = -1;
+        public LocalTargetInfo CurrentTargetInfo = LocalTargetInfo.Invalid;
+        public IntVec3 LastKnowPos;
+
         public DrawPart Top, Cables, LeftPivot, RightPivot;
         public DrawPart BarLeft, BarRight;
 
         private List<LinearElectricArc> backArcs = new List<LinearElectricArc>();
         private List<LinearElectricArc> frontArcs = new List<LinearElectricArc>();
+        private Sustainer soundSustainer;
+        private List<IntVec3> cells = new List<IntVec3>();
+        private HashSet<IntVec3> cellsHash = new HashSet<IntVec3>();
 
         public virtual void Setup()
         {
@@ -54,13 +81,244 @@ namespace RimForge.Buildings
         {
             base.Tick();
 
+            if (CurrentTargetInfo.IsValid)
+            {
+                LastKnowPos = CurrentTargetInfo.Cell;
+                var targetDrawPos = CurrentTargetInfo.HasThing
+                    ? CurrentTargetInfo.Thing.DrawPos
+                    : CurrentTargetInfo.CenterVector3;
+                var offset = (targetDrawPos - DrawPos);
+                offset.z *= -1;
+                TargetRotation = offset.ToAngleFlat();
+            }
+            TurretRotation = Mathf.MoveTowardsAngle(TurretRotation, TargetRotation, TurretTurnSpeed);
+
+            
+            Graphic topGraphic()
+            {
+                bool wantsFrontArcs = ArmLerp >= 0.7f;
+                if (wantsFrontArcs)
+                    return Content.CoilgunTopGlow;
+                return Content.CoilgunTop;
+            }
+            Graphic cableGraphic()
+            {
+                bool wantsFrontArcs = ArmLerp >= 0.7f;
+                if (wantsFrontArcs)
+                    return Content.CoilgunCablesGlow;
+                return Content.CoilgunCables;
+            }
+
+            if (Top != null)
+            {
+                Top.Graphic = topGraphic();
+                Cables.Graphic = cableGraphic();
+            }
+
+            TickState();
             TickBackArcs();
             TickFrontArcs();
         }
 
+        private void TickState()
+        {
+            if (CurrentState != State.Idle)
+                FireTicks++;
+
+            bool playSound = false;
+
+            switch (CurrentState)
+            {
+                case State.Readying:
+
+                    float delta = Mathf.Abs(Mathf.DeltaAngle(TurretRotation, TargetRotation));
+                    if (delta > 6f && FireTicks < FINISH_FIRE)
+                        FireTicks--;
+
+                    ArmLerp = Mathf.InverseLerp(0, FINISH_READYING, FireTicks);
+                    playSound = FireTicks >= FINISH_READYING;
+                    if (FireTicks >= FINISH_FIRE)
+                    {
+                        Fire(LastKnowPos);
+                        RecoilVel = CoilgunRecoil;
+                        Find.CameraDriver.shaker.SetMinShake(3f);
+                        CurrentState = State.Paused;
+                    }
+                    break;
+
+                case State.Paused:
+                    playSound = true;
+                    ArmLerp = 1;
+                    if(FireTicks >= FINISH_PAUSE)
+                        CurrentState = State.UnReadying;
+                    break;
+
+                case State.UnReadying:
+                    ArmLerp = 1f - Mathf.InverseLerp(FINISH_PAUSE, FINISH_UNREADYING, FireTicks);
+                    if (FireTicks >= FINISH_UNREADYING)
+                    {
+                        CurrentState = State.Idle;
+                        FireTicks = -1;
+                    }
+                    break;
+            }
+
+            RecoilVel *= 0.87f;
+            Recoil += RecoilVel;
+            Recoil *= 0.96f;
+            SoundTick(playSound);
+        }
+
+        public override void DrawExtraSelectionOverlays()
+        {
+            base.DrawExtraSelectionOverlays();
+
+            //var endPos = LastKnowPos;
+            //var map = Map;
+            //int mapSize = Mathf.CeilToInt(Mathf.Sqrt(map.Size.x * map.Size.x + map.Size.y * map.Size.y));
+            //Vector3 dir = (endPos - Position).ToVector3().normalized;
+            //IntVec3 newEndPos = Position + (dir * mapSize).ToIntVec3();
+            //var list = GetAffectedCells(newEndPos);
+            //GenDraw.DrawFieldEdges(list, Color.green);
+            //GenDraw.DrawCircleOutline(endPos.ToVector3(), 1f);
+        }
+
+        private List<IntVec3> GetAffectedCells(IntVec3 end)
+        {
+            IntVec3 start = Position;
+            cellsHash.Clear();
+            cells.Clear();
+
+            Building_TeslaCoil.MakeLine(start, end, cellsHash);
+
+            // ... but this algorithm doesn't fill in the 'corners', allowing pawns to slip through the 'gaps'
+            //     when approaching at an angle.
+            //     Lets fix that.
+            var toAdd = new List<IntVec3>(cellsHash.Count);
+            if (cellsHash.Contains(start))
+                cellsHash.Remove(start);
+            if (cellsHash.Contains(end))
+                cellsHash.Remove(end);
+            foreach (var point in cellsHash)
+            {
+                bool tr = cellsHash.Contains(new IntVec3(point.x + 1, 0, point.z + 1));
+                bool br = cellsHash.Contains(new IntVec3(point.x + 1, 0, point.z - 1));
+                bool tl = cellsHash.Contains(new IntVec3(point.x - 1, 0, point.z + 1));
+                bool bl = cellsHash.Contains(new IntVec3(point.x - 1, 0, point.z - 1));
+
+                if (tr)
+                    toAdd.Add(new IntVec3(point.x + 1, 0, point.z));
+                if (bl)
+                    toAdd.Add(new IntVec3(point.x, 0, point.z - 1));
+
+                if (br)
+                    toAdd.Add(new IntVec3(point.x, 0, point.z - 1));
+                if (tl)
+                    toAdd.Add(new IntVec3(point.x - 1, 0, point.z));
+
+            }
+            foreach (var point in toAdd)
+            {
+                // Important note: there are duplicate positions in toAdd.
+                // However, since tempPoints is a HashSet, it discards these duplicate items.
+                cellsHash.Add(point);
+            }
+
+            foreach (var item in cellsHash)
+            {
+                float sqrDst = (item - start).LengthHorizontalSquared;
+                if(sqrDst > 8 * 8)
+                    cells.Add(item);
+            }
+
+            return cells;
+        }
+
+        private void Fire(IntVec3 endPos)
+        {
+            var map = Map;
+            int mapSize = Mathf.CeilToInt(Mathf.Sqrt(map.Size.x * map.Size.x + map.Size.y * map.Size.y));
+            Vector3 dir = (endPos - Position).ToVector3().normalized;
+            IntVec3 newEndPos = Position + (dir * mapSize).ToIntVec3();
+            Core.Log($"{endPos} - {Position} = {dir}, {Position} + {dir} * {mapSize} = {newEndPos}");
+            var list = GetAffectedCells(newEndPos);
+            CurrentTargetInfo = LocalTargetInfo.Invalid;
+
+            float damage = 1000;
+            int affected = 0;
+            int cells = 0;
+
+            foreach(var cell in list)
+            {
+                if (!cell.InBounds(map))
+                    continue;
+
+                cells++;
+                var things = map.thingGrid.ThingsListAtFast(cell);
+                if (things == null)
+                    continue;
+                for(int i = 0; i < things.Count; i++)
+                {
+                    var thing = things[i];
+                    if (thing.Destroyed)
+                        continue;
+                    if (thing is Pawn p && (p.Downed || p.Dead))
+                        continue;
+
+                    if (thing is Building b)
+                    {
+                        if (b.def.altitudeLayer < AltitudeLayer.DoorMoveable)
+                            continue;
+                        damage *= 0.95f;
+                    }
+
+                    if (thing is Building || thing is Pawn)
+                    {
+                        thing.TakeDamage(new DamageInfo(DamageDefOf.Bullet, damage, 100, instigator: this));
+                        affected++;
+                    }
+                }
+            }
+
+            DoMuzzleFlash();
+            Core.Log($"Hit {affected} things, scanned {cells} of {list.Count} cells.");
+        }
+
+        private void DoMuzzleFlash()
+        {
+            var pos = ((Vector2)(Top.FinalMatrix * Matrix4x4.Translate(new Vector3(6f, 0, 0))).MultiplyPoint3x4(Vector3.zero)).FlatToWorld(AltitudeLayer.VisEffects.AltitudeFor());
+            Mote mote = (Mote)ThingMaker.MakeThing(RFDefOf.RF_Motes_MuzzleFlash, null);
+            mote.Scale = 6f;
+            mote.exactRotation = -TurretRotation;
+            mote.exactPosition = pos;
+            GenSpawn.Spawn(mote, Position, Map, WipeMode.Vanish);
+        }
+
+        private void SoundTick(bool shouldBePlayingSound)
+        {
+            if (shouldBePlayingSound && (soundSustainer == null || soundSustainer.Ended))
+            {
+                // Start playing audio.
+                SoundInfo info = SoundInfo.InMap(this, MaintenanceType.PerTick);
+                soundSustainer = RFDefOf.RF_Sound_CoilgunFire.TrySpawnSustainer(info);
+            }
+            if (!shouldBePlayingSound)
+            {
+                soundSustainer?.End();
+            }
+
+            if (soundSustainer != null)
+            {
+                if (soundSustainer.Ended)
+                    soundSustainer = null;
+                else
+                    soundSustainer.Maintain();
+            }
+        }
+
         private void TickBackArcs()
         {
-            bool wantsBackArcs = ArmLerp >= 0.5f;
+            bool wantsBackArcs = ArmLerp >= 1f;
             if (!wantsBackArcs)
             {
                 foreach (var arc in backArcs)
@@ -80,15 +338,14 @@ namespace RimForge.Buildings
                 backArcs.Add(newArc);
             }
 
-            float alt = AltitudeLayer.VisEffects.AltitudeFor();
             foreach (var arc in backArcs)
             {
                 float xa = Rand.Range(-5f, -3.13f);
                 float xb = Rand.Range(-5f, -3.13f);
-                float addA = (1f - Mathf.Abs(0.5f - Mathf.InverseLerp(-5f, -3.13f, xa)) * 2f) * 0.1f;
-                float addB = (1f - Mathf.Abs(0.5f - Mathf.InverseLerp(-5f, -3.13f, xb)) * 2f) * 0.1f;
-                var a = (Vector2) Top.FinalMatrix.MultiplyPoint3x4(new Vector2(xa, 2.23f + addA));
-                var b = (Vector2) Top.FinalMatrix.MultiplyPoint3x4(new Vector2(xb, -2.23f - addB));
+                float addA = ((1f - Mathf.Abs(0.5f - Mathf.InverseLerp(-5f, -3.13f, xa))) * 2f) * 0.3f;
+                float addB = ((1f - Mathf.Abs(0.5f - Mathf.InverseLerp(-5f, -3.13f, xb))) * 2f) * 0.3f;
+                var a = (Vector2) Top.FinalMatrix.MultiplyPoint3x4(new Vector2(xa, 2.13f + addA));
+                var b = (Vector2) Top.FinalMatrix.MultiplyPoint3x4(new Vector2(xb, -2.13f - addB));
 
                 arc.Start = a;
                 arc.End = b;
@@ -97,7 +354,7 @@ namespace RimForge.Buildings
 
         private void TickFrontArcs()
         {
-            bool wantsFrontArcs = ArmLerp >= 0.5f;
+            bool wantsFrontArcs = ArmLerp >= 0.7f;
             if (!wantsFrontArcs)
             {
                 foreach (var arc in frontArcs)
@@ -117,7 +374,6 @@ namespace RimForge.Buildings
                 frontArcs.Add(newArc);
             }
 
-            float alt = AltitudeLayer.VisEffects.AltitudeFor();
             foreach (var arc in frontArcs)
             {
                 float h = Rand.Range(-0.94f, 3.843f);
@@ -140,10 +396,10 @@ namespace RimForge.Buildings
             float realLerp = 0.625f * ArmLerp; // 1.0 is full extended but I think 0.625 looks better.
             float armAngle = Mathf.Lerp(0f, 145f, realLerp);
 
-            Top.SetTR(DrawPos.WorldToFlat(), TurretRot);
-            Top.DrawOffset = new Vector2(2.2f - OffC, 0f);
-            Cables.SetTR(DrawPos.WorldToFlat(), TurretRot);
-            Cables.DrawOffset = new Vector2(0.128f - OffC, 0f);
+            Top.SetTR(DrawPos.WorldToFlat(), TurretRotation);
+            Top.DrawOffset = new Vector2(2.2f - Recoil, 0f);
+            Cables.SetTR(DrawPos.WorldToFlat(), TurretRotation);
+            Cables.DrawOffset = new Vector2(0.128f - Recoil, 0f);
 
             LeftPivot.SetTR(new Vector2(-3.376f, 0.8038f), armAngle);
             LeftPivot.DrawOffset = new Vector2(0.7074f, 0.1286f);
@@ -159,6 +415,68 @@ namespace RimForge.Buildings
 
             Top.Draw(this);
             Cables.Draw(this);
+
+            float beamLerp = 1f - Mathf.InverseLerp(FINISH_FIRE, FINISH_FIRE + 30, FireTicks);
+            if (FireTicks >= FINISH_FIRE && beamLerp > 0f)
+            {
+                Color color = Color.yellow;
+                color.a = beamLerp;
+
+                float rot = TurretRotation * Mathf.Deg2Rad;
+                Vector3 dir = new Vector3(Mathf.Cos(rot), 0f, Mathf.Sin(rot)) * 500f;
+                Vector3 pos = DrawPos + dir;
+                //Core.Log($"Drawing {beamLerp} at {pos}, {TurretRotation}");
+
+                Content.CoilgunBeam.MatSouth.color = color;
+                Content.CoilgunBeam.Draw(pos, Rot4.North, this, -TurretRotation);
+            }
         }
+
+        public override IEnumerable<Gizmo> GetGizmos()
+        {
+            foreach (var item in base.GetGizmos())
+                yield return item;
+            
+            yield return new Command_TargetCustom()
+            {
+                defaultLabel = "RF.Coilgun.AttackLabel".Translate(),
+                defaultDesc = "RF.Coilgun.AttackDesc".Translate(),
+                targetingParams = new TargetingParameters()
+                {
+                    canTargetLocations = true
+                },
+                action = target =>
+                {
+                    if (!target.IsValid)
+                        return;
+
+                    Core.Log($"Started attacking '{target.ToString()}'");
+                    CurrentState = State.Readying;
+                    FireTicks = 0;
+                    CurrentTargetInfo = target;
+                    LastKnowPos = Position;
+                }
+            };
+        }
+
+        public override string GetInspectString()
+        {
+            return $"{base.GetInspectString().TrimEnd()}\nState:{CurrentState}";
+        }
+    }
+
+    public class Command_TargetCustom : Command
+    {
+        public Action<LocalTargetInfo> action;
+        public TargetingParameters targetingParams;
+
+        public override void ProcessInput(Event ev)
+        {
+            base.ProcessInput(ev);
+            SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
+            Find.Targeter.BeginTargeting(this.targetingParams, action);
+        }
+
+        public override bool InheritInteractionsFrom(Gizmo other) => false;
     }
 }

@@ -13,8 +13,9 @@ namespace RimForge
         public static Graphic ForgeMetalOut, ForgeMetalLeft, ForgeMetalMiddle, ForgeMetalRight;
 
         public static Graphic CoilgunTop, CoilgunTopGlow;
-        public static Graphic CoilgunCables;
+        public static Graphic CoilgunCables, CoilgunCablesGlow;
         public static Graphic  CoilgunBarLeft, CoilgunBarRight, CoilgunLinkLeft, CoilgunLinkRight;
+        public static Graphic CoilgunBeam;
 
         static Content()
         {
@@ -54,15 +55,21 @@ namespace RimForge
             {
                 return GraphicDatabase.Get(gd.graphicClass, path, gd.shaderType.Shader, size, Color.white, Color.white, gd, gd.shaderParameters);
             }
+            Graphic MakeUnlit(string path, Vector2 size)
+            {
+                return GraphicDatabase.Get(gd.graphicClass, path, RFDefOf.TransparentPostLight.Shader, size, Color.white, Color.white, gd, gd.shaderParameters);
+            }
 
             CoilgunTop = Make("RF/Buildings/Coilgun/Top", new Vector2(8.886f, 3.233f));
             CoilgunTopGlow = Make("RF/Buildings/Coilgun/TopGlow", new Vector2(8.886f, 3.233f));
             CoilgunCables = Make("RF/Buildings/Coilgun/Cables", new Vector2(1.702f, 1.900f));
+            CoilgunCablesGlow = Make("RF/Buildings/Coilgun/CablesGlow", new Vector2(1.702f, 1.900f));
 
             CoilgunBarLeft = Make("RF/Buildings/Coilgun/BarLeft", new Vector2(2.283f, 0.970f));
             CoilgunBarRight = Make("RF/Buildings/Coilgun/BarRight", new Vector2(2.283f, 0.970f));
             CoilgunLinkLeft = Make("RF/Buildings/Coilgun/PivotLeft", new Vector2(2.064f, 0.697f));
             CoilgunLinkRight = Make("RF/Buildings/Coilgun/PivotRight", new Vector2(2.064f, 0.697f));
+            CoilgunBeam = MakeUnlit("RF/Buildings/Coilgun/Beam", new Vector2(1000, 0.403f));
         }
     }
 }
