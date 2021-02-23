@@ -49,4 +49,50 @@ Very painful.</description>
     </injuryProps>
   </HediffDef>
 
+  <DamageDef>
+    <defName>RF_CoilgunDamage</defName>
+    <label>coilgun slug</label>
+    <workerClass>RimForge.Damage.DamageWorker_Propagate</workerClass>
+    <externalViolence>true</externalViolence>
+    <deathMessage>{0} has been killed by a coilgun blast.</deathMessage>
+    <hediff>RF_CoilgunSlugHediff</hediff>
+    <harmAllLayersUntilOutside>true</harmAllLayersUntilOutside>
+    <impactSoundType>Bullet</impactSoundType>
+    <armorCategory>Sharp</armorCategory>
+    <overkillPctToDestroyPart>0~0.7</overkillPctToDestroyPart>
+    <minDamageToFragment>100</minDamageToFragment>
+    <isRanged>true</isRanged>
+    <makesAnimalsFlee>true</makesAnimalsFlee>
+  </DamageDef>
+
+  <!-- Coilgun shot hediff -->
+  <HediffDef ParentName="InjuryBase">
+    <defName>RF_CoilgunSlugHediff</defName>
+    <label>coilgun cannon gunshot</label>
+    <labelNoun>a coilgun cannon wound</labelNoun>
+    <description>A would caused by being directly hit by a Liandry Coilgun. Ouch.</description>
+    <comps>
+      <li Class="HediffCompProperties_TendDuration">
+        <labelTendedWell>bandaged</labelTendedWell>
+        <labelTendedWellInner>sutured</labelTendedWellInner>
+        <labelSolidTendedWell>set</labelSolidTendedWell>
+      </li>
+      <li Class="HediffCompProperties_Infecter">
+        <infectionChance>0.15</infectionChance>
+      </li>
+      <li Class="HediffCompProperties_GetsPermanent">
+        <permanentLabel>old coilgun gunshot</permanentLabel>
+        <instantlyPermanentLabel>permanent coilgun gunshot injury</instantlyPermanentLabel>
+      </li>
+    </comps>
+    <injuryProps>
+      <painPerSeverity>0.0225</painPerSeverity>
+      <averagePainPerSeverityPermanent>0.00725</averagePainPerSeverityPermanent>
+      <bleedRate>0.15</bleedRate>
+      <canMerge>false</canMerge>
+      <destroyedLabel>Shot off (coilgun)</destroyedLabel>
+      <destroyedOutLabel>Shot out (coilgun)</destroyedOutLabel>
+    </injuryProps>
+  </HediffDef>
+
 </Defs>

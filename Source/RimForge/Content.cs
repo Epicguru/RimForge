@@ -69,7 +69,10 @@ namespace RimForge
             CoilgunBarRight = Make("RF/Buildings/Coilgun/BarRight", new Vector2(2.283f, 0.970f));
             CoilgunLinkLeft = Make("RF/Buildings/Coilgun/PivotLeft", new Vector2(2.064f, 0.697f));
             CoilgunLinkRight = Make("RF/Buildings/Coilgun/PivotRight", new Vector2(2.064f, 0.697f));
+
+            Patches.Patch_MaterialPool_MatFrom.Active = true;
             CoilgunBeam = MakeUnlit("RF/Buildings/Coilgun/Beam", new Vector2(1000, 0.403f));
+            Patches.Patch_MaterialPool_MatFrom.Active = false;
         }
     }
 }

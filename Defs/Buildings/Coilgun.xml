@@ -4,7 +4,7 @@
   <RimForge.CoilgunDef ParentName="BuildingBase">
     <defName>RF_Coilgun</defName>
     <thingClass>RimForge.Buildings.Building_Coilgun</thingClass>
-    <label>coilgun</label>
+    <label>liandry coilgun</label>
     <description>A coilgun, also called a gauss rifle, accelerates a kinetic projectile using an electrical current similarly to the way a railgun works.
 This particular coilgun is a huge mounted cannon, firing a 4kg staballoy armor piercing slug at over 5000 m/s, capable of literally firing through a mountain.
 
@@ -16,6 +16,7 @@ However, damage is reduced after passing through solid objects.</description>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(5, 5)</drawSize>
     </graphicData>
+    <drawOffscreen>true</drawOffscreen>
     <drawerType>RealtimeOnly</drawerType>
     <altitudeLayer>BuildingOnTop</altitudeLayer>
     <stealable>false</stealable>

@@ -12,6 +12,7 @@ namespace RimForge
         }
 
         public static DamageDef RF_Electrocution;
+        public static DamageDef RF_CoilgunDamage;
         public static AlloyDef RF_GoldDoreAlloy;
         public static ThingDef RF_GoldDore;
         public static ThingDef Gold;

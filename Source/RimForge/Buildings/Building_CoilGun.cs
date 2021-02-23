@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using RimForge.Effects;
 using RimWorld;
 using UnityEngine;
@@ -12,7 +13,9 @@ namespace RimForge.Buildings
     public class Building_Coilgun : Building
     {
         [TweakValue("RimForge", 0, 20)]
-        public static float CoilgunRecoil = 1.2f;
+        public static float CoilgunRecoil = 0.6f;
+        [TweakValue("RimForge", 0, 1)]
+        public static float BeamPct = 0.5f;
 
         private const float TurretTurnSpeed = 60f / 60f;
         private const int FINISH_READYING = 120;
@@ -179,8 +182,7 @@ namespace RimForge.Buildings
             //Vector3 dir = (endPos - Position).ToVector3().normalized;
             //IntVec3 newEndPos = Position + (dir * mapSize).ToIntVec3();
             //var list = GetAffectedCells(newEndPos);
-            //GenDraw.DrawFieldEdges(list, Color.green);
-            //GenDraw.DrawCircleOutline(endPos.ToVector3(), 1f);
+            //GenDraw.DrawFieldEdges(list, Color.red);
         }
 
         private List<IntVec3> GetAffectedCells(IntVec3 end)
@@ -244,40 +246,61 @@ namespace RimForge.Buildings
             var list = GetAffectedCells(newEndPos);
             CurrentTargetInfo = LocalTargetInfo.Invalid;
 
-            float damage = 1000;
+            float damage = Settings.CoilgunBaseDamage;
             int affected = 0;
             int cells = 0;
+            int penDepth = 0;
 
-            foreach(var cell in list)
+            list.Sort((a, b) =>
             {
-                if (!cell.InBounds(map))
-                    continue;
+                int sqrDstA = (a - Position).LengthHorizontalSquared;
+                int sqrDstB = (b - Position).LengthHorizontalSquared;
+                return sqrDstA - sqrDstB;
+            });
 
+            foreach (var cell in list.TakeWhile(cell => cell.InBounds(map)))
+            {
                 cells++;
                 var things = map.thingGrid.ThingsListAtFast(cell);
                 if (things == null)
                     continue;
+
+                bool keepGoing = true;
                 for(int i = 0; i < things.Count; i++)
                 {
-                    var thing = things[i];
-                    if (thing.Destroyed)
-                        continue;
-                    if (thing is Pawn p && (p.Downed || p.Dead))
-                        continue;
-
-                    if (thing is Building b)
+                    try
                     {
-                        if (b.def.altitudeLayer < AltitudeLayer.DoorMoveable)
+                        var thing = things[i];
+                        if (thing.Destroyed)
                             continue;
-                        damage *= 0.95f;
-                    }
+                        if (thing is Pawn p && (p.Downed || p.Dead))
+                            continue;
 
-                    if (thing is Building || thing is Pawn)
+                        if (thing is Building b)
+                        {
+                            if (b.def.altitudeLayer < AltitudeLayer.DoorMoveable)
+                                continue;
+                            damage *= Settings.CoilgunPenDamageMultiplier;
+                            penDepth++;
+                        }
+
+                        if (thing is Building || thing is Pawn)
+                        {
+                            var info = new DamageInfo(RFDefOf.RF_CoilgunDamage, damage, 100, instigator: this);
+                            thing.TakeDamage(info);
+                            affected++;
+                        }
+
+                        if (Settings.CoilgunMaxPen >= 0 && penDepth > Settings.CoilgunMaxPen)
+                            keepGoing = false;
+                    }
+                    catch (Exception e)
                     {
-                        thing.TakeDamage(new DamageInfo(DamageDefOf.Bullet, damage, 100, instigator: this));
-                        affected++;
+                        Core.Error($"Exception dealing coilgun damage to {things[i]}.", e);
                     }
                 }
+                if (!keepGoing)
+                    break;
             }
 
             DoMuzzleFlash();
@@ -286,9 +309,9 @@ namespace RimForge.Buildings
 
         private void DoMuzzleFlash()
         {
-            var pos = ((Vector2)(Top.FinalMatrix * Matrix4x4.Translate(new Vector3(6f, 0, 0))).MultiplyPoint3x4(Vector3.zero)).FlatToWorld(AltitudeLayer.VisEffects.AltitudeFor());
+            var pos = ((Vector2)(Top.FinalMatrix * Matrix4x4.Translate(new Vector3(12f, 0, 0))).MultiplyPoint3x4(Vector3.zero)).FlatToWorld(AltitudeLayer.VisEffects.AltitudeFor());
             Mote mote = (Mote)ThingMaker.MakeThing(RFDefOf.RF_Motes_MuzzleFlash, null);
-            mote.Scale = 6f;
+            mote.Scale = 20f;
             mote.exactRotation = -TurretRotation;
             mote.exactPosition = pos;
             GenSpawn.Spawn(mote, Position, Map, WipeMode.Vanish);
@@ -417,17 +440,18 @@ namespace RimForge.Buildings
             Cables.Draw(this);
 
             float beamLerp = 1f - Mathf.InverseLerp(FINISH_FIRE, FINISH_FIRE + 30, FireTicks);
-            if (FireTicks >= FINISH_FIRE && beamLerp > 0f)
+            //if (FireTicks >= FINISH_FIRE && beamLerp > 0f)
             {
-                Color color = Color.yellow;
-                color.a = beamLerp;
+                Color color = new Color32(255, 210, 61, 255);
+                //color.a = beamLerp;
 
                 float rot = TurretRotation * Mathf.Deg2Rad;
                 Vector3 dir = new Vector3(Mathf.Cos(rot), 0f, Mathf.Sin(rot)) * 500f;
                 Vector3 pos = DrawPos + dir;
                 //Core.Log($"Drawing {beamLerp} at {pos}, {TurretRotation}");
 
-                Content.CoilgunBeam.MatSouth.color = color;
+                Content.CoilgunBeam.MatNorth.color = color;
+                Content.CoilgunBeam.MatNorth.SetTextureOffset("_MainTex", new Vector2(0, -BeamPct));
                 Content.CoilgunBeam.Draw(pos, Rot4.North, this, -TurretRotation);
             }
         }
@@ -447,6 +471,7 @@ namespace RimForge.Buildings
                 },
                 action = target =>
                 {
+                    Core.Log("Finished targeting");
                     if (!target.IsValid)
                         return;
 
@@ -475,6 +500,7 @@ namespace RimForge.Buildings
             base.ProcessInput(ev);
             SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
             Find.Targeter.BeginTargeting(this.targetingParams, action);
+            Core.Log("Start targeting");
         }
 
         public override bool InheritInteractionsFrom(Gizmo other) => false;
