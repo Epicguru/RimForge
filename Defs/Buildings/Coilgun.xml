@@ -21,6 +21,7 @@ However, damage is reduced after passing through solid objects.</description>
     <altitudeLayer>BuildingOnTop</altitudeLayer>
     <stealable>false</stealable>
     <rotatable>false</rotatable>
+
     <size>(5,5)</size>
     <statBases>
       <MaxHitPoints>1400</MaxHitPoints>

@@ -57,7 +57,7 @@ namespace RimForge
             }
             Graphic MakeUnlit(string path, Vector2 size)
             {
-                return GraphicDatabase.Get(gd.graphicClass, path, RFDefOf.TransparentPostLight.Shader, size, Color.white, Color.white, gd, gd.shaderParameters);
+                return GraphicDatabase.Get(gd.graphicClass, path, RFDefOf.TransparentPostLight.Shader, size, Color.red, Color.white, gd, gd.shaderParameters);
             }
 
             CoilgunTop = Make("RF/Buildings/Coilgun/Top", new Vector2(8.886f, 3.233f));
@@ -71,7 +71,7 @@ namespace RimForge
             CoilgunLinkRight = Make("RF/Buildings/Coilgun/PivotRight", new Vector2(2.064f, 0.697f));
 
             Patches.Patch_MaterialPool_MatFrom.Active = true;
-            CoilgunBeam = MakeUnlit("RF/Buildings/Coilgun/Beam", new Vector2(1000, 0.403f));
+            CoilgunBeam = MakeUnlit("RF/Buildings/Coilgun/Beam", new Vector2(20, 0.403f));
             Patches.Patch_MaterialPool_MatFrom.Active = false;
         }
     }
