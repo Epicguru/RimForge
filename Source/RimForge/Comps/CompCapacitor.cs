@@ -9,8 +9,9 @@ namespace RimForge.Comps
     {
         public const int TICK_RATE = 16;
         public static readonly Material FuelBarFilledMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(0.6f, 0.56f, 0.13f));
-        public static readonly Material FuelBarUnfilledMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(0.3f, 0.3f, 0.3f));
-        public static readonly Vector2 FuelBarSize = new Vector2(1f, 0.2f);
+        public static readonly Material FuelBarUnfilledMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(0, 0, 0, 0));
+        public static readonly Material FuelBarUnfilledMatSolid = SolidColorMaterials.SimpleSolidColorMaterial(new Color(0.3f, 0.3f, 0.3f));
+        public static readonly Vector2 FuelBarSize = new Vector2(0.41f, 0.28f);
 
         public CompProperties_Capacitor Props => props as CompProperties_Capacitor;
         public float StoredWd
@@ -100,21 +101,6 @@ namespace RimForge.Comps
             Scribe_Values.Look(ref _storedWd, "cap_storedWd");
         }
 
-        public override void PostDrawExtraSelectionOverlays()
-        {
-            base.PostDrawExtraSelectionOverlays();
-
-            GenDraw.FillableBarRequest r = new GenDraw.FillableBarRequest();
-            r.center = this.parent.DrawPos;
-            r.size = FuelBarSize;
-            r.fillPercent = StoredWd / Props.maxStoredWd;
-            r.filledMat = FuelBarFilledMat;
-            r.unfilledMat = FuelBarUnfilledMat;
-            r.margin = 0.15f;
-            r.rotation = Rot4.North;
-            GenDraw.DrawFillableBar(r);
-        }
-
         public override void PostDraw()
         {
             base.PostDraw();
@@ -131,6 +117,16 @@ namespace RimForge.Comps
                     this.parent.Map.overlayDrawer.DrawOverlay(parent, OverlayTypes.NeedsPower);
                     break;
             }
+
+            GenDraw.FillableBarRequest r = new GenDraw.FillableBarRequest();
+            r.center = this.parent.DrawPos + new Vector3(0, 0, -0.01f);
+            r.size = FuelBarSize;
+            r.fillPercent = StoredWd / Props.maxStoredWd;
+            r.filledMat = FuelBarFilledMat;
+            r.unfilledMat = FuelBarUnfilledMat;
+            r.margin = 0f;
+            r.rotation = Rot4.East;
+            GenDraw.DrawFillableBar(r);
         }
 
         public override string CompInspectStringExtra()

@@ -4,7 +4,7 @@
   <ThingDef Name="RF_CapacitorBase" ParentName="BuildingBase" Abstract="True">
     <thingClass>RimForge.Buildings.Building_Capacitor</thingClass>
     <graphicData>
-      <texPath>RF/Buildings/PylonIdle</texPath>
+      <texPath>RF/Buildings/Capacitor</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,2)</drawSize>
       <drawOffset>(0, 0, 0.5)</drawOffset>

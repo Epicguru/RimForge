@@ -32,7 +32,7 @@ namespace RimForge.Buildings
             }
         }
         public string BlockedBy { get; protected set; }
-        public Vector3 TopPos => DrawPos + new Vector3(0, 0, 0.44f);
+        public Vector3 TopPos => DrawPos + new Vector3(0, 0, 0.75f);
 
         public bool HasPower
         {

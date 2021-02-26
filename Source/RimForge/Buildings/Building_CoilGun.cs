@@ -17,12 +17,15 @@ namespace RimForge.Buildings
         public static float CoilgunRecoil = 0.6f;
         [TweakValue("RimForge", 0, 1)]
         public static float BeamPct = 0.5f;
+        public static readonly Vector2 FuelBarSize = new Vector2(3f, 0.4f);
 
         private const float TurretTurnSpeed = 60f / 60f;
         private const int FINISH_READYING = 120;
         private const int FINISH_FIRE = FINISH_READYING + 60 * 4;
         private const int FINISH_PAUSE = FINISH_FIRE + 60 * 4;
         private const int FINISH_UNREADYING = FINISH_PAUSE + 60 * 5;
+
+
         public enum State
         {
             Idle,
@@ -208,11 +211,11 @@ namespace RimForge.Buildings
             if (count > 0 && stored < Settings.CoilgunBasePowerReq)
             {
                 GenDraw.FillableBarRequest r = new GenDraw.FillableBarRequest();
-                r.center = this.DrawPos;
-                r.size = CompCapacitor.FuelBarSize;
+                r.center = this.DrawPos + new Vector3(0, 0, -3);
+                r.size = FuelBarSize;
                 r.fillPercent = stored / Settings.CoilgunBasePowerReq;
                 r.filledMat = CompCapacitor.FuelBarFilledMat;
-                r.unfilledMat = CompCapacitor.FuelBarUnfilledMat;
+                r.unfilledMat = CompCapacitor.FuelBarUnfilledMatSolid;
                 r.margin = 0.15f;
                 r.rotation = Rot4.North;
                 GenDraw.DrawFillableBar(r);
@@ -223,9 +226,10 @@ namespace RimForge.Buildings
 
             var endPos = LastKnowPos;
             var map = Map;
-            int mapSize = Mathf.CeilToInt(Mathf.Sqrt(map.Size.x * map.Size.x + map.Size.y * map.Size.y));
+            int mapSize = Mathf.CeilToInt(Mathf.Sqrt(map.Size.x * map.Size.x + map.Size.y * map.Size.y) * 1.5f);
             Vector3 dir = (endPos - Position).ToVector3().normalized;
             IntVec3 newEndPos = Position + (dir * mapSize).ToIntVec3();
+            //Core.Log($"{endPos} - {Position} = {dir}, {Position} + {dir} * {mapSize} = {newEndPos}");
             var list = GetAffectedCells(newEndPos);
             GenDraw.DrawFieldEdges(list, Color.red);
         }
@@ -355,7 +359,7 @@ namespace RimForge.Buildings
         private void Fire(IntVec3 endPos)
         {
             var map = Map;
-            int mapSize = Mathf.CeilToInt(Mathf.Sqrt(map.Size.x * map.Size.x + map.Size.y * map.Size.y));
+            int mapSize = Mathf.CeilToInt(Mathf.Sqrt(map.Size.x * map.Size.x + map.Size.y * map.Size.y) * 1.5f);
             Vector3 dir = (endPos - Position).ToVector3().normalized;
             IntVec3 newEndPos = Position + (dir * mapSize).ToIntVec3();
             //Core.Log($"{endPos} - {Position} = {dir}, {Position} + {dir} * {mapSize} = {newEndPos}");
@@ -645,8 +649,11 @@ namespace RimForge.Buildings
             //});
             Find.Targeter.BeginTargeting(this.targetingParams, action, targ =>
             {
-                if(targ.IsValid)
+                if (targ.IsValid)
+                {
                     gun.CurrentTargetInfo = targ;
+                    GenDraw.DrawTargetHighlight(targ);
+                }
             }, null, actionWhenFinished: () =>
             {
                 gun.DrawAffectedCells = false;

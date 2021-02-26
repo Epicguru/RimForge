@@ -91,7 +91,7 @@
 
               <!-- ================== Projectiles ================== -->
 
-              <ThingDef Class="CombatExtended.AmmoDef" Name="5x35mmCaselessBaseBullet" ParentName="BaseBullet" Abstract="true">
+              <ThingDef Class="CombatExtended.AmmoDef" Name="5x35mmCaselessBaseBullet" ParentName="Base556x45mmNATOBullet" Abstract="true">
                 <graphicData>
                   <texPath>Things/Projectile/Bullet_Small</texPath>
                   <graphicClass>Graphic_Single</graphicClass>
@@ -101,6 +101,13 @@
                   <speed>220</speed>
                   <dropsCasings>false</dropsCasings>
                 </projectile>
+                <tradeTags>
+                  <li>CE_AutoEnableTrade</li>
+                  <li>CE_AutoEnableCrafting</li>
+                </tradeTags>
+                <thingCategories>
+                  <li>Ammo5x35mmCaseless</li>
+                </thingCategories>
               </ThingDef>
 
               <ThingDef Class="CombatExtended.AmmoDef" ParentName="5x35mmCaselessBaseBullet">
@@ -108,7 +115,7 @@
                 <label>5x35 caseless bullet (FMJ)</label>
                 <projectile Class="CombatExtended.ProjectilePropertiesCE">
                   <damageAmountBase>10</damageAmountBase>
-                  <armorPenetrationSharp>6</armorPenetrationSharp>
+                  <armorPenetrationSharp>12</armorPenetrationSharp>
                   <armorPenetrationBlunt>36</armorPenetrationBlunt>
                 </projectile>
               </ThingDef>
@@ -118,7 +125,7 @@
                 <label>5x35 caseless bullet (AP)</label>
                 <projectile Class="CombatExtended.ProjectilePropertiesCE">
                   <damageAmountBase>8</damageAmountBase>
-                  <armorPenetrationSharp>14</armorPenetrationSharp>
+                  <armorPenetrationSharp>20</armorPenetrationSharp>
                   <armorPenetrationBlunt>37</armorPenetrationBlunt>
                 </projectile>
               </ThingDef>
@@ -128,7 +135,7 @@
                 <label>5x35 caseless bullet (Sabot)</label>
                 <projectile Class="CombatExtended.ProjectilePropertiesCE">
                   <damageAmountBase>7</damageAmountBase>
-                  <armorPenetrationSharp>26</armorPenetrationSharp>
+                  <armorPenetrationSharp>35</armorPenetrationSharp>
                   <armorPenetrationBlunt>50</armorPenetrationBlunt>
                   <speed>290</speed>
                 </projectile>
