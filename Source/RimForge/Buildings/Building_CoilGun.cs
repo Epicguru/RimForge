@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using RimForge.Comps;
 using RimForge.Effects;
 using RimWorld;
 using UnityEngine;
@@ -30,7 +31,8 @@ namespace RimForge.Buildings
             UnReadying
         }
 
-        public CoilgunDef Def => def as CoilgunDef;
+        public new CompPowerTrader PowerComp => _power ??= GetComp<CompPowerTrader>();
+        private CompPowerTrader _power;
 
         public float ArmLerp;
         public float TurretRotation;
@@ -42,6 +44,7 @@ namespace RimForge.Buildings
         public int FireTicks = -1;
         public LocalTargetInfo CurrentTargetInfo = LocalTargetInfo.Invalid;
         public IntVec3 LastKnowPos;
+        public bool DrawAffectedCells = false;
 
         public DrawPart Top, Cables, LeftPivot, RightPivot;
         public DrawPart BarLeft, BarRight;
@@ -51,6 +54,30 @@ namespace RimForge.Buildings
         private Sustainer soundSustainer;
         private List<IntVec3> cells = new List<IntVec3>();
         private HashSet<IntVec3> cellsHash = new HashSet<IntVec3>();
+        private List<Building_Capacitor> rawCapacitors = new List<Building_Capacitor>();
+        private int ticksSinceCapacitorRefresh;
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+
+            Scribe_Values.Look(ref FireTicks, "coil_fireTicks", -1);
+            Scribe_Values.Look(ref CurrentState, "coil_state", State.Idle);
+            Scribe_Values.Look(ref CurrentTargetInfo, "coil_target", LocalTargetInfo.Invalid);
+            Scribe_Values.Look(ref LastKnowPos, "coil_lastKnownPos");
+            Scribe_Values.Look(ref Recoil, "coil_recoil");
+            Scribe_Values.Look(ref RecoilVel, "coil_recoilVel");
+            Scribe_Values.Look(ref ticksSinceCapacitorRefresh, "coil_ticksSinceCapRefresh");
+            Scribe_Collections.Look(ref rawCapacitors, "coil_rawCaps", LookMode.Reference);
+            rawCapacitors ??= new List<Building_Capacitor>();
+        }
+
+        public override void SpawnSetup(Map map, bool respawningAfterLoad)
+        {
+            base.SpawnSetup(map, respawningAfterLoad);
+
+            DrawAffectedCells = false;
+        }
 
         public virtual void Setup()
         {
@@ -84,6 +111,8 @@ namespace RimForge.Buildings
         {
             base.Tick();
 
+            ticksSinceCapacitorRefresh++;
+
             if (CurrentTargetInfo.IsValid)
             {
                 LastKnowPos = CurrentTargetInfo.Cell;
@@ -96,7 +125,6 @@ namespace RimForge.Buildings
             }
             TurretRotation = Mathf.MoveTowardsAngle(TurretRotation, TargetRotation, TurretTurnSpeed);
 
-            
             Graphic topGraphic()
             {
                 bool wantsFrontArcs = ArmLerp >= 0.7f;
@@ -176,13 +204,101 @@ namespace RimForge.Buildings
         {
             base.DrawExtraSelectionOverlays();
 
-            //var endPos = LastKnowPos;
-            //var map = Map;
-            //int mapSize = Mathf.CeilToInt(Mathf.Sqrt(map.Size.x * map.Size.x + map.Size.y * map.Size.y));
-            //Vector3 dir = (endPos - Position).ToVector3().normalized;
-            //IntVec3 newEndPos = Position + (dir * mapSize).ToIntVec3();
-            //var list = GetAffectedCells(newEndPos);
-            //GenDraw.DrawFieldEdges(list, Color.red);
+            GetCapacitorState(out int count, out float stored);
+            if (count > 0 && stored < Settings.CoilgunBasePowerReq)
+            {
+                GenDraw.FillableBarRequest r = new GenDraw.FillableBarRequest();
+                r.center = this.DrawPos;
+                r.size = CompCapacitor.FuelBarSize;
+                r.fillPercent = stored / Settings.CoilgunBasePowerReq;
+                r.filledMat = CompCapacitor.FuelBarFilledMat;
+                r.unfilledMat = CompCapacitor.FuelBarUnfilledMat;
+                r.margin = 0.15f;
+                r.rotation = Rot4.North;
+                GenDraw.DrawFillableBar(r);
+            }
+
+            if (!DrawAffectedCells)
+                return;
+
+            var endPos = LastKnowPos;
+            var map = Map;
+            int mapSize = Mathf.CeilToInt(Mathf.Sqrt(map.Size.x * map.Size.x + map.Size.y * map.Size.y));
+            Vector3 dir = (endPos - Position).ToVector3().normalized;
+            IntVec3 newEndPos = Position + (dir * mapSize).ToIntVec3();
+            var list = GetAffectedCells(newEndPos);
+            GenDraw.DrawFieldEdges(list, Color.red);
+        }
+
+        public IEnumerable<Building_Capacitor> GetConnectedCapacitors()
+        {
+            if (rawCapacitors == null)
+                yield break;
+
+            if (ticksSinceCapacitorRefresh >= 240)
+                RefreshCapacitors();
+
+            var selfNet = PowerComp.PowerNet;
+
+            foreach (var cap in rawCapacitors)
+            {
+                if (cap == null || cap.Destroyed || !cap.Spawned)
+                    continue;
+
+                var net = cap.CompCap?.PowerNet;
+                if (net == null)
+                    continue;
+                if (net != selfNet)
+                    continue;
+
+                yield return cap;
+            }
+        }
+
+        private void ClearCapacitorPower()
+        {
+            foreach(var cap in GetConnectedCapacitors())
+            {
+                cap.CompCap.StoredWd = 0;
+            }
+        }
+
+        private void GetCapacitorState(out int count, out float stored)
+        {
+            count = 0;
+            stored = 0;
+            foreach (var cap in GetConnectedCapacitors())
+            {
+                count++;
+                stored += cap.CompCap.StoredWd;
+            }
+        }
+
+        private float GetRelativePower(int capCount, float storedPower)
+        {
+            if (capCount == 0)
+                return 0;
+
+            float baseLine = Settings.CoilgunBasePowerReq;
+
+            if (storedPower < baseLine)
+                return 0;
+
+            return Mathf.Clamp(storedPower / baseLine, 1, Settings.CoilgunMaxPowerMulti);
+        }
+
+        private void RefreshCapacitors()
+        {
+            rawCapacitors.Clear();
+            var selfNet = PowerComp.PowerNet;
+            if (selfNet?.powerComps == null)
+                return;
+
+            foreach (var thing in selfNet.powerComps)
+            {
+                if (thing.parent is Building_Capacitor cap)
+                    rawCapacitors.Add(cap);
+            }
         }
 
         private List<IntVec3> GetAffectedCells(IntVec3 end)
@@ -242,7 +358,7 @@ namespace RimForge.Buildings
             int mapSize = Mathf.CeilToInt(Mathf.Sqrt(map.Size.x * map.Size.x + map.Size.y * map.Size.y));
             Vector3 dir = (endPos - Position).ToVector3().normalized;
             IntVec3 newEndPos = Position + (dir * mapSize).ToIntVec3();
-            Core.Log($"{endPos} - {Position} = {dir}, {Position} + {dir} * {mapSize} = {newEndPos}");
+            //Core.Log($"{endPos} - {Position} = {dir}, {Position} + {dir} * {mapSize} = {newEndPos}");
             var list = GetAffectedCells(newEndPos);
             CurrentTargetInfo = LocalTargetInfo.Invalid;
 
@@ -415,6 +531,13 @@ namespace RimForge.Buildings
             if (Top == null)
                 Setup();
 
+            GetCapacitorState(out int capCount, out float stored);
+
+            if (capCount == 0)
+            {
+                Map.overlayDrawer.DrawOverlay(this, OverlayTypes.QuestionMark);
+            }
+
             ArmLerp = Mathf.Clamp01(ArmLerp);
             float realLerp = 0.625f * ArmLerp; // 1.0 is full extended but I think 0.625 looks better.
             float armAngle = Mathf.Lerp(0f, 145f, realLerp);
@@ -440,18 +563,18 @@ namespace RimForge.Buildings
             Cables.Draw(this);
 
             float beamLerp = 1f - Mathf.InverseLerp(FINISH_FIRE, FINISH_FIRE + 30, FireTicks);
-            //if (FireTicks >= FINISH_FIRE && beamLerp > 0f)
+            if (FireTicks >= FINISH_FIRE && beamLerp > 0f)
             {
                 Color color = new Color32(255, 210, 61, 255);
-                //color.a = beamLerp;
+                color.a = beamLerp;
 
                 float rot = TurretRotation * Mathf.Deg2Rad;
-                Vector3 dir = new Vector3(Mathf.Cos(rot), 0f, Mathf.Sin(rot)) * 10f;
+                Vector3 dir = new Vector3(Mathf.Cos(rot), 0f, Mathf.Sin(rot)) * 500f;
                 Vector3 pos = DrawPos + dir;
                 //Core.Log($"Drawing {beamLerp} at {pos}, {TurretRotation}");
 
                 Content.CoilgunBeam.MatSouth.color = color;
-                Content.CoilgunBeam.MatSouth.SetTextureOffset("_MainTex", new Vector2(-BeamPct, 0));
+                //Content.CoilgunBeam.MatSouth.SetTextureOffset("_MainTex", new Vector2(-BeamPct, 0));
                 Content.CoilgunBeam.Draw(pos, Rot4.North, this, -TurretRotation);
             }
         }
@@ -460,7 +583,11 @@ namespace RimForge.Buildings
         {
             foreach (var item in base.GetGizmos())
                 yield return item;
-            
+
+            GetCapacitorState(out int capCount, out float capPower);
+            float power = GetRelativePower(capCount, capPower);
+            bool hasPower = PowerComp.PowerOn;
+
             yield return new Command_TargetCustom()
             {
                 defaultLabel = "RF.Coilgun.AttackLabel".Translate(),
@@ -471,22 +598,34 @@ namespace RimForge.Buildings
                 },
                 action = target =>
                 {
-                    Core.Log("Finished targeting");
                     if (!target.IsValid)
                         return;
 
-                    Core.Log($"Started attacking '{target.ToString()}'");
+                    Core.Log($"Started coilgun attacking '{target.ToString()}'");
                     CurrentState = State.Readying;
                     FireTicks = 0;
                     CurrentTargetInfo = target;
                     LastKnowPos = Position;
-                }
+                    ClearCapacitorPower();
+                },
+                gun = this,
+                disabled = power <= 0 || !hasPower,
+                disabledReason = hasPower ? "RF.Coilgun.Disabled".Translate() : "RF.Coilgun.DisabledNoPower".Translate()
             };
         }
 
         public override string GetInspectString()
         {
-            return $"{base.GetInspectString().TrimEnd()}\nState:{CurrentState}";
+            string basic = base.GetInspectString();
+            GetCapacitorState(out int connected, out float stored);
+            float power = GetRelativePower(connected, stored);
+
+            string pct = (power * 100f).ToString("F0");
+            string capState = "RF.Coilgun.CapState".Translate(pct, connected, stored.ToString("F0"));
+
+            if(!string.IsNullOrWhiteSpace(basic))
+                return $"{basic.TrimEnd()}\n{capState}";
+            return capState;
         }
     }
 
@@ -494,13 +633,25 @@ namespace RimForge.Buildings
     {
         public Action<LocalTargetInfo> action;
         public TargetingParameters targetingParams;
+        public Building_Coilgun gun;
 
         public override void ProcessInput(Event ev)
         {
             base.ProcessInput(ev);
             SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
-            Find.Targeter.BeginTargeting(this.targetingParams, action);
-            Core.Log("Start targeting");
+            //Find.Targeter.BeginTargeting(this.targetingParams, action, actionWhenFinished: () =>
+            //{
+            //    gun.DrawAffectedCells = false;
+            //});
+            Find.Targeter.BeginTargeting(this.targetingParams, action, targ =>
+            {
+                if(targ.IsValid)
+                    gun.CurrentTargetInfo = targ;
+            }, null, actionWhenFinished: () =>
+            {
+                gun.DrawAffectedCells = false;
+            });
+            gun.DrawAffectedCells = true;
         }
 
         public override bool InheritInteractionsFrom(Gizmo other) => false;

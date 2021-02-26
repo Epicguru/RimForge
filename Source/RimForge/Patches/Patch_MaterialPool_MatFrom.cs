@@ -16,8 +16,6 @@ namespace RimForge.Patches
                 return true;
 
             req.mainTex.wrapMode = TextureWrapMode.Clamp;
-            req.mainTex.filterMode = FilterMode.Point;
-            req.mainTex.requestedMipmapLevel = 0;
             return true;
         }
     }

@@ -8,10 +8,8 @@
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationAdd">
-          <xpath>/Defs</xpath>
+          <xpath>Defs</xpath>
           <value>
-            <li>
-
               <ThingCategoryDef>
                 <defName>Ammo5x35mmCaseless</defName>
                 <label>5x35mm Caseless</label>
@@ -139,7 +137,7 @@
               <!-- ==================== Recipes ========================== -->
 
               <RecipeDef ParentName="AmmoRecipeBase">
-                <defName>MakeAmmo_5x35mmCaseless_FMJ</defName>
+                <defName>MakeAmmo5x35mmCaseless_FMJ</defName>
                 <label>make 5x35mm caseless (FMJ) cartridge x500</label>
                 <description>Craft 500 5x35mm caseless (FMJ) cartridges.</description>
                 <jobString>Making 5x35mm caseless (FMJ) cartridges.</jobString>
@@ -165,7 +163,7 @@
               </RecipeDef>
 
               <RecipeDef ParentName="AmmoRecipeBase">
-                <defName>MakeAmmo_5x35mmCaseless_AP</defName>
+                <defName>MakeAmmo5x35mmCaseless_AP</defName>
                 <label>make 5x35mm caseless (AP) cartridge x500</label>
                 <description>Craft 500 5x35mm caseless (AP) cartridges.</description>
                 <jobString>Making 5x35mm caseless (AP) cartridges.</jobString>
@@ -191,7 +189,7 @@
               </RecipeDef>
 
               <RecipeDef ParentName="AdvancedAmmoRecipeBase">
-                <defName>MakeAmmo_5x35mmCaseless_Sabot</defName>
+                <defName>MakeAmmo5x35mmCaseless_Sabot</defName>
                 <label>make 5x35mm caseless (Sabot) cartridge x500</label>
                 <description>Craft 500 5x35mm caseless (Sabot) cartridges.</description>
                 <jobString>Making 5x35mm caseless (Sabot) cartridges.</jobString>
@@ -225,8 +223,6 @@
                 <workAmount>2200</workAmount>
               </RecipeDef>
 
-
-            </li>
           </value>
         </li>
       </operations>

@@ -4,7 +4,7 @@
   <ThingDef Name="RF_TeslaCoilBase" ParentName="BuildingBase" Abstract="True">
     <thingClass>RimForge.Buildings.Building_TeslaCoil</thingClass>
     <graphicData>
-      <texPath>RF/Buildings/PylonIdle</texPath>
+      <texPath>RF/Buildings/TeslaCoil</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,2)</drawSize>
       <drawOffset>(0, 0, 0.5)</drawOffset>
@@ -54,7 +54,7 @@
   <ThingDef ParentName="RF_TeslaCoilBase">
     <defName>RF_TeslaCoilWireless</defName>
     <label>tesla coil (wireless)</label>
-    <description>When two are linked in a straight line, they will discharge an electrical arc whenever enemies pass through this line.
+    <description>When two are linked, they will discharge an electrical arc whenever enemies pass between them.
 Note: one coil is the 'active' coil and one is the 'passive'. The active one is the one that fires and goes on cooldown. The passive one simply serves as the endpoint for the electrical arc.
 A tesla coil can be both 'active' and 'passive' at the same time, allowing you to create chains of tesla coils.
 
@@ -72,7 +72,7 @@ This is a wireless version, so it must be powered by linking to to a wireless po
   <ThingDef ParentName="RF_TeslaCoilBase">
     <defName>RF_TeslaCoil</defName>
     <label>tesla coil</label>
-    <description>When two are linked in a straight line, they will discharge an electrical arc whenever enemies pass through this line.
+    <description>When two are linked, they will discharge an electrical arc whenever enemies pass between them.
 Note: one coil is the 'active' coil and one is the 'passive'. The active one is the one that fires and goes on cooldown. The passive one simply serves as the endpoint for the electrical arc.
 A tesla coil can be both 'active' and 'passive' at the same time, allowing you to create chains of tesla coils.
 

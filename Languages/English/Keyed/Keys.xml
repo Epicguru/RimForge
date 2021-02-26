@@ -78,6 +78,15 @@
 This is done to allow larger mod compatibility, in the cases where other mods add their own version of resources added by RimForge.</RF.Stats.EquivalentToDesc>
 
 <RF.Coilgun.AttackLabel>Fire at target...</RF.Coilgun.AttackLabel>
-<RF.Coilgun.AttackDesc>Choose a target and fire at it.</RF.Coilgun.AttackDesc>
+<RF.Coilgun.AttackDesc>Choose a target and fire at it.
+WARNING: Firing cannot be cancelled once started!</RF.Coilgun.AttackDesc>
+<RF.Coilgun.Disabled>Cannot fire: not enough capacitors or not enough energy stored in capacitors.</RF.Coilgun.Disabled>
+<RF.Coilgun.DisabledNoPower>Cannot fire: not powered.</RF.Coilgun.DisabledNoPower>
+<RF.Coilgun.CapState>Shot power: {0}% ({1} connected capacitors, {2} stored Wd)</RF.Coilgun.CapState>
+
+<RF.Cap.Stored>Stored: {0} Wd of power ({1}%)</RF.Cap.Stored>
+<RF.Cap.NotConnected>Not connected to power grid!</RF.Cap.NotConnected>
+<RF.Cap.NoBatteries>There are no batteries on the power grid! There must be at least 1 battery on the same power grid as this capacitor!</RF.Cap.NoBatteries>
+<RF.Cap.NoPower>There is not enough power to recharge this capacitor!</RF.Cap.NoPower>
 
  </LanguageData>

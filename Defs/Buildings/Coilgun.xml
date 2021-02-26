@@ -6,11 +6,16 @@
     <thingClass>RimForge.Buildings.Building_Coilgun</thingClass>
     <label>liandry coilgun</label>
     <description>A coilgun, also called a gauss rifle, accelerates a kinetic projectile using an electrical current similarly to the way a railgun works.
+
+Requires Coilgun Capacitors to be connected to the same power grid in order to fire.
 This particular coilgun is a huge mounted cannon, firing a 4kg staballoy armor piercing slug at over 5000 m/s, capable of literally firing through a mountain.
 
 When fired, it's projectile will pass through everything and anything along it's path, including normally un-penetrable surfaces such as walls or even mountains.
 However, damage is reduced after passing through solid objects.</description>
     <uiIconPath>RF/Buildings/Coilgun/Icon</uiIconPath>
+    <descriptionHyperlinks>
+      <ThingDef>RF_Capacitor</ThingDef>
+    </descriptionHyperlinks>
     <graphicData>
       <texPath>RF/Buildings/Coilgun/Base</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -21,7 +26,6 @@ However, damage is reduced after passing through solid objects.</description>
     <altitudeLayer>BuildingOnTop</altitudeLayer>
     <stealable>false</stealable>
     <rotatable>false</rotatable>
-
     <size>(5,5)</size>
     <statBases>
       <MaxHitPoints>1400</MaxHitPoints>
@@ -43,6 +47,14 @@ However, damage is reduced after passing through solid objects.</description>
     </building>
     <designationHotKey>Misc3</designationHotKey>
     <uiIconScale>1</uiIconScale>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <transmitsPower>false</transmitsPower>
+        <shortCircuitInRain>false</shortCircuitInRain>
+        <basePowerConsumption>500</basePowerConsumption>
+      </li>
+    </comps>
   </RimForge.CoilgunDef>
 
 </Defs>

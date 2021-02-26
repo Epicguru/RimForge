@@ -25,5 +25,9 @@ namespace RimForge
         public static float CoilgunPenDamageMultiplier = 0.95f;
         [TweakValue("RimForge", 0, 10000)]
         public static int CoilgunBaseDamage = 800;
+        [TweakValue("RimForge", 100, 10000)]
+        public static float CoilgunBasePowerReq = 2000;
+        [TweakValue("RimForge", 1, 50)]
+        public static int CoilgunMaxPowerMulti = 5;
     }
 }

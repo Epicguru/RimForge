@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef Name="RF_CapacitorBase" ParentName="BuildingBase" Abstract="True">
+    <thingClass>RimForge.Buildings.Building_Capacitor</thingClass>
+    <graphicData>
+      <texPath>RF/Buildings/PylonIdle</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,2)</drawSize>
+      <drawOffset>(0, 0, 0.5)</drawOffset>
+    </graphicData>
+    <passability>PassThroughOnly</passability>
+    <designationCategory>Power</designationCategory>
+    <drawerType>RealtimeOnly</drawerType>
+    <selectable>true</selectable>
+    <canOverlapZones>true</canOverlapZones>
+    <castEdgeShadows>false</castEdgeShadows>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <tickerType>Normal</tickerType>
+    <category>Building</category>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <pathCost>20</pathCost>
+    <size>(1, 1)</size>
+    <costList>
+      <Steel>20</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+      <RF_Copper>50</RF_Copper>
+    </costList>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <WorkToBuild>5000</WorkToBuild>
+      <Flammability>0.25</Flammability>
+      <Beauty>-2</Beauty>
+      <Cleanliness>2</Cleanliness>
+      <Mass>30</Mass>
+    </statBases>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsPower</li>
+    </thingCategories>
+    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+    <comps>
+      <li Class="RimForge.Comps.CompProperties_Capacitor">
+        <maxStoredWd>2000</maxStoredWd>
+      </li>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <transmitsPower>false</transmitsPower>
+        <shortCircuitInRain>false</shortCircuitInRain>
+        <basePowerConsumption>0</basePowerConsumption>
+      </li>
+    </comps>
+    <researchPrerequisites>
+      <li>Batteries</li>
+    </researchPrerequisites>
+    <descriptionHyperlinks>
+      <ThingDef>RF_Coilgun</ThingDef>
+    </descriptionHyperlinks>
+  </ThingDef>
+
+  <!-- Normal version -->
+  <ThingDef ParentName="RF_CapacitorBase">
+    <defName>RF_Capacitor</defName>
+    <label>coilgun capacitor</label>
+    <description>An electrical capacitor that is required to fire a Liandry Coilgun.
+Rather than taking in energy directly, these capacitors drain energy from batteries, so at least 1 battery must be placed in the same power grid as this capacitor.</description>
+  </ThingDef>
+
+</Defs>

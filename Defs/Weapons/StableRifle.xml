@@ -37,6 +37,7 @@ Made using metal alloys.</description>
     <weaponTags>
       <li>IndustrialGunAdvanced</li>
     </weaponTags>
+    <equippedAngleOffset>30.3</equippedAngleOffset>
     <verbs>
       <li>
         <verbClass>Verb_Shoot</verbClass>
@@ -70,7 +71,6 @@ Made using metal alloys.</description>
         <cooldownTime>2</cooldownTime>
       </li>
     </tools>
-    <researchPrerequisite>PrecisionRifling</researchPrerequisite>
   </ThingDef>
 
   <!-- Bullet -->
