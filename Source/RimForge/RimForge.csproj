@@ -68,6 +68,7 @@
     <Compile Include="Buildings\Building_Coilgun.cs" />
     <Compile Include="Buildings\Building_Forge.cs" />
     <Compile Include="Buildings\Building_FueledHeatingElement.cs" />
+    <Compile Include="Buildings\Building_LightningRod.cs" />
     <Compile Include="Buildings\Building_PoweredHeatingElement.cs" />
     <Compile Include="Buildings\Building_TeslaCoil.cs" />
     <Compile Include="Buildings\Building_WirelessPowerPylon.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Patches\Patch_MaterialPool_MatFrom.cs" />
     <Compile Include="Patches\Patch_Refuelable_TargetFuelLevel.cs" />
     <Compile Include="Patches\Patch_Refuelable_ShouldAutoRefuelNow.cs" />
+    <Compile Include="Patches\Patch_WeatherEvent_LightningStrike_FireEvent.cs" />
     <Compile Include="PostLoadDefs.cs" />
     <Compile Include="Power\PowerChannel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

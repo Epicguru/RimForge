@@ -89,4 +89,8 @@ WARNING: Firing cannot be cancelled once started!</RF.Coilgun.AttackDesc>
 <RF.Cap.NoBatteries>There are no batteries on the power grid! There must be at least 1 battery on the same power grid as this capacitor!</RF.Cap.NoBatteries>
 <RF.Cap.NoPower>There is not enough power to recharge this capacitor!</RF.Cap.NoPower>
 
+<RF.LR.FailNoPowerNet>Lightning rod caught lightning bolt, but is not connected to a power grid!</RF.LR.FailNoPowerNet>
+<RF.LR.FailNoBatteries>Lightning rod caught lightning bolt, but there are no batteries on the power grid! The power was harmlessly passed into the ground.</RF.LR.FailNoBatteries>
+<RF.LR.Success>Lightning rod caught lightning bolt, charging batteries with {0} Wd of power!</RF.LR.Success>
+
  </LanguageData>
