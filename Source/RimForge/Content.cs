@@ -14,8 +14,10 @@ namespace RimForge
 
         public static Graphic CoilgunTop, CoilgunTopGlow;
         public static Graphic CoilgunCables, CoilgunCablesGlow;
-        public static Graphic  CoilgunBarLeft, CoilgunBarRight, CoilgunLinkLeft, CoilgunLinkRight;
+        public static Graphic CoilgunBarLeft, CoilgunBarRight, CoilgunLinkLeft, CoilgunLinkRight;
         public static Graphic CoilgunBeam;
+
+        public static Graphic RitualCircle, RitualCircleText, RitualGear, RitualBall;
 
         static Content()
         {
@@ -73,6 +75,20 @@ namespace RimForge
             Patches.Patch_MaterialPool_MatFrom.Active = true;
             CoilgunBeam = MakeUnlit("RF/Buildings/Coilgun/Beam", new Vector2(1000, 0.403f));
             Patches.Patch_MaterialPool_MatFrom.Active = false;
+        }
+
+        internal static void LoadRitualGraphics(Building building)
+        {
+            var gd = building.DefaultGraphic.data;
+            Graphic MakeUnlit(string path, Vector2 size)
+            {
+                return GraphicDatabase.Get(gd.graphicClass, path, RFDefOf.TransparentPostLight.Shader, size, Color.white, Color.white, gd, gd.shaderParameters);
+            }
+
+            RitualCircle = MakeUnlit("RF/Effects/RitualCircle", new Vector2(21, 21));
+            RitualCircleText = MakeUnlit("RF/Effects/RitualCircleText", new Vector2(10, 10));
+            RitualGear = MakeUnlit("RF/Effects/RitualGear", new Vector2(14, 14));
+            RitualBall = MakeUnlit("RF/Effects/RitualBall", new Vector2(1, 1));
         }
     }
 }

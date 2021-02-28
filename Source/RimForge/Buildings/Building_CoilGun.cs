@@ -66,7 +66,7 @@ namespace RimForge.Buildings
 
             Scribe_Values.Look(ref FireTicks, "coil_fireTicks", -1);
             Scribe_Values.Look(ref CurrentState, "coil_state", State.Idle);
-            Scribe_Values.Look(ref CurrentTargetInfo, "coil_target", LocalTargetInfo.Invalid);
+            Scribe_TargetInfo.Look(ref CurrentTargetInfo, "coil_target", LocalTargetInfo.Invalid);
             Scribe_Values.Look(ref LastKnowPos, "coil_lastKnownPos");
             Scribe_Values.Look(ref Recoil, "coil_recoil");
             Scribe_Values.Look(ref RecoilVel, "coil_recoilVel");
@@ -362,11 +362,12 @@ namespace RimForge.Buildings
             int mapSize = Mathf.CeilToInt(Mathf.Sqrt(map.Size.x * map.Size.x + map.Size.y * map.Size.y) * 1.5f);
             Vector3 dir = (endPos - Position).ToVector3().normalized;
             IntVec3 newEndPos = Position + (dir * mapSize).ToIntVec3();
-            //Core.Log($"{endPos} - {Position} = {dir}, {Position} + {dir} * {mapSize} = {newEndPos}");
             var list = GetAffectedCells(newEndPos);
             CurrentTargetInfo = LocalTargetInfo.Invalid;
 
-            float damage = Settings.CoilgunBaseDamage;
+            GetCapacitorState(out int capCount, out float capStored);
+            float damage = Settings.CoilgunBaseDamage * GetRelativePower(capCount, capStored);
+
             int affected = 0;
             int cells = 0;
             int penDepth = 0;
@@ -406,7 +407,7 @@ namespace RimForge.Buildings
 
                         if (thing is Building || thing is Pawn)
                         {
-                            var info = new DamageInfo(RFDefOf.RF_CoilgunDamage, damage, 100, instigator: this);
+                            var info = new DamageInfo(RFDefOf.RF_CoilgunDamage, damage * Settings.CoilgunBuildingDamageMulti, 100, instigator: this);
                             thing.TakeDamage(info);
                             affected++;
                         }

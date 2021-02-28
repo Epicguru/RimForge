@@ -70,6 +70,7 @@
     <Compile Include="Buildings\Building_FueledHeatingElement.cs" />
     <Compile Include="Buildings\Building_LightningRod.cs" />
     <Compile Include="Buildings\Building_PoweredHeatingElement.cs" />
+    <Compile Include="Buildings\Building_RitualCore.cs" />
     <Compile Include="Buildings\Building_TeslaCoil.cs" />
     <Compile Include="Buildings\Building_WirelessPowerPylon.cs" />
     <Compile Include="Buildings\DrawPart.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Patches\Patch_CompGlower_ShouldBeLitNow.cs" />
     <Compile Include="Patches\Patch_DynamicDrawManager_DrawDynamicThings.cs" />
     <Compile Include="Patches\Patch_MaterialPool_MatFrom.cs" />
+    <Compile Include="Patches\Patch_QualityUtility_GenerateQualityCreatedByPawn.cs" />
     <Compile Include="Patches\Patch_Refuelable_TargetFuelLevel.cs" />
     <Compile Include="Patches\Patch_Refuelable_ShouldAutoRefuelNow.cs" />
     <Compile Include="Patches\Patch_WeatherEvent_LightningStrike_FireEvent.cs" />

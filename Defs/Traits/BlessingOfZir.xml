@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <TraitDef>
+    <defName>RF_BlessingOfZir</defName>
+    <commonality>0.05</commonality>
+    <degreeDatas>
+      <li>
+        <label>blessing of Zir</label>
+        <description>[PAWN_nameDef] has received the blessing of machine god Zir!
+[PAWN_nameDef] is able to easily understand the inner workings of machines and devices, allowing [PAWN_objective] to craft and build items of higher quality as well as work faster.</description>
+        <statFactors>
+          <GeneralLaborSpeed>1.5</GeneralLaborSpeed>
+          <SmeltingSpeed>2</SmeltingSpeed>
+          <ButcheryMechanoidSpeed>2</ButcheryMechanoidSpeed>
+          <ConstructionSpeed>1.2</ConstructionSpeed>
+        </statFactors>
+        <statOffsets>
+          <ButcheryMechanoidEfficiency>0.5</ButcheryMechanoidEfficiency>
+        </statOffsets>
+      </li>
+    </degreeDatas>
+    <conflictingTraits></conflictingTraits>
+  </TraitDef>
+
+</Defs>
