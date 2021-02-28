@@ -16,11 +16,13 @@ namespace RimForge.Patches
             if (___map == null)
                 return false;
 
+            // Vanilla code.
             SoundDefOf.Thunder_OffMap.PlayOneShotOnCamera(___map);
             if (!___strikeLoc.IsValid)
                 ___strikeLoc = CellFinderLoose.RandomCellWith((sq => sq.Standable(___map) && !___map.roofGrid.Roofed(sq)), ___map);
             ___boltMesh = LightningBoltMeshPool.RandomBoltMesh;
 
+            // New strike pos calculation!
             bool caught = false;
             if (Building_LightningRod.MapRods.TryGetValue(___map.uniqueID, out var list))
             {
@@ -41,7 +43,8 @@ namespace RimForge.Patches
 
                 if (found != null)
                 {
-                    ___strikeLoc = found.Position;
+                    // New strike pos is lightning rod position + 1 upwards, due to how tall the rod is.
+                    ___strikeLoc = found.Position + new IntVec3(0, 0, 1);
                     try
                     {
                         found.UponStruck();
@@ -53,11 +56,14 @@ namespace RimForge.Patches
                     caught = true;
                 }
             }
+            // End new strike pos calculation
 
+            // Vanilla code.
             if (!___strikeLoc.Fogged(___map))
             {
-                if(!caught)
+                if(!caught) // Do not cause explosion damage if caught by lightning rod.
                     GenExplosion.DoExplosion(___strikeLoc, ___map, 1.9f, DamageDefOf.Flame, (Thing)null);
+
                 Vector3 vector3Shifted = ___strikeLoc.ToVector3Shifted();
                 for (int index = 0; index < 4; ++index)
                 {

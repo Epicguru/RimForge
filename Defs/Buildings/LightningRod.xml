@@ -4,7 +4,7 @@
   <ThingDef Name="RF_LightningRodBase" ParentName="BuildingBase" Abstract="True">
     <thingClass>RimForge.Buildings.Building_LightningRod</thingClass>
     <graphicData>
-      <texPath>RF/Buildings/Capacitor</texPath>
+      <texPath>RF/Buildings/LightningRod</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,2)</drawSize>
       <drawOffset>(0, 0, 0.5)</drawOffset>
