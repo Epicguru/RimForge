@@ -7,8 +7,26 @@
     <li>1.2</li>
   </supportedVersions>
   <url>https://github.com/Epicguru/RimForge</url>
-  <description>Adds a forge, new ores, and alloys to rimworld.
-Load as late (far down)as possible.</description>
+  <description>A mid-tech modpack that changes and expands upon power and smithing:
+
+* Wireless electrical power.
+* Tesla coils! Fry those raiders!
+* New ores: copper and tin.
+* Many new metal alloys: bronze, gilded plasteel, staballoy etc. With unique stats and purposes.
+* A forge, to create metal alloys, with a forge temperature system.
+* New melee weapons. Some require the new alloys. No particular theme.
+* New 'stabilized' guns, with Bronze as their main crafting material. Improved accuracy but reduced damage.
+
+Also supports:
+
+[Combat Extended]
+Some recipes are changed for balance purposes. 
+Allows for stuffable melee weapons to be crafted out of certain alloys (CE normally forces all melee weapons to use Steel, Uranium or Plasteel).
+Balance of new melee weapons and guns may need tweaking, please give feedback.
+
+[In-Game Wiki]
+Shows useful information about the mod's items and buildings, such as how to set up the forge.
+  </description>
   <modDependencies>
     <li>
       <packageId>brrainz.harmony</packageId>
@@ -25,6 +43,6 @@ Load as late (far down)as possible.</description>
   </modDependencies>
   <loadAfter>
     <li>brrainz.harmony</li>
-    <li>co.uk.epicguru.ingamewiki</li> <!-- Which has to go after Harmony, so that is sorted. -->
+    <li>co.uk.epicguru.ingamewiki</li>
   </loadAfter>
 </ModMetaData>
