@@ -7,8 +7,11 @@ namespace RimForge.Effects
     // An arc of electricity. ZZZT!
     public abstract class ElectricArc : MapEffect
     {
-        public Vector2 Start;
-        public Vector2 End;
+        private static readonly Material defaultMaterial = MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.MoteGlow, Color.cyan);
+
+
+        public virtual Vector2 Start { get; set; }
+        public virtual Vector2 End { get; set; }
         public readonly int IntermediatePointCount;
         public Vector2[] AllPoints;
         public Vector2 Amplitude = new Vector2(0.05f, 0.5f);
@@ -29,7 +32,11 @@ namespace RimForge.Effects
             return Rand.Range(Amplitude.x, Amplitude.y) * (Rand.Value < 0.5f ? 1f : -1f);
         }
 
-        private static readonly Material mat = MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.MoteGlow, Color.cyan);
+        public virtual Material GetMaterial()
+        {
+            return defaultMaterial;
+        }
+
         public override void Draw(bool tick, Map map)
         {
 
@@ -51,6 +58,8 @@ namespace RimForge.Effects
             AllPoints[0] = Start;
             AllPoints[AllPoints.Length - 1] = End;
             Vector3 last = AllPoints[0].FlatToWorld(Depth);
+            var mat = GetMaterial();
+
             for (int i = 1; i < AllPoints.Length; i++)
             {
                 Vector2 raw = AllPoints[i];

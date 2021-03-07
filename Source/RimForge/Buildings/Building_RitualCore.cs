@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using RimForge.Comps;
 using RimForge.Effects;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace RimForge.Buildings
 {
-    public class Building_RitualCore : Building
+    public class Building_RitualCore : Building, IConditionalGlower
     {
         [DebugAction("RimForge", null, actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void MakeRed()
@@ -30,24 +32,51 @@ namespace RimForge.Buildings
             }
         }
 
+        [TweakValue("_RimForge", 0, 0.2f)]
+        private static float ArcChance = 0.01f;
+        [TweakValue("_RimForge", 0, 1)]
+        private static float ArcDuration = 1;
+        [TweakValue("_RimForge", 0, 1)]
+        private static float ArcMag = 0.55f;
+
         public float GearDrawSize = 12.2f, CircleDrawSize = 20, TextDrawSize = 8;
         public float GearDrawRot, CircleDrawRot, TextDrawRot;
         public float GearAlpha = 1, CircleAlpha = 1, TextAlpha = 1;
 
         public float GearTurnSpeed = -20f, TextTurnSpeed = 9f;
-        public float CircleBaseAlpha = 0.7f, CircleAlphaMag = 0.06f;
+        public float CircleBaseAlpha = 0.55f, CircleAlphaMag = 0.06f;
         public float CircleAlphaFreq = 2, BallOffsetFreq = 0.24f;
 
         public float BallOffsetBase = 1;
         public float BallOffsetMag = 0.11f, BallDrawSize = 0.72f;
 
+        public bool DrawGuide = true;
+
         private float ballOffset;
         private float timer;
+        private List<string> missing = new List<string>();
+        private int tickCounter = -1;
+        private List<(BezierElectricArc arc, float age)> arcs = new List<(BezierElectricArc arc, float age)>();
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+
+            Scribe_Values.Look(ref DrawGuide, "rc_drawGuide", true);
+        }
 
         public override void Tick()
         {
             base.Tick();
 
+            // Update the missing display once per second.
+            if (tickCounter == -1)
+                tickCounter = Rand.RangeInclusive(0, 60);
+            tickCounter++;
+            if (tickCounter % 60 == 0)
+                UpdateMissing();
+
+            // Turn the ritual gears.
             GearDrawRot += GearTurnSpeed / 60f;
             TextDrawRot += TextTurnSpeed / 60f;
 
@@ -56,39 +85,178 @@ namespace RimForge.Buildings
             CircleAlpha = Mathf.Sin(timer * Mathf.PI * 2f * CircleAlphaFreq) * CircleAlphaMag + CircleBaseAlpha;
             ballOffset = Mathf.Sin((timer + 12) * Mathf.PI * 2f * BallOffsetFreq) * BallOffsetMag + BallOffsetBase;
 
-            var worldMousePos = UI.MouseMapPosition();
+            if (Rand.Chance(ArcChance))
+            {
+                int a = Rand.Range(0, 8);
+                int b = a + (Rand.RangeInclusive(1, 2) * (Rand.Chance(0.5f) ? 1 : -1));
+                var start = GetPillarPosition(a).ToVector3().WorldToFlat() + new Vector2(0.5f, 1.2f);
+                var end = GetPillarPosition(b).ToVector3().WorldToFlat() + new Vector2(0.5f, 1.2f);
 
-            var sparks = new RitualSparks();
-            sparks.Position = DrawPos.WorldToFlat();
-            sparks.GravitateTowards = worldMousePos.WorldToFlat();
-            sparks.Velocity = Rand.InsideUnitCircle * 6f;
-            sparks.Spawn(this.Map);
+                for (int i = 0; i < 2; i++)
+                {
+                    var arc = new BezierElectricArc(25);
+                    Vector2 midA = Vector2.Lerp(start, end, 0.3f);
+                    Vector2 midB = Vector2.Lerp(start, end, 0.7f);
+
+                    arc.P0 = start;
+                    arc.P1 = midA + new Vector2(0, 3);
+                    arc.P2 = midB + new Vector2(0, 3);
+                    arc.P3 = end;
+                    arc.Red = true;
+
+                    arc.Spawn(this.Map);
+                    arcs.Add((arc, 0));
+                }
+
+                for (int i = 0; i < 2; i++)
+                {
+                    MoteMaker.ThrowLightningGlow(start, Map, 0.8f);
+                    MoteMaker.ThrowLightningGlow(end, Map, 0.8f);
+                }
+
+                Vector2 gravTowards = Position.ToVector3Shifted().WorldToFlat();
+                for (int i = 0; i < 20; i++)
+                {
+                    var sparks = new RitualSparks();
+                    sparks.Position = start;
+                    sparks.GravitateTowards = gravTowards;
+                    sparks.Velocity = Rand.InsideUnitCircle * 7.5f;
+                    sparks.Spawn(this.Map);
+
+                    sparks = new RitualSparks();
+                    sparks.Position = end;
+                    sparks.GravitateTowards = gravTowards;
+                    sparks.Velocity = Rand.InsideUnitCircle.normalized * Rand.Range(0.5f, 7.5f);
+                    sparks.Spawn(this.Map);
+                }
+            }
+
+            TickArcs();
         }
 
-        private IEnumerable<IntVec3> GetPillarPositions()
+        private void TickArcs()
+        {
+            for(int i = 0; i < arcs.Count; i++)
+            {
+                var pair = arcs[i];
+
+                float age = pair.age;
+                var arc = pair.arc;
+
+                age += 1f / 60f;
+                arcs[i] = (arc, age);
+                if(age > ArcDuration)
+                {
+                    arc.Destroy();
+                    arcs.RemoveAt(i);
+                    i--;
+                    continue;
+                }
+
+                float amp = Mathf.Lerp(ArcMag, ArcMag * 0.2f, age / ArcDuration);
+
+                arc.Amplitude = new Vector2(amp * 0.5f, amp);
+            }
+        }
+
+        public IntVec3 GetPillarPosition(int index)
+        {
+            if (index < 0)
+                index += 8000; // Just don't pass in index < 8000 please :)
+            index %= 8;
+            int i = 0;
+            foreach (var item in GetPillarPositions())
+            {
+                if (i == index)
+                    return item;
+                i++;
+            }
+
+            return default;
+        }
+
+        public IEnumerable<IntVec3> GetPillarPositions()
         {
             IntVec3 basePos = Position;
 
             yield return basePos + new IntVec3(7, 0, 0);
-            yield return basePos - new IntVec3(7, 0, 0);
-
-            yield return basePos + new IntVec3(0, 0, 7);
-            yield return basePos - new IntVec3(0, 0, 7);
-
             yield return basePos + new IntVec3(5, 0, 5);
-            yield return basePos - new IntVec3(5, 0, 5);
-
+            yield return basePos + new IntVec3(0, 0, 7);
             yield return basePos + new IntVec3(-5, 0, 5);
-            yield return basePos - new IntVec3(-5, 0, 5);
+            yield return basePos + new IntVec3(-7, 0, 0);
+            yield return basePos + new IntVec3(-5, 0, -5);
+            yield return basePos + new IntVec3(0, 0, -7);
+            yield return basePos + new IntVec3(5, 0, -5);
+
+        }
+
+        public bool IsPillarPresent(IntVec3 pos)
+        {
+            var thing = pos.GetFirstThing(Map, RFDefOf.Column);
+            if (thing != null && thing.Stuff == RFDefOf.RF_Copper)
+                return true;
+            return false;
+        }
+
+        public void UpdateMissing()
+        {
+            missing.Clear();
+
+            int missingPillars = 0;
+            foreach (var pos in GetPillarPositions())
+            {
+                bool isThere = IsPillarPresent(pos);
+                if (!isThere)
+                    missingPillars++;
+            }
+
+            if(missingPillars > 0)
+                missing.Add("RF.Ritual.Missing".Translate($"{RFDefOf.RF_Copper.LabelCap} {RFDefOf.Column.label}", missingPillars));
         }
 
         public override void Draw()
         {
             base.Draw();
 
-            DrawGhosts();
+            if(DrawGuide)
+                DrawGhosts();
 
             DrawRitualEffects();
+        }
+
+        public override IEnumerable<Gizmo> GetGizmos()
+        {
+            foreach (var gizmo in base.GetGizmos())
+                yield return gizmo;
+
+            string label = DrawGuide ? "RF.Ritual.DrawGuideHideLabel".Translate() : "RF.Ritual.DrawGuideShowLabel".Translate();
+            string desc  = DrawGuide ? "RF.Ritual.DrawGuideHideDesc".Translate()  : "RF.Ritual.DrawGuideShowDesc".Translate();
+
+            yield return new Command_Action()
+            {
+                defaultLabel = label,
+                defaultDesc = desc,
+                action = () =>
+                {
+                    DrawGuide = !DrawGuide;
+                }
+            };
+
+            if (!Prefs.DevMode)
+                yield break;
+
+            yield return new Command_Action()
+            {
+                defaultLabel = "spawn distort mote",
+                action = () =>
+                {
+                    Mote mote = (Mote) ThingMaker.MakeThing(RFDefOf.RF_Motes_RitualDistort, null);
+                    mote.Scale = 1;
+                    mote.exactRotation = 0;
+                    mote.exactPosition = DrawPos;
+                    GenSpawn.Spawn(mote, Position, Map, WipeMode.Vanish);
+                }
+            };
         }
 
         private void DrawGhosts()
@@ -99,8 +267,7 @@ namespace RimForge.Buildings
 
             bool ShouldDrawAt(IntVec3 pos)
             {
-                var thing = pos.GetFirstThing(map, RFDefOf.Column);
-                if (thing != null && thing.Stuff == RFDefOf.RF_Copper)
+                if (IsPillarPresent(pos))
                     return false;
 
                 int index = map.cellIndices.CellToIndex(pos);
@@ -159,6 +326,11 @@ namespace RimForge.Buildings
             Content.RitualBall.drawSize = new Vector2(BallDrawSize, BallDrawSize);
             Content.RitualBall.MatNorth.color = new Color(1f, 145f / 255f, 0f, 1f);
             Content.RitualBall.Draw(drawPos + new Vector3(0f, 0f, ballOffset), Rot4.North, this, 0f);
+        }
+
+        public bool ShouldGlowNow()
+        {
+            return true;
         }
     }
 }

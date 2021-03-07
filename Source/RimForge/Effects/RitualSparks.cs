@@ -30,7 +30,7 @@ namespace RimForge.Effects
             if (matCache.TryGetValue(color, out var mat))
                 return mat;
 
-            mat = MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.WorldOverlayCutout, color);
+            mat = MaterialPool.MatFrom("RF/Effects/Spark", ShaderDatabase.MoteGlow, color);
             matCache.Add(color, mat);
             return mat;
         }

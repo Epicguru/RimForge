@@ -93,4 +93,9 @@ WARNING: Firing cannot be cancelled once started!</RF.Coilgun.AttackDesc>
 <RF.LR.FailNoBatteries>Lightning rod caught lightning bolt, but there are no batteries on the power grid! The power was harmlessly passed into the ground.</RF.LR.FailNoBatteries>
 <RF.LR.Success>Lightning rod caught lightning bolt, charging batteries with {0} Wd of power!</RF.LR.Success>
 
+<RF.Ritual.DrawGuideShowLabel>Show ritual blueprint</RF.Ritual.DrawGuideShowLabel>
+<RF.Ritual.DrawGuideHideLabel>Hide ritual blueprint</RF.Ritual.DrawGuideHideLabel>
+<RF.Ritual.DrawGuideShowDesc>Enables the ritual structure blueprint guide.\nThis helps you know where to place down the ritual components.</RF.Ritual.DrawGuideShowDesc>
+<RF.Ritual.DrawGuideHideDesc>Disables the ritual structure blueprint guide.</RF.Ritual.DrawGuideHideDesc>
+<RF.Ritual.Missing>Missing {0} x{1}</RF.Ritual.Missing>
  </LanguageData>

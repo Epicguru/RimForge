@@ -5,7 +5,7 @@ using Verse;
 namespace RimForge.Buildings
 {
     [StaticConstructorOnStartup] // Just to get rimworld to shut up about it.
-    public class Building_WirelessPowerPylon : Building
+    public class Building_WirelessPowerPylon : Building, IConditionalGlower
     {
         private static Graphic activeGraphic, idleGraphic;
 
@@ -34,6 +34,11 @@ namespace RimForge.Buildings
             base.SpawnSetup(map, respawningAfterLoad);
 
             Wireless = GetComp<CompWirelessPower>();
+        }
+
+        public bool ShouldGlowNow()
+        {
+            return IsActive;
         }
     }
 }

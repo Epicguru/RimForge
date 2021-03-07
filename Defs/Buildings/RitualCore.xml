@@ -33,6 +33,12 @@ Praise the machine god!</description>
       <ComponentIndustrial>4</ComponentIndustrial>
       <RF_Copper>50</RF_Copper>
     </costList>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>12</glowRadius>
+        <glowColor>(255,89,0,0)</glowColor>
+      </li>
+    </comps>
     <statBases>
       <MaxHitPoints>100</MaxHitPoints>
       <WorkToBuild>5000</WorkToBuild>

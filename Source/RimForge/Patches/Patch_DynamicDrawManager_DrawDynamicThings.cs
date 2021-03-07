@@ -8,11 +8,9 @@ namespace RimForge.Patches
     static class Patch_DynamicDrawManager_DrawDynamicThings
     {
         private static Action<Map> onLateDraw;
-        private static bool anyListener = false;
 
         public static void TryRegisterListener(Action<Map> method)
         {
-            anyListener = true;
             onLateDraw = null;
             onLateDraw = method;
             Core.Log("Registered map late draw listener.");

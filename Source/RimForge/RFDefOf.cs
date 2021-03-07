@@ -22,6 +22,7 @@ namespace RimForge
         public static ShaderTypeDef TransparentPostLight;
         public static SoundDef RF_Sound_CoilgunFire;
         public static ThingDef RF_Motes_MuzzleFlash;
+        public static ThingDef RF_Motes_RitualDistort;
         public static TraitDef RF_BlessingOfZir;
 
         // Vanilla ones.

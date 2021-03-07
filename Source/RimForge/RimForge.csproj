@@ -82,6 +82,7 @@
     <Compile Include="Comps\CompWirelessPower.cs" />
     <Compile Include="Buildings\HeatingElement.cs" />
     <Compile Include="Comps\CompHeatingElementHeatPusher.cs" />
+    <Compile Include="Comps\IConditionalGlower.cs" />
     <Compile Include="Content.cs" />
     <Compile Include="Damage\DamageWorker_Propagate.cs" />
     <Compile Include="Damage\DamageWorker_Electrical.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Defs\CoilgunDef.cs" />
     <Compile Include="Defs\HeatingElementDef.cs" />
     <Compile Include="Effects\ElectricArc.cs" />
+    <Compile Include="Effects\BezierElectricArc.cs" />
     <Compile Include="Effects\LinearElectricArc.cs" />
     <Compile Include="Effects\MapEffect.cs" />
     <Compile Include="Effects\MapEffectHandler.cs" />
