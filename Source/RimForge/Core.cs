@@ -1,5 +1,7 @@
 ﻿using System;
 using HarmonyLib;
+using RimForge.Effects;
+using UnityEngine;
 using Verse;
 
 namespace RimForge
@@ -44,6 +46,17 @@ namespace RimForge
             {
                 Log($"Patched {harmony.GetPatchedMethods().EnumerableCount()} methods.");
             }
+
+            // Create MonoBehaviour hook.
+            var go = new GameObject("RimForge hook");
+            go.AddComponent<UnityHook>();
+            Log("Created Unity hook game object.");
+
+            // When the game closes, shut down this particle processing thread.
+            UnityHook.UponApplicationQuit += () =>
+            {
+                MapEffectHandler.ThreadedHandler?.Stop();
+            };
         }
     }
 }

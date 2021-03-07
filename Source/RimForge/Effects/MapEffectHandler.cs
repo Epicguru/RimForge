@@ -10,7 +10,52 @@ namespace RimForge.Effects
         /// <summary>
         /// Slow!
         /// </summary>
-        public static MapEffectHandler Current => Find.World.GetComponent<MapEffectHandler>();
+        public static MapEffectHandler Current => Find.World?.GetComponent<MapEffectHandler>();
+        public static ThreadedEffectHandler ThreadedHandler = new ThreadedEffectHandler();
+
+        [DebugAction("RimForge", "Debug Map Effects")]
+        private static void DebugMapEffects()
+        {
+            var instance = Current;
+            if(instance == null)
+            {
+                Core.Error("Failed to find map effect handler instance.");
+                return;
+            }
+
+            int mapCount = instance.effects.Count;
+            Core.Log($"There are {mapCount} maps with effects:");
+            foreach(var pair in instance.effects)
+            {
+                Map map = null;
+                if(pair.Key >= 0 && pair.Key < Find.Maps.Count)
+                    map = Find.Maps[pair.Key];
+
+                int total = pair.Value.Count;
+                int dead = 0;
+                int normal = 0;
+                int threaded = 0;
+
+                foreach (var effect in pair.Value)
+                {
+                    if (effect == null)
+                        continue;
+
+                    if (effect.Destroyed)
+                    {
+                        dead++;
+                        continue;
+                    }
+
+                    if (effect is ThreadedEffect)
+                        threaded++;
+                    else
+                        normal++;
+                }
+
+                Core.Log($"  -Map {(map == null ? "<null>" : $"'{map}'")}: {total} total, {normal} normal, {threaded} threaded, {dead} dead.");
+            }
+        }
 
         private readonly Dictionary<int, List<MapEffect>> effects = new Dictionary<int, List<MapEffect>>();
 
@@ -23,6 +68,10 @@ namespace RimForge.Effects
         {
             base.FinalizeInit();
             Patch_DynamicDrawManager_DrawDynamicThings.TryRegisterListener(OnDrawLate);
+
+            if (ThreadedHandler.IsRunning)
+                ThreadedHandler.Stop();
+            ThreadedHandler.Start();
         }
 
         public void RegisterEffect(MapEffect effect, Map map)
@@ -51,6 +100,11 @@ namespace RimForge.Effects
             {
                 var newList = new List<MapEffect>(32) { effect };
                 effects.Add(id, newList);
+            }
+
+            if (effect is ThreadedEffect te)
+            {
+                ThreadedHandler.AddEffect(te);
             }
         }
 

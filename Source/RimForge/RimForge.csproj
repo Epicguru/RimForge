@@ -93,6 +93,10 @@
     <Compile Include="Effects\LinearElectricArc.cs" />
     <Compile Include="Effects\MapEffect.cs" />
     <Compile Include="Effects\MapEffectHandler.cs" />
+    <Compile Include="Effects\RitualSparks.cs" />
+    <Compile Include="Effects\ThreadedEffect.cs" />
+    <Compile Include="Effects\ThreadedEffectHandler.cs" />
+    <Compile Include="Effects\VelocityParticle.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="Patches\Patch_CompGlower_ShouldBeLitNow.cs" />
     <Compile Include="Patches\Patch_DynamicDrawManager_DrawDynamicThings.cs" />
@@ -108,6 +112,7 @@
     <Compile Include="RFDefOf.cs" />
     <Compile Include="Power\WirelessPower.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="UnityHook.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

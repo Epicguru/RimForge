@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RimForge.Effects;
+using UnityEngine;
 using Verse;
 
 namespace RimForge.Buildings
@@ -59,6 +60,15 @@ namespace RimForge.Buildings
 
             CircleAlpha = Mathf.Sin(timer * Mathf.PI * 2f * CircleAlphaFreq) * CircleAlphaMag + CircleBaseAlpha;
             ballOffset = Mathf.Sin((timer + 12) * Mathf.PI * 2f * BallOffsetFreq) * BallOffsetMag + BallOffsetBase;
+
+            var worldMousePos = UI.MouseMapPosition();
+
+            var sparks = new RitualSparks();
+            sparks.Position = DrawPos.WorldToFlat();
+            sparks.GravitateTowards = worldMousePos.WorldToFlat();
+            sparks.Velocity = Rand.InsideUnitCircle * 15f;
+            sparks.FixedLength = 1f;
+            sparks.Spawn(this.Map);
         }
 
         public override void Draw()
