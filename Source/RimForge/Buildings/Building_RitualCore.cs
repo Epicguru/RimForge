@@ -32,12 +32,18 @@ namespace RimForge.Buildings
             }
         }
 
-        [TweakValue("_RimForge", 0, 0.2f)]
-        private static float ArcChance = 0.01f;
         [TweakValue("_RimForge", 0, 1)]
         private static float ArcDuration = 1;
         [TweakValue("_RimForge", 0, 1)]
         private static float ArcMag = 0.55f;
+        [TweakValue("_RimForge", 0, 2)]
+        private static float SymbolDrawSize = 1.2f;
+        [TweakValue("_RimForge", 0, 1)]
+        private static float SymbolDrawAlpha = 1f;
+        [TweakValue("_RimForge", 0, 6)]
+        private static float SymbolDrawOffset = 6f;
+        [TweakValue("_RimForge", 0, 90f)]
+        private static float SymbolDrawBA = 22.5f;
 
         public float GearDrawSize = 12.2f, CircleDrawSize = 20, TextDrawSize = 8;
         public float GearDrawRot, CircleDrawRot, TextDrawRot;
@@ -57,6 +63,7 @@ namespace RimForge.Buildings
         private List<string> missing = new List<string>();
         private int tickCounter = -1;
         private List<(BezierElectricArc arc, float age)> arcs = new List<(BezierElectricArc arc, float age)>();
+        private float timeToSparks = 1;
 
         public override void ExposeData()
         {
@@ -75,6 +82,8 @@ namespace RimForge.Buildings
             tickCounter++;
             if (tickCounter % 60 == 0)
                 UpdateMissing();
+            if (tickCounter % (60 * 5) == 0)
+                SpawnDistorsion();
 
             // Turn the ritual gears.
             GearDrawRot += GearTurnSpeed / 60f;
@@ -85,7 +94,18 @@ namespace RimForge.Buildings
             CircleAlpha = Mathf.Sin(timer * Mathf.PI * 2f * CircleAlphaFreq) * CircleAlphaMag + CircleBaseAlpha;
             ballOffset = Mathf.Sin((timer + 12) * Mathf.PI * 2f * BallOffsetFreq) * BallOffsetMag + BallOffsetBase;
 
-            if (Rand.Chance(ArcChance))
+            bool spawnSparks = false;
+            if (timeToSparks >= 0f)
+            {
+                timeToSparks -= 1f / 60f;
+                if (timeToSparks <= 0f)
+                {
+                    spawnSparks = true;
+                    timeToSparks = Rand.Range(2.2f, 3f);
+                }
+            }
+
+            if (spawnSparks)
             {
                 int a = Rand.Range(0, 8);
                 int b = a + (Rand.RangeInclusive(1, 2) * (Rand.Chance(0.5f) ? 1 : -1));
@@ -102,7 +122,7 @@ namespace RimForge.Buildings
                     arc.P1 = midA + new Vector2(0, 3);
                     arc.P2 = midB + new Vector2(0, 3);
                     arc.P3 = end;
-                    arc.Red = true;
+                    arc.Yellow = true;
 
                     arc.Spawn(this.Map);
                     arcs.Add((arc, 0));
@@ -115,18 +135,18 @@ namespace RimForge.Buildings
                 }
 
                 Vector2 gravTowards = Position.ToVector3Shifted().WorldToFlat();
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < 15; i++)
                 {
                     var sparks = new RitualSparks();
                     sparks.Position = start;
                     sparks.GravitateTowards = gravTowards;
-                    sparks.Velocity = Rand.InsideUnitCircle * 7.5f;
+                    sparks.Velocity = Rand.InsideUnitCircle.normalized * Rand.Range(0.5f, 6.5f);
                     sparks.Spawn(this.Map);
 
                     sparks = new RitualSparks();
                     sparks.Position = end;
                     sparks.GravitateTowards = gravTowards;
-                    sparks.Velocity = Rand.InsideUnitCircle.normalized * Rand.Range(0.5f, 7.5f);
+                    sparks.Velocity = Rand.InsideUnitCircle.normalized * Rand.Range(0.5f, 6.5f);
                     sparks.Spawn(this.Map);
                 }
             }
@@ -250,13 +270,18 @@ namespace RimForge.Buildings
                 defaultLabel = "spawn distort mote",
                 action = () =>
                 {
-                    Mote mote = (Mote) ThingMaker.MakeThing(RFDefOf.RF_Motes_RitualDistort, null);
-                    mote.Scale = 1;
-                    mote.exactRotation = 0;
-                    mote.exactPosition = DrawPos;
-                    GenSpawn.Spawn(mote, Position, Map, WipeMode.Vanish);
+                    SpawnDistorsion();
                 }
             };
+        }
+
+        public void SpawnDistorsion()
+        {
+            Mote mote = (Mote)ThingMaker.MakeThing(RFDefOf.RF_Motes_RitualDistort, null);
+            mote.Scale = 1;
+            mote.exactRotation = 0;
+            mote.exactPosition = DrawPos;
+            GenSpawn.Spawn(mote, Position, Map, WipeMode.Vanish);
         }
 
         private void DrawGhosts()
@@ -313,6 +338,17 @@ namespace RimForge.Buildings
             Content.RitualGear.drawSize = new Vector2(GearDrawSize, GearDrawSize);
             Content.RitualGear.MatNorth.color = new Color(0.9f, 0.15f, 0.15f, GearAlpha);
             Content.RitualGear.Draw(drawPos, Rot4.North, this, GearDrawRot);
+
+            for (int i = 0; i < 8; i++)
+            {
+                var symbol = i % 2 == 0 ? Content.RitualSymbolA : Content.RitualSymbolB;
+                symbol.drawSize = new Vector2(SymbolDrawSize, SymbolDrawSize);
+                symbol.MatNorth.color = new Color(0.9f, 0.35f, 0.15f, SymbolDrawAlpha);
+                float angle = (SymbolDrawBA + i * (360f / 8f) - GearDrawRot) * Mathf.Deg2Rad;
+                Vector3 offset = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * SymbolDrawOffset;
+                symbol.Draw(drawPos + offset, Rot4.North, this, 0f);
+            }
+            
 
             Content.RitualCircleText.drawSize = new Vector2(TextDrawSize, TextDrawSize);
             Content.RitualCircleText.MatNorth.color = new Color(0.9f, 0.15f, 0.15f, TextAlpha);

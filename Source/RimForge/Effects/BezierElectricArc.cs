@@ -5,13 +5,13 @@ namespace RimForge.Effects
 {
     public class BezierElectricArc : ElectricArc
     {
-        private static readonly Material redMaterial = MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.MoteGlow, Color.red);
+        private static readonly Material redMaterial = MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.MoteGlow, new Color(1f, 115f / 255f, 0));
 
         public override Vector2 Start { get => P0; set => P0 = value; }
         public override Vector2 End   { get => P3; set => P3 = value; }
 
         public Vector2 P0, P1, P2, P3;
-        public bool Red;
+        public bool Yellow;
 
         public BezierElectricArc(int intermediatePoints) : base(intermediatePoints)
         {
@@ -43,7 +43,7 @@ namespace RimForge.Effects
 
         public override Material GetMaterial()
         {
-            return Red ? redMaterial : base.GetMaterial();
+            return Yellow ? redMaterial : base.GetMaterial();
         }
 
         public override Vector2 GetNormal(float t)

@@ -18,6 +18,7 @@ namespace RimForge
         public static Graphic CoilgunBeam;
 
         public static Graphic RitualCircle, RitualCircleText, RitualGear, RitualBall;
+        public static Graphic RitualSymbolA, RitualSymbolB;
 
         static Content()
         {
@@ -89,6 +90,9 @@ namespace RimForge
             RitualCircleText = MakeUnlit("RF/Effects/RitualCircleText", new Vector2(10, 10));
             RitualGear = MakeUnlit("RF/Effects/RitualGear", new Vector2(14, 14));
             RitualBall = MakeUnlit("RF/Effects/RitualBall", new Vector2(1, 1));
+
+            RitualSymbolA = MakeUnlit("RF/Effects/RitualSymbolA", new Vector2(1, 1));
+            RitualSymbolB = MakeUnlit("RF/Effects/RitualSymbolB", new Vector2(1, 1));
         }
     }
 }

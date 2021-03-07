@@ -9,7 +9,7 @@ namespace RimForge.Effects
         #region Static stuff
 
         [TweakValue("_RimForge", 0, 50)]
-        private static float GC = 1.5f, GC2 = 6f;
+        private static float GC = 1.2f, GC2 = 13f;
         private static Dictionary<Color, Material> matCache = new Dictionary<Color, Material>();
 
         [DebugAction("RimForge", "Debug Sparks Material Cache")]
@@ -37,11 +37,10 @@ namespace RimForge.Effects
 
         #endregion
 
-        public Color Color = Color.red;
+        public Color Color = new Color(1f, 170f / 255f, 0, 0.35f);
         public float? FixedLength;
         public float LengthCoefficient = 0.1f;
         public Vector2? GravitateTowards;
-        public float GravitationalConstant = 0.1f;
         public float DestroyDistance = 0.5f;
         public float LifeTime = 10f;
 
@@ -66,7 +65,11 @@ namespace RimForge.Effects
 
             if (GravitateTowards != null)
             {
-                Velocity = Vector2.MoveTowards(Velocity, (GravitateTowards.Value - Position) * GC, GC2 * deltaTime);
+                Vector2 delta = (GravitateTowards.Value - Position);
+                if (delta.sqrMagnitude < 16)
+                    delta = delta.normalized * 4f;
+                Velocity = Vector2.MoveTowards(Velocity, delta * GC, GC2 * deltaTime);
+
                 float sqrDst = (GravitateTowards.Value - Position).sqrMagnitude;
 
                 if (sqrDst <= DestroyDistance * DestroyDistance)
