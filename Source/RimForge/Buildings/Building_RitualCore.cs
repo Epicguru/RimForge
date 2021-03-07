@@ -1,4 +1,7 @@
-﻿using RimForge.Effects;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using RimForge.Effects;
 using UnityEngine;
 using Verse;
 
@@ -27,24 +30,16 @@ namespace RimForge.Buildings
             }
         }
 
-        [TweakValue("_RimForge", 0, 24)]
-        public static float GearDrawSize = 12.2f, CircleDrawSize = 20, TextDrawSize = 8;
-        [TweakValue("_RimForge", 0, 360)]
-        public static float GearDrawRot, CircleDrawRot, TextDrawRot;
-        [TweakValue("_RimForge", 0, 1)]
-        public static float GearAlpha = 1, CircleAlpha = 1, TextAlpha = 1;
+        public float GearDrawSize = 12.2f, CircleDrawSize = 20, TextDrawSize = 8;
+        public float GearDrawRot, CircleDrawRot, TextDrawRot;
+        public float GearAlpha = 1, CircleAlpha = 1, TextAlpha = 1;
 
-        [TweakValue("_RimForge", -360, 360)]
-        public static float GearTurnSpeed = -20f, TextTurnSpeed = 9f;
-        [TweakValue("_RimForge", 0f, 1f)]
-        public static float CircleBaseAlpha = 0.7f, CircleAlphaMag = 0.06f;
-        [TweakValue("_RimForge", 0f, 20f)]
-        public static float CircleAlphaFreq = 2, BallOffsetFreq = 0.24f;
+        public float GearTurnSpeed = -20f, TextTurnSpeed = 9f;
+        public float CircleBaseAlpha = 0.7f, CircleAlphaMag = 0.06f;
+        public float CircleAlphaFreq = 2, BallOffsetFreq = 0.24f;
 
-        [TweakValue("_RimForge", 0f, 5f)]
-        public static float BallOffsetBase = 1;
-        [TweakValue("_RimForge", 0f, 5f)]
-        public static float BallOffsetMag = 0.11f, BallDrawSize = 0.72f;
+        public float BallOffsetBase = 1;
+        public float BallOffsetMag = 0.11f, BallDrawSize = 0.72f;
 
         private float ballOffset;
         private float timer;
@@ -66,15 +61,82 @@ namespace RimForge.Buildings
             var sparks = new RitualSparks();
             sparks.Position = DrawPos.WorldToFlat();
             sparks.GravitateTowards = worldMousePos.WorldToFlat();
-            sparks.Velocity = Rand.InsideUnitCircle * 15f;
-            sparks.FixedLength = 1f;
+            sparks.Velocity = Rand.InsideUnitCircle * 6f;
             sparks.Spawn(this.Map);
+        }
+
+        private IEnumerable<IntVec3> GetPillarPositions()
+        {
+            IntVec3 basePos = Position;
+
+            yield return basePos + new IntVec3(7, 0, 0);
+            yield return basePos - new IntVec3(7, 0, 0);
+
+            yield return basePos + new IntVec3(0, 0, 7);
+            yield return basePos - new IntVec3(0, 0, 7);
+
+            yield return basePos + new IntVec3(5, 0, 5);
+            yield return basePos - new IntVec3(5, 0, 5);
+
+            yield return basePos + new IntVec3(-5, 0, 5);
+            yield return basePos - new IntVec3(-5, 0, 5);
         }
 
         public override void Draw()
         {
             base.Draw();
 
+            DrawGhosts();
+
+            DrawRitualEffects();
+        }
+
+        private void DrawGhosts()
+        {
+            var map = this.Map;
+            if (map == null)
+                return;
+
+            bool ShouldDrawAt(IntVec3 pos)
+            {
+                var thing = pos.GetFirstThing(map, RFDefOf.Column);
+                if (thing != null && thing.Stuff == RFDefOf.RF_Copper)
+                    return false;
+
+                int index = map.cellIndices.CellToIndex(pos);
+                var bps = map.blueprintGrid.InnerArray[index];
+                if (bps != null)
+                {
+                    foreach (var bp in bps)
+                    {
+                        if (bp == null)
+                            continue;
+                        
+                        if (bp.def.entityDefToBuild == RFDefOf.Column)
+                            return false;
+                    }
+                }
+
+                int time = (int) (Time.realtimeSinceStartup * 2);
+                return time % 2 == 0;
+            }
+
+            Color color = Color.Lerp(Color.red, Color.yellow, 0.5f);
+            foreach (var pos in GetPillarPositions())
+            {
+                if (ShouldDrawAt(pos))
+                    DrawGhost(pos, color);
+            }
+        }
+
+        private void DrawGhost(IntVec3 at, Color color)
+        {
+            ThingDef blueprintDef = RFDefOf.Column.blueprintDef;
+            GraphicDatabase.Get(blueprintDef.graphic.GetType(), blueprintDef.graphic.path, blueprintDef.graphic.Shader, blueprintDef.graphic.drawSize, color, Color.white, blueprintDef.graphicData, null).DrawFromDef(at.ToVector3ShiftedWithAltitude(AltitudeLayer.Blueprint), Rot4.North, RFDefOf.Column.blueprintDef);
+        }
+
+        private void DrawRitualEffects()
+        {
             if (Content.RitualCircle == null)
                 Content.LoadRitualGraphics(this);
 

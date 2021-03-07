@@ -23,11 +23,6 @@ namespace RimForge.Effects
         private List<ThreadedEffect> effects = new List<ThreadedEffect>();
         private Thread thread;
 
-        public ThreadedEffectHandler()
-        {
-            thread = new Thread(Run);
-            thread.Name = "RimForge Particle Thread";
-        }
 
         public void Start()
         {
@@ -35,7 +30,11 @@ namespace RimForge.Effects
                 return;
 
             IsRunning = true;
+
+            thread = new Thread(Run);
+            thread.Name = "RimForge Particle Thread";
             thread.Start();
+
             effects.Clear();
             Core.Log("Started particle processing thread.");
         }
@@ -93,7 +92,7 @@ namespace RimForge.Effects
 
                 // Will round down.
                 // This is fine since Thread.Sleep sometimes waits a little longer than expected especially on lower priority threads.
-                int toWaitMs = (int) (toWait);
+                int toWaitMs = (int) (toWait * 1000.0);
                 if (toWaitMs > 0)
                     Thread.Sleep(toWaitMs);
             }
@@ -106,9 +105,8 @@ namespace RimForge.Effects
             for (int i = 0; i < effects.Count; i++)
             {
                 var effect = effects[i];
-                if (effect == null || effect.Destroyed)
+                if (effect == null || effect.ShouldDeSpawn())
                 {
-                    Core.Log("Removed destroyed effect");
                     effects.RemoveAt(i);
                     i--;
                     continue;

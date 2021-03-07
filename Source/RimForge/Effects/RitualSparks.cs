@@ -8,8 +8,8 @@ namespace RimForge.Effects
     {
         #region Static stuff
 
-        [TweakValue("_RimForge", 0, 1)]
-        private static float GC = 0.1f;
+        [TweakValue("_RimForge", 0, 50)]
+        private static float GC = 1.5f, GC2 = 6f;
         private static Dictionary<Color, Material> matCache = new Dictionary<Color, Material>();
 
         [DebugAction("RimForge", "Debug Sparks Material Cache")]
@@ -30,7 +30,7 @@ namespace RimForge.Effects
             if (matCache.TryGetValue(color, out var mat))
                 return mat;
 
-            mat = MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.MoteGlow, color);
+            mat = MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.WorldOverlayCutout, color);
             matCache.Add(color, mat);
             return mat;
         }
@@ -66,12 +66,10 @@ namespace RimForge.Effects
 
             if (GravitateTowards != null)
             {
-                Vector2 other = GravitateTowards.Value;
-                float sqrDst = (other - Position).sqrMagnitude;
-                float force = (GravitationalConstant * GC) / sqrDst;
-                Velocity += force * (other - Position).normalized * deltaTime;
+                Velocity = Vector2.MoveTowards(Velocity, (GravitateTowards.Value - Position) * GC, GC2 * deltaTime);
+                float sqrDst = (GravitateTowards.Value - Position).sqrMagnitude;
 
-                if(sqrDst <= DestroyDistance * DestroyDistance)
+                if (sqrDst <= DestroyDistance * DestroyDistance)
                 {
                     Destroy();
                 }
@@ -82,6 +80,9 @@ namespace RimForge.Effects
         {
             if (mat == null)
                 mat = GetMat(Color);
+
+            if (endDraw == Vector3.zero)
+                return;
 
             GenDraw.DrawLineBetween(DrawPos, endDraw, mat);
         }

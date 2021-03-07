@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using RimForge.Patches;
 using RimWorld.Planet;
 using Verse;
@@ -24,6 +25,7 @@ namespace RimForge.Effects
             }
 
             int mapCount = instance.effects.Count;
+            Core.Log($"Threaded handler running: {ThreadedHandler.IsRunning}");
             Core.Log($"There are {mapCount} maps with effects:");
             foreach(var pair in instance.effects)
             {
@@ -70,7 +72,10 @@ namespace RimForge.Effects
             Patch_DynamicDrawManager_DrawDynamicThings.TryRegisterListener(OnDrawLate);
 
             if (ThreadedHandler.IsRunning)
+            {
                 ThreadedHandler.Stop();
+                Thread.Sleep(100);
+            }
             ThreadedHandler.Start();
         }
 
@@ -110,7 +115,6 @@ namespace RimForge.Effects
 
         private void OnDrawLate(Map map)
         {
-
             if (map != null && effects.TryGetValue(map.uniqueID, out var found))
             {
                 bool tick = !Find.TickManager.Paused;

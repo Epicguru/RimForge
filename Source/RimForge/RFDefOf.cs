@@ -17,10 +17,14 @@ namespace RimForge
         public static ThingDef RF_GoldDore;
         public static ThingDef Gold;
         public static ThingDef Silver;
+        public static ThingDef RF_Copper;
         public static StatCategoryDef RF_RimForgeStats;
         public static ShaderTypeDef TransparentPostLight;
         public static SoundDef RF_Sound_CoilgunFire;
         public static ThingDef RF_Motes_MuzzleFlash;
         public static TraitDef RF_BlessingOfZir;
+
+        // Vanilla ones.
+        public static ThingDef Column;
     }
 }
