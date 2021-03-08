@@ -111,7 +111,7 @@ namespace RimForge.Buildings
                 int b = a + (Rand.RangeInclusive(1, 2) * (Rand.Chance(0.5f) ? 1 : -1));
                 var start = GetPillarPosition(a).ToVector3().WorldToFlat() + new Vector2(0.5f, 1.2f);
                 var end = GetPillarPosition(b).ToVector3().WorldToFlat() + new Vector2(0.5f, 1.2f);
-
+                
                 for (int i = 0; i < 2; i++)
                 {
                     var arc = new BezierElectricArc(25);

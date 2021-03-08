@@ -55,13 +55,13 @@ namespace RimForge
                     if (!input.resource.HasComp(typeof(CompShowAlloyInfo)))
                     {
                         input.resource.comps.Add(new CompProperties_ShowAlloyInfo());
-                        Core.Log($"Since {input.resource.LabelCap} is an ingredient in '{def.LabelCap}', it has been given the ShowAlloyInfo component.");
+                        //Core.Log($"Since {input.resource.LabelCap} is an ingredient in '{def.LabelCap}', it has been given the ShowAlloyInfo component.");
                     }
                 }
                 if (!output.HasComp(typeof(CompShowAlloyInfo)))
                 {
                     output.comps.Add(new CompProperties_ShowAlloyInfo());
-                    Core.Log($"Since {output.LabelCap} is the output of '{def.LabelCap}', it has been given the ShowAlloyInfo component.");
+                    //Core.Log($"Since {output.LabelCap} is the output of '{def.LabelCap}', it has been given the ShowAlloyInfo component.");
                 }
             }
 

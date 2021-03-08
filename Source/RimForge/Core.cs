@@ -44,7 +44,7 @@ namespace RimForge
             }
             finally
             {
-                Log($"Patched {harmony.GetPatchedMethods().EnumerableCount()} methods.");
+                Log($"Patched {harmony.GetPatchedMethods().EnumerableCount()} methods:\n{string.Join(",\n", harmony.GetPatchedMethods())}");
             }
 
             // Create MonoBehaviour hook.

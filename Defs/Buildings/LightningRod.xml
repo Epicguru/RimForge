@@ -11,7 +11,7 @@
     </graphicData>
     <passability>PassThroughOnly</passability>
     <designationCategory>Power</designationCategory>
-    <drawerType>MapMeshOnly</drawerType>
+    <drawerType>MapMeshAndRealTime</drawerType>
     <selectable>true</selectable>
     <canOverlapZones>true</canOverlapZones>
     <castEdgeShadows>false</castEdgeShadows>

@@ -57,6 +57,10 @@
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
       <Private>False</Private>
@@ -70,6 +74,7 @@
     <Compile Include="Buildings\Building_FueledHeatingElement.cs" />
     <Compile Include="Buildings\Building_LightningRod.cs" />
     <Compile Include="Buildings\Building_PoweredHeatingElement.cs" />
+    <Compile Include="Buildings\Building_PowerPole.cs" />
     <Compile Include="Buildings\Building_RitualCore.cs" />
     <Compile Include="Buildings\Building_TeslaCoil.cs" />
     <Compile Include="Buildings\Building_WirelessPowerPylon.cs" />
@@ -90,6 +95,7 @@
     <Compile Include="Core.cs" />
     <Compile Include="Defs\CoilgunDef.cs" />
     <Compile Include="Defs\HeatingElementDef.cs" />
+    <Compile Include="Effects\Bezier.cs" />
     <Compile Include="Effects\ElectricArc.cs" />
     <Compile Include="Effects\BezierElectricArc.cs" />
     <Compile Include="Effects\LinearElectricArc.cs" />
@@ -100,9 +106,12 @@
     <Compile Include="Effects\ThreadedEffectHandler.cs" />
     <Compile Include="Effects\VelocityParticle.cs" />
     <Compile Include="Extension.cs" />
+    <Compile Include="Graphic_MultiNoRot.cs" />
     <Compile Include="Patches\Patch_CompGlower_ShouldBeLitNow.cs" />
     <Compile Include="Patches\Patch_DynamicDrawManager_DrawDynamicThings.cs" />
+    <Compile Include="Patches\Patch_GenAdj_CellsAdjacentCardinal.cs" />
     <Compile Include="Patches\Patch_MaterialPool_MatFrom.cs" />
+    <Compile Include="Patches\Patch_ModContentLoaderTex2D_LoadTexture.cs" />
     <Compile Include="Patches\Patch_QualityUtility_GenerateQualityCreatedByPawn.cs" />
     <Compile Include="Patches\Patch_Refuelable_TargetFuelLevel.cs" />
     <Compile Include="Patches\Patch_Refuelable_ShouldAutoRefuelNow.cs" />

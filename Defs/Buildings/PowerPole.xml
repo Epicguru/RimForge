@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RF_PowerPole</defName>
+    <label>power pole (decoration)</label>
+    <description>Has no practical purpose. It can be linked to other power poles to display cables.</description>
+    <thingClass>RimForge.Buildings.Building_PowerPole</thingClass>
+    <graphicData>
+      <texPath>RF/Buildings/PowerPole</texPath>
+      <graphicClass>RimForge.Graphic_MultiNoRot</graphicClass>
+      <drawSize>(1,2)</drawSize>
+      <drawOffset>(0,0,0.5)</drawOffset>
+      <drawRotated>false</drawRotated>
+    </graphicData>
+    <passability>PassThroughOnly</passability>
+    <designationCategory>Power</designationCategory>
+    <drawerType>RealtimeOnly</drawerType>
+    <selectable>true</selectable>
+    <canOverlapZones>true</canOverlapZones>
+    <!-- <castEdgeShadows>true</castEdgeShadows> -->
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <tickerType>Rare</tickerType>
+    <drawOffscreen>true</drawOffscreen>
+    <category>Building</category>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <pathCost>20</pathCost>
+    <size>(1, 1)</size>
+    <costList>
+      <WoodLog>20</WoodLog>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTransmitter</compClass>
+        <transmitsPower>true</transmitsPower>
+      </li>
+    </comps>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <WorkToBuild>500</WorkToBuild>
+      <Flammability>0.25</Flammability>
+      <Beauty>-1</Beauty>
+      <Cleanliness>1</Cleanliness>
+      <Mass>30</Mass>
+    </statBases>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsPower</li>
+    </thingCategories>
+    <researchPrerequisites>
+      <li>Electricity</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+</Defs>
