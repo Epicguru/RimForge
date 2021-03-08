@@ -98,4 +98,13 @@ WARNING: Firing cannot be cancelled once started!</RF.Coilgun.AttackDesc>
 <RF.Ritual.DrawGuideShowDesc>Enables the ritual structure blueprint guide.\nThis helps you know where to place down the ritual components.</RF.Ritual.DrawGuideShowDesc>
 <RF.Ritual.DrawGuideHideDesc>Disables the ritual structure blueprint guide.</RF.Ritual.DrawGuideHideDesc>
 <RF.Ritual.Missing>Missing {0} x{1}</RF.Ritual.Missing>
+
+<RF.LDP.LinkLabel>Connect to...</RF.LDP.LinkLabel>
+<RF.LDP.UnLinkLabel>Remove connection from...</RF.LDP.UnLinkLabel>
+<RF.LDP.UnLinkAllLabel>Remove all connections</RF.LDP.UnLinkAllLabel>
+<RF.LDP.AutoLinkLabel>Auto connect</RF.LDP.AutoLinkLabel>
+<RF.LDP.AutoLinkDesc>Automatically link all selected {0}s.\nNote: this will remove all exsting connections.</RF.LDP.AutoLinkDesc>
+<RF.LDP.AutoLinkDisabled>You need to select multiple {0}s to connect together.</RF.LDP.AutoLinkDisabled>
+<RF.PowerPoleName>power pole</RF.PowerPoleName>
+
  </LanguageData>

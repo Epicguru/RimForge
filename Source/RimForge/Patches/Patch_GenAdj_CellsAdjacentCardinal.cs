@@ -11,29 +11,22 @@ namespace RimForge.Patches
     {
         static void Postfix(Thing t, ref IEnumerable<IntVec3> __result)
         {
-            if (t is Building_PowerPole pp)
+            if (t is Building_LongDistancePower pp)
             {
-                __result = AddConnectedPoles(__result, pp);
+                __result = AddConnected(__result, pp);
             }
         }
 
-        static IEnumerable<IntVec3> AddConnectedPoles(IEnumerable<IntVec3> existing, Building_PowerPole pp)
+        static IEnumerable<IntVec3> AddConnected(IEnumerable<IntVec3> existing, Building_LongDistancePower thing)
         {
             foreach (var pos in existing)
                 yield return pos;
 
-            if (pp.LinkedPoles != null)
+            // Do not sanitize, for speed.
+            foreach (var other in thing.GetAllLinked(false))
             {
-                foreach (var pole in pp.LinkedPoles)
-                {
-                    if (!pole.DestroyedOrNull())
-                        yield return pole.Position;
-                }
-            }
-            foreach (var pole in pp.BackLinkedPoles)
-            {
-                if (!pole.DestroyedOrNull())
-                    yield return pole.Position;
+                if (other != null)
+                    yield return other.Position;
             }
         }
     }

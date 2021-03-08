@@ -73,6 +73,8 @@
     <Compile Include="Buildings\Building_Forge.cs" />
     <Compile Include="Buildings\Building_FueledHeatingElement.cs" />
     <Compile Include="Buildings\Building_LightningRod.cs" />
+    <Compile Include="Buildings\Building_LongDistanceCabled.cs" />
+    <Compile Include="Buildings\Building_LongDistancePower.cs" />
     <Compile Include="Buildings\Building_PoweredHeatingElement.cs" />
     <Compile Include="Buildings\Building_PowerPole.cs" />
     <Compile Include="Buildings\Building_RitualCore.cs" />
