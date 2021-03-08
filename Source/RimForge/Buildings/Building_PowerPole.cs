@@ -107,8 +107,8 @@ namespace RimForge.Buildings
                 var pole = BackLinkedPoles[i];
                 if(pole.DestroyedOrNull())
                 {
-                    i--;
                     BackLinkedPoles.RemoveAt(i);
+                    i--;
                 }
             }
 
@@ -254,6 +254,7 @@ namespace RimForge.Buildings
 
             // Causes power net to be rebuilt.
             Map.mapDrawer.MapMeshDirty(Position, MapMeshFlag.PowerGrid, true, false);
+            Map.powerNetManager.Notify_TransmitterSpawned(PowerComp);
 
             if (genPoints)
                 GeneratePointsAsync(this, other, 50);
@@ -269,6 +270,10 @@ namespace RimForge.Buildings
 
             if (other.BackLinkedPoles.Contains(this))
                 other.BackLinkedPoles.Remove(this);
+
+            // Causes power net to be rebuilt.
+            Map.mapDrawer.MapMeshDirty(Position, MapMeshFlag.PowerGrid, true, false);
+            Map.powerNetManager.Notify_TransmitterSpawned(PowerComp);
         }
 
         public void RegenerateAllPointsAsync()
