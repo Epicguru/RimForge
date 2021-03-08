@@ -30,7 +30,7 @@ namespace RimForge
             LinkIcon   = ContentFinder<Texture2D>.Get("RF/UI/Link");
 
             // The patch disables mip-mapping.
-            PowerPoleCableMat = MaterialPool.MatFrom("RF/Buildings/PowerPoleCable", ShaderDatabase.Cutout, new Color(212 / 255f, 114 / 255f, 11 / 255f));
+            PowerPoleCableMat = MaterialPool.MatFrom("RF/Buildings/PowerPoleCable", ShaderDatabase.Cutout, new Color(150 / 255f, 85 / 255f, 11 / 255f));
         }
 
         internal static void LoadForgeTextures(Building_Forge forge)
