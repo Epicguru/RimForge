@@ -25,7 +25,7 @@ namespace RimForge
         public static ThingDef RF_Motes_MuzzleFlash;
         public static ThingDef RF_Motes_RitualDistort;
         public static TraitDef RF_BlessingOfZir;
-        public static ThingDef RF_PowerPole;
+        public static ThingDef RF_Forge;
 
         // Vanilla ones.
         public static ThingDef Column;

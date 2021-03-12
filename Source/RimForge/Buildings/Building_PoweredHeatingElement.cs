@@ -23,17 +23,22 @@ namespace RimForge.Buildings
         /// </summary>
         public bool IsActive { get; protected set; }
 
+        private int ticksSinceActive = 100;
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+
+            Scribe_Values.Look(ref ticksSinceActive, "hef_ticksSinceActive", 100);
+        }
+
         public override void Tick()
         {
-            IsActive = ShouldBeActive();
+            ticksSinceActive++;
+            IsActive = ticksSinceActive < 10;
             PowerTrader.powerOutputInt = -GetCurrentPowerDraw();
 
             base.Tick();
-        }
-
-        public virtual bool ShouldBeActive()
-        {
-            return (ConnectedForge?.WantsTemperatureIncrease ?? false) && PowerTrader.PowerOn;
         }
 
         public virtual float GetCurrentPowerDraw()
@@ -44,14 +49,22 @@ namespace RimForge.Buildings
             return HEDef.activePowerDraw * PowerLevel;
         }
 
-        public override float GetProvidedHeat()
-        {
-            return IsActive ? HEDef.maxAddedHeat * PowerLevel : 0f;
-        }
-
         public override string GetInspectString()
         {
             return $"{base.GetInspectString()}\n{"RF.CurrentPowerLevel".Translate((PowerLevel * 100f).ToString("F0") + "%")}";
+        }
+
+        public override float GetPotentialHeatIncrease()
+        {
+            return PowerTrader.PowerOn ? HEDef.maxAddedHeat : 0;
+        }
+
+        public override float TickActive()
+        {
+            ticksSinceActive = 0;
+            if (PowerTrader.PowerOn)
+                return HEDef.maxAddedHeat;
+            return 0;
         }
     }
 }

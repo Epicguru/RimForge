@@ -7,6 +7,22 @@ namespace RimForge
     public class AlloyDef : Def
     {
         public bool IsValid { get; protected set; }
+        public RatioHolder LargestRatio
+        {
+            get
+            {
+                if (input == null || input.Count == 0)
+                    return null;
+
+                RatioHolder largest = null;
+                foreach (var ratio in input)
+                {
+                    if (largest == null || ratio.count > largest.count)
+                        largest = ratio;
+                }
+                return largest;
+            }
+        }
 
         /// <summary>
         /// Returns the minimum forge temperature required to create this alloy.
@@ -46,23 +62,9 @@ namespace RimForge
 
         public List<RatioHolder> input;
         public RatioHolder output;
-
-        public RatioHolder LargestRatio
-        {
-            get
-            {
-                if (input == null || input.Count == 0)
-                    return null;
-
-                RatioHolder largest = null;
-                foreach (var ratio in input)
-                {
-                    if (largest == null || ratio.count > largest.count)
-                        largest = ratio;
-                }
-                return largest;
-            }
-        }
+        public bool allowBulk = true;
+        public int bulkMultiplier = 10;
+        public float baseWork = 500;
 
         private float? minTemperature = null;
 
@@ -171,6 +173,11 @@ namespace RimForge
             {
                 IsValid = false;
                 yield return $"[OUT {output}] {error}";
+            }
+
+            if (allowBulk && bulkMultiplier <= 1)
+            {
+                yield return $"Bulk multiplier should be at least 2! Current: {bulkMultiplier}";
             }
         }
 

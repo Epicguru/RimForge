@@ -7,26 +7,23 @@ namespace RimForge.Buildings
         public CompRefuelable FuelComp => _fuelComp ??= GetComp<CompRefuelable>();
         private CompRefuelable _fuelComp;
 
-        public bool IsBurningFuel { get; protected set; }
-
-        public override void Tick()
+        public override float GetPotentialHeatIncrease()
         {
-            IsBurningFuel = ShouldBurnFuelNow();
-            FuelComp.Props.fuelConsumptionRate = IsBurningFuel ? HEDef.activeFuelBurnRate : 0f;
-            if (IsBurningFuel)
+            return (FuelComp.HasFuel) ? HEDef.maxAddedHeat : 0f;
+        }
+
+        public override float TickActive()
+        {
+            bool hasFuel = FuelComp.HasFuel;
+
+            FuelComp.Props.fuelConsumptionRate = hasFuel ? HEDef.activeFuelBurnRate : 0f;
+            if (hasFuel)
+            {
                 FuelComp.ConsumeFuel(FuelComp.Props.fuelConsumptionRate / 60000f);
+                return HEDef.maxAddedHeat;
+            }
 
-            base.Tick();
-        }
-
-        public virtual bool ShouldBurnFuelNow()
-        {
-            return ConnectedForge?.WantsTemperatureIncrease ?? false;
-        }
-
-        public override float GetProvidedHeat()
-        {
-            return (FuelComp.HasFuel && IsBurningFuel) ? HEDef.maxAddedHeat : 0f;
+            return 0f;
         }
     }
 }

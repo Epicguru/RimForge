@@ -28,7 +28,7 @@ namespace RimForge
             LinkIcon   = ContentFinder<Texture2D>.Get("RF/UI/Link");
         }
 
-        internal static void LoadForgeTextures(Building_Forge forge)
+        internal static void LoadForgeTextures(Building forge)
         {
             var gd = forge.DefaultGraphic.data;
             Graphic Make(string path, bool unlit = false)
@@ -51,7 +51,7 @@ namespace RimForge
             Patches.Patch_MaterialPool_MatFrom.Active = false;
         }
 
-        internal static void LoadBuildingGraphics(Building_Coilgun gun)
+        internal static void LoadBuildingGraphics(Building gun)
         {
             var gd = gun.DefaultGraphic.data;
             Graphic Make(string path, Vector2 size)

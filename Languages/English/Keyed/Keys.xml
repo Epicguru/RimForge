@@ -109,4 +109,6 @@ WARNING: Firing cannot be cancelled once started!</RF.Coilgun.AttackDesc>
 <RF.LDP.RemovedLinkRoofBuiltSelf>A roof was built over this {0}, so all connections to it have been severed.</RF.LDP.RemovedLinkRoofBuiltSelf>
 <RF.PowerPoleName>power pole</RF.PowerPoleName>
 
+<RF.Forge.BillNotHot>Forge not capable of reaching req. temperature</RF.Forge.BillNotHot>
+
  </LanguageData>

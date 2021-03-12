@@ -12,10 +12,6 @@
       <drawSize>(2,2)</drawSize>
     </graphicData>
     <comps>
-      <li Class="CompProperties_HeatPusher">
-        <compClass>RimForge.Comps.CompHeatingElementHeatPusher</compClass>
-        <heatPerSecond>0</heatPerSecond>
-      </li>
     </comps>
     <placeWorkers>
       <li>PlaceWorker_Heater</li>
