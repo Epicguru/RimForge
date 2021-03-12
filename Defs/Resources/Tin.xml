@@ -29,6 +29,7 @@ In this pure state, it is a very soft metal, and so is not well suited for weapo
     <stuffProps>
       <categories>
         <li>Metallic</li>
+        <li>RF_PowerPoleMetals</li>
       </categories>
       <commonality>0.25</commonality>
       <statFactors>

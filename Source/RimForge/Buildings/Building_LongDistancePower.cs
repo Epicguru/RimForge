@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using RimForge.Comps;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -8,11 +9,42 @@ using Debug = UnityEngine.Debug;
 
 namespace RimForge.Buildings
 {
-    public abstract class Building_LongDistancePower : Building
+    public abstract class Building_LongDistancePower : Building, ICustomOverlayDrawer
     {
         private static int autoConnectFrame = -1;
+        private static readonly List<Building_LongDistancePower> bin = new List<Building_LongDistancePower>(16);
 
         public abstract string Name { get; }
+        public int TotalLinkCount => (connectedTo?.Count ?? 0) + (connectsToMe?.Count ?? 0);
+
+        /// <summary>
+        /// Gets the maximum link distance, in cells.
+        /// Default value is float.PositiveInfinity.
+        /// </summary>
+        public virtual float MaxLinkDistance => float.PositiveInfinity;
+
+        /// <summary>
+        /// Gets the maximum number of LDC buildings that can be connected to this at once.
+        /// Default value is int.MaxValue (around 2 billion).
+        /// </summary>
+        public virtual int MaxConnections => int.MaxValue;
+
+        /// <summary>
+        /// Is this LDC allowed to have any connections if it is under a roof?
+        /// Default value is true. If false, and this building is under a roof or mountain roof,
+        /// it will never be allowed to connect to anything.
+        /// </summary>
+        public virtual bool CanHaveConnectionsUnderRoof => true;
+
+        /// <summary>
+        /// Is this LDC allowed to form a connection if the target is under a roof?
+        /// Default value is true.
+        /// </summary>
+        public virtual bool CanConnectedBeUnderRoof => true;
+
+        public virtual bool IsUnderRoof => isUnderRoofCache;
+
+        public string OverlayTexturePath => "RF/UI/NoUnderRoofIcon"; 
 
         public CompPowerTransmitter Power
         {
@@ -22,8 +54,6 @@ namespace RimForge.Buildings
             }
         }
         private CompPowerTransmitter _power;
-
-        public int TotalLinkCount => (connectedTo?.Count ?? 0) + (connectsToMe?.Count ?? 0);
 
         protected IReadOnlyCollection<Building_LongDistancePower> OwnedConnectionsSanitized
         {
@@ -36,6 +66,7 @@ namespace RimForge.Buildings
 
         private HashSet<Building_LongDistancePower> connectedTo = new HashSet<Building_LongDistancePower>(2);
         private HashSet<Building_LongDistancePower> connectsToMe = new HashSet<Building_LongDistancePower>(2);
+        private bool isUnderRoofCache;
 
         public override void ExposeData()
         {
@@ -190,6 +221,48 @@ namespace RimForge.Buildings
             };
         }
 
+        public override void Draw()
+        {
+            base.Draw();
+
+            if (CanHaveConnectionsUnderRoof)
+                return;
+
+            if(isUnderRoofCache)
+                this.DrawCustomOverlay();
+        }
+
+        public override void TickRare()
+        {
+            base.TickRare();
+
+            isUnderRoofCache = Position.Roofed(Map);
+
+            if (!CanHaveConnectionsUnderRoof && IsUnderRoof && TotalLinkCount > 0)
+            {
+                // Remove all connections!
+                DisconnectAll();
+                Messages.Message("RF.LDP.RemovedLinkRoofBuiltSelf".Translate(this.LabelCap), MessageTypeDefOf.CautionInput);
+                return;
+            }
+
+            if (!CanConnectedBeUnderRoof)
+            {
+                foreach (var item in GetAllLinked(false))
+                {
+                    if (item.IsUnderRoof)
+                        bin.Add(item);
+                }
+
+                foreach (var item in bin)
+                {
+                    if(TryRemoveLink(item))
+                        Messages.Message("RF.LDP.RemovedLinkRoofBuilt".Translate(item.LabelCap), MessageTypeDefOf.CautionInput);
+                }
+                bin.Clear();
+            }
+        }
+
         public override string GetInspectString()
         {
             if (!Prefs.DevMode)
@@ -324,6 +397,9 @@ namespace RimForge.Buildings
         public virtual void DisconnectAll()
         {
             int total = TotalLinkCount;
+            if (total == 0)
+                return;
+
             int i = 0;
             while (TotalLinkCount > 0)
             {
@@ -339,7 +415,7 @@ namespace RimForge.Buildings
             }
         }
 
-        public virtual bool CanLinkTo(Building_LongDistancePower other)
+        public virtual bool CanLinkTo(Building_LongDistancePower other, bool checkOther = true)
         {
             if (other.DestroyedOrNull())
                 return false;
@@ -351,6 +427,22 @@ namespace RimForge.Buildings
                 return false;
 
             if (connectsToMe.Contains(other))
+                return false;
+
+            if (TotalLinkCount >= MaxConnections)
+                return false;
+
+            float dst = (Position - other.Position).LengthHorizontalSquared;
+            if (dst > MaxLinkDistance)
+                return false;
+
+            if (!CanHaveConnectionsUnderRoof && IsUnderRoof)
+                return false;
+
+            if (!CanConnectedBeUnderRoof && other.IsUnderRoof)
+                return false;
+
+            if (checkOther && !other.CanLinkTo(this, false))
                 return false;
 
             return true;

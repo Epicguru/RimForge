@@ -29,6 +29,7 @@ However, it is very malleable, making it fast to work with.</description>
     <stuffProps>
       <categories>
         <li>Metallic</li>
+        <li>RF_PowerPoleMetals</li>
       </categories>
       <commonality>0.1</commonality>
       <color>(212, 191, 138)</color>

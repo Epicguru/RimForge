@@ -4,6 +4,10 @@ namespace RimForge
 {
     public class Settings : ModSettings
     {
+        // Power poles and similar
+        [TweakValue("RimForge", 0, 10)]
+        public static int CableSegmentsPerCell = 3;
+
         // TESLA COILS
         [TweakValue("RimForge", 1, 500)]
         public static int TeslaMaxDistance = 25;

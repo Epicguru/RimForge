@@ -90,6 +90,7 @@
     <Compile Include="Buildings\HeatingElement.cs" />
     <Compile Include="Comps\CompHeatingElementHeatPusher.cs" />
     <Compile Include="Comps\IConditionalGlower.cs" />
+    <Compile Include="Comps\ICustomOverlayDrawer.cs" />
     <Compile Include="Content.cs" />
     <Compile Include="Damage\DamageWorker_Propagate.cs" />
     <Compile Include="Damage\DamageWorker_Electrical.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Patches\Patch_GenAdj_CellsAdjacentCardinal.cs" />
     <Compile Include="Patches\Patch_MaterialPool_MatFrom.cs" />
     <Compile Include="Patches\Patch_ModContentLoaderTex2D_LoadTexture.cs" />
+    <Compile Include="Patches\Patch_OverlayDrawer_RenderBrokenDownOverlay.cs" />
     <Compile Include="Patches\Patch_QualityUtility_GenerateQualityCreatedByPawn.cs" />
     <Compile Include="Patches\Patch_Refuelable_TargetFuelLevel.cs" />
     <Compile Include="Patches\Patch_Refuelable_ShouldAutoRefuelNow.cs" />

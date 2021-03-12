@@ -17,6 +17,14 @@
     <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
   </StuffCategoryDef>
 
+  <StuffCategoryDef>
+    <defName>RF_PowerPoleMetals</defName>
+    <label>power pole cable material</label>
+    <destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
+    <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
+    <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
+  </StuffCategoryDef>
+
   <!-- Alloys -->
 
   <RimForge.AlloyDef>

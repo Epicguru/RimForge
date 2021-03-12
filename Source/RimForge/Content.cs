@@ -9,8 +9,6 @@ namespace RimForge
     {
         public static readonly Texture2D SignalIcon, CopyIcon, PasteIcon, LinkIcon;
 
-        public static Material PowerPoleCableMat;
-
         public static Graphic ForgeIdle, ForgeGlowAll, ForgeGlowSides;
         public static Graphic ForgeMetalOut, ForgeMetalLeft, ForgeMetalMiddle, ForgeMetalRight;
 
@@ -28,9 +26,6 @@ namespace RimForge
             CopyIcon   = ContentFinder<Texture2D>.Get("RF/UI/Copy");
             PasteIcon  = ContentFinder<Texture2D>.Get("RF/UI/Paste");
             LinkIcon   = ContentFinder<Texture2D>.Get("RF/UI/Link");
-
-            // The patch disables mip-mapping.
-            PowerPoleCableMat = MaterialPool.MatFrom("RF/Buildings/PowerPoleCable", ShaderDatabase.Cutout, new Color(150 / 255f, 85 / 255f, 11 / 255f));
         }
 
         internal static void LoadForgeTextures(Building_Forge forge)
@@ -61,7 +56,6 @@ namespace RimForge
             var gd = gun.DefaultGraphic.data;
             Graphic Make(string path, Vector2 size)
             {
-                Core.Error(gd.shaderType.defName);
                 return GraphicDatabase.Get(gd.graphicClass, path, gd.shaderType.Shader, size, Color.white, Color.white, gd, gd.shaderParameters);
             }
             Graphic MakeUnlit(string path, Vector2 size)

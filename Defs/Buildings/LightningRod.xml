@@ -35,6 +35,9 @@
       <Mass>30</Mass>
     </statBases>
     <minifiedDef>MinifiedThing</minifiedDef>
+    <placeWorkers>
+      <li>PlaceWorker_NotUnderRoof</li>
+    </placeWorkers>
     <thingCategories>
       <li>BuildingsPower</li>
     </thingCategories>

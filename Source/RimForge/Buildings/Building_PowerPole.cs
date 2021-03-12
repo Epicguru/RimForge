@@ -7,6 +7,9 @@ namespace RimForge.Buildings
     {
         public override string Name => "RF.PowerPoleName".Translate();
 
+        public override bool CanConnectedBeUnderRoof => false;
+        public override bool CanHaveConnectionsUnderRoof => false;
+
         public override Vector2 GetFlatConnectionPoint()
         {
             // NESW are 0123
@@ -26,10 +29,14 @@ namespace RimForge.Buildings
             return root;
         }
 
-        public override bool CanLinkTo(Building_LongDistancePower other)
+        public override Color GetCableColor()
         {
-            // Do not allow connections to things that under roofs. The cable can't go through the roof.
-            return base.CanLinkTo(other) && !other.Position.Roofed(other.Map);
+            var stuff = this.Stuff;
+            if (stuff == RFDefOf.RF_Copper)
+                return Building_LongDistanceCabled.DefaultCableColor;
+            if (stuff == RFDefOf.RF_Tin)
+                return new Color32(140, 160, 160, 255);
+            return stuff.stuffProps.color;
         }
     }
 }

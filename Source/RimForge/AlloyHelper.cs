@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RimForge.Comps;
 using UnityEngine;
 using Verse;
 
@@ -172,6 +173,17 @@ namespace RimForge
         public static Vector3 FlatToWorld(this Vector2 flatPos, float y)
         {
             return new Vector3(flatPos.x, y, flatPos.y);
+        }
+
+        public static void DrawCustomOverlay(this Thing drawer)
+        {
+            if (drawer is not ICustomOverlayDrawer)
+            {
+                Core.Warn($"{drawer.LabelCap} cannot draw a custom overlay since it's building class does not implement the ICustomOverlayDrawer interface.");
+                return;
+            }
+
+            drawer.Map.overlayDrawer.DrawOverlay(drawer, RimWorld.OverlayTypes.BrokenDown);
         }
     }
 }

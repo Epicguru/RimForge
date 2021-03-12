@@ -105,6 +105,8 @@ WARNING: Firing cannot be cancelled once started!</RF.Coilgun.AttackDesc>
 <RF.LDP.AutoLinkLabel>Auto connect</RF.LDP.AutoLinkLabel>
 <RF.LDP.AutoLinkDesc>Automatically link all selected {0}s.\nNote: this will remove all exsting connections.</RF.LDP.AutoLinkDesc>
 <RF.LDP.AutoLinkDisabled>You need to select multiple {0}s to connect together.</RF.LDP.AutoLinkDisabled>
+<RF.LDP.RemovedLinkRoofBuilt>A roof was built over {0}, so the connection to it has been severed.</RF.LDP.RemovedLinkRoofBuilt>
+<RF.LDP.RemovedLinkRoofBuiltSelf>A roof was built over this {0}, so all connections to it have been severed.</RF.LDP.RemovedLinkRoofBuiltSelf>
 <RF.PowerPoleName>power pole</RF.PowerPoleName>
 
  </LanguageData>

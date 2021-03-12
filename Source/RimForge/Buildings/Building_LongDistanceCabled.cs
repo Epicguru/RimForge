@@ -8,9 +8,32 @@ namespace RimForge.Buildings
 {
     public abstract class Building_LongDistanceCabled : Building_LongDistancePower
     {
-        private readonly Dictionary<Building_LongDistanceCabled, List<Vector2>> connectionToPoints = new Dictionary<Building_LongDistanceCabled, List<Vector2>>();
+        public static readonly Color DefaultCableColor = new Color(150 / 255f, 85 / 255f, 11 / 255f);
+        private static readonly Dictionary<Color, Material> cableMaterialsCache = new Dictionary<Color, Material>();
 
-        public virtual List<Vector2> GeneratePoints(Building_LongDistanceCabled poleA, Building_LongDistanceCabled poleB, int pointCount, Vector2? p1 = null, Vector2? p2 = null, List<Vector2> points = null)
+        public static Material GetCableMaterial(Color color)
+        {
+            if (cableMaterialsCache.TryGetValue(color, out var found))
+                return found;
+
+            var mat = MaterialPool.MatFrom("RF/Buildings/PowerPoleCable", ShaderDatabase.Cutout, color);
+            cableMaterialsCache.Add(color, mat);
+            return mat;
+        }
+
+        public override Color DrawColor
+        {
+            get => Color.white;
+            set
+            {
+                // Ignored.
+            }
+        }
+
+        private readonly Dictionary<Building_LongDistanceCabled, List<Vector2>> connectionToPoints = new Dictionary<Building_LongDistanceCabled, List<Vector2>>();
+        private Material cableMatCached;
+
+        public virtual List<Vector2> GeneratePoints(Building_LongDistanceCabled poleA, Building_LongDistanceCabled poleB, int? pointCount = null, Vector2? p1 = null, Vector2? p2 = null, List<Vector2> points = null)
         {
             if (poleA.DestroyedOrNull() || poleB.DestroyedOrNull())
                 return points;
@@ -35,9 +58,13 @@ namespace RimForge.Buildings
                 p2 = midB + new Vector2(0, -1.2f);
             }
 
+            int pc = pointCount ?? GetCablePointCount(start, end);
+            if (pc < 2)
+                pc = 2;
+            
             for (int i = 0; i < pointCount; i++)
             {
-                float t = (float)i / (pointCount - 1);
+                float t = (float)i / (pc - 1);
                 Vector2 bezier = Bezier.Evaluate(t, start, p1.Value, p2.Value, end);
                 points.Add(bezier);
             }
@@ -45,7 +72,7 @@ namespace RimForge.Buildings
             return points;
         }
 
-        public void GeneratePointsAsync(Building_LongDistanceCabled dom, Building_LongDistanceCabled sub, int pointCount, Vector2? p1 = null, Vector2? p2 = null)
+        public void GeneratePointsAsync(Building_LongDistanceCabled dom, Building_LongDistanceCabled sub, int? pointCount = null, Vector2? p1 = null, Vector2? p2 = null)
         {
             if (dom.DestroyedOrNull() || sub.DestroyedOrNull())
                 return;
@@ -62,6 +89,14 @@ namespace RimForge.Buildings
             });
         }
 
+        public virtual int GetCablePointCount(Vector2 a, Vector2 b)
+        {
+            if (a == null || b == null || a == b)
+                return 0;
+
+            return Mathf.RoundToInt((a - b).magnitude * Settings.CableSegmentsPerCell);
+        }
+
         /// <summary>
         /// Gets the point that the cables should link up to.
         /// By default simply returns the draw position, however overriding this method and adding an offset
@@ -73,12 +108,25 @@ namespace RimForge.Buildings
             return DrawPos.WorldToFlat();
         }
 
+        public virtual Color GetCableColor()
+        {
+            return DefaultCableColor;
+        }
+
+        public void UpdateCableColor()
+        {
+            cableMatCached = GetCableMaterial(GetCableColor());
+        }
+
         public override void Draw()
         {
             base.Draw();
 
             if (connectionToPoints == null)
                 return;
+
+            if (cableMatCached == null)
+                UpdateCableColor();
 
             foreach (var pair in connectionToPoints)
             {
@@ -95,7 +143,7 @@ namespace RimForge.Buildings
                     var last = points[i - 1].FlatToWorld(height);
                     var current = points[i].FlatToWorld(height);
 
-                    GenDraw.DrawLineBetween(last, current, Content.PowerPoleCableMat);
+                    GenDraw.DrawLineBetween(last, current, cableMatCached);
                 }
             }
         }
