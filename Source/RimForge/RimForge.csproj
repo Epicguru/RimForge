@@ -117,6 +117,7 @@
     <Compile Include="Graphic_MultiNoRot.cs" />
     <Compile Include="Patches\Patch_BillProduction_DoInterface.cs" />
     <Compile Include="Patches\Patch_BillProduction_ShouldDoNow.cs" />
+    <Compile Include="Patches\Patch_BuildingWorkTable_IngredientStackCells.cs" />
     <Compile Include="Patches\Patch_CompGlower_ShouldBeLitNow.cs" />
     <Compile Include="Patches\Patch_DynamicDrawManager_DrawDynamicThings.cs" />
     <Compile Include="Patches\Patch_GenAdj_CellsAdjacentCardinal.cs" />

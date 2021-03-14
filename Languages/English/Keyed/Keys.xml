@@ -2,14 +2,7 @@
 <LanguageData>
 
 <RF.ModName>RimForge</RF.ModName>
-
-<RF.ConnectedToForge>Connected to forge.</RF.ConnectedToForge>
-<RF.ConnectedToForgeActive>Connected to forge, providing {0}.</RF.ConnectedToForgeActive>
-<RF.NotConnectedToForge>Not connected to forge.</RF.NotConnectedToForge>
-
-<RF.CurrentPowerLevel>Current power level: {0}</RF.CurrentPowerLevel>
-<RF.Active>Active</RF.Active>
-<RF.NotActive>Not active</RF.NotActive>
+<RF.None>none</RF.None>
 
 <RF.Pylon.InvalidState>Invalid state</RF.Pylon.InvalidState>
 <RF.Pylon.NoChannel>Idle, no channel selected.</RF.Pylon.NoChannel>
@@ -109,6 +102,9 @@ WARNING: Firing cannot be cancelled once started!</RF.Coilgun.AttackDesc>
 <RF.LDP.RemovedLinkRoofBuiltSelf>A roof was built over this {0}, so all connections to it have been severed.</RF.LDP.RemovedLinkRoofBuiltSelf>
 <RF.PowerPoleName>power pole</RF.PowerPoleName>
 
-<RF.Forge.BillNotHot>Forge not capable of reaching req. temperature</RF.Forge.BillNotHot>
+<RF.Forge.BillNotHot>Forge not capable of reaching temperature ({0})</RF.Forge.BillNotHot>
+<RF.Forge.Providing> providing up to </RF.Forge.Providing> <!-- The leading and trailing whitespace is important -->
+<RF.Forge.HeatingElementsHeader>Connected heating elements:</RF.Forge.HeatingElementsHeader>
+<RF.HeatingElement.CurrentPowerLevel>Current power level: {0}</RF.HeatingElement.CurrentPowerLevel>
 
  </LanguageData>

@@ -17,9 +17,10 @@ namespace RimForge.Patches
                 Text.Font = GameFont.Small;
                 Text.Anchor = TextAnchor.MiddleCenter;
                 GUI.color = Color.yellow;
-                string text = "RF.Forge.BillNotHot".Translate();
-                var size = Text.CalcSize(text) + new Vector2(10, 10);
-                Widgets.DrawBoxSolid(new Rect(0, 0, size.x, size.y).CenteredOnXIn(rect1).CenteredOnYIn(rect1), Color.grey);
+                float reqTemp = bp?.recipe?.TryGetAlloyDef()?.MinTemperature ?? 420f;
+                string text = "RF.Forge.BillNotHot".Translate(reqTemp.ToStringTemperature("F0"));
+                var size = Text.CalcSize(text) + new Vector2(0, -2);
+                Widgets.DrawBoxSolid(new Rect(0, 0, width, size.y).CenteredOnXIn(rect1).CenteredOnYIn(rect1), new Color(0, 0, 0, 0.65f));
                 Widgets.Label(rect1, "<b>" + text + "</b>");
                 GUI.color = Color.white;
                 Text.Anchor = TextAnchor.UpperLeft;

@@ -367,6 +367,7 @@ namespace RimForge.Buildings
 
             GetCapacitorState(out int capCount, out float capStored);
             float damage = Settings.CoilgunBaseDamage * GetRelativePower(capCount, capStored);
+            //Core.Log($"Base damage: {damage}, multi: {Settings.CoilgunPenDamageMultiplier}, building multi: {Settings.CoilgunBuildingDamageMulti}");
 
             int affected = 0;
             int cells = 0;
@@ -379,6 +380,7 @@ namespace RimForge.Buildings
                 return sqrDstA - sqrDstB;
             });
 
+            float totalDamage = 0;
             foreach (var cell in list.TakeWhile(cell => cell.InBounds(map)))
             {
                 cells++;
@@ -408,8 +410,9 @@ namespace RimForge.Buildings
                         if (thing is Building || thing is Pawn)
                         {
                             var info = new DamageInfo(RFDefOf.RF_CoilgunDamage, damage * Settings.CoilgunBuildingDamageMulti, 100, instigator: this);
-                            thing.TakeDamage(info);
+                            var result = thing.TakeDamage(info);
                             affected++;
+                            totalDamage += result.totalDamageDealt;
                         }
 
                         if (Settings.CoilgunMaxPen >= 0 && penDepth > Settings.CoilgunMaxPen)
@@ -425,7 +428,8 @@ namespace RimForge.Buildings
             }
 
             DoMuzzleFlash();
-            Core.Log($"Hit {affected} things, scanned {cells} of {list.Count} cells.");
+            ClearCapacitorPower();
+            Core.Log($"Hit {affected} things for total {totalDamage} damage, scanned {cells} of {list.Count} cells.");
         }
 
         private void DoMuzzleFlash()
@@ -611,7 +615,6 @@ namespace RimForge.Buildings
                     FireTicks = 0;
                     CurrentTargetInfo = target;
                     LastKnowPos = Position;
-                    ClearCapacitorPower();
                 },
                 gun = this,
                 disabled = power <= 0 || !hasPower,
@@ -644,10 +647,6 @@ namespace RimForge.Buildings
         {
             base.ProcessInput(ev);
             SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
-            //Find.Targeter.BeginTargeting(this.targetingParams, action, actionWhenFinished: () =>
-            //{
-            //    gun.DrawAffectedCells = false;
-            //});
             Find.Targeter.BeginTargeting(this.targetingParams, action, targ =>
             {
                 if (targ.IsValid)
