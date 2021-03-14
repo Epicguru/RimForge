@@ -1,32 +1,54 @@
-﻿using RimWorld;
+﻿using RimForge.Comps;
+using RimWorld;
+using UnityEngine;
+using Verse;
 
 namespace RimForge.Buildings
 {
-    public class Building_FueledHeatingElement : HeatingElement
+    public class Building_FueledHeatingElement : HeatingElement, IConditionalGlower
     {
         public CompRefuelable FuelComp => _fuelComp ??= GetComp<CompRefuelable>();
         private CompRefuelable _fuelComp;
 
-        public bool IsBurningFuel { get; protected set; }
+        private int tickCounter = 0;
 
-        public override void Tick()
+        public override Graphic Graphic
         {
-            IsBurningFuel = ShouldBurnFuelNow();
-            FuelComp.Props.fuelConsumptionRate = IsBurningFuel ? HEDef.activeFuelBurnRate : 0f;
-            if (IsBurningFuel)
-                FuelComp.ConsumeFuel(FuelComp.Props.fuelConsumptionRate / 60000f);
+            get
+            {
+                if (Content.HEFueledIdle == null)
+                    Content.LoadFueledHeatingElementGraphics(this);
 
-            base.Tick();
+                return IsForgeRunning && FuelComp.HasFuel ? Content.HEFueledGlow : Content.HEFueledIdle;
+            }
         }
 
-        public virtual bool ShouldBurnFuelNow()
+        public override float GetPotentialHeatIncrease()
         {
-            return ConnectedForge?.WantsTemperatureIncrease ?? false;
+            return (FuelComp.HasFuel) ? HEDef.maxAddedHeat : 0f;
         }
 
-        public override float GetProvidedHeat()
+        public override float TickActive()
         {
-            return (FuelComp.HasFuel && IsBurningFuel) ? HEDef.maxAddedHeat : 0f;
+            base.TickActive();
+
+            bool hasFuel = FuelComp.HasFuel;
+
+            FuelComp.Props.fuelConsumptionRate = hasFuel ? HEDef.activeFuelBurnRate : 0f;
+            if (!hasFuel)
+                return 0f;
+
+            tickCounter++;
+            if (tickCounter % 15 == 0)
+                MoteMaker.ThrowSmoke(Position.ToVector3ShiftedWithAltitude(AltitudeLayer.MoteOverhead) + new Vector3(0.5f, 0, 2f), Map, 0.65f);
+
+            FuelComp.ConsumeFuel(FuelComp.Props.fuelConsumptionRate / 60000f);
+            return HEDef.maxAddedHeat;
+        }
+
+        public bool ShouldGlowNow()
+        {
+            return FuelComp.HasFuel && IsForgeRunning;
         }
     }
 }

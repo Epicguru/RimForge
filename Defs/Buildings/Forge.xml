@@ -31,7 +31,7 @@
 
   <ThingDef ParentName="RF_BuildingBase">
     <defName>RF_Forge</defName>
-    <thingClass>RimForge.Buildings.Building_Forge</thingClass>
+    <thingClass>RimForge.Buildings.Building_ForgeRewritten</thingClass>
     <label>forge</label>
     <description>A metal-smelting forge. Melts down metals, to create alloys out of them.</description>
     <graphicData>
@@ -40,16 +40,20 @@
       <drawSize>(3,3)</drawSize>
       <drawOffset>(0,0,0.5)</drawOffset>
     </graphicData>
+    <rotatable>false</rotatable>
     <drawerType>RealtimeOnly</drawerType>
-    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <altitudeLayer>LayingPawn</altitudeLayer>
     <selectable>true</selectable>
     <size>(3, 2)</size>
-    <hasInteractionCell>True</hasInteractionCell>
+    <hasInteractionCell>true</hasInteractionCell>
     <interactionCellOffset>(0,0,-1)</interactionCellOffset>
     <costList>
       <Steel>350</Steel>
       <ComponentIndustrial>8</ComponentIndustrial>
-    </costList>
+    </costList>    
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+     </inspectorTabs>
     <minifiedDef>MinifiedThing</minifiedDef>
     <thingCategories>
       <li>BuildingsProduction</li>
@@ -60,16 +64,6 @@
         <glowRadius>6</glowRadius>
         <glowColor>(255,248,214,255)</glowColor>
       </li>
-      <li Class="CompProperties_Refuelable">
-        <fuelConsumptionRate>0</fuelConsumptionRate>
-        <fuelCapacity>1000.0</fuelCapacity>
-        <initialFuelPercent>0</initialFuelPercent>
-        <showAllowAutoRefuelToggle>false</showAllowAutoRefuelToggle>
-        <fuelFilter>
-          <thingDefs></thingDefs>
-        </fuelFilter>
-      </li>
-
     </comps>
     <constructionSkillPrerequisite>10</constructionSkillPrerequisite>
     <placeWorkers>

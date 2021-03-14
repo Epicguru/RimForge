@@ -23,8 +23,12 @@ namespace RimForge.Patches
 
             // Bump up quality one level.
             // For reference, an inspiration increases it 2 levels.
-            __result += 1;
-            Core.Log($"Running Blessing of Zir on {pawn.LabelCap}: increased quality to {__result}");
+            var old = __result;
+            if (__result < QualityCategory.Normal)
+                __result = QualityCategory.Normal;
+            else
+                __result += 1;
+            Core.Log($"Running Blessing of Zir on {pawn.LabelCap}: increased quality to {__result} from {old}");
         }
     }
 }

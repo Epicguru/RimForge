@@ -1,5 +1,4 @@
-﻿using RimForge.Buildings;
-using UnityEngine;
+﻿using UnityEngine;
 using Verse;
 
 namespace RimForge
@@ -10,6 +9,8 @@ namespace RimForge
         public static readonly Texture2D SignalIcon, CopyIcon, PasteIcon, LinkIcon;
 
         public static Graphic ForgeIdle, ForgeGlowAll, ForgeGlowSides;
+        public static Graphic HEFueledIdle, HEFueledGlow;
+        public static Graphic HEPoweredIdle, HEPoweredPowerOn, HEPoweredGlow;
         public static Graphic ForgeMetalOut, ForgeMetalLeft, ForgeMetalMiddle, ForgeMetalRight;
 
         public static Graphic CoilgunTop, CoilgunTopGlow;
@@ -28,7 +29,7 @@ namespace RimForge
             LinkIcon   = ContentFinder<Texture2D>.Get("RF/UI/Link");
         }
 
-        internal static void LoadForgeTextures(Building_Forge forge)
+        internal static void LoadForgeTextures(Building forge)
         {
             var gd = forge.DefaultGraphic.data;
             Graphic Make(string path, bool unlit = false)
@@ -51,7 +52,7 @@ namespace RimForge
             Patches.Patch_MaterialPool_MatFrom.Active = false;
         }
 
-        internal static void LoadBuildingGraphics(Building_Coilgun gun)
+        internal static void LoadBuildingGraphics(Building gun)
         {
             var gd = gun.DefaultGraphic.data;
             Graphic Make(string path, Vector2 size)
@@ -93,6 +94,31 @@ namespace RimForge
 
             RitualSymbolA = MakeUnlit("RF/Effects/RitualSymbolA", new Vector2(1, 1));
             RitualSymbolB = MakeUnlit("RF/Effects/RitualSymbolB", new Vector2(1, 1));
+        }
+
+        internal static void LoadFueledHeatingElementGraphics(Building b)
+        {
+            var gd = b.DefaultGraphic.data;
+            Graphic Make(string path, bool unlit = false)
+            {
+                return GraphicDatabase.Get(gd.graphicClass, path, unlit ? RFDefOf.TransparentPostLight.Shader : gd.shaderType.Shader, gd.drawSize, Color.white, Color.white, gd, gd.shaderParameters);
+            }
+
+            HEFueledIdle = Make("RF/Buildings/HeatingElement_FueledIdle");
+            HEFueledGlow = Make("RF/Buildings/HeatingElement_FueledGlow");
+        }
+
+        internal static void LoadPoweredHeatingElementGraphics(Building b)
+        {
+            var gd = b.DefaultGraphic.data;
+            Graphic Make(string path, bool unlit = false)
+            {
+                return GraphicDatabase.Get(gd.graphicClass, path, unlit ? RFDefOf.TransparentPostLight.Shader : gd.shaderType.Shader, gd.drawSize, Color.white, Color.white, gd, gd.shaderParameters);
+            }
+
+            HEPoweredIdle = Make("RF/Buildings/HeatingElement_PoweredIdle");
+            HEPoweredPowerOn = Make("RF/Buildings/HeatingElement_PoweredPowerOn");
+            HEPoweredGlow = Make("RF/Buildings/HeatingElement_PoweredGlow");
         }
     }
 }

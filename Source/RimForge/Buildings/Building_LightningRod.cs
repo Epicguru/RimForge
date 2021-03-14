@@ -77,7 +77,7 @@ namespace RimForge.Buildings
         /// </summary>
         public virtual void UponStruck()
         {
-            Core.Log("Zap! Got struck by lightning!");
+            //Core.Log("Zap! Lightning rod got struck by lightning!");
 
             var power = PowerComp;
             var net = power?.PowerNet;

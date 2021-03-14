@@ -9,14 +9,14 @@
     </thingCategories>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(2,2)</drawSize>
+      <drawSize>(3,3)</drawSize>
+      <drawOffset>(0,0,0.5)</drawOffset>
     </graphicData>
-    <comps>
-      <li Class="CompProperties_HeatPusher">
-        <compClass>RimForge.Comps.CompHeatingElementHeatPusher</compClass>
-        <heatPerSecond>0</heatPerSecond>
-      </li>
-    </comps>
+    <rotatable>false</rotatable>
+    <tickerType>Normal</tickerType>
+    <drawerType>RealtimeOnly</drawerType>
+    <altitudeLayer>LayingPawn</altitudeLayer>
+    <comps></comps>
     <placeWorkers>
       <li>PlaceWorker_Heater</li>
     </placeWorkers>
@@ -29,11 +29,11 @@
     <description>A heating element, to provide heat to a forge.
 This one burns wood to produce heat.</description>
     <graphicData>
-      <texPath>AntimatterAnnihilation/Buildings/AlloyFusionMachine/Idle</texPath>
+      <texPath>RF/Buildings/HeatingElement_FueledIdle</texPath>
     </graphicData>
     <costList>
-      <Steel>350</Steel>
-      <ComponentIndustrial>8</ComponentIndustrial>
+      <Steel>100</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
     </costList>
 
     <!-- Means that with 2 wood-fired heaters, it is possible to make bronze, for tribal playthroughs. -->
@@ -53,7 +53,7 @@ This one burns wood to produce heat.</description>
         <autoRefuelPercent>0.75</autoRefuelPercent>
         <showFuelGizmo>true</showFuelGizmo>
         <drawOutOfFuelOverlay>true</drawOutOfFuelOverlay>
-        <drawFuelGaugeInMap>true</drawFuelGaugeInMap>
+        <drawFuelGaugeInMap>false</drawFuelGaugeInMap>
         <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
       </li>
       <li Class="CompProperties_Glower">
@@ -71,11 +71,11 @@ This one burns wood to produce heat.</description>
     <description>A heating element, to provide heat to a forge.
 This one burns chemfuel to produce heat, an upgrade from burning wood.</description>
     <graphicData>
-      <texPath>AntimatterAnnihilation/Buildings/AlloyFusionMachine/Idle</texPath>
+      <texPath>RF/Buildings/HeatingElement_FueledIdle</texPath>
     </graphicData>
     <costList>
-      <Steel>350</Steel>
-      <ComponentIndustrial>8</ComponentIndustrial>
+      <Steel>200</Steel>
+      <ComponentIndustrial>5</ComponentIndustrial>
     </costList>
 
     <maxAddedHeat>750</maxAddedHeat>
@@ -94,7 +94,7 @@ This one burns chemfuel to produce heat, an upgrade from burning wood.</descript
         <autoRefuelPercent>0.75</autoRefuelPercent>
         <showFuelGizmo>true</showFuelGizmo>
         <drawOutOfFuelOverlay>true</drawOutOfFuelOverlay>
-        <drawFuelGaugeInMap>true</drawFuelGaugeInMap>
+        <drawFuelGaugeInMap>false</drawFuelGaugeInMap>
         <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
       </li>
       <li Class="CompProperties_Glower">
@@ -113,10 +113,10 @@ This one burns chemfuel to produce heat, an upgrade from burning wood.</descript
 Makes use of an electric arc to directly heat the forge contents. Very high peak temperature at the cost of a large power consumption.
 Only consumes power when the forge is active.</description>
     <graphicData>
-      <texPath>AntimatterAnnihilation/Buildings/AlloyFusionMachine/Idle</texPath>
+      <texPath>RF/Buildings/HeatingElement_PoweredIdle</texPath>
     </graphicData>
     <costList>
-      <Steel>350</Steel>
+      <Steel>300</Steel>
       <ComponentSpacer>2</ComponentSpacer>
     </costList>
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using RimForge.Comps;
+using RimWorld;
 using Verse;
 
 namespace RimForge
@@ -79,6 +80,12 @@ namespace RimForge
                     AlloyHelper.AddEquivalentResource(def, extension.equivalentTo);
                 }
             }
+
+            // Generate forge recipes from alloy defs.
+            var recipes = RecipeGenerator.GenAlloySmeltDefs(AlloyHelper.AllAlloyDefs);
+            
+            RFDefOf.RF_Forge.recipes ??= new List<RecipeDef>();
+            RFDefOf.RF_Forge.recipes.AddRange(recipes);
         }
     }
 }

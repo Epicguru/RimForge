@@ -7,6 +7,7 @@
     <defName>RF_RimForgeStats</defName>
     <label>RimForge</label>
     <displayOrder>110</displayOrder>
+    <displayAllByDefault>true</displayAllByDefault>
   </StatCategoryDef>
 
   <StuffCategoryDef>
