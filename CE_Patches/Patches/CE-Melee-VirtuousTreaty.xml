@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <Operation Class="PatchOperationSequence">
+    <operations>
+
+      <!-- === RF_VirtuousTreaty === -->
+
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="RF_VirtuousTreaty"]/tools</xpath>
+        <value>
+          <tools>
+            <li Class="CombatExtended.ToolCE">
+              <label>point</label>
+              <capacities>
+                <li>Stab</li>
+              </capacities>
+              <power>25</power>
+              <extraMeleeDamages>
+                <li>
+                  <def>Flame</def>
+                  <amount>3</amount>
+                  <chance>0.2</chance>
+                </li>
+              </extraMeleeDamages>
+              <cooldownTime>1.5</cooldownTime>
+              <chanceFactor>0.10</chanceFactor>
+              <armorPenetrationBlunt>20</armorPenetrationBlunt>
+              <armorPenetrationSharp>25</armorPenetrationSharp>
+              <linkedBodyPartsGroup>Point</linkedBodyPartsGroup>
+            </li>
+            <li Class="CombatExtended.ToolCE">
+              <label>edge</label>
+              <capacities>
+                <li>Cut</li>
+              </capacities>
+              <power>35</power>
+              <extraMeleeDamages>
+                <li>
+                  <def>Flame</def>
+                  <amount>5</amount>
+                  <chance>0.3</chance>
+                </li>
+              </extraMeleeDamages>
+              <cooldownTime>2</cooldownTime>
+              <chanceFactor>0.50</chanceFactor>
+              <armorPenetrationBlunt>13</armorPenetrationBlunt>
+              <armorPenetrationSharp>18</armorPenetrationSharp>
+              <linkedBodyPartsGroup>Edge</linkedBodyPartsGroup>
+            </li>
+          </tools>
+        </value>
+      </li>
+
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RF_VirtuousTreaty"]/statBases</xpath>
+        <value>
+          <Bulk>20</Bulk>
+          <MeleeCounterParryBonus>1.1</MeleeCounterParryBonus>
+        </value>
+      </li>
+
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RF_VirtuousTreaty"]/equippedStatOffsets</xpath>
+        <value>
+          <MeleeCritChance>0.8</MeleeCritChance>
+          <MeleeParryChance>0.9</MeleeParryChance>
+          <MeleeDodgeChance>0.55</MeleeDodgeChance>
+        </value>
+      </li>
+
+    </operations>
+  </Operation>
+
+</Patch>

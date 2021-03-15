@@ -83,7 +83,7 @@ Made using metal alloys.</description>
     </graphicData>
     <projectile>
       <damageDef>Bullet</damageDef>
-      <damageAmountBase>4</damageAmountBase>
+      <damageAmountBase>6</damageAmountBase>
       <stoppingPower>0.5</stoppingPower>
       <speed>140</speed>
     </projectile>

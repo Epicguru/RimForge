@@ -15,16 +15,16 @@ namespace RimForge.Buildings
     {
         [TweakValue("RimForge", 0, 20)]
         public static float CoilgunRecoil = 0.6f;
-        [TweakValue("RimForge", 0, 1)]
-        public static float BeamPct = 0.5f;
+        [TweakValue("RimForge", 1, 100)]
+        public static int BloodTrailLength = 20;
         public static readonly Vector2 FuelBarSize = new Vector2(3f, 0.4f);
+        public static List<CoilgunShellDef> ShellDefs = new List<CoilgunShellDef>();
 
         private const float TurretTurnSpeed = 60f / 60f;
         private const int FINISH_READYING = 120;
         private const int FINISH_FIRE = FINISH_READYING + 60 * 4;
         private const int FINISH_PAUSE = FINISH_FIRE + 60 * 4;
         private const int FINISH_UNREADYING = FINISH_PAUSE + 60 * 5;
-
 
         public enum State
         {
@@ -36,6 +36,8 @@ namespace RimForge.Buildings
 
         public new CompPowerTrader PowerComp => _power ??= GetComp<CompPowerTrader>();
         private CompPowerTrader _power;
+        public CompRefuelable FuelComp => _fuel ??= GetComp<CompRefuelable>();
+        private CompRefuelable _fuel;
 
         public float ArmLerp;
         public float TurretRotation;
@@ -127,6 +129,9 @@ namespace RimForge.Buildings
                 TargetRotation = offset.ToAngleFlat();
             }
             TurretRotation = Mathf.MoveTowardsAngle(TurretRotation, TargetRotation, TurretTurnSpeed);
+
+            FuelComp.Props.fuelLabel = GetCurrentShellType().LabelCap;
+            FuelComp.Props.fuelGizmoLabel = GetCurrentShellType().LabelCap;
 
             Graphic topGraphic()
             {
@@ -224,7 +229,7 @@ namespace RimForge.Buildings
             if (!DrawAffectedCells)
                 return;
 
-            var endPos = LastKnowPos;
+            var endPos = CurrentTargetInfo.Cell;
             var map = Map;
             int mapSize = Mathf.CeilToInt(Mathf.Sqrt(map.Size.x * map.Size.x + map.Size.y * map.Size.y) * 1.5f);
             Vector3 dir = (endPos - Position).ToVector3().normalized;
@@ -232,6 +237,39 @@ namespace RimForge.Buildings
             //Core.Log($"{endPos} - {Position} = {dir}, {Position} + {dir} * {mapSize} = {newEndPos}");
             var list = GetAffectedCells(newEndPos);
             GenDraw.DrawFieldEdges(list, Color.red);
+        }
+
+        public CoilgunShellDef GetLoadedShell()
+        {
+            return FuelComp.Fuel > 0 ? GetCurrentShellType() : null;
+        }
+
+        public CoilgunShellDef GetCurrentShellType()
+        {
+            return FuelComp.Props.fuelFilter.AnyAllowedDef as CoilgunShellDef;
+        }
+
+        public void SetCurrentShellType(ThingDef def)
+        {
+            FuelComp.Props.fuelFilter.SetDisallowAll();
+            FuelComp.Props.fuelFilter.SetAllow(def, true);
+        }
+
+        public void EjectLoadedShell()
+        {
+            var loaded = GetLoadedShell();
+            if (loaded == null)
+                return;
+
+            var thing = ThingMaker.MakeThing(loaded);
+            GenPlace.TryPlaceThing(thing, Position - new IntVec3(0, 0, 3), Map, ThingPlaceMode.Near);
+
+            ClearLoadedShell();
+        }
+
+        public void ClearLoadedShell()
+        {
+            FuelComp.ConsumeFuel(1);
         }
 
         public IEnumerable<Building_Capacitor> GetConnectedCapacitors()
@@ -365,8 +403,10 @@ namespace RimForge.Buildings
             var list = GetAffectedCells(newEndPos);
             CurrentTargetInfo = LocalTargetInfo.Invalid;
 
+            var shellDef = GetCurrentShellType();
+
             GetCapacitorState(out int capCount, out float capStored);
-            float damage = Settings.CoilgunBaseDamage * GetRelativePower(capCount, capStored);
+            float damage = shellDef.baseDamage * Settings.CoilgunBaseDamageMultiplier * GetRelativePower(capCount, capStored);
             //Core.Log($"Base damage: {damage}, multi: {Settings.CoilgunPenDamageMultiplier}, building multi: {Settings.CoilgunBuildingDamageMulti}");
 
             int affected = 0;
@@ -386,6 +426,25 @@ namespace RimForge.Buildings
             int bloodCount = 0;
             ThingDef bloodToSplatter = null;
             string bloodPawnName = null;
+
+            void MakeBloodAt(IntVec3 cell, int remaining)
+            {
+                float p = 1f - ((float)remaining / BloodTrailLength);
+                float radius = p * BloodTrailLength * 0.095f;
+                int count = (int) Math.Max(1, radius * radius * Mathf.PI);
+                for (int i = 0; i < count; i++)
+                {
+                    IntVec3 pos = cell;
+                    if (i != 0)
+                    {
+                        pos += (Rand.InsideUnitCircleVec3 * radius).ToIntVec3();
+                        if (pos == cell)
+                            continue;
+                    }
+                    FilthMaker.TryMakeFilth(pos, map, bloodToSplatter, bloodPawnName, Mathf.Min(remaining, 2));
+                }
+            }
+
             foreach (var cell in list.TakeWhile(cell => cell.InBounds(map)))
             {
                 cells++;
@@ -394,7 +453,7 @@ namespace RimForge.Buildings
 
                 if (bloodCount > 0)
                 {
-                    FilthMaker.TryMakeFilth(cell, map, bloodToSplatter, bloodPawnName, Mathf.Min(bloodCount, 4));
+                    MakeBloodAt(cell, bloodCount);
                     bloodCount--;
                 }
                 
@@ -417,7 +476,7 @@ namespace RimForge.Buildings
                         {
                             if (b.def.altitudeLayer < AltitudeLayer.DoorMoveable)
                                 continue;
-                            damage *= Settings.CoilgunPenDamageMultiplier;
+                            damage *= shellDef.penDamageMultiplier * Settings.CoilgunPenDamageMultiplier;
                             penDepth++;
                         }
 
@@ -432,12 +491,25 @@ namespace RimForge.Buildings
                             if(Settings.CoilgunSplatterBlood && pawn?.RaceProps?.BloodDef != null)
                             {
                                 bloodToSplatter = pawn.RaceProps.BloodDef;
-                                bloodCount = 20;
+                                bloodCount = BloodTrailLength;
                                 bloodPawnName = pawn.LabelIndefinite();
+                            }
+
+                            if (pawn?.RaceProps?.IsMechanoid ?? false)
+                            {
+                                var basePos = pawn.DrawPos;
+                                basePos.y = AltitudeLayer.MoteOverhead.AltitudeFor();
+
+                                MoteMaker.ThrowLightningGlow(basePos, map, 0.5f);
+                                MoteMaker.ThrowLightningGlow(basePos, map, 0.5f);
+
+                                MoteMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
+                                MoteMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
+                                MoteMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
                             }
                         }
 
-                        if (Settings.CoilgunMaxPen >= 0 && penDepth > Settings.CoilgunMaxPen)
+                        if (shellDef.maxPen >= 0 && penDepth > shellDef.maxPen)
                             keepGoing = false;
                     }
                     catch (Exception e)
@@ -457,6 +529,7 @@ namespace RimForge.Buildings
             Current.CameraDriver.shaker.DoShake(5);
 
             ClearCapacitorPower();
+            ClearLoadedShell();
             Core.Log($"Hit {affected} things for total {totalDamage} damage, scanned {cells} of {list.Count} cells.");
         }
 
@@ -624,6 +697,7 @@ namespace RimForge.Buildings
             GetCapacitorState(out int capCount, out float capPower);
             float power = GetRelativePower(capCount, capPower);
             bool hasPower = PowerComp.PowerOn;
+            bool hasShell = GetLoadedShell() != null;
 
             yield return new Command_TargetCustom()
             {
@@ -638,15 +712,33 @@ namespace RimForge.Buildings
                     if (!target.IsValid)
                         return;
 
-                    Core.Log($"Started coilgun attacking '{target.ToString()}'");
+                    Core.Log($"Started coilgun attacking '{target}'");
                     CurrentState = State.Readying;
                     FireTicks = 0;
                     CurrentTargetInfo = target;
                     LastKnowPos = Position;
                 },
                 gun = this,
-                disabled = power <= 0 || !hasPower,
-                disabledReason = hasPower ? "RF.Coilgun.Disabled".Translate() : "RF.Coilgun.DisabledNoPower".Translate()
+                disabled = power <= 0 || !hasPower || !hasShell,
+                disabledReason = !hasPower ? "RF.Coilgun.DisabledNoPower".Translate() : !hasShell ? "RF.Coilgun.DisabledNoShell".Translate() : "RF.Coilgun.DisabledNoCaps".Translate()
+            };
+            yield return new Command_Action()
+            {
+                defaultLabel = "RF.Coilgun.ChangeShellLabel".Translate(),
+                defaultDesc = "RF.Coilgun.ChangeShellDesc".Translate(),
+                action = () =>
+                {
+                    Func<ThingDef, string> labelGetter  = shell => shell.LabelCap;
+                    Func<ThingDef, Action> actionGetter = shell => () =>
+                    {
+                        if (GetCurrentShellType() == shell)
+                            return;
+                        EjectLoadedShell();
+                        SetCurrentShellType(shell);
+                    };
+                    FloatMenuUtility.MakeMenu(ShellDefs, labelGetter, actionGetter);
+                },
+                icon = GetCurrentShellType()?.uiIcon
             };
         }
 
@@ -656,11 +748,14 @@ namespace RimForge.Buildings
             GetCapacitorState(out int connected, out float stored);
             float power = GetRelativePower(connected, stored);
 
+            string shellName = GetLoadedShell()?.LabelCap ?? "RF.None".Translate().CapitalizeFirst();
+            string loaded = "RF.Coilgun.LoadedShell".Translate(shellName);
+
             string pct = (power * 100f).ToString("F0");
             string capState = "RF.Coilgun.CapState".Translate(pct, connected, stored.ToString("F0"));
 
             if(!string.IsNullOrWhiteSpace(basic))
-                return $"{basic.TrimEnd()}\n{capState}";
+                return $"{basic.TrimEnd()}\n{loaded}\n{capState}";
             return capState;
         }
     }

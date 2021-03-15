@@ -23,12 +23,10 @@ namespace RimForge
         public static float TeslaMechanoidDamageMulti = 5;
 
         // COILGUN
-        [TweakValue("RimForge", -1, 1000)]
-        public static int CoilgunMaxPen = -1;
         [TweakValue("RimForge", 0, 1)]
-        public static float CoilgunPenDamageMultiplier = 0.95f;
-        [TweakValue("RimForge", 0, 10000)]
-        public static int CoilgunBaseDamage = 400;
+        public static float CoilgunPenDamageMultiplier = 1f;
+        [TweakValue("RimForge", 0, 10)]
+        public static float CoilgunBaseDamageMultiplier = 1f;
         [TweakValue("RimForge", 0, 5)]
         public static float CoilgunBuildingDamageMulti = 1f;
         [TweakValue("RimForge", 100, 10000)]

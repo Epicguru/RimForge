@@ -13,10 +13,6 @@ namespace RimForge
 
         public static DamageDef RF_Electrocution;
         public static DamageDef RF_CoilgunDamage;
-        public static AlloyDef RF_GoldDoreAlloy;
-        public static ThingDef RF_GoldDore;
-        public static ThingDef Gold;
-        public static ThingDef Silver;
         public static ThingDef RF_Copper;
         public static ThingDef RF_Tin;
         public static StatCategoryDef RF_RimForgeStats;
@@ -26,9 +22,9 @@ namespace RimForge
         public static ThingDef RF_Motes_RitualDistort;
         public static TraitDef RF_BlessingOfZir;
         public static ThingDef RF_Forge;
+        public static ThingDef RF_CoilgunShellAP, RF_CoilgunShellSP;
 
         // Vanilla ones.
         public static ThingDef Column;
-        public static EffecterDef Damage_HitFlesh;
     }
 }

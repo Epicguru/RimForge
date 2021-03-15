@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using RimForge.Buildings;
 using RimForge.Comps;
-using RimWorld;
+using System;
+using System.Collections.Generic;
 using Verse;
 
 namespace RimForge
@@ -26,6 +26,8 @@ namespace RimForge
 
             Core.Log($"Completed def processing in {watch.ElapsedMilliseconds} milliseconds.");
             Core.Log($"There are {AlloyHelper.AllAlloyDefs.Count} recipes ({AlloyHelper.AllCraftableAlloys.Count} craftable alloys), and {AlloyHelper.AllRimForgeResources.Count} general resources.");
+
+            MiscOtherTasks();
         }
 
         private static void ProcessDefs()
@@ -86,6 +88,11 @@ namespace RimForge
             
             RFDefOf.RF_Forge.recipes ??= new List<RecipeDef>();
             RFDefOf.RF_Forge.recipes.AddRange(recipes);
+        }
+
+        private static void MiscOtherTasks()
+        {
+            Building_Coilgun.ShellDefs.AddRange(DefDatabase<CoilgunShellDef>.AllDefsListForReading);
         }
     }
 }

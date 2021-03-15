@@ -100,6 +100,7 @@
     <Compile Include="Content.cs" />
     <Compile Include="Damage\DamageWorker_Propagate.cs" />
     <Compile Include="Damage\DamageWorker_Electrical.cs" />
+    <Compile Include="Defs\CoilgunShellDef.cs" />
     <Compile Include="Defs\DefGenHelper.cs" />
     <Compile Include="Defs\AlloyDef.cs" />
     <Compile Include="Core.cs" />

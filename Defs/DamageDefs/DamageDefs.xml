@@ -60,7 +60,7 @@ Very painful.</description>
     <impactSoundType>Bullet</impactSoundType>
     <armorCategory>Sharp</armorCategory>
     <overkillPctToDestroyPart>0~0.7</overkillPctToDestroyPart>
-    <minDamageToFragment>100</minDamageToFragment>
+    <minDamageToFragment>50</minDamageToFragment>
     <isRanged>true</isRanged>
     <makesAnimalsFlee>true</makesAnimalsFlee>
   </DamageDef>
