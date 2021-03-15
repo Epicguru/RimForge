@@ -9,6 +9,7 @@ namespace RimForge
     public class Core : Mod
     {
         public static ModContentPack ContentPack { get; private set; }
+        public static Core Instance { get; private set; }
 
         internal static void Log(string msg)
         {
@@ -30,6 +31,7 @@ namespace RimForge
         public Core(ModContentPack content) : base(content)
         {
             Log("Hello, world!");
+            Instance = this;
             ContentPack = content;
 
             // Apply harmony patches.

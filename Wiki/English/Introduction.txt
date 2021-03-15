@@ -1,0 +1,15 @@
+
+ID: RF_Introduction
+Title: Introduction to RimForge
+Icon: RF/Resources/Bronze
+Description: A brief guide to help you explore the RimForge mod.
+
+ENDTAGS
+
+#Welcome to RimForge's wiki! Thank you for downloading my mod.#
+#RimForge has 4 main areas: alloys, power, defences and utility.#
+#!Utility:#
+#Power poles: unlocked with Electricity research, they work just as you would expect, carrying electrical currents in overhead cables.#
+@RF_PowerPole@
+#Lightning rods: unlocked with Electricity research. A lightning rod catches any lightning strike in a large radius and turns it into useful electrical energy.#
+@RF_LightningRod@

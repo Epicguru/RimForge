@@ -380,10 +380,24 @@ namespace RimForge.Buildings
                 return sqrDstA - sqrDstB;
             });
 
+            IntVec3? firstCell = null;
+            IntVec3? lastCell = null;
             float totalDamage = 0;
+            int bloodCount = 0;
+            ThingDef bloodToSplatter = null;
+            string bloodPawnName = null;
             foreach (var cell in list.TakeWhile(cell => cell.InBounds(map)))
             {
                 cells++;
+                firstCell ??= cell;
+                lastCell = cell;
+
+                if (bloodCount > 0)
+                {
+                    FilthMaker.TryMakeFilth(cell, map, bloodToSplatter, bloodPawnName, Mathf.Min(bloodCount, 4));
+                    bloodCount--;
+                }
+                
                 var things = map.thingGrid.ThingsListAtFast(cell);
                 if (things == null)
                     continue;
@@ -407,12 +421,20 @@ namespace RimForge.Buildings
                             penDepth++;
                         }
 
-                        if (thing is Building || thing is Pawn)
+                        Pawn pawn = thing as Pawn;
+                        if (thing is Building || pawn != null)
                         {
                             var info = new DamageInfo(RFDefOf.RF_CoilgunDamage, damage * Settings.CoilgunBuildingDamageMulti, 100, instigator: this);
                             var result = thing.TakeDamage(info);
                             affected++;
                             totalDamage += result.totalDamageDealt;
+
+                            if(Settings.CoilgunSplatterBlood && pawn?.RaceProps?.BloodDef != null)
+                            {
+                                bloodToSplatter = pawn.RaceProps.BloodDef;
+                                bloodCount = 20;
+                                bloodPawnName = pawn.LabelIndefinite();
+                            }
                         }
 
                         if (Settings.CoilgunMaxPen >= 0 && penDepth > Settings.CoilgunMaxPen)
@@ -427,7 +449,13 @@ namespace RimForge.Buildings
                     break;
             }
 
+            Vector3 moteStart = firstCell.Value.ToVector3ShiftedWithAltitude(AltitudeLayer.MoteOverhead);
+            Vector3 moteEnd = lastCell.Value.ToVector3ShiftedWithAltitude(AltitudeLayer.MoteOverhead);
+            MoteMaker.MakeConnectingLine(moteStart, moteEnd, ThingDefOf.Mote_FireGlow, map, 1);
             DoMuzzleFlash();
+
+            Current.CameraDriver.shaker.DoShake(5);
+
             ClearCapacitorPower();
             Core.Log($"Hit {affected} things for total {totalDamage} damage, scanned {cells} of {list.Count} cells.");
         }

@@ -41,6 +41,9 @@
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Lib.InGameWiki, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lib.InGameWiki.1.5.0\lib\net472\net472\Lib.InGameWiki.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -135,6 +138,7 @@
     <Compile Include="Power\WirelessPower.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="UnityHook.cs" />
+    <Compile Include="WikiLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

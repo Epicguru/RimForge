@@ -29,5 +29,6 @@ namespace RimForge
 
         // Vanilla ones.
         public static ThingDef Column;
+        public static EffecterDef Damage_HitFlesh;
     }
 }

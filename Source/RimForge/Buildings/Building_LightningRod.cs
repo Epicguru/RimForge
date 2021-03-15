@@ -53,10 +53,15 @@ namespace RimForge.Buildings
         private void Register(Map overrideMap = null)
         {
             var map = (overrideMap ?? Map).uniqueID;
-            if (MapRods.TryGetValue(map, out var found) && !found.Contains(this))
-                found.Add(this);
+            if (MapRods.TryGetValue(map, out var found))
+            {
+                if(!found.Contains(this))
+                    found.Add(this);
+            }
             else
+            {
                 MapRods.Add(map, new List<Building_LightningRod>() {this});
+            }
         }
 
         private void Remove()
