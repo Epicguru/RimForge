@@ -41,7 +41,7 @@ This is the armor-piercing variant, that can travel through many surfaces and hi
 
     <!-- Shell properties -->
     <maxPen>-1</maxPen>
-    <baseDamage>65</baseDamage>
+    <baseDamage>120</baseDamage>
     <penDamageMultiplier>0.95</penDamageMultiplier>
 
   </RimForge.CoilgunShellDef>
