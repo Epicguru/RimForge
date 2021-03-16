@@ -34,7 +34,8 @@
     <defName>RF_CoilgunShellAP</defName>
     <label>Coilgun shell (AP)</label>
     <description>A shell fired by the Liandry Coilgun.
-This is the armor-piercing variant, that can travel through many surfaces and hit many targets.</description>
+This is the armor-piercing variant, that can travel through many surfaces and hit many targets.
+Very effective against infantry and small mechanoids and useful for destroying specific enemy structures.</description>
     <graphicData>
       <texPath>RF/Items/CoilgunShell_AP</texPath>
     </graphicData>
@@ -50,7 +51,8 @@ This is the armor-piercing variant, that can travel through many surfaces and hi
     <defName>RF_CoilgunShellSP</defName>
     <label>Coilgun shell (SP)</label>
     <description>A shell fired by the Liandry Coilgun.
-This is the soft-point variant. It will penetrate only a few surfaces but will deal much higher damage upon impact.</description>
+This is the soft-point variant. It will penetrate only a few surfaces but will deal much higher damage upon impact.
+Because of this poor penetration, it requires line of sight to be effective. Very effective against large mechanoids and large groups of enemies.</description>
     <graphicData>
       <texPath>RF/Items/CoilgunShell_SP</texPath>
     </graphicData>
