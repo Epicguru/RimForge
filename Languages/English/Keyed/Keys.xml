@@ -99,6 +99,15 @@ This action ejects the current shell onto the ground, and a colonist will have t
 <RF.Ritual.DrawGuideShowDesc>Enables the ritual structure blueprint guide.\nThis helps you know where to place down the ritual components.</RF.Ritual.DrawGuideShowDesc>
 <RF.Ritual.DrawGuideHideDesc>Disables the ritual structure blueprint guide.</RF.Ritual.DrawGuideHideDesc>
 <RF.Ritual.Missing>Missing {0} x{1}</RF.Ritual.Missing>
+<RF.Ritual.CannotStart_OnCooldown>The ritual cannot be started for another {0} hours.</RF.Ritual.CannotStart_OnCooldown>
+<RF.Ritual.CannotStart_NotNight>The ritual must be performed at night, between 9pm and 12pm.</RF.Ritual.CannotStart_NotNight>
+<RF.Ritual.CannotStart_NoColonist>An eligible colonist must stand adjacent to the ritual core.</RF.Ritual.CannotStart_NoColonist>
+<RF.Ritual.CannotStart_AlreadyActive>The ritual has already started.</RF.Ritual.CannotStart_AlreadyActive>
+<RF.Ritual.StartLabel>Start ritual</RF.Ritual.StartLabel>
+<RF.Ritual.StartDesc>Try to start the Blessing of Zir ritual.
+If there are unmet conditions, they will be listed.</RF.Ritual.StartDesc>
+<RF.Ritual.Cancelled_PawnMissing>The target colonist went missing, the ritual has been cancelled.</RF.Ritual.Cancelled_PawnMissing>
+<RF.Ritual.Success>The ritual is complete. {0} has been bestowed the Blessing of Zir!</RF.Ritual.Success>
 
 <RF.LDP.LinkLabel>Connect to...</RF.LDP.LinkLabel>
 <RF.LDP.UnLinkLabel>Remove connection from...</RF.LDP.UnLinkLabel>

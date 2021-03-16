@@ -32,32 +32,36 @@ namespace RimForge.Buildings
             }
         }
 
-        [TweakValue("_RimForge", 0, 1)]
+        private static readonly List<IntVec3> tempCells = new List<IntVec3>(8);
+
+        // Ex-tweakValues
         private static float ArcDuration = 1;
-        [TweakValue("_RimForge", 0, 1)]
         private static float ArcMag = 0.55f;
-        [TweakValue("_RimForge", 0, 2)]
         private static float SymbolDrawSize = 1.2f;
-        [TweakValue("_RimForge", 0, 1)]
         private static float SymbolDrawAlpha = 1f;
-        [TweakValue("_RimForge", 0, 6)]
         private static float SymbolDrawOffset = 6f;
-        [TweakValue("_RimForge", 0, 90f)]
         private static float SymbolDrawBA = 22.5f;
 
-        public float GearDrawSize = 12.2f, CircleDrawSize = 20, TextDrawSize = 8;
-        public float GearDrawRot, CircleDrawRot, TextDrawRot;
-        public float GearAlpha = 1, CircleAlpha = 1, TextAlpha = 1;
+        public const int TOTAL_DURATION = 2500;
+        public const int FADE_IN_TICKS = 150;
+        public const int FADE_OUT_TICKS = 150;
 
-        public float GearTurnSpeed = -20f, TextTurnSpeed = 9f;
-        public float CircleBaseAlpha = 0.55f, CircleAlphaMag = 0.06f;
-        public float CircleAlphaFreq = 2, BallOffsetFreq = 0.24f;
-
-        public float BallOffsetBase = 1;
-        public float BallOffsetMag = 0.11f, BallDrawSize = 0.72f;
+        public bool IsOnCooldown => CooldownTicksRemaining > 0;
+        public bool IsActive => !IsOnCooldown && RitualProgressTicks > 0;
 
         public bool DrawGuide = true;
+        public int CooldownTicksRemaining;
+        public int RitualProgressTicks = 0;
+        public Pawn TargetPawn;
 
+        private float gearDrawSize = 12.2f, circleDrawSize = 20, textDrawSize = 8;
+        private float gearDrawRot, circleDrawRot, textDrawRot;
+        private float gearAlpha = 1, circleAlpha = 1, textAlpha = 1;
+        private float gearTurnSpeed = -20f, textTurnSpeed = 9f;
+        private float circleBaseAlpha = 0.55f, circleAlphaMag = 0.06f;
+        private float circleAlphaFreq = 2, ballOffsetFreq = 0.24f;
+        private float ballOffsetBase = 1;
+        private float ballOffsetMag = 0.11f, ballDrawSize = 0.72f;
         private float ballOffset;
         private float timer;
         private List<string> missing = new List<string>();
@@ -70,11 +74,32 @@ namespace RimForge.Buildings
             base.ExposeData();
 
             Scribe_Values.Look(ref DrawGuide, "rc_drawGuide", true);
+            Scribe_Values.Look(ref CooldownTicksRemaining, "rc_cooldownTicks", 0);
+            Scribe_Values.Look(ref RitualProgressTicks, "rc_progressTicks", 0);
+            Scribe_References.Look(ref TargetPawn, "rc_targetPawn");
         }
 
         public override void Tick()
         {
             base.Tick();
+
+            if (CooldownTicksRemaining > 0)
+                CooldownTicksRemaining--;
+
+            if (IsActive)
+            {
+                if (RitualProgressTicks < TOTAL_DURATION - FADE_OUT_TICKS)
+                {
+                    if (TargetPawn == null || TargetPawn != GetFirstValidColonist(TargetPawn))
+                        StopRitual("RF.Ritual.Cancelled_PawnMissing".Translate());
+                }
+
+                RitualProgressTicks++;
+                if (RitualProgressTicks == TOTAL_DURATION - FADE_OUT_TICKS - 1)
+                    StopRitual(null);
+                if (RitualProgressTicks > TOTAL_DURATION)
+                    RitualProgressTicks = 0;
+            }
 
             // Update the missing display once per second.
             if (tickCounter == -1)
@@ -82,17 +107,24 @@ namespace RimForge.Buildings
             tickCounter++;
             if (tickCounter % 60 == 0)
                 UpdateMissing();
+
+            // Tick electrical arcs (causes them to despawn)
+            TickArcs();
+            if (!IsActive)
+                return;
+
+            // Spawn space-distortion mote.
             if (tickCounter % (60 * 5) == 0)
-                SpawnDistorsion();
+                SpawnDistortion();
 
             // Turn the ritual gears.
-            GearDrawRot += GearTurnSpeed / 60f;
-            TextDrawRot += TextTurnSpeed / 60f;
+            gearDrawRot += gearTurnSpeed / 60f;
+            textDrawRot += textTurnSpeed / 60f;
 
             timer += 1f / 60f;
 
-            CircleAlpha = Mathf.Sin(timer * Mathf.PI * 2f * CircleAlphaFreq) * CircleAlphaMag + CircleBaseAlpha;
-            ballOffset = Mathf.Sin((timer + 12) * Mathf.PI * 2f * BallOffsetFreq) * BallOffsetMag + BallOffsetBase;
+            circleAlpha = Mathf.Sin(timer * Mathf.PI * 2f * circleAlphaFreq) * circleAlphaMag + circleBaseAlpha;
+            ballOffset = Mathf.Sin((timer + 12) * Mathf.PI * 2f * ballOffsetFreq) * ballOffsetMag + ballOffsetBase;
 
             bool spawnSparks = false;
             if (timeToSparks >= 0f)
@@ -134,7 +166,7 @@ namespace RimForge.Buildings
                     MoteMaker.ThrowLightningGlow(end, Map, 0.8f);
                 }
 
-                Vector2 gravTowards = Position.ToVector3Shifted().WorldToFlat();
+                Vector2 gravTowards = TargetPawn?.DrawPos.WorldToFlat() ?? Position.ToVector3Shifted().WorldToFlat();
                 for (int i = 0; i < 15; i++)
                 {
                     var sparks = new RitualSparks();
@@ -150,8 +182,6 @@ namespace RimForge.Buildings
                     sparks.Spawn(this.Map);
                 }
             }
-
-            TickArcs();
         }
 
         private void TickArcs()
@@ -177,6 +207,30 @@ namespace RimForge.Buildings
 
                 arc.Amplitude = new Vector2(amp * 0.5f, amp);
             }
+        }
+
+        public void StopRitual(string error)
+        {
+            RitualProgressTicks = TOTAL_DURATION - FADE_OUT_TICKS;
+
+            if (error != null)
+            {
+                Messages.Message(error, MessageTypeDefOf.RejectInput);
+            }
+            else
+            {
+                // Bestow the blessing.
+                var def = RFDefOf.RF_BlessingOfZir;
+                Trait trait = new Trait(def, forced: true);
+                TargetPawn.story.traits.GainTrait(trait);
+                Messages.Message("RF.Ritual.Success".Translate(TargetPawn.LabelShortCap), MessageTypeDefOf.PositiveEvent);
+                for (int i = 0; i < 4; i++)
+                {
+                    MoteMaker.ThrowLightningGlow(TargetPawn.DrawPos + Rand.InsideUnitCircleVec3 * 0.5f, Map, 2f);
+                }
+            }
+            TargetPawn = null;
+            CooldownTicksRemaining = 2500 * 20; // 20-hour cooldown.
         }
 
         public IntVec3 GetPillarPosition(int index)
@@ -207,7 +261,6 @@ namespace RimForge.Buildings
             yield return basePos + new IntVec3(-5, 0, -5);
             yield return basePos + new IntVec3(0, 0, -7);
             yield return basePos + new IntVec3(5, 0, -5);
-
         }
 
         public bool IsPillarPresent(IntVec3 pos)
@@ -238,16 +291,38 @@ namespace RimForge.Buildings
         {
             base.Draw();
 
-            if(DrawGuide)
+            if(DrawGuide && !IsActive)
                 DrawGhosts();
 
-            DrawRitualEffects();
+            if(IsActive)
+                DrawRitualEffects();
         }
 
         public override IEnumerable<Gizmo> GetGizmos()
         {
             foreach (var gizmo in base.GetGizmos())
                 yield return gizmo;
+
+            yield return new Command_Action()
+            {
+                defaultLabel = "RF.Ritual.StartLabel".Translate(),
+                defaultDesc = "RF.Ritual.StartDesc".Translate(),
+                action = () =>
+                {
+                    bool canStart = true;
+                    foreach(var reason in GetReasonsCannotStartRitual())
+                    {
+                        Messages.Message(reason, canStart ? MessageTypeDefOf.RejectInput : MessageTypeDefOf.SilentInput);
+                        canStart = false;
+                    }
+
+                    if (!canStart)
+                        return;
+
+                    TargetPawn = GetFirstValidColonist();
+                    RitualProgressTicks = 1;
+                }
+            };
 
             string label = DrawGuide ? "RF.Ritual.DrawGuideHideLabel".Translate() : "RF.Ritual.DrawGuideShowLabel".Translate();
             string desc  = DrawGuide ? "RF.Ritual.DrawGuideHideDesc".Translate()  : "RF.Ritual.DrawGuideShowDesc".Translate();
@@ -262,20 +337,39 @@ namespace RimForge.Buildings
                 }
             };
 
+            var allowedDesignator = BuildCopyCommandUtility.BuildCommand(RFDefOf.Column, RFDefOf.RF_Copper, "Build copper column", "The ritual requires 8 copper columns to be placed.", true);
+            if (allowedDesignator != null)
+                yield return allowedDesignator;
+
             if (!Prefs.DevMode)
                 yield break;
 
             yield return new Command_Action()
             {
                 defaultLabel = "spawn distort mote",
+                action = SpawnDistortion
+            };
+            yield return new Command_Action()
+            {
+                defaultLabel = "fix",
                 action = () =>
                 {
-                    SpawnDistorsion();
+                    CooldownTicksRemaining = 0;
+                    RitualProgressTicks = 0;
+                    TargetPawn = null;
+                }
+            };
+            yield return new Command_Action()
+            {
+                defaultLabel = "finish cooldown",
+                action = () =>
+                {
+                    CooldownTicksRemaining = 0;
                 }
             };
         }
 
-        public void SpawnDistorsion()
+        public void SpawnDistortion()
         {
             Mote mote = (Mote)ThingMaker.MakeThing(RFDefOf.RF_Motes_RitualDistort, null);
             mote.Scale = 1;
@@ -332,41 +426,132 @@ namespace RimForge.Buildings
             if (Content.RitualCircle == null)
                 Content.LoadRitualGraphics(this);
 
+            float a = 1f;
+            if (RitualProgressTicks < FADE_IN_TICKS)
+                a = (float)RitualProgressTicks / FADE_IN_TICKS;
+            if (RitualProgressTicks >= TOTAL_DURATION - FADE_OUT_TICKS)
+                a = 1f - (float) (RitualProgressTicks - (TOTAL_DURATION - FADE_OUT_TICKS)) / FADE_OUT_TICKS;
+
             Vector3 drawPos = DrawPos + new Vector3(0, 0, -0.5f); // Because of the draw size of the ritual core.
             drawPos.y = AltitudeLayer.DoorMoveable.AltitudeFor();
 
-            Content.RitualGear.drawSize = new Vector2(GearDrawSize, GearDrawSize);
-            Content.RitualGear.MatNorth.color = new Color(0.9f, 0.15f, 0.15f, GearAlpha);
-            Content.RitualGear.Draw(drawPos, Rot4.North, this, GearDrawRot);
+            Content.RitualGear.drawSize = new Vector2(gearDrawSize, gearDrawSize);
+            Content.RitualGear.MatNorth.color = new Color(0.9f, 0.15f, 0.15f, gearAlpha * a);
+            Content.RitualGear.Draw(drawPos, Rot4.North, this, gearDrawRot);
 
             for (int i = 0; i < 8; i++)
             {
                 var symbol = i % 2 == 0 ? Content.RitualSymbolA : Content.RitualSymbolB;
                 symbol.drawSize = new Vector2(SymbolDrawSize, SymbolDrawSize);
-                symbol.MatNorth.color = new Color(0.9f, 0.35f, 0.15f, SymbolDrawAlpha);
-                float angle = (SymbolDrawBA + i * (360f / 8f) - GearDrawRot) * Mathf.Deg2Rad;
+                symbol.MatNorth.color = new Color(0.9f, 0.35f, 0.15f, SymbolDrawAlpha * a);
+                float angle = (SymbolDrawBA + i * (360f / 8f) - gearDrawRot) * Mathf.Deg2Rad;
                 Vector3 offset = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * SymbolDrawOffset;
                 symbol.Draw(drawPos + offset, Rot4.North, this, 0f);
             }
             
 
-            Content.RitualCircleText.drawSize = new Vector2(TextDrawSize, TextDrawSize);
-            Content.RitualCircleText.MatNorth.color = new Color(0.9f, 0.15f, 0.15f, TextAlpha);
-            Content.RitualCircleText.Draw(drawPos, Rot4.North, this, TextDrawRot);
+            Content.RitualCircleText.drawSize = new Vector2(textDrawSize, textDrawSize);
+            Content.RitualCircleText.MatNorth.color = new Color(0.9f, 0.15f, 0.15f, textAlpha * a);
+            Content.RitualCircleText.Draw(drawPos, Rot4.North, this, textDrawRot);
 
-            Content.RitualCircle.drawSize = new Vector2(CircleDrawSize, CircleDrawSize);
-            Content.RitualCircle.MatNorth.color = new Color(0.9f, 0.15f, 0.15f, CircleAlpha);
-            Content.RitualCircle.Draw(drawPos, Rot4.North, this, CircleDrawRot);
+            Content.RitualCircle.drawSize = new Vector2(circleDrawSize, circleDrawSize);
+            Content.RitualCircle.MatNorth.color = new Color(0.9f, 0.15f, 0.15f, circleAlpha * a);
+            Content.RitualCircle.Draw(drawPos, Rot4.North, this, circleDrawRot);
 
             drawPos.y = AltitudeLayer.VisEffects.AltitudeFor();
-            Content.RitualBall.drawSize = new Vector2(BallDrawSize, BallDrawSize);
+            Content.RitualBall.drawSize = new Vector2(ballDrawSize, ballDrawSize);
             Content.RitualBall.MatNorth.color = new Color(1f, 145f / 255f, 0f, 1f);
             Content.RitualBall.Draw(drawPos + new Vector3(0f, 0f, ballOffset), Rot4.North, this, 0f);
         }
 
         public bool ShouldGlowNow()
         {
-            return true;
+            return IsActive;
+        }
+
+        public override void DrawExtraSelectionOverlays()
+        {
+            base.DrawExtraSelectionOverlays();
+
+            if (IsActive)
+                return;
+
+            tempCells.Clear();
+            tempCells.AddRange(GetColonistStandCells());
+            GenDraw.DrawFieldEdges(tempCells, Color.green);
+        }
+
+        private IEnumerable<IntVec3> GetColonistStandCells()
+        {
+            var selfPos = Position;
+            for (int x = selfPos.x - 1; x <= selfPos.x + 1; x++)
+            {
+                for (int z = selfPos.z - 1; z <= selfPos.z + 1; z++)
+                {
+                    IntVec3 cell = new IntVec3(x, selfPos.y, z);
+                    if (cell != selfPos)
+                        yield return cell;
+                }
+            }
+        }
+
+        public Pawn GetFirstValidColonist(Pawn prefer = null)
+        {
+            var thingGrid = Map.thingGrid;
+            foreach (var cell in GetColonistStandCells())
+            {
+                var things = thingGrid.ThingsListAt(cell);
+                if (things == null)
+                    continue;
+
+                foreach (var thing in things)
+                {
+                    if (thing is not Pawn pawn)
+                        continue;
+                    if (!pawn.IsColonistPlayerControlled || pawn.IsPrisoner)
+                        continue;
+                    if (pawn.Dead || pawn.Downed)
+                        continue;
+                    if (!pawn.health.capacities.CanBeAwake)
+                        continue;
+
+                    if (prefer != null && pawn != prefer)
+                        continue;
+
+                    return pawn;
+                }
+            }
+            return null;
+        }
+
+        public bool IsValidTimePeriod()
+        {
+            var map = Map;
+            int hour = GenLocalDate.HourOfDay(map);
+            
+            return hour >= 21 && hour <= 24;
+        }
+
+        public IEnumerable<string> GetReasonsCannotStartRitual()
+        {
+            if (IsActive)
+                yield return "RF.Ritual.CannotStart_AlreadyActive".Translate();
+
+            if (IsOnCooldown)
+            {
+                float hoursRemaining = CooldownTicksRemaining / 2500f;
+                yield return "RF.Ritual.CannotStart_OnCooldown".Translate(hoursRemaining.ToString("F1"));
+            }
+
+            UpdateMissing();
+            foreach (var reason in missing)
+                yield return reason;
+
+            if (!IsValidTimePeriod())
+                yield return "RF.Ritual.CannotStart_NotNight".Translate();
+
+            if (GetFirstValidColonist() == null)
+                yield return "RF.Ritual.CannotStart_NoColonist".Translate();
         }
     }
 }
