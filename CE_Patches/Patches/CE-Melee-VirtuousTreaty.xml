@@ -35,13 +35,13 @@
                 <li>Cut</li>
               </capacities>
               <power>35</power>
-              <extraMeleeDamages>
+              <!-- <extraMeleeDamages>
                 <li>
                   <def>Flame</def>
                   <amount>5</amount>
                   <chance>0.3</chance>
                 </li>
-              </extraMeleeDamages>
+              </extraMeleeDamages> -->
               <cooldownTime>2</cooldownTime>
               <chanceFactor>0.50</chanceFactor>
               <armorPenetrationBlunt>13</armorPenetrationBlunt>

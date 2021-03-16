@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RF_WallConnector</defName>
+    <label>wall connector</label>
+    <description>An electrical connector, built into a wall</description>
+    <thingClass>RimForge.Buildings.Building_WallConnector</thingClass>
+    <graphicData>
+      <texPath>RF/Buildings/WallConnector</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3,3)</drawSize>
+      <drawRotated>true</drawRotated>
+    </graphicData>
+    <passability>PassThroughOnly</passability>
+    <designationCategory>Power</designationCategory>
+    <drawerType>RealtimeOnly</drawerType>
+    <selectable>true</selectable>
+    <canOverlapZones>true</canOverlapZones>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <tickerType>Rare</tickerType>
+    <drawOffscreen>true</drawOffscreen>
+    <category>Building</category>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <size>(1, 1)</size>
+    <costStuffCount>10</costStuffCount>
+    <stuffCategories>
+      <li>RF_PowerPoleMetals</li>
+    </stuffCategories>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTransmitter</compClass>
+        <transmitsPower>true</transmitsPower>
+      </li>
+    </comps>
+    <building>
+			<canPlaceOverWall>false</canPlaceOverWall>
+			<isEdifice>false</isEdifice>
+		</building>
+    <placeWorkers>
+      <li>RimForge.Buildings.PlaceWorker_WallConnector</li>
+    </placeWorkers>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <WorkToBuild>200</WorkToBuild>
+      <Mass>1</Mass>
+    </statBases>
+    <researchPrerequisites>
+      <li>Electricity</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+</Defs>

@@ -17,6 +17,7 @@
         </statFactors>
         <statOffsets>
           <ButcheryMechanoidEfficiency>0.5</ButcheryMechanoidEfficiency>
+          <ConstructSuccessChance>1</ConstructSuccessChance>
         </statOffsets>
       </li>
     </degreeDatas>

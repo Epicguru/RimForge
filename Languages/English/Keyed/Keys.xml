@@ -4,6 +4,9 @@
 <RF.ModName>RimForge</RF.ModName>
 <RF.None>none</RF.None>
 
+<RF.PowerPoleName>power pole</RF.PowerPoleName>
+<RF.WallConnectorName>wall connector</RF.WallConnectorName>
+
 <RF.Pylon.InvalidState>Invalid state</RF.Pylon.InvalidState>
 <RF.Pylon.NoChannel>Idle, no channel selected.</RF.Pylon.NoChannel>
 <RF.Pylon.NoNetwork>Idle, not connected to power grid.</RF.Pylon.NoNetwork>
@@ -105,11 +108,14 @@ This action ejects the current shell onto the ground, and a colonist will have t
 <RF.LDP.AutoLinkDisabled>You need to select multiple {0}s to connect together.</RF.LDP.AutoLinkDisabled>
 <RF.LDP.RemovedLinkRoofBuilt>A roof was built over {0}, so the connection to it has been severed.</RF.LDP.RemovedLinkRoofBuilt>
 <RF.LDP.RemovedLinkRoofBuiltSelf>A roof was built over this {0}, so all connections to it have been severed.</RF.LDP.RemovedLinkRoofBuiltSelf>
-<RF.PowerPoleName>power pole</RF.PowerPoleName>
 
 <RF.Forge.BillNotHot>Forge not capable of reaching temperature ({0})</RF.Forge.BillNotHot>
 <RF.Forge.Providing> providing up to </RF.Forge.Providing> <!-- The leading and trailing whitespace is important -->
 <RF.Forge.HeatingElementsHeader>Connected heating elements:</RF.Forge.HeatingElementsHeader>
 <RF.HeatingElement.CurrentPowerLevel>Current power level: {0}</RF.HeatingElement.CurrentPowerLevel>
+
+<RF.Blessing.IncreasedMessage>Blessing of Zir: Increased quality to {0}</RF.Blessing.IncreasedMessage>
+
+<RF.WallConnector.MustPlaceWithFreeSpace>There must be an empty space for the cables to connect to.</RF.WallConnector.MustPlaceWithFreeSpace>
 
  </LanguageData>

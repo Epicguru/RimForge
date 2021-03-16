@@ -13,7 +13,7 @@ Made using metal alloys.</description>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
-      <WorkToMake>45000</WorkToMake>
+      <WorkToMake>30000</WorkToMake>
       <Mass>3.8</Mass>
       <AccuracyTouch>0.8</AccuracyTouch>
       <AccuracyShort>0.95</AccuracyShort>

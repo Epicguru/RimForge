@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimForge.Patches
@@ -12,13 +13,13 @@ namespace RimForge.Patches
             if (__result == QualityCategory.Legendary)
                 return; // Can't improve.
 
+            bool mod = relevantSkill == SkillDefOf.Construction || relevantSkill == SkillDefOf.Crafting;
+            if (!mod)
+                return; // Doesn't affect art or other work types...
+
             if (pawn?.story?.traits == null)
                 return;
             if (!pawn.story.traits.HasTrait(RFDefOf.RF_BlessingOfZir))
-                return;
-
-            bool mod = relevantSkill == SkillDefOf.Construction || relevantSkill == SkillDefOf.Crafting;
-            if (!mod)
                 return;
 
             // Bump up quality one level.
@@ -28,6 +29,14 @@ namespace RimForge.Patches
                 __result = QualityCategory.Normal;
             else
                 __result += 1;
+
+            if (pawn.IsColonist)
+            { 
+                Vector3 pos = pawn.DrawPos + new Vector3(0, 0, 1);
+                pos.y = AltitudeLayer.MoteOverhead.AltitudeFor();
+                MoteMaker.ThrowText(pos, pawn.Map, "RF.Blessing.IncreasedMessage".Translate(__result.GetLabel()), Color.green);
+            }
+
             Core.Log($"Running Blessing of Zir on {pawn.LabelCap}: increased quality to {__result} from {old}");
         }
     }

@@ -5,6 +5,16 @@ namespace RimForge.Buildings
 {
     public class Building_PowerPole : Building_LongDistanceCabled
     {
+        public static Color GetTinCopperOrDefaultColor(Building building)
+        {
+            var stuff = building.Stuff;
+            if (stuff == RFDefOf.RF_Copper)
+                return Building_LongDistanceCabled.DefaultCableColor;
+            if (stuff == RFDefOf.RF_Tin)
+                return new Color32(140, 160, 160, 255);
+            return stuff.stuffProps.color;
+        }
+
         public override string Name => "RF.PowerPoleName".Translate();
 
         public override bool CanConnectedBeUnderRoof => false;
@@ -31,12 +41,7 @@ namespace RimForge.Buildings
 
         public override Color GetCableColor()
         {
-            var stuff = this.Stuff;
-            if (stuff == RFDefOf.RF_Copper)
-                return Building_LongDistanceCabled.DefaultCableColor;
-            if (stuff == RFDefOf.RF_Tin)
-                return new Color32(140, 160, 160, 255);
-            return stuff.stuffProps.color;
+            return GetTinCopperOrDefaultColor(this);
         }
     }
 }

@@ -47,7 +47,7 @@ Connect to other power poles using the 'link' button, or select multiple power p
       <li>PlaceWorker_NotUnderRoof</li>
     </placeWorkers>
     <holdsRoof>true</holdsRoof>
-    <fillPercent>2</fillPercent>
+    <fillPercent>1</fillPercent>
     <castEdgeShadows>false</castEdgeShadows>
     <!-- <staticSunShadowHeight>1.5</staticSunShadowHeight> -->
     <statBases>

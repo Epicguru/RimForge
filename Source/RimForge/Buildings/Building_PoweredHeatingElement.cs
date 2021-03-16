@@ -38,9 +38,6 @@ namespace RimForge.Buildings
 
         private BezierElectricArc arc;
 
-        [TweakValue("_RimForge", -2, 2)]
-        private static float OffE = 0.3f, OffF = 1f, OffG = 0.25f, OffH = 0.4f;
-
         public override void Tick()
         {
             PowerTrader.powerOutputInt = -GetCurrentPowerDraw();

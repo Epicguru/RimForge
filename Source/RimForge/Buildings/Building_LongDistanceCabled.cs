@@ -21,12 +21,15 @@ namespace RimForge.Buildings
             return mat;
         }
 
+        public virtual bool IgnoreMaterialColor => true;
         public override Color DrawColor
         {
-            get => Color.white;
+            get => IgnoreMaterialColor ? Color.white : base.DrawColor;
             set
             {
-                // Ignored.
+                if (IgnoreMaterialColor)
+                    return;
+                base.DrawColor = value;
             }
         }
 
