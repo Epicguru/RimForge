@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using RimForge.Comps;
 using RimForge.Effects;
 using RimWorld;
@@ -21,6 +22,26 @@ namespace RimForge.Buildings
         private static void MakeDarkGrey()
         {
             MakeColor(new Color(0.2f, 0.2f, 0.2f ,1f));
+        }
+
+        [DebugAction("RimForge", null, actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void TryDestroyHeart()
+        {
+            foreach (Thing thing in Find.CurrentMap.thingGrid.ThingsAt(UI.MouseCell()))
+            {
+                if (thing is Pawn p && !p.Dead)
+                {
+                    BodyPartRecord heart = p.health.hediffSet.GetNotMissingParts().FirstOrDefault(x => x.def == BodyPartDefOf.Heart);
+                    if (heart == null)
+                    {
+                        Core.Warn($"{thing.LabelCap} does not have a heart!");
+                        continue;
+                    }
+                    var info = new DamageInfo(RFDefOf.RF_RitualDamage, 9999, 2, hitPart: heart); 
+                    var result = p.TakeDamage(info);
+                    Core.Log($"Dealt {result.totalDamageDealt} damage to {thing.LabelCap}'s heart.");
+                }
+            }
         }
 
         private static void MakeColor(Color color)

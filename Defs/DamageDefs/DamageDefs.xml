@@ -4,7 +4,7 @@
   <DamageDef ParentName="StunBase">
     <defName>RF_Electrocution</defName>
     <label>Electrical</label>
-    <workerClass>RimForge.Damage.DamageWorker_Electrical</workerClass> <!-- Drops filth with destroying pawns -->
+    <workerClass>RimForge.Damage.DamageWorker_Electrical</workerClass>
     <externalViolence>true</externalViolence>
     <deathMessage>{0} has been electocuted to death.</deathMessage>
     <harmsHealth>true</harmsHealth>
@@ -92,6 +92,31 @@ Very painful.</description>
       <canMerge>false</canMerge>
       <destroyedLabel>Shot off (coilgun)</destroyedLabel>
       <destroyedOutLabel>Shot out (coilgun)</destroyedOutLabel>
+    </injuryProps>
+  </HediffDef>
+
+  <DamageDef>
+    <defName>RF_RitualDamage</defName>
+    <label>offering</label>
+    <workerClass>DamageWorker_AddInjury</workerClass>
+    <externalViolence>true</externalViolence>
+    <deathMessage>{0} has been sacrificed to machine god Zir.</deathMessage>
+    <hediff>RF_RitualDamageHediff</hediff>
+  </DamageDef>
+
+  <!-- Ritual hediff -->
+  <HediffDef ParentName="InjuryBase">
+    <defName>RF_RitualDamageHediff</defName>
+    <label>consumed by Zir</label>
+    <labelNoun>offered to machine god Zir</labelNoun>
+    <description>Machine god Zir has exchanged this mortal flesh for a blessing.</description>
+    <injuryProps>
+      <painPerSeverity>1</painPerSeverity>
+      <averagePainPerSeverityPermanent>0.00725</averagePainPerSeverityPermanent>
+      <bleedRate>0</bleedRate>
+      <canMerge>false</canMerge>
+      <destroyedLabel>Consumed by Zir</destroyedLabel>
+      <destroyedOutLabel>Consumed by Zir</destroyedOutLabel>
     </injuryProps>
   </HediffDef>
 

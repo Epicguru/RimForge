@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using RimForge.Comps;
+﻿using RimForge.Comps;
 using RimForge.Effects;
 using RimWorld;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
 using Verse;
 using Verse.Sound;
 
@@ -61,6 +60,8 @@ namespace RimForge.Buildings
         private HashSet<IntVec3> cellsHash = new HashSet<IntVec3>();
         private List<Building_Capacitor> rawCapacitors = new List<Building_Capacitor>();
         private int ticksSinceCapacitorRefresh;
+        private int tickCounter;
+        private Dictionary<int, List<Action>> tickActions = new Dictionary<int, List<Action>>(128);
 
         public override void ExposeData()
         {
@@ -130,6 +131,24 @@ namespace RimForge.Buildings
             }
             TurretRotation = Mathf.MoveTowardsAngle(TurretRotation, TargetRotation, TurretTurnSpeed);
 
+            // Do tick actions.
+            tickCounter++;
+            if (tickActions.TryGetValue(tickCounter, out var list))
+            {
+                foreach (var thing in list)
+                {
+                    try
+                    {
+                        thing?.Invoke();
+                    }
+                    catch (Exception e)
+                    {
+                        Core.Error("Exception in tick event:", e);
+                    }
+                }
+                tickActions.Remove(tickCounter);
+            }
+
             FuelComp.Props.fuelLabel = GetCurrentShellType().LabelCap;
             FuelComp.Props.fuelGizmoLabel = GetCurrentShellType().LabelCap;
 
@@ -157,6 +176,17 @@ namespace RimForge.Buildings
             TickState();
             TickBackArcs();
             TickFrontArcs();
+        }
+
+        private void AddTickEvent(int tick, Action a)
+        {
+            if (a == null || tick <= tickCounter)
+                return;
+
+            if (tickActions.TryGetValue(tick, out var list))
+                list.Add(a);
+            else
+                tickActions.Add(tick, new List<Action> { a });
         }
 
         private void TickState()
@@ -441,7 +471,12 @@ namespace RimForge.Buildings
                         if (pos == cell)
                             continue;
                     }
-                    FilthMaker.TryMakeFilth(pos, map, bloodToSplatter, bloodPawnName, Mathf.Min(remaining, 2));
+
+                    int tick = tickCounter + (BloodTrailLength - remaining) * Rand.Range(1, 3);
+                    AddTickEvent(tick, () =>
+                    {
+                        FilthMaker.TryMakeFilth(pos, map, bloodToSplatter, bloodPawnName, Mathf.Min(remaining, 2));
+                    });
                 }
             }
 

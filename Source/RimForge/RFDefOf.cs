@@ -13,6 +13,7 @@ namespace RimForge
 
         public static DamageDef RF_Electrocution;
         public static DamageDef RF_CoilgunDamage;
+        public static DamageDef RF_RitualDamage;
         public static ThingDef RF_Copper;
         public static ThingDef RF_Tin;
         public static StatCategoryDef RF_RimForgeStats;
