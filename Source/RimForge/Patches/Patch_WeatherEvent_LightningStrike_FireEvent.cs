@@ -24,7 +24,8 @@ namespace RimForge.Patches
 
             // New strike pos calculation!
             bool caught = false;
-            if (Building_LightningRod.MapRods.TryGetValue(___map.uniqueID, out var list))
+            var list = ___map.GetComponent<RodTracker>()?.RodsReadOnly;
+            if (list != null)
             {
                 Building_LightningRod found = null;
                 float maxDst = Building_LightningRod.Radius * Building_LightningRod.Radius;
