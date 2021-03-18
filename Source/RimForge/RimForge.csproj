@@ -90,6 +90,8 @@
     <Compile Include="Buildings\Building_WirelessPowerPylon.cs" />
     <Compile Include="Buildings\DrawPart.cs" />
     <Compile Include="Buildings\PlaceWorker_WallConnector.cs" />
+    <Compile Include="Buildings\RitualTracker.cs" />
+    <Compile Include="Command_TargetWithMessage.cs" />
     <Compile Include="Comps\CompCapacitor.cs" />
     <Compile Include="Comps\CompProperties_Capacitor.cs" />
     <Compile Include="Comps\CompProperties_ShowAlloyInfo.cs" />

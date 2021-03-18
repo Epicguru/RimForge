@@ -13,6 +13,7 @@ namespace RimForge
 
         public static DamageDef RF_Electrocution;
         public static DamageDef RF_CoilgunDamage;
+        public static DamageDef RF_RitualDamage;
         public static ThingDef RF_Copper;
         public static ThingDef RF_Tin;
         public static StatCategoryDef RF_RimForgeStats;
@@ -22,9 +23,10 @@ namespace RimForge
         public static ThingDef RF_Motes_RitualDistort;
         public static TraitDef RF_BlessingOfZir;
         public static ThingDef RF_Forge;
-        public static ThingDef RF_CoilgunShellAP, RF_CoilgunShellSP;
+        public static ThoughtDef RF_RitualBlessed, RF_RitualBadThought;
 
         // Vanilla ones.
         public static ThingDef Column;
+        public static BodyPartDef Spine;
     }
 }

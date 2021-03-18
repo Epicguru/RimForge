@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using RimForge.Comps;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -212,6 +213,22 @@ namespace RimForge
             }
 
             drawer.Map.overlayDrawer.DrawOverlay(drawer, RimWorld.OverlayTypes.BrokenDown);
+        }
+
+        public static void TryGiveThought(this Pawn pawn, ThoughtDef def, Pawn otherPawn = null)
+        {
+            if (def == null)
+                return;
+
+            pawn?.needs?.mood?.thoughts?.memories?.TryGainMemory(def, otherPawn);
+        }
+
+        public static void TryGiveThought(this Pawn pawn, ThoughtDef def, int level, Pawn otherPawn = null)
+        {
+            if (def == null)
+                return;
+
+            pawn?.needs?.mood?.thoughts?.memories?.TryGainMemory(ThoughtMaker.MakeThought(def, level), otherPawn);
         }
     }
 }

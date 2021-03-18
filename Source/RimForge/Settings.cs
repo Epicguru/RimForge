@@ -35,5 +35,11 @@ namespace RimForge
         public static int CoilgunMaxPowerMulti = 3;
         [TweakValue("RimForge", 0, 1)]
         public static bool CoilgunSplatterBlood = true;
+
+        // RITUAL
+        [TweakValue("RimForge", 0f, 1f)]
+        public static float RitualFailCoefficient = 1f;
+        [TweakValue("RimForge", 0f, 1f)]
+        public static float RitualFailMajorChance = 1f / 3f;
     }
 }
