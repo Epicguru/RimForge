@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using RimForge.Comps;
+﻿using RimForge.Comps;
 using RimForge.Effects;
 using RimWorld;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Verse;
 
@@ -29,19 +28,58 @@ namespace RimForge.Buildings
         {
             foreach (Thing thing in Find.CurrentMap.thingGrid.ThingsAt(UI.MouseCell()))
             {
-                if (thing is Pawn p && !p.Dead)
-                {
-                    BodyPartRecord heart = p.health.hediffSet.GetNotMissingParts().FirstOrDefault(x => x.def == BodyPartDefOf.Heart);
-                    if (heart == null)
-                    {
-                        Core.Warn($"{thing.LabelCap} does not have a heart!");
-                        continue;
-                    }
-                    var info = new DamageInfo(RFDefOf.RF_RitualDamage, 9999, 2, hitPart: heart); 
-                    var result = p.TakeDamage(info);
-                    Core.Log($"Dealt {result.totalDamageDealt} damage to {thing.LabelCap}'s heart.");
-                }
+                TakeHeart(thing as Pawn);
             }
+        }
+        
+        [DebugAction("RimForge", null, actionType = DebugActionType.Action, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void ResetPlayerPerformedRituals()
+        {
+            RitualTracker.Current.PlayerPerformedRituals = 0;
+            Core.Log("Reset the number of player performed rituals to zero.");
+        }
+
+        [DebugAction("RimForge", null, actionType = DebugActionType.Action, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void IncrementPlayerPerformedRituals()
+        {
+            RitualTracker.Current.PlayerPerformedRituals++;
+            Core.Log($"Increased the number of player performed rituals to {RitualTracker.Current.PlayerPerformedRituals}");
+        }
+
+        private static void TakeHeart(Pawn target)
+        {
+            if (target == null)
+                return;
+
+            BodyPartRecord heart = target.health.hediffSet.GetNotMissingParts().FirstOrDefault(x => x.def == BodyPartDefOf.Heart);
+            if (heart == null)
+            {
+                Core.Warn($"{target.LabelCap} does not have a heart!");
+                return;
+            }
+            var info = new DamageInfo(RFDefOf.RF_RitualDamage, 9999, 2, hitPart: heart);
+            var result = target.TakeDamage(info);
+            Core.Log($"Dealt {result.totalDamageDealt} damage to {target.LabelCap}'s heart.");
+        }
+
+        private static void TakeSpineAndArms(Pawn target)
+        {
+            if (target == null)
+                return;
+
+            void DamagePart(BodyPartDef def, float damage = 9999)
+            {
+                BodyPartRecord heart = target.health.hediffSet.GetNotMissingParts().FirstOrDefault(x => x.def == def);
+                if (heart == null)
+                    return;
+                
+                var info = new DamageInfo(RFDefOf.RF_RitualDamage, damage, 2, hitPart: heart);
+                target.TakeDamage(info);
+            }
+
+            DamagePart(BodyPartDefOf.Leg);
+            DamagePart(BodyPartDefOf.Leg);
+            DamagePart(RFDefOf.Spine);
         }
 
         private static void MakeColor(Color color)
@@ -51,6 +89,17 @@ namespace RimForge.Buildings
                 if (thing.TryGetComp<CompColorable>() != null)
                     thing.SetColor(color);
             }
+        }
+
+        public static float ChanceToFailRitual(int timesPerformedBefore)
+        {
+            if (timesPerformedBefore <= 0)
+                return 0f;
+
+            float x = timesPerformedBefore;
+            float func = Mathf.Clamp01(-1f / (x * 0.85f + 0.5f) + 1); // Go graph it.
+
+            return func * Settings.RitualFailCoefficient;
         }
 
         private static readonly List<IntVec3> tempCells = new List<IntVec3>(8);
@@ -74,9 +123,10 @@ namespace RimForge.Buildings
         public int CooldownTicksRemaining;
         public int RitualProgressTicks = 0;
         public Pawn TargetPawn;
+        public Pawn SacrificePawn;
 
         private float gearDrawSize = 12.2f, circleDrawSize = 20, textDrawSize = 8;
-        private float gearDrawRot, circleDrawRot, textDrawRot;
+        private float gearDrawRot, textDrawRot;
         private float gearAlpha = 1, circleAlpha = 1, textAlpha = 1;
         private float gearTurnSpeed = -20f, textTurnSpeed = 9f;
         private float circleBaseAlpha = 0.55f, circleAlphaMag = 0.06f;
@@ -98,6 +148,7 @@ namespace RimForge.Buildings
             Scribe_Values.Look(ref CooldownTicksRemaining, "rc_cooldownTicks", 0);
             Scribe_Values.Look(ref RitualProgressTicks, "rc_progressTicks", 0);
             Scribe_References.Look(ref TargetPawn, "rc_targetPawn");
+            Scribe_References.Look(ref SacrificePawn, "rc_sacrificePawn");
         }
 
         public override void Tick()
@@ -112,12 +163,26 @@ namespace RimForge.Buildings
                 if (RitualProgressTicks < TOTAL_DURATION - FADE_OUT_TICKS)
                 {
                     if (TargetPawn == null || TargetPawn != GetFirstValidColonist(TargetPawn))
-                        StopRitual("RF.Ritual.Cancelled_PawnMissing".Translate());
+                        EndRitual("RF.Ritual.Cancelled_PawnMissing".Translate());
+                    else if(SacrificePawn.DestroyedOrNull() || SacrificePawn.Dead)
+                        EndRitual("RF.Ritual.Cancelled_SacrificeMissing".Translate());
                 }
 
                 RitualProgressTicks++;
                 if (RitualProgressTicks == TOTAL_DURATION - FADE_OUT_TICKS - 1)
-                    StopRitual(null);
+                {
+                    // Natural end.
+                    float chanceToFail = ChanceToFailRitual(RitualTracker.Current.PlayerPerformedRituals);
+                    bool fail = Rand.Chance(chanceToFail);
+                    bool major = Rand.Chance(Settings.RitualFailMajorChance);
+                    string msg = null;
+                    if (fail)
+                    {
+                        string pawnName = TargetPawn.NameShortColored;
+                        msg = major ? "RF.Ritual.FailureMessageMajor".Translate(pawnName) : "RF.Ritual.FailureMessageMinor".Translate(pawnName);
+                    }
+                    EndRitual(msg, fail ? major ? 2 : 1 : 0);
+                }
                 if (RitualProgressTicks > TOTAL_DURATION)
                     RitualProgressTicks = 0;
             }
@@ -230,27 +295,69 @@ namespace RimForge.Buildings
             }
         }
 
-        public void StopRitual(string error)
+        public void EndRitual(string error, int failLevel = 0)
         {
             RitualProgressTicks = TOTAL_DURATION - FADE_OUT_TICKS;
 
             if (error != null)
             {
                 Messages.Message(error, MessageTypeDefOf.RejectInput);
+
+                if (failLevel > 0)
+                {
+                    // Kill the sacrifice.
+                    if(SacrificePawn != null)
+                        TakeHeart(SacrificePawn);
+
+                    if (failLevel == 2)
+                    {
+                        // Kill the target.
+                        if (TargetPawn != null)
+                            TakeHeart(TargetPawn);
+                    }
+                    else
+                    {
+                        // Cripple the target.
+                        if (TargetPawn != null) { }
+                            TakeSpineAndArms(TargetPawn);
+                    }
+                }
             }
             else
             {
-                // Bestow the blessing.
-                var def = RFDefOf.RF_BlessingOfZir;
-                Trait trait = new Trait(def, forced: true);
-                TargetPawn.story.traits.GainTrait(trait);
-                Messages.Message("RF.Ritual.Success".Translate(TargetPawn.LabelShortCap), MessageTypeDefOf.PositiveEvent);
+                // BSpawn some motes. Flashy.
                 for (int i = 0; i < 4; i++)
                 {
                     MoteMaker.ThrowLightningGlow(TargetPawn.DrawPos + Rand.InsideUnitCircleVec3 * 0.5f, Map, 2f);
                 }
+
+                // Give blessing and thought.
+                Trait trait = new Trait(RFDefOf.RF_BlessingOfZir, forced: true);
+                TargetPawn.story.traits.GainTrait(trait);
+                TargetPawn.TryGiveThought(RFDefOf.RF_RitualBlessed);
+
+                // Give negative thoughts to all colonists.
+                int thoughtLevel = SacrificePawn.guilt.IsGuilty ? 1 : 0;
+                foreach (var pawn in PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_FreeColonistsAndPrisoners)
+                {
+                    if (!pawn.IsColonist)
+                        continue;
+
+                    pawn.TryGiveThought(RFDefOf.RF_RitualBadThought, thoughtLevel);
+                }
+
+                // Kill the sacrifice.
+                TakeHeart(SacrificePawn);
+
+                // Increment the number of rituals performed.
+                RitualTracker.Current.PlayerPerformedRituals++;
+
+                // Send notification.
+                Messages.Message("RF.Ritual.Success".Translate(TargetPawn.NameShortColored), MessageTypeDefOf.PositiveEvent);
+                
             }
             TargetPawn = null;
+            SacrificePawn = null;
             CooldownTicksRemaining = 2500 * 20; // 20-hour cooldown.
         }
 
@@ -319,19 +426,33 @@ namespace RimForge.Buildings
                 DrawRitualEffects();
         }
 
+        private string GetPrettyTimesString(int timesPerformed)
+        {
+            int timesSanitized = Mathf.Clamp(timesPerformed, 1, 6);
+            return $"RF.Ritual.{timesSanitized}".Translate();
+        }
+
         public override IEnumerable<Gizmo> GetGizmos()
         {
             foreach (var gizmo in base.GetGizmos())
                 yield return gizmo;
 
-            yield return new Command_Action()
+            int timesPerformed = RitualTracker.Current.PlayerPerformedRituals;
+            float chanceToFail = ChanceToFailRitual(timesPerformed);
+
+            yield return new Command_TargetWithMessage()
             {
                 defaultLabel = "RF.Ritual.StartLabel".Translate(),
                 defaultDesc = "RF.Ritual.StartDesc".Translate(),
-                action = () =>
+                Message = "RF.Ritual.StartMessage".Translate(),
+                action = thing =>
                 {
+                    Pawn sacrifice = thing as Pawn;
+                    if (sacrifice.DestroyedOrNull())
+                        return;
+
                     bool canStart = true;
-                    foreach(var reason in GetReasonsCannotStartRitual())
+                    foreach (var reason in GetReasonsCannotStartRitual())
                     {
                         Messages.Message(reason, canStart ? MessageTypeDefOf.RejectInput : MessageTypeDefOf.SilentInput);
                         canStart = false;
@@ -341,7 +462,35 @@ namespace RimForge.Buildings
                         return;
 
                     TargetPawn = GetFirstValidColonist();
+                    SacrificePawn = sacrifice;
                     RitualProgressTicks = 1;
+                },
+                targetingParams = new TargetingParameters()
+                {
+                    canTargetHumans = true,
+                    canTargetPawns = true,
+                    canTargetBuildings = false,
+                    canTargetSelf = false,
+                    canTargetAnimals = false,
+                    canTargetMechs = false,
+                    mapObjectTargetsMustBeAutoAttackable = false,
+                    validator = info =>
+                    {
+                        if (!info.HasThing)
+                            return false;
+                        return info.Thing is Pawn {IsPrisoner: true, Dead: false};
+                    }
+                },
+                icon = Content.RitualStartIcon,
+                defaultIconColor = new Color(0.8f, 0.5f, 0.5f, 1f),
+                PreProcess = chanceToFail <= 0f ? (Action<Action>)null : act =>
+                {
+                    Find.WindowStack.Add(new WarningDialog()
+                    {
+                        Text = "RF.Ritual.FailWarning".Translate(GetPrettyTimesString(timesPerformed), (chanceToFail * 100f).ToString("F0")),
+                        ButtonText = "RF.Ritual.IUnderstand".Translate(),
+                        OnAccept = act
+                    });
                 }
             };
 
@@ -358,7 +507,7 @@ namespace RimForge.Buildings
                 }
             };
 
-            var allowedDesignator = BuildCopyCommandUtility.BuildCommand(RFDefOf.Column, RFDefOf.RF_Copper, "Build copper column", "The ritual requires 8 copper columns to be placed.", true);
+            var allowedDesignator = BuildCopyCommandUtility.BuildCommand(RFDefOf.Column, RFDefOf.RF_Copper, "RF.Ritual.BuildColumnLabel".Translate(), "RF.Ritual.BuildColumnDesc".Translate(), true);
             if (allowedDesignator != null)
                 yield return allowedDesignator;
 
@@ -392,11 +541,11 @@ namespace RimForge.Buildings
 
         public void SpawnDistortion()
         {
-            Mote mote = (Mote)ThingMaker.MakeThing(RFDefOf.RF_Motes_RitualDistort, null);
+            Mote mote = (Mote)ThingMaker.MakeThing(RFDefOf.RF_Motes_RitualDistort);
             mote.Scale = 1;
             mote.exactRotation = 0;
             mote.exactPosition = DrawPos;
-            GenSpawn.Spawn(mote, Position, Map, WipeMode.Vanish);
+            GenSpawn.Spawn(mote, Position, Map);
         }
 
         private void DrawGhosts()
@@ -467,7 +616,7 @@ namespace RimForge.Buildings
                 symbol.MatNorth.color = new Color(0.9f, 0.35f, 0.15f, SymbolDrawAlpha * a);
                 float angle = (SymbolDrawBA + i * (360f / 8f) - gearDrawRot) * Mathf.Deg2Rad;
                 Vector3 offset = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * SymbolDrawOffset;
-                symbol.Draw(drawPos + offset, Rot4.North, this, 0f);
+                symbol.Draw(drawPos + offset, Rot4.North, this);
             }
             
 
@@ -477,12 +626,12 @@ namespace RimForge.Buildings
 
             Content.RitualCircle.drawSize = new Vector2(circleDrawSize, circleDrawSize);
             Content.RitualCircle.MatNorth.color = new Color(0.9f, 0.15f, 0.15f, circleAlpha * a);
-            Content.RitualCircle.Draw(drawPos, Rot4.North, this, circleDrawRot);
+            Content.RitualCircle.Draw(drawPos, Rot4.North, this);
 
             drawPos.y = AltitudeLayer.VisEffects.AltitudeFor();
             Content.RitualBall.drawSize = new Vector2(ballDrawSize, ballDrawSize);
             Content.RitualBall.MatNorth.color = new Color(1f, 145f / 255f, 0f, 1f);
-            Content.RitualBall.Draw(drawPos + new Vector3(0f, 0f, ballOffset), Rot4.North, this, 0f);
+            Content.RitualBall.Draw(drawPos + new Vector3(0f, 0f, ballOffset), Rot4.North, this);
         }
 
         public bool ShouldGlowNow()
@@ -535,6 +684,8 @@ namespace RimForge.Buildings
                         continue;
                     if (!pawn.health.capacities.CanBeAwake)
                         continue;
+                    if (pawn.story?.traits?.HasTrait(RFDefOf.RF_BlessingOfZir) ?? false)
+                        continue;
 
                     if (prefer != null && pawn != prefer)
                         continue;
@@ -550,7 +701,7 @@ namespace RimForge.Buildings
             var map = Map;
             int hour = GenLocalDate.HourOfDay(map);
             
-            return hour >= 21 && hour <= 24;
+            return hour >= 21 || hour < 3;
         }
 
         public IEnumerable<string> GetReasonsCannotStartRitual()
@@ -573,6 +724,52 @@ namespace RimForge.Buildings
 
             if (GetFirstValidColonist() == null)
                 yield return "RF.Ritual.CannotStart_NoColonist".Translate();
+        }
+
+        public override string GetInspectString()
+        {
+            return IsActive ? "RF.Ritual.InProgress".Translate() : "RF.Ritual.QuickGuide".Translate();
+        }
+    }
+
+    public class WarningDialog : Window
+    {
+        public override Vector2 InitialSize => new Vector2(500f, 300f);
+
+        public string Text;
+        public string ButtonText;
+        public Action OnAccept;
+
+        public WarningDialog()
+        {
+            forcePause = true;
+            draggable = true;
+            doCloseButton = false;
+            doCloseX = false;
+            closeOnClickedOutside = false;
+        }
+
+        public override void DoWindowContents(Rect inRect)
+        {
+            Verse.Text.Font = GameFont.Medium;
+            Rect textRect = inRect;
+            textRect.height -= 150;
+            Widgets.Label(textRect, Text);
+
+            GUI.color = new Color(0.8f, 0.5f, 0.5f, 1f);
+            Rect buttonA = new Rect(inRect.x, inRect.yMax - 32, 190, 32);
+            if(Widgets.ButtonText(buttonA, ButtonText))
+            {
+                OnAccept?.Invoke();
+                Close();
+            }
+            GUI.color = Color.white;
+
+            Rect buttonB = new Rect(inRect.xMax - 190, inRect.yMax - 32, 190, 32);
+            if (Widgets.ButtonText(buttonB, "RF.Cancel".Translate().CapitalizeFirst()))
+            {
+                Close();
+            }
         }
     }
 }
