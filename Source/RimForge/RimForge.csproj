@@ -115,6 +115,7 @@
     <Compile Include="Effects\Bezier.cs" />
     <Compile Include="Effects\ElectricArc.cs" />
     <Compile Include="Effects\BezierElectricArc.cs" />
+    <Compile Include="Effects\FollowBezierSpark.cs" />
     <Compile Include="Effects\LinearElectricArc.cs" />
     <Compile Include="Effects\MapEffect.cs" />
     <Compile Include="Effects\MapEffectHandler.cs" />

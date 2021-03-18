@@ -113,6 +113,29 @@ namespace RimForge.Effects
             }
         }
 
+        public override void WorldComponentTick()
+        {
+            base.WorldComponentTick();
+
+            foreach (var list in effects.Values)
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var item = list[i];
+                    if (item == null || item.ShouldDeSpawn())
+                    {
+                        list.RemoveAt(i);
+                        if (item != null)
+                            item.MapId = -1;
+                        i--;
+                        continue;
+                    }
+
+                    item.TickAccurate();
+                }
+            }
+        }
+
         private void OnDrawLate(Map map)
         {
             if (map != null && effects.TryGetValue(map.uniqueID, out var found))

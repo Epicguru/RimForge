@@ -25,12 +25,12 @@ namespace RimForge.Effects
             Core.Log("Cleared the materials cache.");
         }
 
-        private static Material GetMat(Color color)
+        public static Material GetMat(Color color, bool unlit = true)
         {
             if (matCache.TryGetValue(color, out var mat))
                 return mat;
 
-            mat = MaterialPool.MatFrom("RF/Effects/Spark", ShaderDatabase.MoteGlow, color);
+            mat = MaterialPool.MatFrom("RF/Effects/Spark", unlit ? ShaderDatabase.MoteGlow : ShaderDatabase.Mote, color);
             matCache.Add(color, mat);
             return mat;
         }
