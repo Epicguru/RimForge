@@ -31,8 +31,6 @@ namespace RimForge
         public static float CoilgunBuildingDamageMulti = 1f;
         [TweakValue("RimForge", 100, 10000)]
         public static float CoilgunBasePowerReq = 2000;
-        [TweakValue("RimForge", 1, 50)]
-        public static int CoilgunMaxPowerMulti = 3;
         [TweakValue("RimForge", 0, 1)]
         public static bool CoilgunSplatterBlood = true;
 

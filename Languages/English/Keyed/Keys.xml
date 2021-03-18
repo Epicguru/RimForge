@@ -80,7 +80,7 @@ WARNING: Firing cannot be cancelled once started!</RF.Coilgun.AttackDesc>
 <RF.Coilgun.DisabledNoCaps>Cannot fire: not enough capacitors or not enough energy stored in capacitors.</RF.Coilgun.DisabledNoCaps>
 <RF.Coilgun.DisabledNoPower>Cannot fire: not powered.</RF.Coilgun.DisabledNoPower>
 <RF.Coilgun.DisabledNoShell>Cannot fire: shell not loaded.</RF.Coilgun.DisabledNoShell>
-<RF.Coilgun.CapState>Shot power: {0}% ({1} connected capacitors, {2} stored Wd)</RF.Coilgun.CapState> <!-- TODO remove -->
+<RF.Coilgun.CapState>{0} Wd stored in {1} connected capacitors. (min. {2} Wd to fire)</RF.Coilgun.CapState> <!-- TODO remove -->
 <RF.Coilgun.ChangeShellLabel>Change shell type</RF.Coilgun.ChangeShellLabel>
 <RF.Coilgun.ChangeShellDesc>Change the type of shell that is loaded into this coilgun.
 This action ejects the current shell onto the ground, and a colonist will have to load a new one.</RF.Coilgun.ChangeShellDesc>

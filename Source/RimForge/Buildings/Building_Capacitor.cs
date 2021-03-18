@@ -1,5 +1,4 @@
 ﻿using RimForge.Comps;
-using RimWorld;
 using Verse;
 
 namespace RimForge.Buildings

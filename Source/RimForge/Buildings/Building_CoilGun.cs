@@ -327,12 +327,21 @@ namespace RimForge.Buildings
             }
         }
 
-        private void ClearCapacitorPower()
+        private void RemoveCapacitorPower(float wd)
         {
+            float toRemove = wd;
             foreach(var cap in GetConnectedCapacitors())
             {
-                cap.CompCap.StoredWd = 0;
+                if (toRemove <= 0f)
+                    return;
+
+                float take = Mathf.Min(toRemove, cap.CompCap.StoredWd);
+                cap.CompCap.StoredWd -= take;
+                toRemove -= take;
             }
+
+            if (toRemove > 0)
+                Core.Error($"Tried to remove {wd} Wd of power from capacitors, could only remove {wd - toRemove} Wd.");
         }
 
         private void GetCapacitorState(out int count, out float stored)
@@ -344,19 +353,6 @@ namespace RimForge.Buildings
                 count++;
                 stored += cap.CompCap.StoredWd;
             }
-        }
-
-        private float GetRelativePower(int capCount, float storedPower)
-        {
-            if (capCount == 0)
-                return 0;
-
-            float baseLine = Settings.CoilgunBasePowerReq;
-
-            if (storedPower < baseLine)
-                return 0;
-
-            return Mathf.Clamp(storedPower / baseLine, 1, Settings.CoilgunMaxPowerMulti);
         }
 
         private void RefreshCapacitors()
@@ -435,8 +431,7 @@ namespace RimForge.Buildings
 
             var shellDef = GetCurrentShellType();
 
-            GetCapacitorState(out int capCount, out float capStored);
-            float damage = shellDef.baseDamage * Settings.CoilgunBaseDamageMultiplier * GetRelativePower(capCount, capStored);
+            float damage = shellDef.baseDamage * Settings.CoilgunBaseDamageMultiplier;
             //Core.Log($"Base damage: {damage}, multi: {Settings.CoilgunPenDamageMultiplier}, building multi: {Settings.CoilgunBuildingDamageMulti}");
 
             int affected = 0;
@@ -455,6 +450,8 @@ namespace RimForge.Buildings
             float totalDamage = 0;
             int bloodCount = 0;
             ThingDef bloodToSplatter = null;
+            Color bloodSplatterColor = default;
+            Vector2 bloodStartPos = default;
             string bloodPawnName = null;
 
             void MakeBloodAt(IntVec3 cell, int remaining)
@@ -472,11 +469,18 @@ namespace RimForge.Buildings
                             continue;
                     }
 
-                    int tick = tickCounter + (BloodTrailLength - remaining) * Rand.Range(1, 3);
+                    int delay = (BloodTrailLength - remaining) * Rand.Range(1, 3);
+                    int tick = tickCounter + delay;
                     AddTickEvent(tick, () =>
                     {
                         FilthMaker.TryMakeFilth(pos, map, bloodToSplatter, bloodPawnName, Mathf.Min(remaining, 2));
                     });
+                    var splash = new FollowBezierSpark();
+                    splash.Start = bloodStartPos;
+                    splash.End = pos.ToVector3Shifted().WorldToFlat();
+                    splash.Ticks = delay;
+                    splash.Color = bloodSplatterColor;
+                    splash.Spawn(map);
                 }
             }
 
@@ -525,9 +529,12 @@ namespace RimForge.Buildings
 
                             if(Settings.CoilgunSplatterBlood && pawn?.RaceProps?.BloodDef != null)
                             {
+                                Color defaultBlood = pawn.RaceProps.meatColor == Color.white ? Color.red : pawn.RaceProps.meatColor;
                                 bloodToSplatter = pawn.RaceProps.BloodDef;
                                 bloodCount = BloodTrailLength;
                                 bloodPawnName = pawn.LabelIndefinite();
+                                bloodStartPos = pawn.DrawPos.WorldToFlat();
+                                bloodSplatterColor = pawn.RaceProps.IsMechanoid ? Color.black : pawn.RaceProps.Humanlike ? Color.red : defaultBlood;
                             }
 
                             if (pawn?.RaceProps?.IsMechanoid ?? false)
@@ -563,7 +570,7 @@ namespace RimForge.Buildings
 
             Current.CameraDriver.shaker.DoShake(5);
 
-            ClearCapacitorPower();
+            RemoveCapacitorPower(Settings.CoilgunBasePowerReq);
             ClearLoadedShell();
             Core.Log($"Hit {affected} things for total {totalDamage} damage, scanned {cells} of {list.Count} cells.");
         }
@@ -730,7 +737,6 @@ namespace RimForge.Buildings
                 yield return item;
 
             GetCapacitorState(out int capCount, out float capPower);
-            float power = GetRelativePower(capCount, capPower);
             bool hasPower = PowerComp.PowerOn;
             bool hasShell = GetLoadedShell() != null;
 
@@ -754,7 +760,7 @@ namespace RimForge.Buildings
                     LastKnowPos = Position;
                 },
                 gun = this,
-                disabled = power <= 0 || !hasPower || !hasShell,
+                disabled = capCount <= 0 || capPower < Settings.CoilgunBasePowerReq || !hasPower || !hasShell,
                 disabledReason = !hasPower ? "RF.Coilgun.DisabledNoPower".Translate() : !hasShell ? "RF.Coilgun.DisabledNoShell".Translate() : "RF.Coilgun.DisabledNoCaps".Translate()
             };
             yield return new Command_Action()
@@ -781,16 +787,11 @@ namespace RimForge.Buildings
         {
             string basic = base.GetInspectString();
             GetCapacitorState(out int connected, out float stored);
-            float power = GetRelativePower(connected, stored);
 
-            string shellName = GetLoadedShell()?.LabelCap ?? "RF.None".Translate().CapitalizeFirst();
-            string loaded = "RF.Coilgun.LoadedShell".Translate(shellName);
-
-            string pct = (power * 100f).ToString("F0");
-            string capState = "RF.Coilgun.CapState".Translate(pct, connected, stored.ToString("F0"));
+            string capState = "RF.Coilgun.CapState".Translate(stored.ToString("F0"), connected, Settings.CoilgunBasePowerReq);
 
             if(!string.IsNullOrWhiteSpace(basic))
-                return $"{basic.TrimEnd()}\n{loaded}\n{capState}";
+                return $"{basic.TrimEnd()}\n{capState}";
             return capState;
         }
     }

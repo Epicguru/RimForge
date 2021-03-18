@@ -94,9 +94,6 @@ namespace RimForge.Buildings
 
         public virtual int GetCablePointCount(Vector2 a, Vector2 b)
         {
-            if (a == null || b == null || a == b)
-                return 0;
-
             return Mathf.RoundToInt((a - b).magnitude * Settings.CableSegmentsPerCell);
         }
 

@@ -33,6 +33,11 @@ namespace RimForge.Effects
             return Destroyed || MapId == -1;
         }
 
+        public virtual void TickAccurate()
+        {
+
+        }
+
         public abstract void Draw(bool tick, Map map);
     }
 }
