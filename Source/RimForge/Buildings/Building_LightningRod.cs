@@ -6,20 +6,20 @@ namespace RimForge.Buildings
 {
     public class Building_LightningRod : Building
     {
-        public static Dictionary<int, List<Building_LightningRod>> MapRods = new Dictionary<int, List<Building_LightningRod>>();
         [DebugAction("RimForge", "List Lightning Rods")]
         private static void Debug_MapRods()
         {
-            foreach (var pair in MapRods)
+            var tracker = Find.CurrentMap?.GetComponent<RodTracker>();
+            if (tracker == null)
             {
-                if (pair.Value.Count == 0)
-                    continue;
+                Core.Error("Failed to find current map or current map rod tracker component.");
+                return;
+            }
 
-                Log.Message($"Map {pair.Key}:");
-                foreach (var rod in pair.Value)
-                {
-                    Log.Message($"  -{rod.Position} {rod.LabelCap}");
-                }
+            Core.Log($"There are {tracker.RodsReadOnly.Count} lightning rods on this map:");
+            foreach (var thing in tracker.RodsReadOnly)
+            {
+                Core.Log(thing.Position.ToString());
             }
         }
 
@@ -52,23 +52,28 @@ namespace RimForge.Buildings
 
         private void Register(Map overrideMap = null)
         {
-            var map = (overrideMap ?? Map).uniqueID;
-            if (MapRods.TryGetValue(map, out var found))
+            var map = overrideMap ?? Map;
+            var tracker = map?.GetComponent<RodTracker>();
+            if (tracker == null)
             {
-                if(!found.Contains(this))
-                    found.Add(this);
+                Core.Error("Failed to register, null map or tracker component.");
+                return;
             }
-            else
-            {
-                MapRods.Add(map, new List<Building_LightningRod>() {this});
-            }
+
+            tracker.Register(this);
         }
 
         private void Remove()
         {
-            var map = Map.uniqueID;
-            if (MapRods.TryGetValue(map, out var found) && found.Contains(this))
-                found.Remove(this);
+            var map = Map;
+            var tracker = map?.GetComponent<RodTracker>();
+            if (tracker == null)
+            {
+                Core.Error("Failed to un-register, null map or tracker component.");
+                return;
+            }
+
+            tracker.UnRegister(this);
         }
 
         public override void DrawExtraSelectionOverlays()
