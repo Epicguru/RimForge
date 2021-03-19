@@ -12,6 +12,7 @@ namespace RimForge.Buildings.DiscoPrograms
         private Direction direction;
         private IntVec3 cacheMoveDir;
         private IntVec3 lineCell;
+        private int movesDone;
 
         public FlyingLine(DiscoProgramDef def) : base(def)
         {
@@ -28,10 +29,10 @@ namespace RimForge.Buildings.DiscoPrograms
             Forwards = Def.bools[0];
 
             var rect = DJStand.FloorBounds;
-            var bl = new IntVec3(rect.minX - 1, 0, rect.minZ - 1);
-            var br = new IntVec3(rect.maxX + 1, 0, rect.minZ - 1);
-            var tl = new IntVec3(rect.minX - 1, 0, rect.maxZ + 1);
-            var tr = new IntVec3(rect.maxX + 1, 0, rect.maxZ + 1);
+            var bl = new IntVec3(rect.minX, 0, rect.minZ);
+            var br = new IntVec3(rect.maxX, 0, rect.minZ);
+            var tl = new IntVec3(rect.minX, 0, rect.maxZ);
+            var tr = new IntVec3(rect.maxX, 0, rect.maxZ);
 
             switch (direction)
             {
@@ -44,31 +45,28 @@ namespace RimForge.Buildings.DiscoPrograms
                     lineCell = Forwards ? bl : tl;
                     break;
                 case Direction.Diagonal:
-                    cacheMoveDir = new IntVec3(1, 0, 1) * (Forwards ? 1 : -1);
-                    lineCell = Forwards ? bl : tr;
-                    break;
-                case Direction.DiagonalInverted:
                     cacheMoveDir = new IntVec3(1, 0, -1) * (Forwards ? 1 : -1);
                     lineCell = Forwards ? tl : br;
+                    break;
+                case Direction.DiagonalInverted:
+                    cacheMoveDir = new IntVec3(1, 0, 1) * (Forwards ? 1 : -1);
+                    lineCell = Forwards ? bl : tr;
                     break;
             }
         }
 
         public virtual bool IsOnLine(IntVec3 cell)
         {
-            IntVec3 min = new IntVec3(DJStand.FloorBounds.minX, 0, DJStand.FloorBounds.minZ);
-            IntVec3 localCell = cell - min;
-            IntVec3 localLine = lineCell - min;
             switch (direction)
             {
                 case Direction.Horizontal:
                     return cell.x == lineCell.x;
                 case Direction.Vertical:
                     return cell.z == lineCell.z;
-                case Direction.Diagonal:
-                    return localCell.x == localCell.z && localCell.x == localLine.x;
-                case Direction.DiagonalInverted:
-                    return localCell.x == (DJStand.FloorBounds.maxZ - localCell.z) && localCell.x == localLine.x;
+                case Direction.Diagonal: // Rise is same as run.
+                    return cell.x - lineCell.x == cell.z - lineCell.z;
+                case Direction.DiagonalInverted: // Rise is negative run
+                    return lineCell.x - cell.x ==  cell.z - lineCell.z;
             }
             return false;
         }
@@ -80,7 +78,11 @@ namespace RimForge.Buildings.DiscoPrograms
             if (TickCounter % MoveInterval == 0)
             {
                 lineCell += cacheMoveDir;
+                movesDone++;
             }
+
+            if (movesDone >= 2 && !DJStand.FloorBounds.Contains(lineCell))
+                Remove();
         }
 
         public override Color ColorFor(IntVec3 cell)

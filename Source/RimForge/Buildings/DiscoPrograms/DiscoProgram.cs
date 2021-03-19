@@ -7,7 +7,7 @@ namespace RimForge.Buildings.DiscoPrograms
     {
         public readonly DiscoProgramDef Def;
         public Building_DJStand DJStand { get; set; }
-        public int TickCounter { get; set; }
+        public int TickCounter { get; set; } = Rand.Range(0, 1000);
         public bool ShouldRemove { get; private set; }
         public bool OneMinus = false;
         public Color? Tint = null;

@@ -94,11 +94,14 @@
     <Compile Include="Buildings\Building_WallConnector.cs" />
     <Compile Include="Buildings\Building_WirelessPowerPylon.cs" />
     <Compile Include="Buildings\DiscoPrograms\Checkerboard.cs" />
+    <Compile Include="Buildings\DiscoPrograms\BeatCircle.cs" />
     <Compile Include="Buildings\DiscoPrograms\DiscoProgram.cs" />
     <Compile Include="Buildings\DiscoPrograms\Fade.cs" />
     <Compile Include="Buildings\DiscoPrograms\FlyingLine.cs" />
     <Compile Include="Buildings\DiscoPrograms\Ripple.cs" />
     <Compile Include="Buildings\DiscoPrograms\SequenceHandler.cs" />
+    <Compile Include="Buildings\DiscoPrograms\Solid.cs" />
+    <Compile Include="Buildings\DiscoPrograms\Stripes.cs" />
     <Compile Include="Buildings\Util\DiscoFloorGlowGrid.cs" />
     <Compile Include="Buildings\Util\DrawPart.cs" />
     <Compile Include="Buildings\Util\PlaceWorker_WallConnector.cs" />

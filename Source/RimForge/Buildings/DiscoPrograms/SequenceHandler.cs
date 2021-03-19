@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Verse;
 
 namespace RimForge.Buildings.DiscoPrograms
@@ -15,6 +16,7 @@ namespace RimForge.Buildings.DiscoPrograms
         private bool waitForLast;
         private Queue<DiscoSequenceAction> actionQueue;
         private DiscoProgram lastAddedProgram;
+        private Stack<DiscoProgram> memory = new Stack<DiscoProgram>();
 
         public SequenceHandler(DiscoSequenceDef def, Building_DJStand stand)
         {
@@ -38,6 +40,14 @@ namespace RimForge.Buildings.DiscoPrograms
         {
             void Handle(DiscoSequenceAction item)
             {
+                if (item.type == DiscoSequenceActionType.None)
+                    return;
+
+                if (item.chance <= 0f)
+                    return;
+                if (item.chance < 1f && !Rand.Chance(item.chance))
+                    return;
+
                 if (item.type == DiscoSequenceActionType.Repeat)
                 {
                     if (item.actions == null || item.times <= 0)
@@ -83,7 +93,8 @@ namespace RimForge.Buildings.DiscoPrograms
             if (ticksToWait > 0)
             {
                 ticksToWait--;
-                return;
+                if(ticksToWait > 0)
+                    return;
             }
 
             if (waitForLast)
@@ -128,6 +139,22 @@ namespace RimForge.Buildings.DiscoPrograms
             if (action == null)
                 return true;
 
+            bool CheckMem()
+            {
+                if (memory.Count == 0)
+                {
+                    Core.Warn("Tried to do a memory action, but there is nothing on the memory stack.");
+                    return true;
+                }
+
+                if (memory.Peek().ShouldRemove)
+                {
+                    Core.Warn("Executing a memory action, but the last program on the memory stack has already been removed.");
+                    return false;
+                }
+                return false;
+            }
+
             switch (action.type)
             {
                 case DiscoSequenceActionType.Clear:
@@ -145,6 +172,8 @@ namespace RimForge.Buildings.DiscoPrograms
                     instance.Tint = action.Tint;
                     Stand.SetProgramStack(instance);
                     lastAddedProgram = instance;
+                    if (action.addToMemory)
+                        memory.Push(instance);
                     return true;
                 case DiscoSequenceActionType.Add:
                     instance = action.Program?.MakeProgram(Stand);
@@ -154,6 +183,8 @@ namespace RimForge.Buildings.DiscoPrograms
                     instance.Tint = action.Tint;
                     Stand.AddProgramStack(instance, action.blend, action.atBottom ? 0 : (int?)null);
                     lastAddedProgram = instance;
+                    if (action.addToMemory)
+                        memory.Push(instance);
                     return true;
                 case DiscoSequenceActionType.WaitForEnd:
                     if (lastAddedProgram == null || lastAddedProgram.ShouldRemove)
@@ -163,6 +194,34 @@ namespace RimForge.Buildings.DiscoPrograms
                     }
                     waitForLast = true;
                     return false;
+                case DiscoSequenceActionType.MemAdd:
+                    if (lastAddedProgram == null || lastAddedProgram.ShouldRemove)
+                    {
+                        Core.Warn("Started MemAdd action, but there is no previous program, or that program has already ended.");
+                        return true;
+                    }
+                    memory.Push(lastAddedProgram);
+                    return true;
+                case DiscoSequenceActionType.MemRemove:
+                    if (memory.Count == 0)
+                    {
+                        Core.Warn("Started MemRemove action, but the memory stack is empty!");
+                        return true;
+                    }
+                    memory.Pop();
+                    return true;
+                case DiscoSequenceActionType.TintMem:
+                    if (CheckMem())
+                        return true;
+                    Color? tint = action.Tint;
+                    memory.Peek().Tint = tint;
+                    return true;
+                case DiscoSequenceActionType.DestroyMem:
+                    if (CheckMem())
+                        return true;
+                    memory.Peek().Remove();
+                    memory.Pop();
+                    return true;
             }
             return true;
         }

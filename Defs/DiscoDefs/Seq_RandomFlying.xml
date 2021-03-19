@@ -9,19 +9,33 @@
         <type>Clear</type>
       </li>
       
-      <!-- Set random color floor and wait a tiny bit-->
+      <!-- Add greyscale checker floor, add it to memory-->
       <li>
-        <type>Start</type>
-        <randomTint>true</randomTint>
-        <blend>Additive</blend>
+        <type>Add</type> <!-- Use Add because Start forces blend to Override -->
+        <blend>Multiply</blend>
         <program>RF_DP_Checkerboard_Grayscale</program>
+        <addToMemory>true</addToMemory>
       </li>
 
-      <!-- Add a random line, wait until it ends, repeat -->
+      <!-- Change floor color, add a random line, wait until it ends, repeat -->
       <li>
         <type>Repeat</type>
         <times>15</times>
         <actions>
+          <li>
+            <type>TintMem</type> <!-- The greyscale floor is stored in memory -->
+            <randomTint>true</randomTint>
+          </li>
+          <li>
+            <type>Add</type>
+            <chance>0.75</chance>
+            <atBottom>true</atBottom>
+            <blend>Additive</blend>
+            <randomProgramFrom>
+              <li>RF_DP_Ripple_BW_Out</li>
+              <li>RF_DP_Ripple_BW_In</li>
+            </randomProgramFrom>
+          </li>
           <li>
             <type>Add</type>
             <atBottom>true</atBottom>
@@ -31,6 +45,10 @@
               <li>RF_DP_Line_BW_Vert</li>
               <li>RF_DP_Line_BW_Hor_Back</li>
               <li>RF_DP_Line_BW_Vert_Back</li>
+              <li>RF_DP_Line_BW_Diag</li>
+              <li>RF_DP_Line_BW_Diag_Back</li>
+              <li>RF_DP_Line_BW_Diag_Inv</li>
+              <li>RF_DP_Line_BW_Diag_Inv_Back</li>
             </randomProgramFrom>
           </li>
           <li>
@@ -39,8 +57,15 @@
         </actions>
       </li>
 
-       <!-- Another little pause at the end -->
-       <li>
+      <!-- Fade out then another little pause at the end -->
+      <li>
+        <type>Add</type>
+        <program>RF_DP_FadeOut</program>
+      </li>
+      <li>
+        <type>WaitForEnd</type>
+      </li>
+      <li>
         <type>Wait</type>
         <ticks>30</ticks>
       </li>

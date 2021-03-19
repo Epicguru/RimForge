@@ -7,6 +7,15 @@
     </RimForge.DiscoProgramDef>
 
 
+    <!-- Solid color -->
+    <RimForge.DiscoProgramDef ParentName="RF_BDP">
+      <defName>RF_DP_Solid</defName>
+      <programClass>RimForge.Buildings.DiscoPrograms.Solid</programClass>
+      <colors>
+        <li>(255, 255, 255, 255)</li>
+      </colors>
+    </RimForge.DiscoProgramDef>
+
     <!-- Checkerboards -->
     <RimForge.DiscoProgramDef Name="RF_DP_CheckerboardBase" ParentName="RF_BDP" Abstract="true">
       <programClass>RimForge.Buildings.DiscoPrograms.Checkerboard</programClass>
@@ -29,6 +38,14 @@
       <colors>
         <li>(36, 255, 248)</li>
         <li>(87, 93, 181)</li>
+      </colors>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_CheckerboardBase">
+      <defName>RF_DP_Checkerboard_Spain</defName>
+      <colors>
+        <li>(189, 9, 9)</li>
+        <li>(232, 207, 16)</li>
       </colors>
     </RimForge.DiscoProgramDef>
 
@@ -56,10 +73,10 @@
         <li>true</li> <!-- Circular? -->
       </bools>
       <floats>
-        <li>0</li>   <!-- Initial radius -->
+        <li>-2</li>   <!-- Initial radius -->
         <li>2</li>   <!-- Thickness -->
         <li>0.1</li> <!-- Radius change per tick -->
-        <li>20</li>  <!-- Despawn after radius reaches this -->
+        <li>22</li>  <!-- Despawn after radius reaches this -->
       </floats>
     </RimForge.DiscoProgramDef>
 
@@ -69,10 +86,10 @@
         <li>true</li>
       </bools>
       <floats>
-        <li>20</li>
+        <li>22</li>
         <li>2</li>
         <li>-0.1</li>
-        <li>0</li> 
+        <li>-2</li> 
       </floats>
     </RimForge.DiscoProgramDef>
 
@@ -107,13 +124,43 @@
     <RimForge.DiscoProgramDef Name="RF_DP_Line_BW_Vert" ParentName="RF_DP_LineBase">
       <defName>RF_DP_Line_BW_Vert</defName>
       <ints>
-        <li>5</li>   <!-- Movement interval, in ticks -->
-        <li>1</li>   <!-- Movement direction: 0 hor, 1 vert, 2 diag, 3 diag inverted -->
+        <li>5</li>
+        <li>1</li>
       </ints>
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef ParentName="RF_DP_Line_BW_Vert">
       <defName>RF_DP_Line_BW_Vert_Back</defName>
+      <bools Inherit="false">
+        <li>false</li>
+      </bools>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef Name="RF_DP_Line_BW_Diag" ParentName="RF_DP_LineBase">
+      <defName>RF_DP_Line_BW_Diag</defName>
+      <ints>
+        <li>5</li>
+        <li>2</li>
+      </ints>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_Line_BW_Diag">
+      <defName>RF_DP_Line_BW_Diag_Back</defName>
+      <bools Inherit="false">
+        <li>false</li>
+      </bools>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef Name="RF_DP_Line_BW_Diag_Inv" ParentName="RF_DP_LineBase">
+      <defName>RF_DP_Line_BW_Diag_Inv</defName>
+      <ints>
+        <li>5</li>
+        <li>3</li>
+      </ints>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_Line_BW_Diag_Inv">
+      <defName>RF_DP_Line_BW_Diag_Inv_Back</defName> <!-- Def names be like: RimForge disco program line black-and-white diagonal inverted backwards -->
       <bools Inherit="false">
         <li>false</li>
       </bools>
@@ -141,6 +188,123 @@
       <ints>
         <li>30</li>
       </ints>
+    </RimForge.DiscoProgramDef>
+
+
+    <!-- Stripes -->
+    <RimForge.DiscoProgramDef Name="RF_DP_StripesBase" ParentName="RF_BDP" Abstract="true">
+      <programClass>RimForge.Buildings.DiscoPrograms.Stripes</programClass>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef Name="RF_DP_Stripes_Hor" ParentName="RF_DP_StripesBase" Abstract="true">
+      <bools>
+        <li>true</li> <!-- Horizontal? -->
+      </bools>
+      <ints>
+        <li>2</li>   <!-- Every Nth tile -->
+        <li>20</li>  <!-- Shift interval -->
+        <li>1</li>   <!-- Shift direction -->
+      </ints>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_Stripes_Hor">
+      <defName>RF_DP_Stripes_Hor_Greyscale</defName>
+      <colors>
+        <li>(255, 255, 255)</li>
+        <li>(200, 200, 200)</li>
+        <li>(120, 120, 120)</li>
+        <li>(60, 60, 60)</li>
+      </colors>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef Name="RF_DP_Stripes_Vert" ParentName="RF_DP_StripesBase" Abstract="true">
+      <bools>
+        <li>false</li>
+      </bools>
+      <ints>
+        <li>2</li>
+        <li>20</li>
+        <li>1</li>
+      </ints>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_Stripes_Vert">
+      <defName>RF_DP_Stripes_Vert_Greyscale</defName>
+      <colors>
+        <li>(255, 255, 255)</li>
+        <li>(200, 200, 200)</li>
+        <li>(120, 120, 120)</li>
+        <li>(60, 60, 60)</li>
+      </colors>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_Stripes_Vert">
+      <defName>RF_DP_Stripes_Vert_Valencia</defName>
+      <colors>
+        <li>(245, 223, 24)</li>
+        <li>(232, 23, 51)</li>
+        <li>(27, 148, 247)</li>
+      </colors>
+    </RimForge.DiscoProgramDef>
+
+
+    <!-- Beat circle -->
+    <RimForge.DiscoProgramDef Name="RF_DP_BeatCircleBase" ParentName="RF_BDP" Abstract="true">
+      <programClass>RimForge.Buildings.DiscoPrograms.BeatCircle</programClass>
+      <bools>
+        <li>true</li> <!-- Circular? -->
+      </bools>
+      <floats>
+        <li>1</li>     <!-- Base radius -->
+        <li>1</li>     <!-- Blend distance -->
+        <li>0.35</li>  <!-- Beat vel (aprox. how high the beat jumps) -->
+        <li>0.94</li>  <!-- Beat recovery (how fast the circle returns to normal, smaller values make it faster) -->
+        <li>0.73</li>  <!-- Vel recovery (how soon the circle stops growing, smaller values make it sooner) -->
+      </floats>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef Name="RF_DP_BeatCircle_90bpm" ParentName="RF_DP_BeatCircleBase" Abstract="true">
+      <ints>
+        <li>40</li>  <!-- Beat interval, in ticks -->
+      </ints>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_BeatCircle_90bpm">
+      <defName>RF_DP_BeatCircle_90bpm_Nippon</defName>
+      <colors>
+        <li>(209, 38, 38)</li>        <!-- Circle color -->
+        <li>(255, 255, 255, 255)</li> <!-- Color elsewhere -->
+      </colors>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_BeatCircle_90bpm">
+      <defName>RF_DP_BeatCircle_90bpm_Monster</defName>
+      <colors>
+        <li>(56, 222, 38)</li>
+        <li>(255, 255, 255, 255)</li>
+      </colors>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef Name="RF_DP_BeatCircle_130bpm" ParentName="RF_DP_BeatCircleBase" Abstract="true">
+      <ints>
+        <li>28</li>
+      </ints>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_BeatCircle_130bpm">
+      <defName>RF_DP_BeatCircle_130bpm_Nippon</defName>
+      <colors>
+        <li>(209, 38, 38)</li>
+        <li>(255, 255, 255, 255)</li>
+      </colors>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_BeatCircle_130bpm">
+      <defName>RF_DP_BeatCircle_130bpm_Monster</defName>
+      <colors>
+        <li>(56, 222, 38)</li>
+        <li>(255, 255, 255, 255)</li>
+      </colors>
     </RimForge.DiscoProgramDef>
 
 </Defs>

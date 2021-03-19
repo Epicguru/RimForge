@@ -51,6 +51,9 @@
       <li>
         <type>WaitForEnd</type>
       </li>
+      <li>
+        <type>Clear</type>
+      </li>
 
     </actions>
   </RimForge.DiscoSequenceDef>

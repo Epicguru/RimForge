@@ -47,13 +47,18 @@ namespace RimForge
 
     public enum DiscoSequenceActionType
     {
+        None,
         Wait,
         Start,
         Add,
         Repeat,
         Clear,
         WaitForEnd,
-        PickRandom
+        PickRandom,
+        MemAdd,
+        MemRemove,
+        TintMem,
+        DestroyMem
     }
 
     [Serializable]
@@ -91,7 +96,7 @@ namespace RimForge
 
         private int selfDuration => type == DiscoSequenceActionType.Wait ? ticks : 0;
 
-        public DiscoSequenceActionType type = DiscoSequenceActionType.Wait;
+        public DiscoSequenceActionType type = DiscoSequenceActionType.None;
         public Building_DJStand.BlendMode blend = Building_DJStand.BlendMode.Multiply;
         private int ticks = 30;
         private DiscoProgramDef program;
@@ -103,6 +108,8 @@ namespace RimForge
         private bool randomTint = false;
         public bool oneMinus = false;
         public bool atBottom = false;
+        public bool addToMemory = false;
+        public float chance = 1f;
         public float weight = 1f;
     }
 }
