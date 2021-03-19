@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
+
     <RimForge.DiscoProgramDef Name="RF_BDP" Abstract="true">
       <label>disco program</label>
       <description>If you are reading this I wish you a very pleasant day.</description>
     </RimForge.DiscoProgramDef>
 
-    <!-- Checkboards -->
+
+    <!-- Checkerboards -->
     <RimForge.DiscoProgramDef Name="RF_DP_CheckerboardBase" ParentName="RF_BDP" Abstract="true">
       <programClass>RimForge.Buildings.DiscoPrograms.Checkerboard</programClass>
       <ints>
-        <li>20</li>
-        <li>10</li>
+        <li>20</li> <!-- Ticks spent on color.-->
+        <li>10</li> <!-- Transition ticks -->
       </ints>
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef ParentName="RF_DP_CheckerboardBase">
       <defName>RF_DP_Checkerboard_PurpleYellow</defName>
       <colors>
-        <li>(197, 89, 227)</li>
-        <li>(255, 248, 166)</li>
+        <li>(197, 89, 227)</li>  <!-- Checkerboard color A -->
+        <li>(255, 248, 166)</li> <!-- Checkerboard color B -->
       </colors>
     </RimForge.DiscoProgramDef>
 
@@ -28,6 +30,117 @@
         <li>(36, 255, 248)</li>
         <li>(87, 93, 181)</li>
       </colors>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_CheckerboardBase">
+      <defName>RF_DP_Checkerboard_Grayscale</defName>
+      <colors>
+        <li>(190, 190, 190)</li>
+        <li>(255, 255, 255)</li>
+      </colors>
+    </RimForge.DiscoProgramDef>
+
+
+    <!-- Ripples -->
+    <RimForge.DiscoProgramDef Name="RF_DP_RippleBase" ParentName="RF_BDP" Abstract="true">
+      <programClass>RimForge.Buildings.DiscoPrograms.Ripple</programClass>
+      <colors>
+        <li>(0, 0, 0, 0)</li>  <!-- 'low' color -->
+        <li>(1, 1, 1, 1)</li>  <!-- 'high' color -->
+      </colors>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef Name="RF_DP_Ripple_BW_Out" ParentName="RF_DP_RippleBase">
+      <defName>RF_DP_Ripple_BW_Out</defName>
+      <bools>
+        <li>true</li> <!-- Circular? -->
+      </bools>
+      <floats>
+        <li>0</li>   <!-- Initial radius -->
+        <li>2</li>   <!-- Thickness -->
+        <li>0.1</li> <!-- Radius change per tick -->
+        <li>20</li>  <!-- Despawn after radius reaches this -->
+      </floats>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef Name="RF_DP_Ripple_BW_In" ParentName="RF_DP_RippleBase">
+      <defName>RF_DP_Ripple_BW_In</defName>
+      <bools>
+        <li>true</li>
+      </bools>
+      <floats>
+        <li>20</li>
+        <li>2</li>
+        <li>-0.1</li>
+        <li>0</li> 
+      </floats>
+    </RimForge.DiscoProgramDef>
+
+
+    <!-- Flying lines -->
+    <RimForge.DiscoProgramDef Name="RF_DP_LineBase" ParentName="RF_BDP" Abstract="true">
+      <programClass>RimForge.Buildings.DiscoPrograms.FlyingLine</programClass>
+      <bools>
+        <li>true</li> <!-- Move forwards? -->
+      </bools>
+      <colors>
+        <li>(1, 1, 1, 1)</li>  <!-- Line color -->
+        <li>(0, 0, 0, 0)</li>  <!-- Everywhere else color -->
+      </colors>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef Name="RF_DP_Line_BW_Hor" ParentName="RF_DP_LineBase">
+      <defName>RF_DP_Line_BW_Hor</defName>
+      <ints>
+        <li>5</li>   <!-- Movement interval, in ticks -->
+        <li>0</li>   <!-- Movement direction: 0 hor, 1 vert, 2 diag, 3 diag inverted -->
+      </ints>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_Line_BW_Hor">
+      <defName>RF_DP_Line_BW_Hor_Back</defName>
+      <bools Inherit="false">
+        <li>false</li>
+      </bools>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef Name="RF_DP_Line_BW_Vert" ParentName="RF_DP_LineBase">
+      <defName>RF_DP_Line_BW_Vert</defName>
+      <ints>
+        <li>5</li>   <!-- Movement interval, in ticks -->
+        <li>1</li>   <!-- Movement direction: 0 hor, 1 vert, 2 diag, 3 diag inverted -->
+      </ints>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_Line_BW_Vert">
+      <defName>RF_DP_Line_BW_Vert_Back</defName>
+      <bools Inherit="false">
+        <li>false</li>
+      </bools>
+    </RimForge.DiscoProgramDef>
+
+
+    <!-- Fade In/Out -->
+    <RimForge.DiscoProgramDef ParentName="RF_BDP">
+      <defName>RF_DP_FadeIn</defName>
+      <programClass>RimForge.Buildings.DiscoPrograms.Fade</programClass>
+      <bools>
+        <li>true</li> <!-- Fade in? -->
+      </bools>
+      <ints>
+        <li>30</li>  <!-- Fade duration in ticks -->
+      </ints>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_BDP">
+      <defName>RF_DP_FadeOut</defName>
+      <programClass>RimForge.Buildings.DiscoPrograms.Fade</programClass>
+      <bools>
+        <li>false</li>
+      </bools>
+      <ints>
+        <li>30</li>
+      </ints>
     </RimForge.DiscoProgramDef>
 
 </Defs>

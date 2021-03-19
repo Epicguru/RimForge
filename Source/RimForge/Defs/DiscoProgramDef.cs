@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using RimForge.Buildings;
 using RimForge.Buildings.DiscoPrograms;
 using UnityEngine;
 using Verse;
@@ -11,6 +12,8 @@ namespace RimForge
         public Type programClass;
         public List<Color> colors = new List<Color>();
         public List<int> ints = new List<int>();
+        public List<float> floats = new List<float>();
+        public List<bool> bools = new List<bool>();
 
         public override IEnumerable<string> ConfigErrors()
         {
@@ -26,7 +29,7 @@ namespace RimForge
             }
         }
 
-        public DiscoProgram MakeProgram()
+        public DiscoProgram MakeProgram(Building_DJStand stand)
         {
             if (programClass == null)
                 return null;
@@ -35,6 +38,7 @@ namespace RimForge
             if (instance == null)
                 return null;
 
+            instance.DJStand = stand;
             instance.Init();
             return instance;
         }

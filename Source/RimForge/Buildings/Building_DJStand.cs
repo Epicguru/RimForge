@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using RimForge.Buildings.DiscoPrograms;
 using UnityEngine;
 using Verse;
@@ -11,6 +12,9 @@ namespace RimForge.Buildings
         private static readonly Queue<IntVec3> openNodes = new Queue<IntVec3>(64);
         private static readonly HashSet<IntVec3> closedNodes = new HashSet<IntVec3>(64);
         private static readonly List<FloatMenuOption> options = new List<FloatMenuOption>();
+        private static readonly List<FloatMenuOption> options2 = new List<FloatMenuOption>();
+        private static readonly List<FloatMenuOption> options3 = new List<FloatMenuOption>();
+        private static readonly List<FloatMenuOption> options4 = new List<FloatMenuOption>();
 
         public static void FloodFillDiscoFloorCells(Map map, IntVec3 startCell, int maxSize, ref List<IntVec3> cells)
         {
@@ -79,12 +83,15 @@ namespace RimForge.Buildings
             closedNodes.Clear();
         }
 
-        public DiscoProgram CurrentProgram;
+        public SequenceHandler CurrentSequence;
+        public List<(DiscoProgram program, BlendMode mode)> ActivePrograms = new List<(DiscoProgram, BlendMode)>();
+        public CellRect FloorBounds => glowGrid?.Rect ?? default;
 
         private List<IntVec3> floorCells = new List<IntVec3>(Settings.DiscoMaxFloorSize);
         private int tickCounter;
         private DiscoFloorGlowGrid glowGrid;
         private MaterialPropertyBlock block;
+        private DiscoProgramDef tempGizmoProgram;
 
         public override void Tick()
         {
@@ -119,32 +126,83 @@ namespace RimForge.Buildings
 
         public void TickFloor()
         {
-            if (CurrentProgram == null)
+            if (CurrentSequence != null && CurrentSequence.IsDone)
+            {
+                CurrentSequence = null;
+                SetProgramStack(null); // Clear after sequence end.
+            }
+
+            CurrentSequence?.Tick();
+
+            if (ActivePrograms.Count == 0)
             {
                 glowGrid.ClearAll();
             }
             else
             {
-                CurrentProgram.DJStand = this;
-                try
+                bool first = true;
+                for(int i = 0; i < ActivePrograms.Count; i++)
                 {
-                    CurrentProgram.Tick();
-                }
-                catch (Exception e)
-                {
-                    Core.Error($"Exception ticking disco floor program '{CurrentProgram.GetType().Name}'", e);
-                }
+                    var pair = ActivePrograms[i];
+                    var layer = pair.program;
+                    var blendMode = pair.mode;
 
-                try
-                {
-                    glowGrid.SetAllColors(cell => CurrentProgram.ColorFor(cell));
-                }
-                catch (Exception e)
-                {
-                    Core.Error($"Exception getting colors from disco floor program '{CurrentProgram.GetType().Name}'", e);
-                }
+                    if (layer.ShouldRemove)
+                    {
+                        ActivePrograms.RemoveAt(i);
+                        i--;
+                        continue;
+                    }
 
-                CurrentProgram.TickCounter++;
+                    try
+                    {
+                        layer.Tick();
+                    }
+                    catch (Exception e)
+                    {
+                        Core.Error($"Exception ticking disco floor program '{layer.GetType().Name}'", e);
+                    }
+
+                    try
+                    {
+                        glowGrid.SetAllColors(cell =>
+                        {
+                            Color c = layer.ColorFor(cell);
+                            if (layer.OneMinus)
+                                c = Color.white - c;
+                            if (layer.Tint != null)
+                                c *= layer.Tint.Value;
+                            return c;
+                        }, 
+                        first ? BlendMode.Override : blendMode);
+                    }
+                    catch (Exception e)
+                    {
+                        Core.Error($"Exception getting colors from disco floor program '{layer.GetType().Name}'", e);
+                    }
+
+                    layer.TickCounter++;
+                    first = false;
+                }
+                
+            }
+        }
+
+        public void SetProgramStack(DiscoProgram program)
+        {
+            ActivePrograms.Clear();
+            if (program != null)
+                ActivePrograms.Add((program, BlendMode.Override));
+        }
+
+        public void AddProgramStack(DiscoProgram program, BlendMode mode, int? index = null)
+        {
+            if (program != null)
+            {
+                if (index != null)
+                    ActivePrograms.Insert(index.Value, (program, mode));
+                else
+                    ActivePrograms.Add((program, mode));
             }
         }
 
@@ -200,30 +258,98 @@ namespace RimForge.Buildings
             {
                 options.Add(new FloatMenuOption("None", () =>
                 {
-                    CurrentProgram = null;
+                    SetProgramStack(null);
                 }));
                 foreach (var d in DefDatabase<DiscoProgramDef>.AllDefsListForReading)
                 {
                     options.Add(new FloatMenuOption(d.defName, () =>
                     {
-                        CurrentProgram = d.MakeProgram();
+                        SetProgramStack(d.MakeProgram(this));
+                    }));
+                }
+            }
+            if (options3.Count == 0)
+            {
+                foreach (var mode in Enum.GetValues(typeof(BlendMode)))
+                {
+                    var realMode = (BlendMode)mode;
+                    options3.Add(new FloatMenuOption(realMode.ToString(), () =>
+                    {
+                        AddProgramStack(tempGizmoProgram.MakeProgram(this), realMode);
+                        tempGizmoProgram = null;
+                    }));
+                }
+            }
+            if (options2.Count == 0)
+            {
+                foreach (var d in DefDatabase<DiscoProgramDef>.AllDefsListForReading)
+                {
+                    options2.Add(new FloatMenuOption(d.defName, () =>
+                    {
+                        tempGizmoProgram = d;
+                        Find.WindowStack.Add(new FloatMenu(options3, "Select a blend mode"));
+                    }));
+                }
+            }
+            if (options4.Count == 0)
+            {
+                foreach (var d in DefDatabase<DiscoSequenceDef>.AllDefsListForReading)
+                {
+                    options4.Add(new FloatMenuOption(d.defName, () =>
+                    {
+                        CurrentSequence = d.CreateAndInitHandler(this);
                     }));
                 }
             }
 
             yield return new Command_Action()
             {
-                defaultLabel = "Change program",
+                defaultLabel = "Set program",
                 action = () =>
                 {
                     Find.WindowStack.Add(new FloatMenu(options, "Select a program"));
                 }
             };
+
+            yield return new Command_Action()
+            {
+                defaultLabel = "Add program",
+                action = () =>
+                {
+                    Find.WindowStack.Add(new FloatMenu(options2, "Select a program"));
+                }
+            };
+
+            yield return new Command_Action()
+            {
+                defaultLabel = "Start sequence",
+                action = () =>
+                {
+                    Find.WindowStack.Add(new FloatMenu(options4, "Select a sequence"));
+                }
+            };
         }
 
+        private StringBuilder str = new StringBuilder();
         public override string GetInspectString()
         {
-            return $"{floorCells.Count} disco floor tiles. Let's groove!";
+            if(!Prefs.DevMode)
+                return $"{floorCells.Count} disco floor tiles. Let's groove!";
+
+            str.Clear();
+            foreach(var thing in ActivePrograms)
+            {
+                str.Append(thing.program.GetType().Name).Append(" - blend: ").Append(thing.mode).AppendLine();
+            }
+
+            return str.ToString().Trim();
+        }
+
+        public enum BlendMode
+        {
+            Override,
+            Additive,
+            Multiply
         }
     }
 }

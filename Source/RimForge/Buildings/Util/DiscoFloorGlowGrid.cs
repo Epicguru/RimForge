@@ -65,7 +65,7 @@ namespace RimForge.Buildings
             }
         }
 
-        public void SetAllColors(Func<IntVec3, Color> cellToColor)
+        public void SetAllColors(Func<IntVec3, Color> cellToColor, Building_DJStand.BlendMode mode)
         {
             if (cellToColor == null)
                 return;
@@ -73,7 +73,27 @@ namespace RimForge.Buildings
             foreach (var cell in Rect)
             {
                 Color color = cellToColor(cell);
-                SetColorFast(cell, color);
+                int index = GetCellLocalIndex(cell);
+                Color current = colors[index];
+                Color final = DefaultColor;
+
+                switch (mode)
+                {
+                    case Building_DJStand.BlendMode.Override:
+                        final = color;
+                        break;
+                    case Building_DJStand.BlendMode.Additive:
+                        final = current + color * color.a;
+                        break;
+                    case Building_DJStand.BlendMode.Multiply:
+                        final = current * color;
+                        break;
+                    default:
+                        Core.Error($"Unhandled blend mode: {mode}");
+                        break;
+                }
+
+                colors[index] = final;
             }
         }
 
@@ -113,12 +133,6 @@ namespace RimForge.Buildings
             if (index == -1)
                 return;
 
-            colors[index] = color;
-        }
-
-        private void SetColorFast(IntVec3 cell, Color color)
-        {
-            int index = GetCellLocalIndex(cell);
             colors[index] = color;
         }
 

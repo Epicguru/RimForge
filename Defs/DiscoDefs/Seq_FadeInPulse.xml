@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RimForge.DiscoSequenceDef ParentName="RF_BDS">
+    <defName>RF_S_FadeInPulse</defName>
+    <actions>
+
+      <!-- Fade in our initial checkerboard and leave it up for a few seconds-->
+      <li>
+        <type>Start</type>
+        <program>RF_DP_Checkerboard_PurpleYellow</program>
+      </li>
+      <li>
+        <type>Add</type>
+        <program>RF_DP_FadeIn</program>
+      </li>
+      <li>
+        <type>Wait</type>
+        <ticks>120</ticks>
+      </li>
+
+      <!-- Throw some lines around -->
+      <li>
+        <type>Repeat</type>
+        <times>10</times>
+        <actions>
+          <li>
+            <type>Add</type>
+            <program>RF_DP_Ripple_BW_Out</program>
+            <oneMinus>true</oneMinus>
+          </li>
+          <li>
+            <type>Wait</type>
+            <ticks>55</ticks>
+          </li>
+        </actions>
+      </li>
+
+      <!-- Wait a bit before fading out -->
+      <li>
+        <type>Wait</type>
+        <ticks>40</ticks>
+      </li>
+
+      <!-- Start fade out -->
+      <li>
+        <type>Add</type>
+        <program>RF_DP_FadeOut</program>
+      </li>
+
+      <!-- Wait for the fade out to finish -->
+      <li>
+        <type>WaitForEnd</type>
+      </li>
+
+    </actions>
+  </RimForge.DiscoSequenceDef>
+</Defs>

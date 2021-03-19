@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RimForge.DiscoSequenceDef ParentName="RF_BDS">
+    <defName>RF_S_RandomFlying</defName>
+    <actions>
+
+      <!-- Clear -->
+      <li>
+        <type>Clear</type>
+      </li>
+      
+      <!-- Set random color floor and wait a tiny bit-->
+      <li>
+        <type>Start</type>
+        <randomTint>true</randomTint>
+        <blend>Additive</blend>
+        <program>RF_DP_Checkerboard_Grayscale</program>
+      </li>
+
+      <!-- Add a random line, wait until it ends, repeat -->
+      <li>
+        <type>Repeat</type>
+        <times>15</times>
+        <actions>
+          <li>
+            <type>Add</type>
+            <atBottom>true</atBottom>
+            <blend>Additive</blend>
+            <randomProgramFrom>
+              <li>RF_DP_Line_BW_Hor</li>
+              <li>RF_DP_Line_BW_Vert</li>
+              <li>RF_DP_Line_BW_Hor_Back</li>
+              <li>RF_DP_Line_BW_Vert_Back</li>
+            </randomProgramFrom>
+          </li>
+          <li>
+            <type>WaitForEnd</type>
+          </li>
+        </actions>
+      </li>
+
+       <!-- Another little pause at the end -->
+       <li>
+        <type>Wait</type>
+        <ticks>30</ticks>
+      </li>
+    </actions>
+  </RimForge.DiscoSequenceDef>
+
+</Defs>

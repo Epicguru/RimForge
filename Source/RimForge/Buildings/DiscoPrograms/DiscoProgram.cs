@@ -8,10 +8,18 @@ namespace RimForge.Buildings.DiscoPrograms
         public readonly DiscoProgramDef Def;
         public Building_DJStand DJStand { get; set; }
         public int TickCounter { get; set; }
+        public bool ShouldRemove { get; private set; }
+        public bool OneMinus = false;
+        public Color? Tint = null;
 
         protected DiscoProgram(DiscoProgramDef def)
         {
             this.Def = def;
+        }
+
+        public void Remove()
+        {
+            ShouldRemove = true;
         }
 
         public abstract void Init();
