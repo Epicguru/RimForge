@@ -2,7 +2,7 @@
 
 namespace RimForge.Buildings
 {
-    public abstract class HeatingElement : Building
+    public abstract class Building_HeatingElement : Building
     {
         public HeatingElementDef HEDef => def as HeatingElementDef;
 

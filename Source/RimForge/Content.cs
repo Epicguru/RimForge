@@ -20,6 +20,7 @@ namespace RimForge
 
         public static Graphic RitualCircle, RitualCircleText, RitualGear, RitualBall;
         public static Graphic RitualSymbolA, RitualSymbolB;
+        public static Graphic DiscoFloorGlowGraphic;
 
         static Content()
         {
@@ -120,6 +121,16 @@ namespace RimForge
             HEPoweredIdle = Make("RF/Buildings/HeatingElement_PoweredIdle");
             HEPoweredPowerOn = Make("RF/Buildings/HeatingElement_PoweredPowerOn");
             HEPoweredGlow = Make("RF/Buildings/HeatingElement_PoweredGlow");
+        }
+
+        internal static void LoadDiscoFloorGraphics(Building b)
+        {
+            var gd = b.DefaultGraphic.data;
+            Graphic MakeUnlit(string path, Vector2 size)
+            {
+                return GraphicDatabase.Get(gd.graphicClass, path, RFDefOf.TransparentPostLight.Shader, size, Color.white, Color.white, gd, gd.shaderParameters);
+            }
+            DiscoFloorGlowGraphic = MakeUnlit("RF/Effects/DiscoFloorGlow", Vector2.one);
         }
     }
 }

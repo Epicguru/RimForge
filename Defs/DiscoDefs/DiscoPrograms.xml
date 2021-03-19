@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <RimForge.DiscoProgramDef Name="RF_BDP" Abstract="true">
+      <label>disco program</label>
+      <description>If you are reading this I wish you a very pleasant day.</description>
+    </RimForge.DiscoProgramDef>
+
+    <!-- Checkboards -->
+    <RimForge.DiscoProgramDef Name="RF_DP_CheckerboardBase" ParentName="RF_BDP" Abstract="true">
+      <programClass>RimForge.Buildings.DiscoPrograms.Checkerboard</programClass>
+      <ints>
+        <li>20</li>
+        <li>10</li>
+      </ints>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_CheckerboardBase">
+      <defName>RF_DP_Checkerboard_PurpleYellow</defName>
+      <colors>
+        <li>(197, 89, 227)</li>
+        <li>(255, 248, 166)</li>
+      </colors>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_CheckerboardBase">
+      <defName>RF_DP_Checkerboard_CyanBlue</defName>
+      <colors>
+        <li>(36, 255, 248)</li>
+        <li>(87, 93, 181)</li>
+      </colors>
+    </RimForge.DiscoProgramDef>
+
+</Defs>

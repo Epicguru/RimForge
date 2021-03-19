@@ -24,6 +24,7 @@ namespace RimForge
         public static TraitDef RF_BlessingOfZir;
         public static ThingDef RF_Forge;
         public static ThoughtDef RF_RitualBlessed, RF_RitualBadThought;
+        public static TerrainDef RF_DiscoFloor;
 
         // Vanilla ones.
         public static ThingDef Column;

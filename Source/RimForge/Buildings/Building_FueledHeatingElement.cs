@@ -5,7 +5,7 @@ using Verse;
 
 namespace RimForge.Buildings
 {
-    public class Building_FueledHeatingElement : HeatingElement, IConditionalGlower
+    public class Building_FueledHeatingElement : Building_HeatingElement, IConditionalGlower
     {
         public CompRefuelable FuelComp => _fuelComp ??= GetComp<CompRefuelable>();
         private CompRefuelable _fuelComp;

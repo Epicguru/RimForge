@@ -39,5 +39,11 @@ namespace RimForge
         public static float RitualFailCoefficient = 1f;
         [TweakValue("RimForge", 0f, 1f)]
         public static float RitualFailMajorChance = 1f / 3f;
+
+        // DISCO
+        [TweakValue("RimForge", 100, 2000)]
+        public static int DiscoMaxFloorSize = 400;
+        [TweakValue("RimForge", 0, 1)]
+        public static float DiscoFloorColorIntensity = 0.65f;
     }
 }
