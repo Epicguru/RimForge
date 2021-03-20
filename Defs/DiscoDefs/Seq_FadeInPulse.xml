@@ -26,7 +26,7 @@
           <li>
             <type>Add</type>
             <program>RF_DP_Ripple_BW_Out</program>
-            <oneMinus>true</oneMinus>
+            <oneMinusAlpha>true</oneMinusAlpha>
           </li>
           <li>
             <type>Wait</type>
@@ -50,9 +50,6 @@
       <!-- Wait for the fade out to finish -->
       <li>
         <type>WaitForEnd</type>
-      </li>
-      <li>
-        <type>Clear</type>
       </li>
 
     </actions>

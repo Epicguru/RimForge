@@ -95,9 +95,11 @@
     <Compile Include="Buildings\Building_WirelessPowerPylon.cs" />
     <Compile Include="Buildings\DiscoPrograms\Checkerboard.cs" />
     <Compile Include="Buildings\DiscoPrograms\BeatCircle.cs" />
+    <Compile Include="Buildings\DiscoPrograms\ColorCycle.cs" />
     <Compile Include="Buildings\DiscoPrograms\DiscoProgram.cs" />
     <Compile Include="Buildings\DiscoPrograms\Fade.cs" />
     <Compile Include="Buildings\DiscoPrograms\FlyingLine.cs" />
+    <Compile Include="Buildings\DiscoPrograms\Noise.cs" />
     <Compile Include="Buildings\DiscoPrograms\Ripple.cs" />
     <Compile Include="Buildings\DiscoPrograms\SequenceHandler.cs" />
     <Compile Include="Buildings\DiscoPrograms\Solid.cs" />

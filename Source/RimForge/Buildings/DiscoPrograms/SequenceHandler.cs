@@ -129,9 +129,7 @@ namespace RimForge.Buildings.DiscoPrograms
             }
 
             if (actionQueue.Count == 0 && !waitForLast && ticksToWait <= 0)
-            {
                 IsDone = true;
-            }
         }
 
         public virtual bool ExecuteAction(DiscoSequenceAction action)
@@ -169,6 +167,7 @@ namespace RimForge.Buildings.DiscoPrograms
                     if (instance == null)
                         break;
                     instance.OneMinus = action.oneMinus;
+                    instance.OneMinusAlpha = action.oneMinusAlpha;
                     instance.Tint = action.Tint;
                     Stand.SetProgramStack(instance);
                     lastAddedProgram = instance;
@@ -180,6 +179,7 @@ namespace RimForge.Buildings.DiscoPrograms
                     if (instance == null)
                         break;
                     instance.OneMinus = action.oneMinus;
+                    instance.OneMinusAlpha = action.oneMinusAlpha;
                     instance.Tint = action.Tint;
                     Stand.AddProgramStack(instance, action.blend, action.atBottom ? 0 : (int?)null);
                     lastAddedProgram = instance;

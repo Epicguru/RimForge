@@ -16,6 +16,81 @@
       </colors>
     </RimForge.DiscoProgramDef>
 
+
+    <!-- Color cycle -->
+    <RimForge.DiscoProgramDef Name="RF_DP_BaseCycle" ParentName="RF_BDP" Abstract="true">
+      <programClass>RimForge.Buildings.DiscoPrograms.ColorCycle</programClass>
+      <ints>
+        <li>80</li>
+      </ints>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_BaseCycle">
+      <defName>RF_DP_Cycle_Vapourwave</defName>
+      <colors>
+        <li>(255,113,206)</li>
+        <li>(1,205,254)</li>
+        <li>(5,255,161)</li>
+        <li>(185,103,255)</li>
+        <li>(255,251,150)</li>
+      </colors>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_BaseCycle">
+      <defName>RF_DP_Cycle_Sunrise</defName>
+      <colors>
+        <li>(253,191,96)</li>
+        <li>(240,125,96)</li>
+        <li>(210,68,154)</li>
+        <li>(120,52,124)</li>
+        <li>(58,21,96)</li>
+      </colors>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_BaseCycle">
+      <defName>RF_DP_Cycle_Soul</defName>
+      <colors>
+        <li>(198,50,84)</li>
+        <li>(236,100,73)</li>
+        <li>(249,153,75)</li>
+        <li>(251,203,90)</li>
+        <li>(42,162,163)</li>
+      </colors>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_BaseCycle">
+      <defName>RF_DP_Cycle_Radioactive</defName>
+      <colors>
+        <li>(181,255,0)</li>
+        <li>(117,255,0)</li>
+        <li>(0,255,38)</li>
+        <li>(0,255,153)</li>
+        <li>(0,255,205)</li>
+      </colors>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_BaseCycle">
+      <defName>RF_DP_Cycle_Pastel</defName>
+      <colors>
+        <li>(255,179,186)</li>
+        <li>(255,223,186)</li>
+        <li>(255,255,186)</li>
+        <li>(186,255,201)</li>
+        <li>(186,225,255)</li>
+      </colors>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_BaseCycle">
+      <defName>RF_DP_Cycle_Neon</defName>
+      <colors>
+        <li>(254,0,0)</li>
+        <li>(253,254,2)</li>
+        <li>(11,255,1)</li>
+        <li>(1,30,254)</li>
+        <li>(254,0,246)</li>
+      </colors>
+    </RimForge.DiscoProgramDef>
+
     <!-- Checkerboards -->
     <RimForge.DiscoProgramDef Name="RF_DP_CheckerboardBase" ParentName="RF_BDP" Abstract="true">
       <programClass>RimForge.Buildings.DiscoPrograms.Checkerboard</programClass>
@@ -58,11 +133,41 @@
     </RimForge.DiscoProgramDef>
 
 
+    <!-- Noise -->
+    <RimForge.DiscoProgramDef Name="RF_DP_NoiseBase" ParentName="RF_BDP" Abstract="true">
+      <programClass>RimForge.Buildings.DiscoPrograms.Noise</programClass>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_NoiseBase">
+      <defName>RF_DP_Noise_Default</defName>
+      <floats>
+        <li>1</li>
+        <li>0.1</li>
+      </floats>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_NoiseBase">
+      <defName>RF_DP_Noise_Light</defName>
+      <floats>
+        <li>2</li>
+        <li>0.2</li>
+      </floats>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_NoiseBase">
+      <defName>RF_DP_Noise_Smooth</defName>
+      <floats>
+        <li>0.15</li>
+        <li>0.2</li>
+      </floats>
+    </RimForge.DiscoProgramDef>
+
+
     <!-- Ripples -->
     <RimForge.DiscoProgramDef Name="RF_DP_RippleBase" ParentName="RF_BDP" Abstract="true">
       <programClass>RimForge.Buildings.DiscoPrograms.Ripple</programClass>
       <colors>
-        <li>(0, 0, 0, 0)</li>  <!-- 'low' color -->
+        <li>(1, 1, 1, 0)</li>  <!-- 'low' color -->
         <li>(1, 1, 1, 1)</li>  <!-- 'high' color -->
       </colors>
     </RimForge.DiscoProgramDef>
@@ -73,7 +178,7 @@
         <li>true</li> <!-- Circular? -->
       </bools>
       <floats>
-        <li>-2</li>   <!-- Initial radius -->
+        <li>-2</li>  <!-- Initial radius -->
         <li>2</li>   <!-- Thickness -->
         <li>0.1</li> <!-- Radius change per tick -->
         <li>22</li>  <!-- Despawn after radius reaches this -->
@@ -93,6 +198,15 @@
       </floats>
     </RimForge.DiscoProgramDef>
 
+    <RimForge.DiscoProgramDef ParentName="RF_DP_Ripple_BW_Out">
+      <defName>RF_DP_Ripple_BW_Out_Fast</defName>
+      <floats Inherit="false">
+        <li>3.5</li>
+        <li>1</li>
+        <li>0.3</li>
+        <li>22</li>
+      </floats>
+    </RimForge.DiscoProgramDef>
 
     <!-- Flying lines -->
     <RimForge.DiscoProgramDef Name="RF_DP_LineBase" ParentName="RF_BDP" Abstract="true">
@@ -255,56 +369,30 @@
         <li>true</li> <!-- Circular? -->
       </bools>
       <floats>
-        <li>1</li>     <!-- Base radius -->
-        <li>1</li>     <!-- Blend distance -->
+        <li>0.5</li>   <!-- Base radius -->
+        <li>0.5</li>   <!-- Blend distance -->
         <li>0.35</li>  <!-- Beat vel (aprox. how high the beat jumps) -->
-        <li>0.94</li>  <!-- Beat recovery (how fast the circle returns to normal, smaller values make it faster) -->
-        <li>0.73</li>  <!-- Vel recovery (how soon the circle stops growing, smaller values make it sooner) -->
+        <li>0.86</li>  <!-- Beat recovery (how fast the circle returns to normal, smaller values make it faster) -->
+        <li>0.78</li>  <!-- Vel recovery (how soon the circle stops growing, smaller values make it sooner) -->
       </floats>
+      <colors>
+        <li>(255, 255, 255, 255)</li>  <!-- Circle color -->
+        <li>(255, 255, 255, 0)</li>    <!-- Other color -->
+      </colors>
     </RimForge.DiscoProgramDef>
 
-    <RimForge.DiscoProgramDef Name="RF_DP_BeatCircle_90bpm" ParentName="RF_DP_BeatCircleBase" Abstract="true">
+    <RimForge.DiscoProgramDef ParentName="RF_DP_BeatCircleBase">
+      <defName>RF_DP_BeatCircle_90bpm</defName>
       <ints>
         <li>40</li>  <!-- Beat interval, in ticks -->
       </ints>
     </RimForge.DiscoProgramDef>
 
-    <RimForge.DiscoProgramDef ParentName="RF_DP_BeatCircle_90bpm">
-      <defName>RF_DP_BeatCircle_90bpm_Nippon</defName>
-      <colors>
-        <li>(209, 38, 38)</li>        <!-- Circle color -->
-        <li>(255, 255, 255, 255)</li> <!-- Color elsewhere -->
-      </colors>
-    </RimForge.DiscoProgramDef>
-
-    <RimForge.DiscoProgramDef ParentName="RF_DP_BeatCircle_90bpm">
-      <defName>RF_DP_BeatCircle_90bpm_Monster</defName>
-      <colors>
-        <li>(56, 222, 38)</li>
-        <li>(255, 255, 255, 255)</li>
-      </colors>
-    </RimForge.DiscoProgramDef>
-
-    <RimForge.DiscoProgramDef Name="RF_DP_BeatCircle_130bpm" ParentName="RF_DP_BeatCircleBase" Abstract="true">
+    <RimForge.DiscoProgramDef ParentName="RF_DP_BeatCircleBase">
+      <defName>RF_DP_BeatCircle_130bpm</defName>
       <ints>
         <li>28</li>
       </ints>
-    </RimForge.DiscoProgramDef>
-
-    <RimForge.DiscoProgramDef ParentName="RF_DP_BeatCircle_130bpm">
-      <defName>RF_DP_BeatCircle_130bpm_Nippon</defName>
-      <colors>
-        <li>(209, 38, 38)</li>
-        <li>(255, 255, 255, 255)</li>
-      </colors>
-    </RimForge.DiscoProgramDef>
-
-    <RimForge.DiscoProgramDef ParentName="RF_DP_BeatCircle_130bpm">
-      <defName>RF_DP_BeatCircle_130bpm_Monster</defName>
-      <colors>
-        <li>(56, 222, 38)</li>
-        <li>(255, 255, 255, 255)</li>
-      </colors>
     </RimForge.DiscoProgramDef>
 
 </Defs>

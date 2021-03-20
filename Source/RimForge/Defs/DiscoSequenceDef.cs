@@ -107,6 +107,7 @@ namespace RimForge
         private Color? tint = null;
         private bool randomTint = false;
         public bool oneMinus = false;
+        public bool oneMinusAlpha = false;
         public bool atBottom = false;
         public bool addToMemory = false;
         public float chance = 1f;

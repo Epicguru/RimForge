@@ -118,21 +118,41 @@ namespace RimForge.Buildings
 
         public void RecalculateFloor()
         {
-            FloodFillDiscoFloorCells(Map, Position, Settings.DiscoMaxFloorSize, ref floorCells);
+            FloodFillDiscoFloorCells(Map, TryGetFloorStart(), Settings.DiscoMaxFloorSize, ref floorCells);
             glowGrid = floorCells.Count >= 2 ? new DiscoFloorGlowGrid(floorCells) : null;
 
             block = new MaterialPropertyBlock();
         }
 
+        private IntVec3 TryGetFloorStart()
+        {
+            var map = Map;
+            bool IsValid(IntVec3 cell)
+            {
+                return cell.GetTerrain(map) == RFDefOf.RF_DiscoFloor && cell.Walkable(map);
+            }
+
+            if (IsValid(Position))
+                return Position;
+            if (IsValid(Position + new IntVec3(-1, 0, 0)))
+                return Position + new IntVec3(-1, 0, 0);
+            if (IsValid(Position + new IntVec3(1, 0, 0)))
+                return Position + new IntVec3(1, 0, 0);
+            if (IsValid(Position + new IntVec3(0, 0, -1)))
+                return Position + new IntVec3(0, 0, -1);
+            if (IsValid(Position + new IntVec3(0, 0, 1)))
+                return Position + new IntVec3(0, 0, 1);
+            return Position;
+        }
+
         public void TickFloor()
         {
+            CurrentSequence?.Tick();
             if (CurrentSequence != null && CurrentSequence.IsDone)
             {
                 CurrentSequence = null;
-                SetProgramStack(null); // Clear after sequence end.
+                SetProgramStack(null);
             }
-
-            CurrentSequence?.Tick();
 
             if (ActivePrograms.Count == 0)
             {
@@ -170,6 +190,8 @@ namespace RimForge.Buildings
                             Color c = layer.ColorFor(cell);
                             if (layer.OneMinus)
                                 c = Color.white - c;
+                            if (layer.OneMinusAlpha)
+                                c.a = 1f - c.a;
                             if (layer.Tint != null)
                                 c *= layer.Tint.Value;
                             return c;
@@ -349,7 +371,8 @@ namespace RimForge.Buildings
         {
             Override,
             Additive,
-            Multiply
+            Multiply,
+            Normal
         }
     }
 }

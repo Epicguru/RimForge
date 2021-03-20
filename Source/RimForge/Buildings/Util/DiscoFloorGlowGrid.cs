@@ -88,6 +88,15 @@ namespace RimForge.Buildings
                     case Building_DJStand.BlendMode.Multiply:
                         final = current * color;
                         break;
+                    case Building_DJStand.BlendMode.Normal:
+                        //float ao = color.a + current.a * (1f - color.a);
+                        //final = (color * color.a + current * current.a * (1f - color.a)) / ao;
+
+                        //final = color.a * color + current.a * current - color.a * current.a * current;
+
+                        final = Color.Lerp(current, color, color.a);
+
+                        break;
                     default:
                         Core.Error($"Unhandled blend mode: {mode}");
                         break;

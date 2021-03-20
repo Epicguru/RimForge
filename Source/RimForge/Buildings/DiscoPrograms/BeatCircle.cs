@@ -5,6 +5,8 @@ namespace RimForge.Buildings.DiscoPrograms
 {
     public class BeatCircle : DiscoProgram
     {
+        public override bool UseRandomTickOffset => false;
+
         public Color MiddleColor = Color.red, OtherColor = Color.white;
         public Vector3 Centre;
         public bool Circular = true;
