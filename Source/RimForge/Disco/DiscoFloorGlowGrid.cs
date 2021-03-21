@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
-namespace RimForge.Buildings
+namespace RimForge.Disco
 {
     public class DiscoFloorGlowGrid
     {

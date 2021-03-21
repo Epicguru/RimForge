@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using RimForge.Buildings;
-using RimForge.Buildings.DiscoPrograms;
+using RimForge.Disco;
+using RimForge.Disco.Programs;
 using UnityEngine;
 using Verse;
 

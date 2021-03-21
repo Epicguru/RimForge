@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using RimForge.Buildings.DiscoPrograms;
+using RimForge.Buildings;
+using RimForge.Disco.Programs;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace RimForge.Buildings
+namespace RimForge.Disco
 {
     public class Building_DJStand : Building
     {
@@ -86,12 +88,37 @@ namespace RimForge.Buildings
         public SequenceHandler CurrentSequence;
         public List<(DiscoProgram program, BlendMode mode)> ActivePrograms = new List<(DiscoProgram, BlendMode)>();
         public CellRect FloorBounds => glowGrid?.Rect ?? default;
+        public IReadOnlyList<IntVec3> DancingCells => floorCells;
 
         private List<IntVec3> floorCells = new List<IntVec3>(Settings.DiscoMaxFloorSize);
         private int tickCounter;
         private DiscoFloorGlowGrid glowGrid;
         private MaterialPropertyBlock block;
         private DiscoProgramDef tempGizmoProgram;
+
+        public override void PostMapInit()
+        {
+            base.PostMapInit();
+            Register();
+        }
+
+        public override void SpawnSetup(Map map, bool respawningAfterLoad)
+        {
+            base.SpawnSetup(map, respawningAfterLoad);
+            Register(map);
+        }
+
+        public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
+        {
+            Remove();
+            base.Destroy(mode);
+        }
+
+        public override void Notify_MyMapRemoved()
+        {
+            Remove();
+            base.Notify_MyMapRemoved();
+        }
 
         public override void Tick()
         {
@@ -242,14 +269,23 @@ namespace RimForge.Buildings
                 Content.LoadDiscoFloorGraphics(this);
 
             float aMulti = Settings.DiscoFloorColorIntensity;
-            
+
+            void Clamp(ref Color c)
+            {
+                c.r = Mathf.Clamp01(c.r);
+                c.g = Mathf.Clamp01(c.g);
+                c.b = Mathf.Clamp01(c.b);
+                c.a = Mathf.Clamp01(c.a);
+            }
+
             foreach (var cell in floorCells)
             {
                 glowGrid.GetColorAndMatrix(cell, out var color, out var matrix);
                 color.a *= aMulti;
+                Clamp(ref color);
                 if (color.a == 0f)
                     continue;
-
+                
                 block.SetColor("_Color", color);
                 Graphics.DrawMesh(MeshPool.plane10, matrix, Content.DiscoFloorGlowGraphic.MatNorth, 0, Find.Camera, 0, block);
             }
@@ -365,6 +401,37 @@ namespace RimForge.Buildings
             }
 
             return str.ToString().Trim();
+        }
+
+        public bool IsReadyForDiscoSimple()
+        {
+            return floorCells != null && floorCells.Count >= 10;
+        }
+
+        private void Register(Map overrideMap = null)
+        {
+            var map = overrideMap ?? Map;
+            var tracker = map?.GetComponent<DiscoTracker>();
+            if (tracker == null)
+            {
+                Core.Error("Failed to register, null map or tracker component.");
+                return;
+            }
+
+            tracker.Register(this);
+        }
+
+        private void Remove()
+        {
+            var map = Map;
+            var tracker = map?.GetComponent<DiscoTracker>();
+            if (tracker == null)
+            {
+                Core.Error("Failed to un-register, null map or tracker component.");
+                return;
+            }
+
+            tracker.UnRegister(this);
         }
 
         public enum BlendMode

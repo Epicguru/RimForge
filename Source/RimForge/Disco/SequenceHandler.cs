@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using RimForge.Disco.Programs;
 using UnityEngine;
 using Verse;
 
-namespace RimForge.Buildings.DiscoPrograms
+namespace RimForge.Disco
 {
     public class SequenceHandler
     {

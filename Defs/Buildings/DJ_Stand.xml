@@ -5,7 +5,7 @@
     <defName>RF_DJ_Stand</defName>
     <label>DJ Stand</label>
     <description>A fully equipped DJ stand. All it needs is a disco floor and you're ready for a wild party!</description>
-    <thingClass>RimForge.Buildings.Building_DJStand</thingClass>
+    <thingClass>RimForge.Disco.Building_DJStand</thingClass>
     <graphicData>
       <texPath>RF/Buildings/ForgeIdle</texPath>
       <graphicClass>Graphic_Single</graphicClass>

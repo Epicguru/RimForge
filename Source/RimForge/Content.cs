@@ -128,7 +128,7 @@ namespace RimForge
             var gd = b.DefaultGraphic.data;
             Graphic MakeUnlit(string path, Vector2 size)
             {
-                return GraphicDatabase.Get(gd.graphicClass, path, RFDefOf.TransparentPostLight.Shader, size, Color.white, Color.white, gd, gd.shaderParameters);
+                return GraphicDatabase.Get(gd.graphicClass, path, RFDefOf.Transparent.Shader, size, Color.white, Color.white, gd, gd.shaderParameters);
             }
             DiscoFloorGlowGraphic = MakeUnlit("RF/Effects/DiscoFloorGlow", Vector2.one);
         }

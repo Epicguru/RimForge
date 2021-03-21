@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Verse;
 
-namespace RimForge.Buildings.DiscoPrograms
+namespace RimForge.Disco.Programs
 {
     public class Checkerboard : DiscoProgram
     {

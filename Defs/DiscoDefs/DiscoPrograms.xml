@@ -10,7 +10,7 @@
     <!-- Solid color -->
     <RimForge.DiscoProgramDef ParentName="RF_BDP">
       <defName>RF_DP_Solid</defName>
-      <programClass>RimForge.Buildings.DiscoPrograms.Solid</programClass>
+      <programClass>RimForge.Disco.Programs.Solid</programClass>
       <colors>
         <li>(255, 255, 255, 255)</li>
       </colors>
@@ -19,7 +19,7 @@
 
     <!-- Color cycle -->
     <RimForge.DiscoProgramDef Name="RF_DP_BaseCycle" ParentName="RF_BDP" Abstract="true">
-      <programClass>RimForge.Buildings.DiscoPrograms.ColorCycle</programClass>
+      <programClass>RimForge.Disco.Programs.ColorCycle</programClass>
       <ints>
         <li>80</li>
       </ints>
@@ -93,7 +93,7 @@
 
     <!-- Checkerboards -->
     <RimForge.DiscoProgramDef Name="RF_DP_CheckerboardBase" ParentName="RF_BDP" Abstract="true">
-      <programClass>RimForge.Buildings.DiscoPrograms.Checkerboard</programClass>
+      <programClass>RimForge.Disco.Programs.Checkerboard</programClass>
       <ints>
         <li>20</li> <!-- Ticks spent on color.-->
         <li>10</li> <!-- Transition ticks -->
@@ -135,7 +135,7 @@
 
     <!-- Noise -->
     <RimForge.DiscoProgramDef Name="RF_DP_NoiseBase" ParentName="RF_BDP" Abstract="true">
-      <programClass>RimForge.Buildings.DiscoPrograms.Noise</programClass>
+      <programClass>RimForge.Disco.Programs.Noise</programClass>
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef ParentName="RF_DP_NoiseBase">
@@ -165,7 +165,7 @@
 
     <!-- Ripples -->
     <RimForge.DiscoProgramDef Name="RF_DP_RippleBase" ParentName="RF_BDP" Abstract="true">
-      <programClass>RimForge.Buildings.DiscoPrograms.Ripple</programClass>
+      <programClass>RimForge.Disco.Programs.Ripple</programClass>
       <colors>
         <li>(1, 1, 1, 0)</li>  <!-- 'low' color -->
         <li>(1, 1, 1, 1)</li>  <!-- 'high' color -->
@@ -210,7 +210,7 @@
 
     <!-- Flying lines -->
     <RimForge.DiscoProgramDef Name="RF_DP_LineBase" ParentName="RF_BDP" Abstract="true">
-      <programClass>RimForge.Buildings.DiscoPrograms.FlyingLine</programClass>
+      <programClass>RimForge.Disco.Programs.FlyingLine</programClass>
       <bools>
         <li>true</li> <!-- Move forwards? -->
       </bools>
@@ -284,7 +284,7 @@
     <!-- Fade In/Out -->
     <RimForge.DiscoProgramDef ParentName="RF_BDP">
       <defName>RF_DP_FadeIn</defName>
-      <programClass>RimForge.Buildings.DiscoPrograms.Fade</programClass>
+      <programClass>RimForge.Disco.Programs.Fade</programClass>
       <bools>
         <li>true</li> <!-- Fade in? -->
       </bools>
@@ -295,7 +295,7 @@
 
     <RimForge.DiscoProgramDef ParentName="RF_BDP">
       <defName>RF_DP_FadeOut</defName>
-      <programClass>RimForge.Buildings.DiscoPrograms.Fade</programClass>
+      <programClass>RimForge.Disco.Programs.Fade</programClass>
       <bools>
         <li>false</li>
       </bools>
@@ -307,7 +307,7 @@
 
     <!-- Stripes -->
     <RimForge.DiscoProgramDef Name="RF_DP_StripesBase" ParentName="RF_BDP" Abstract="true">
-      <programClass>RimForge.Buildings.DiscoPrograms.Stripes</programClass>
+      <programClass>RimForge.Disco.Programs.Stripes</programClass>
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef Name="RF_DP_Stripes_Hor" ParentName="RF_DP_StripesBase" Abstract="true">
@@ -364,7 +364,7 @@
 
     <!-- Beat circle -->
     <RimForge.DiscoProgramDef Name="RF_DP_BeatCircleBase" ParentName="RF_BDP" Abstract="true">
-      <programClass>RimForge.Buildings.DiscoPrograms.BeatCircle</programClass>
+      <programClass>RimForge.Disco.Programs.BeatCircle</programClass>
       <bools>
         <li>true</li> <!-- Circular? -->
       </bools>
