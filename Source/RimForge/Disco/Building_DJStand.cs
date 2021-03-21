@@ -13,10 +13,6 @@ namespace RimForge.Disco
     {
         private static readonly Queue<IntVec3> openNodes = new Queue<IntVec3>(64);
         private static readonly HashSet<IntVec3> closedNodes = new HashSet<IntVec3>(64);
-        private static readonly List<FloatMenuOption> options = new List<FloatMenuOption>();
-        private static readonly List<FloatMenuOption> options2 = new List<FloatMenuOption>();
-        private static readonly List<FloatMenuOption> options3 = new List<FloatMenuOption>();
-        private static readonly List<FloatMenuOption> options4 = new List<FloatMenuOption>();
 
         public static void FloodFillDiscoFloorCells(Map map, IntVec3 startCell, int maxSize, ref List<IntVec3> cells)
         {
@@ -90,6 +86,10 @@ namespace RimForge.Disco
         public CellRect FloorBounds => glowGrid?.Rect ?? default;
         public IReadOnlyList<IntVec3> DancingCells => floorCells;
 
+        private readonly List<FloatMenuOption> options = new List<FloatMenuOption>();
+        private readonly List<FloatMenuOption> options2 = new List<FloatMenuOption>();
+        private readonly List<FloatMenuOption> options3 = new List<FloatMenuOption>();
+        private readonly List<FloatMenuOption> options4 = new List<FloatMenuOption>();
         private List<IntVec3> floorCells = new List<IntVec3>(Settings.DiscoMaxFloorSize);
         private int tickCounter;
         private DiscoFloorGlowGrid glowGrid;
@@ -148,7 +148,7 @@ namespace RimForge.Disco
             FloodFillDiscoFloorCells(Map, TryGetFloorStart(), Settings.DiscoMaxFloorSize, ref floorCells);
             glowGrid = floorCells.Count >= 2 ? new DiscoFloorGlowGrid(floorCells) : null;
 
-            block = new MaterialPropertyBlock();
+            block ??= new MaterialPropertyBlock();
         }
 
         private IntVec3 TryGetFloorStart()
@@ -241,7 +241,9 @@ namespace RimForge.Disco
         {
             ActivePrograms.Clear();
             if (program != null)
+            {
                 ActivePrograms.Add((program, BlendMode.Override));
+            }
         }
 
         public void AddProgramStack(DiscoProgram program, BlendMode mode, int? index = null)
@@ -283,11 +285,13 @@ namespace RimForge.Disco
                 glowGrid.GetColorAndMatrix(cell, out var color, out var matrix);
                 color.a *= aMulti;
                 Clamp(ref color);
-                if (color.a == 0f)
-                    continue;
-                
-                block.SetColor("_Color", color);
-                Graphics.DrawMesh(MeshPool.plane10, matrix, Content.DiscoFloorGlowGraphic.MatNorth, 0, Find.Camera, 0, block);
+                if (color.a != 0f)
+                {
+                    block.SetColor("_Color", color);
+                    Graphics.DrawMesh(MeshPool.plane10, matrix, Content.DiscoFloorGlowGraphic.MatNorth, 0, Find.Camera, 0, block);
+                }
+
+                Map.glowGrid.glowGrid[Map.cellIndices.CellToIndex(cell)] = color;
             }
         }
 
@@ -395,7 +399,14 @@ namespace RimForge.Disco
                 return $"{floorCells.Count} disco floor tiles. Let's groove!";
 
             str.Clear();
-            foreach(var thing in ActivePrograms)
+
+            str.Append("Sequence: ").AppendLine(CurrentSequence?.Def?.defName ?? "<null>");
+            str.Append("Floor cells: ").Append(floorCells.Count).AppendLine();
+            //str.Append("Glow grid: ").AppendLine(glowGrid == null ? "<null>" : "created");
+            //str.Append("Grid bounds: ").AppendLine(FloorBounds.ToString());
+            //str.Append("Mat. property block: ").AppendLine(block == null ? "<null>" : "created");
+
+            foreach (var thing in ActivePrograms)
             {
                 str.Append(thing.program.GetType().Name).Append(" - blend: ").Append(thing.mode).AppendLine();
             }

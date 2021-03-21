@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using RimForge.Buildings;
-using RimForge.Disco;
+﻿using RimForge.Disco;
 using RimForge.Disco.Programs;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
@@ -15,6 +14,7 @@ namespace RimForge
         public List<int> ints = new List<int>();
         public List<float> floats = new List<float>();
         public List<bool> bools = new List<bool>();
+        public List<string> strings = new List<string>();
 
         public override IEnumerable<string> ConfigErrors()
         {
