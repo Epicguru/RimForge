@@ -30,6 +30,7 @@ namespace RimForge
         public static TaleDef RF_AttendedDiscoTale;
         public static GatheringDef RF_DiscoGathering;
         public static JobDef RF_Job_StandAtDJPlatform;
+        public static JobDef RF_Job_Dance_Breakdance;
 
         // Vanilla ones.
         public static ThingDef Column;

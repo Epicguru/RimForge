@@ -23,7 +23,7 @@ namespace RimForge.Disco
                         ? new IntVec2(Rand.Chance(0.5f) ? 1 : -1, 0)
                         : new IntVec2(0, Rand.Chance(0.5f) ? 1 : -1);
                 lastOff = look;
-                yield return FaceDirToil(look.x, look.z);
+                yield return FaceDir(look.x, look.z);
                 yield return Toils_General.Wait(20);
             }
         }

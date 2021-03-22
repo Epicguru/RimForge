@@ -97,8 +97,10 @@
     <Compile Include="Buildings\Building_WallConnector.cs" />
     <Compile Include="Buildings\Building_WirelessPowerPylon.cs" />
     <Compile Include="Disco\DiscoTracker.cs" />
+    <Compile Include="Disco\EdgeDistanceCalculator.cs" />
     <Compile Include="Disco\GatheringWorker_Disco.cs" />
     <Compile Include="Disco\JobDriver_Dance.cs" />
+    <Compile Include="Disco\JobDriver_DanceBreakdance.cs" />
     <Compile Include="Disco\JobDriver_DanceShuffle.cs" />
     <Compile Include="Disco\JobDriver_DanceTwist.cs" />
     <Compile Include="Disco\JobDriver_StandAtDJPlatform.cs" />
@@ -107,10 +109,12 @@
     <Compile Include="Disco\LordJob_Joinable_Disco.cs" />
     <Compile Include="Disco\LordToilData_Disco.cs" />
     <Compile Include="Disco\LordToil_Disco.cs" />
+    <Compile Include="Disco\Patch_PawnRenderer_BodyAngle.cs" />
     <Compile Include="Disco\Programs\Checkerboard.cs" />
     <Compile Include="Disco\Programs\BeatCircle.cs" />
     <Compile Include="Disco\Programs\ColorCycle.cs" />
     <Compile Include="Disco\Programs\DiscoProgram.cs" />
+    <Compile Include="Disco\Programs\EdgeDistance.cs" />
     <Compile Include="Disco\Programs\Fade.cs" />
     <Compile Include="Disco\Programs\FlyingLine.cs" />
     <Compile Include="Disco\Programs\Noise.cs" />

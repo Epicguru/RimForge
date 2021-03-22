@@ -26,7 +26,7 @@ namespace RimForge.Disco
             IEnumerable<Toil> Reset()
             {
                 yield return Toils_Goto.GotoCell(startPos, PathEndMode.OnCell);
-                yield return FaceDirToil(0, -1);
+                yield return FaceDir(0, -1);
                 yield return Toils_General.Wait(15);
             }
 
@@ -36,7 +36,7 @@ namespace RimForge.Disco
                 if (IsValidSpot(startPos + new IntVec3(1, 0, 0)))
                 {
                     yield return Toils_Goto.GotoCell(startPos + new IntVec3(1, 0, 0), PathEndMode.OnCell);
-                    yield return FaceDirToil(1, 0);
+                    yield return FaceDir(1, 0);
                     yield return Toils_General.Wait(25);
                 }
 
@@ -48,7 +48,7 @@ namespace RimForge.Disco
                 if (IsValidSpot(startPos + new IntVec3(0, 0, -1)))
                 {
                     yield return Toils_Goto.GotoCell(startPos + new IntVec3(0, 0, -1), PathEndMode.OnCell);
-                    yield return FaceDirToil(0, -1);
+                    yield return FaceDir(0, -1);
                     yield return Toils_General.Wait(25);
                 }
 
@@ -60,7 +60,7 @@ namespace RimForge.Disco
                 if (IsValidSpot(startPos + new IntVec3(-1, 0, 0)))
                 {
                     yield return Toils_Goto.GotoCell(startPos + new IntVec3(-1, 0, 0), PathEndMode.OnCell);
-                    yield return FaceDirToil(-1, 0);
+                    yield return FaceDir(-1, 0);
                     yield return Toils_General.Wait(25);
                 }
 
@@ -72,7 +72,7 @@ namespace RimForge.Disco
                 if (IsValidSpot(startPos + new IntVec3(0, 0, 1)))
                 {
                     yield return Toils_Goto.GotoCell(startPos + new IntVec3(0, 0, 1), PathEndMode.OnCell);
-                    yield return FaceDirToil(0, 1);
+                    yield return FaceDir(0, 1);
                     yield return Toils_General.Wait(25);
                 }
 

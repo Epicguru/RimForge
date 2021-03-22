@@ -171,6 +171,15 @@
     </RimForge.DiscoProgramDef>
 
 
+    <!-- Edge distance -->
+    <RimForge.DiscoProgramDef Name="RF_DP_EdgeBase" ParentName="RF_BDP" Abstract="true">
+      <programClass>RimForge.Disco.Programs.EdgeDistance</programClass>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_EdgeBase">
+      <defName>RF_DP_EdgeDefault</defName>
+    </RimForge.DiscoProgramDef>
+
     <!-- Ripples -->
     <RimForge.DiscoProgramDef Name="RF_DP_RippleBase" ParentName="RF_BDP" Abstract="true">
       <programClass>RimForge.Disco.Programs.Ripple</programClass>

@@ -19,4 +19,10 @@
     <reportString>Doing the shuffle.</reportString>
   </JobDef>
 
+  <JobDef>
+    <defName>RF_Job_Dance_Breakdance</defName>
+    <driverClass>RimForge.Disco.JobDriver_DanceBreakdance</driverClass>
+    <reportString>Breakdancing.</reportString>
+  </JobDef>
+
 </Defs>

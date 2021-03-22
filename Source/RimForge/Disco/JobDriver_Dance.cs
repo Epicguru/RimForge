@@ -1,4 +1,5 @@
-﻿using Verse;
+﻿using RimWorld;
+using Verse;
 using Verse.AI;
 
 namespace RimForge.Disco
@@ -10,7 +11,19 @@ namespace RimForge.Disco
             return true;
         }
 
-        protected Toil FaceDirToil(int offX, int offY)
+        protected Toil SetPosture(PawnPosture posture)
+        {
+            return new Toil()
+            {
+                initAction = () =>
+                {
+                    pawn.jobs.posture = posture;
+                },
+                defaultCompleteMode = ToilCompleteMode.Instant
+            };
+        }
+
+        protected Toil FaceDir(int offX, int offY)
         {
             return new Toil()
             {
