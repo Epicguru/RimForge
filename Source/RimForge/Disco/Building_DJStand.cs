@@ -298,6 +298,13 @@ namespace RimForge.Disco
                         Core.Error($"Exception ticking disco floor program '{layer.GetType().Name}'", e);
                     }
 
+                    if (layer.ShouldRemove)
+                    {
+                        ActivePrograms.RemoveAt(i);
+                        i--;
+                        continue;
+                    }
+
                     try
                     {
                         glowGrid.SetAllColors(cell =>

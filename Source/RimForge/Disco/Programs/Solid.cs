@@ -5,7 +5,7 @@ namespace RimForge.Disco.Programs
 {
     public class Solid : DiscoProgram
     {
-        public Color Color = Color.white;
+        public Color Color;
 
         public Solid(DiscoProgramDef def) : base(def)
         {
@@ -13,7 +13,7 @@ namespace RimForge.Disco.Programs
 
         public override void Init()
         {
-            Color = Def.colors[0];
+            Color = Def.Get("color", Color.white);
         }
 
         public override Color ColorFor(IntVec3 cell)

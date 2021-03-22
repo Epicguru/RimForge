@@ -11,6 +11,7 @@ namespace RimForge.Disco.Programs
         public bool Horizontal = false;
 
         private int offset;
+        private Color[] colors;
 
         public Stripes(DiscoProgramDef def) : base(def)
         {
@@ -18,12 +19,13 @@ namespace RimForge.Disco.Programs
 
         public override void Init()
         {
-            EveryX = Def.ints[0];
+            EveryX = Def.Get("everyX", 2);
             if (EveryX < 1)
                 EveryX = 1;
-            ShiftInterval = Def.ints[1];
-            ShiftDirection = Def.ints[2];
-            Horizontal = Def.bools[0];
+            ShiftInterval = Def.Get("shiftInterval", 20);
+            ShiftDirection = Def.Get("shiftDirection", 1);
+            Horizontal = Def.Get("horizontal", true);
+            colors = Def.Get<Color[]>("colors");
         }
 
         public override void Tick()
@@ -34,6 +36,12 @@ namespace RimForge.Disco.Programs
             {
                 offset += ShiftDirection;
             }
+
+            if (colors == null || colors.Length < 2)
+            {
+                Core.Error("Null colors or less than 2 colors! Removing.");
+                Remove();
+            }
         }
 
         public override Color ColorFor(IntVec3 cell)
@@ -43,7 +51,7 @@ namespace RimForge.Disco.Programs
             if (coord % EveryX != 0)
                 return default;
 
-            return Def.colors[(coord / EveryX) % Def.colors.Count];
+            return colors[(coord / EveryX) % colors.Length];
         }
     }
 }

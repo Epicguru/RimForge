@@ -11,9 +11,9 @@
   <RimForge.DiscoProgramDef ParentName="RF_BDP">
     <defName>RF_DP_Solid</defName>
     <programClass>RimForge.Disco.Programs.Solid</programClass>
-    <colors>
-      <li>(255, 255, 255, 255)</li>
-    </colors>
+    <inputs>
+      <color>(1, 1, 1, 1)</color>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
 
