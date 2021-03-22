@@ -19,6 +19,7 @@ namespace RimForge.Disco.Programs
         private int frameSwapInterval;
         private int tickCounterCustom;
         private CellRect vidBounds;
+        private int toRepeat;
 
         public VideoPlayer(DiscoProgramDef def) : base(def)
         {
@@ -28,7 +29,7 @@ namespace RimForge.Disco.Programs
         {
             WhiteColor = Def.Get("whiteColor", Color.white);
             BlackColor = Def.Get("blackColor", new Color(0, 0, 0, 0));
-
+            toRepeat = Def.Get("times", 1) - 1;
             FilePath = Def.Get<string>("filePath");
 
             // Load video on another thread.
@@ -77,9 +78,18 @@ namespace RimForge.Disco.Programs
                 bool hasNextFrame = video.LoadNextFrame();
                 if (!hasNextFrame)
                 {
-                    Remove();
-                    video.Dispose();
-                    video = null;
+                    if (toRepeat > 0)
+                    {
+                        video.Restart();
+                        tickCounterCustom = 1;
+                        toRepeat--;
+                    }
+                    else
+                    {
+                        Remove();
+                        video.Dispose();
+                        video = null;
+                    }
                 }
             }
         }

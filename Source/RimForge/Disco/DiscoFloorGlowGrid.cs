@@ -82,7 +82,7 @@ namespace RimForge.Disco
                     case Building_DJStand.BlendMode.Override:
                         final = color;
                         break;
-                    case Building_DJStand.BlendMode.Additive:
+                    case Building_DJStand.BlendMode.Add:
                         final = current + color * color.a;
                         break;
                     case Building_DJStand.BlendMode.Multiply:

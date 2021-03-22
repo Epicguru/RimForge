@@ -8,31 +8,19 @@ namespace RimForge
 {
     public class DiscoSequenceDef : Def
     {
-        public int Duration
-        {
-            get
-            {
-                if (duration != null)
-                    return duration.Value;
-                int length = 0;
-                foreach (var item in actions)
-                {
-                    if (item == null || item.Duration <= 0)
-                        continue;
-                    length += item.Duration;
-                }
-
-                return length;
-            }
-        }
-
-        public IntVec2? minResolution;
         public float weight = 1f;
-        public List<DiscoSequenceDef> prefer;
+        public IntVec2? minFloorSize = null;
 
-        private int? duration;
         public List<DiscoSequenceAction> actions = new List<DiscoSequenceAction>();
         public Type handlerType = typeof(SequenceHandler);
+
+        public bool CanRunOn(int floorWidth, int floorHeight)
+        {
+            if (minFloorSize == null)
+                return true;
+
+            return floorWidth >= minFloorSize.Value.x && floorHeight >= minFloorSize.Value.z;
+        }
 
         public SequenceHandler CreateAndInitHandler(Building_DJStand stand)
         {
@@ -78,31 +66,11 @@ namespace RimForge
             Color.yellow
         };
 
-        public int Duration
-        {
-            get
-            {
-                if (type == DiscoSequenceActionType.Repeat && actions != null && times > 0)
-                {
-                    int sum = 0;
-                    foreach (var item in actions)
-                        sum += item?.Duration ?? 0;
-                    
-                    return times * sum;
-                }
-
-                return selfDuration;
-            }
-        }
-
         public Color? Tint => randomTint ? randomColors.RandomElement() : tint;
-        public DiscoProgramDef Program => (randomProgramFrom?.Count ?? 0) > 0 ? randomProgramFrom.RandomElement() : program;
-
-        private int selfDuration => type == DiscoSequenceActionType.Wait ? ticks : 0;
 
         public DiscoSequenceActionType type = DiscoSequenceActionType.None;
         public Building_DJStand.BlendMode blend = Building_DJStand.BlendMode.Multiply;
-        private int ticks = 30;
+        public int ticks = 30;
         private DiscoProgramDef program;
         private List<DiscoProgramDef> randomProgramFrom;
         public int times = 0;
@@ -114,7 +82,29 @@ namespace RimForge
         public bool oneMinusAlpha = false;
         public bool atBottom = false;
         public bool addToMemory = false;
+        public bool usePreferred = true;
+        public bool onlyIfMeetsSize = false;
         public float chance = 1f;
         public float weight = 1f;
+
+        public DiscoProgramDef GetProgram(int floorWidth, int floorHeight)
+        {
+            if ((randomProgramFrom?.Count ?? 0) > 0)
+            {
+                return randomProgramFrom.RandomElement();
+            }
+            if (program == null)
+                return null;
+
+            if (!usePreferred || program.prefer == null)
+                return program;
+
+            foreach (var preferred in program.prefer)
+            {
+                if (preferred.CanRunOn(floorWidth, floorHeight))
+                    return preferred;
+            }
+            return program;
+        }
     }
 }

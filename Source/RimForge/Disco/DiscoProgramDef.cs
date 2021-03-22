@@ -12,9 +12,19 @@ namespace RimForge
     {
         public Type programClass;
         private DiscoDict inputs = new DiscoDict();
+        public List<DiscoProgramDef> prefer;
+        public IntVec2? minFloorSize = null;
 
         [XmlIgnore]
         private Dictionary<string, object> parsed = new Dictionary<string, object>();
+
+        public bool CanRunOn(int width, int height)
+        {
+            if (minFloorSize == null)
+                return true;
+
+            return width >= minFloorSize.Value.x && height >= minFloorSize.Value.z;
+        }
 
         public T Get<T>(string inputName, T defaultValue = default)
         {

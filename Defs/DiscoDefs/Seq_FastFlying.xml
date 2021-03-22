@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <RimForge.DiscoSequenceDef ParentName="RF_BDS">
-    <defName>RF_S_RandomFlying</defName>
+    <defName>RF_S_FastFlying</defName>
     <actions>
 
       <!-- Clear -->
@@ -20,7 +20,7 @@
       <!-- Change floor color, add a random line, wait until it ends, repeat -->
       <li>
         <type>Repeat</type>
-        <times>15</times>
+        <times>40</times>
         <actions>
           <li>
             <type>TintMem</type> <!-- The greyscale floor is stored in memory -->
@@ -28,16 +28,7 @@
           </li>
           <li>
             <type>Add</type>
-            <chance>0.75</chance>
-            <atBottom>true</atBottom>
-            <blend>Add</blend>
-            <randomProgramFrom>
-              <li>RF_DP_Ripple_BW_Out</li>
-              <li>RF_DP_Ripple_BW_In</li>
-            </randomProgramFrom>
-          </li>
-          <li>
-            <type>Add</type>
+            <chance>0.85</chance>
             <atBottom>true</atBottom>
             <blend>Add</blend>
             <randomProgramFrom>
@@ -52,15 +43,23 @@
             </randomProgramFrom>
           </li>
           <li>
-            <type>WaitLast</type>
+            <type>Wait</type>
+            <ticks>10</ticks>
           </li>
         </actions>
       </li>
 
       <!-- Fade out then another little pause at the end -->
       <li>
+        <type>Wait</type>
+        <ticks>100</ticks>
+      </li>
+      <li>
         <type>Add</type>
         <program>RF_DP_FadeOut</program>
+      </li>
+      <li>
+        <type>DestroyMem</type>
       </li>
       <li>
         <type>WaitLast</type>

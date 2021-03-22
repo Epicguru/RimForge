@@ -55,6 +55,16 @@ namespace VideoTool
             return true;
         }
 
+        public void Restart()
+        {
+            if (memStream == null)
+                return;
+
+            memStream.Position = 0;
+            CurrentFrame = null;
+            LoadNextFrame();
+        }
+
         public bool LoadNextFrame()
         {
             if (CurrentFrame == null)

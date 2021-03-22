@@ -9,7 +9,6 @@ namespace RimForge.Disco
     {
         public readonly DiscoSequenceDef Def;
         public readonly Building_DJStand Stand;
-        public readonly int RoughDuration;
         public bool IsDone { get; protected set; }
 
         private int ticksToWait;
@@ -23,7 +22,6 @@ namespace RimForge.Disco
         {
             Def = def;
             Stand = stand;
-            RoughDuration = def.Duration;
         }
 
         public virtual void Init()
@@ -168,31 +166,34 @@ namespace RimForge.Disco
                 case DiscoSequenceActionType.Clear:
                     Stand.SetProgramStack(null);
                     return true;
+
                 case DiscoSequenceActionType.Wait:
-                    if (action.Duration > 0)
-                        ticksToWait = action.Duration;
+                    if (action.ticks > 0)
+                        ticksToWait = action.ticks;
                     return false;
+
                 case DiscoSequenceActionType.WaitMem:
                     if (CheckMem())
                         return true;
                     toWaitFor = memory.Peek();
-                    if (action.Duration > 0)
-                        ticksToWait = action.Duration;
                     return false;
+
                 case DiscoSequenceActionType.WaitLast:
                     if (lastAddedProgram == null || lastAddedProgram.ShouldRemove)
                     {
                         Core.Warn("Started WaitLast action but there is no previous program, or that program has already ended.");
                         return true;
                     }
-                    if (action.Duration > 0)
-                        ticksToWait = action.Duration;
                     waitForLast = true;
                     return false;
+
                 case DiscoSequenceActionType.Start:
-                    var instance = action.Program?.MakeProgram(Stand);
+                    var programDef = action.GetProgram(Stand.FloorBounds.Width, Stand.FloorBounds.Height);
+                    if (programDef != null && action.onlyIfMeetsSize && !programDef.CanRunOn(Stand.FloorBounds.Width, Stand.FloorBounds.Height))
+                        return true;
+                    var instance = programDef?.MakeProgram(Stand);
                     if (instance == null)
-                        break;
+                        return true;
                     instance.OneMinus = action.oneMinus;
                     instance.OneMinusAlpha = action.oneMinusAlpha;
                     instance.Tint = action.Tint;
@@ -201,10 +202,14 @@ namespace RimForge.Disco
                     if (action.addToMemory)
                         memory.Push(instance);
                     return true;
+
                 case DiscoSequenceActionType.Add:
-                    instance = action.Program?.MakeProgram(Stand);
+                    programDef = action.GetProgram(Stand.FloorBounds.Width, Stand.FloorBounds.Height);
+                    if (programDef != null && action.onlyIfMeetsSize && !programDef.CanRunOn(Stand.FloorBounds.Width, Stand.FloorBounds.Height))
+                        return true;
+                    instance = programDef?.MakeProgram(Stand);
                     if (instance == null)
-                        break;
+                        return true;
                     instance.OneMinus = action.oneMinus;
                     instance.OneMinusAlpha = action.oneMinusAlpha;
                     instance.Tint = action.Tint;
@@ -213,6 +218,7 @@ namespace RimForge.Disco
                     if (action.addToMemory)
                         memory.Push(instance);
                     return true;
+
                 case DiscoSequenceActionType.MemAdd:
                     if (lastAddedProgram == null || lastAddedProgram.ShouldRemove)
                     {
@@ -221,6 +227,7 @@ namespace RimForge.Disco
                     }
                     memory.Push(lastAddedProgram);
                     return true;
+
                 case DiscoSequenceActionType.MemRemove:
                     if (memory.Count == 0)
                     {
@@ -229,12 +236,14 @@ namespace RimForge.Disco
                     }
                     memory.Pop();
                     return true;
+
                 case DiscoSequenceActionType.TintMem:
                     if (CheckMem())
                         return true;
                     Color? tint = action.Tint;
                     memory.Peek().Tint = tint;
                     return true;
+
                 case DiscoSequenceActionType.DestroyMem:
                     if (CheckMem())
                         return true;

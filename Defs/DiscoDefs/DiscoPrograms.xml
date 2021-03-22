@@ -418,6 +418,7 @@
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
     <defName>RF_DP_Video_BadApple</defName>
+    <minFloorSize>(25, 25)</minFloorSize>
     <inputs>
       <filePath>C:\Users\The Superior One\Desktop\BadApple.bwcv</filePath> <!-- Compressed video file path -->
     </inputs>
@@ -425,6 +426,10 @@
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
     <defName>RF_DP_Video_BadApple_Small</defName>
+    <minFloorSize>(20, 20)</minFloorSize>
+    <prefer>
+      <li>RF_DP_Video_BadApple</li>
+    </prefer>
     <inputs>
       <filePath>C:\Users\The Superior One\Desktop\BadApple_Small.bwcv</filePath>
     </inputs>
@@ -432,6 +437,11 @@
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
     <defName>RF_DP_Video_BadApple_Tiny</defName>
+    <minFloorSize>(12, 12)</minFloorSize>
+    <prefer>
+      <li>RF_DP_Video_BadApple</li>
+      <li>RF_DP_Video_BadApple_Small</li>
+    </prefer>
     <inputs>
       <filePath>C:\Users\The Superior One\Desktop\BadApple_Tiny.bwcv</filePath>
     </inputs>
@@ -439,6 +449,7 @@
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
     <defName>RF_DP_Video_GiveYouUp</defName>
+    <minFloorSize>(30, 30)</minFloorSize>
     <inputs>
       <filePath>C:\Users\The Superior One\Desktop\GiveYouUp.bwcv</filePath>
     </inputs>
@@ -446,6 +457,10 @@
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
     <defName>RF_DP_Video_GiveYouUp_Small</defName>
+    <minFloorSize>(20, 20)</minFloorSize>
+    <prefer>
+      <li>RF_DP_Video_GiveYouUp</li>
+    </prefer>
     <inputs>
       <filePath>C:\Users\The Superior One\Desktop\GiveYouUp_Small.bwcv</filePath>
     </inputs>
@@ -453,8 +468,19 @@
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
     <defName>RF_DP_Video_ZeroTwo</defName>
+    <minFloorSize>(25, 25)</minFloorSize>
     <inputs>
       <filePath>C:\Users\The Superior One\Desktop\ZeroTwo.bwcv</filePath>
+    </inputs>
+  </RimForge.DiscoProgramDef>
+
+  <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
+    <defName>RF_DP_Video_ZeroTwo_Small</defName>
+    <prefer>
+      <li>RF_DP_Video_ZeroTwo</li>
+    </prefer>
+    <inputs>
+      <filePath>C:\Users\The Superior One\Desktop\ZeroTwo_Small.bwcv</filePath>
     </inputs>
   </RimForge.DiscoProgramDef>
 
@@ -476,13 +502,18 @@
     <defName>RF_DP_Video_Gmod</defName>
     <inputs>
       <filePath>C:\Users\The Superior One\Desktop\Gmod.bwcv</filePath>
+      <times>3</times>
     </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
     <defName>RF_DP_Video_Gmod_Small</defName>
+    <prefer>
+      <li>RF_DP_Video_Gmod</li>
+    </prefer>
     <inputs>
       <filePath>C:\Users\The Superior One\Desktop\Gmod_Small.bwcv</filePath>
+      <times>3</times>
     </inputs>
   </RimForge.DiscoProgramDef>
 

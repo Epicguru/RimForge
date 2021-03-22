@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using RimForge.Disco.Programs;
-using RimWorld;
+﻿using RimWorld;
+using System.Collections.Generic;
 using Verse;
 using Verse.AI;
 
@@ -26,8 +25,7 @@ namespace RimForge.Disco
                 if (lordJob is LordJob_Joinable_Disco discoLord)
                 {
                     var stand = discoLord.DJStand;
-                    var seqDef = DefDatabase<DiscoSequenceDef>.AllDefsListForReading.RandomElement();
-                    stand.CurrentSequence = seqDef.CreateAndInitHandler(stand);
+                    stand.PickSequenceIfNull = true;
                 }
             });
             yield return reachPlatform;
@@ -40,6 +38,16 @@ namespace RimForge.Disco
                 pawn.pather.StopDead();
                 pawn.rotationTracker.FaceCell(TargetB.Cell);
             };
+            toil.finishActions ??= new List<System.Action>();
+            toil.finishActions.Add(() =>
+            {
+                var lordJob = pawn.Map?.lordManager?.LordOf(pawn)?.LordJob;
+                if (lordJob is LordJob_Joinable_Disco discoLord)
+                {
+                    var stand = discoLord.DJStand;
+                    stand.PickSequenceIfNull = false;
+                }
+            });
             yield return toil;
         }
     }

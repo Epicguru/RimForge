@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <RimForge.DiscoSequenceDef ParentName="RF_BDS">
-    <defName>RF_S_GiveYouUp_Large</defName>
+    <defName>RF_S_BadApple</defName>
 
-    <minResolution>(40, 40)</minResolution>
+    <weight>0.45</weight>
 
     <actions>
 
@@ -12,14 +12,14 @@
         <type>Clear</type>
       </li>
 
-      <!-- Rick base, put in memory -->
+      <!-- Bad apple base, put in memory -->
       <li>
         <type>Start</type>
-        <program>RF_DP_Video_GiveYouUp</program>
+        <program>RF_DP_Video_BadApple_Tiny</program>
         <addToMemory>true</addToMemory>
       </li>
 
-      <!-- Noisy green instead of video white -->
+      <!-- Noisy pastel colors instead of video white -->
       <li>
         <type>Add</type>
         <blend>Multiply</blend>
@@ -28,7 +28,7 @@
       <li>
         <type>Add</type>
         <blend>Multiply</blend>
-        <program>RF_DP_Cycle_Radioactive</program>
+        <program>RF_DP_Cycle_Pastel</program>
       </li>
 
       <!-- Wait for the video to end -->

@@ -86,6 +86,7 @@ namespace RimForge.Disco
         public List<(DiscoProgram program, BlendMode mode)> ActivePrograms = new List<(DiscoProgram, BlendMode)>();
         public CellRect FloorBounds => glowGrid?.Rect ?? default;
         public IReadOnlyList<IntVec3> DancingCells => floorCells;
+        public bool PickSequenceIfNull;
 
         private readonly List<FloatMenuOption> options = new List<FloatMenuOption>();
         private readonly List<FloatMenuOption> options2 = new List<FloatMenuOption>();
@@ -98,7 +99,7 @@ namespace RimForge.Disco
         private DiscoProgramDef tempGizmoProgram;
         private float[] edgeDistances;
         private float highestEdgeDistance;
-        private bool runningTask = false;
+        private bool runningTask;
 
         public override void PostMapInit()
         {
@@ -130,6 +131,27 @@ namespace RimForge.Disco
 
             if (floorCells.Count >= 2 && glowGrid != null)
             {
+                if (CurrentSequence != null && !Prefs.DevMode)
+                {
+                    var dj = InteractionCell.GetFirstPawn(Map);
+                    if (dj == null)
+                    {
+                        Core.Warn("Cancelling current sequence because there is no DJ pawn. Enable Dev Mode to disable this behaviour.");
+                        CurrentSequence = null;
+                        PickSequenceIfNull = false;
+                    }
+                    if (!PickSequenceIfNull)
+                    {
+                        CurrentSequence = null;
+                    }
+                }
+
+                if (CurrentSequence == null && PickSequenceIfNull)
+                {
+                    int w = FloorBounds.Width;
+                    int h = FloorBounds.Height;
+                    CurrentSequence = DefDatabase<DiscoSequenceDef>.AllDefsListForReading.RandomElementByWeight(def => def.CanRunOn(w, h) ? def.weight : 0).CreateAndInitHandler(this);
+                }
                 try
                 {
                     TickFloor();
@@ -187,6 +209,13 @@ namespace RimForge.Disco
             if (inverted)
                 return highestEdgeDistance - edgeDistances[index];
             return edgeDistances[index];
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+
+            Scribe_Values.Look(ref PickSequenceIfNull, "rf_pickSeqIfNull");
         }
 
         private float[] RemapEdgeDistances(float[] rawDistances, out float highest)
@@ -479,6 +508,13 @@ namespace RimForge.Disco
                     Find.WindowStack.Add(new FloatMenu(options4, "Select a sequence"));
                 }
             };
+
+            yield return new Command_Toggle()
+            {
+                defaultLabel = "Toggle auto pick",
+                isActive = () => PickSequenceIfNull,
+                toggleAction = () => { PickSequenceIfNull = !PickSequenceIfNull; }
+            };
         }
 
         private StringBuilder str = new StringBuilder();
@@ -534,7 +570,7 @@ namespace RimForge.Disco
         public enum BlendMode
         {
             Override,
-            Additive,
+            Add,
             Multiply,
             Normal
         }
