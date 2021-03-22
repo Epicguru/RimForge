@@ -18,8 +18,8 @@ namespace RimForge.Disco.Programs
 
         public override void Init()
         {
-            Duration = Def.ints[0];
-            FadeIn = Def.bools[0];
+            Duration = Def.Get("duration", 30);
+            FadeIn = Def.Get("fadeIn", true);
         }
 
         public override void Tick()

@@ -315,23 +315,19 @@
   <RimForge.DiscoProgramDef ParentName="RF_BDP">
     <defName>RF_DP_FadeIn</defName>
     <programClass>RimForge.Disco.Programs.Fade</programClass>
-    <bools>
-      <li>true</li> <!-- Fade in? -->
-    </bools>
-    <ints>
-      <li>30</li> <!-- Fade duration in ticks -->
-    </ints>
+    <inputs>
+      <duration>30</duration>
+      <fadeIn>true</fadeIn>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef ParentName="RF_BDP">
     <defName>RF_DP_FadeOut</defName>
     <programClass>RimForge.Disco.Programs.Fade</programClass>
-    <bools>
-      <li>false</li>
-    </bools>
-    <ints>
-      <li>30</li>
-    </ints>
+    <inputs>
+      <duration>30</duration>
+      <fadeIn>false</fadeIn>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
 
