@@ -190,49 +190,42 @@
     <defName>RF_DP_EdgeDefault</defName>
   </RimForge.DiscoProgramDef>
 
+
   <!-- Ripples -->
   <RimForge.DiscoProgramDef Name="RF_DP_RippleBase" ParentName="RF_BDP" Abstract="true">
     <programClass>RimForge.Disco.Programs.Ripple</programClass>
-    <colors>
-      <li>(1, 1, 1, 0)</li> <!-- 'low' color -->
-      <li>(1, 1, 1, 1)</li> <!-- 'high' color -->
-    </colors>
+    <inputs>
+      <lowColor>(1, 1, 1, 0)</lowColor>
+      <highColor>(1, 1, 1, 1)</highColor>
+      <circular>true</circular>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef Name="RF_DP_Ripple_BW_Out" ParentName="RF_DP_RippleBase">
     <defName>RF_DP_Ripple_BW_Out</defName>
-    <bools>
-      <li>true</li> <!-- Circular? -->
-    </bools>
-    <floats>
-      <li>-2</li> <!-- Initial radius -->
-      <li>2</li> <!-- Thickness -->
-      <li>0.1</li> <!-- Radius change per tick -->
-      <li>22</li> <!-- Despawn after radius reaches this -->
-    </floats>
+    <inputs>
+      <startRadius>-2</startRadius>
+      <thickness>2</thickness>
+      <radiusChangePerTick>0.1</radiusChangePerTick>
+      <despawnAfterRadiusReaches>22</despawnAfterRadiusReaches>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef Name="RF_DP_Ripple_BW_In" ParentName="RF_DP_RippleBase">
     <defName>RF_DP_Ripple_BW_In</defName>
-    <bools>
-      <li>true</li>
-    </bools>
-    <floats>
-      <li>22</li>
-      <li>2</li>
-      <li>-0.1</li>
-      <li>-2</li>
-    </floats>
+    <inputs>
+      <startRadius>22</startRadius>
+      <thickness>2</thickness>
+      <radiusChangePerTick>-0.1</radiusChangePerTick>
+      <despawnAfterRadiusReaches>-2</despawnAfterRadiusReaches>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_Ripple_BW_Out">
     <defName>RF_DP_Ripple_BW_Out_Fast</defName>
-    <floats Inherit="false">
-      <li>3.5</li>
-      <li>1</li>
-      <li>0.3</li>
-      <li>22</li>
-    </floats>
+    <inputs>
+      <radiusChangePerTick>0.35</radiusChangePerTick>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <!-- Flying lines -->
