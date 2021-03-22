@@ -225,6 +225,8 @@
     <defName>RF_DP_Ripple_BW_Out_Fast</defName>
     <inputs>
       <radiusChangePerTick>0.35</radiusChangePerTick>
+      <thickness>1</thickness>
+      <startRadius>3.5</startRadius>
     </inputs>
   </RimForge.DiscoProgramDef>
 
@@ -319,57 +321,58 @@
   <!-- Stripes -->
   <RimForge.DiscoProgramDef Name="RF_DP_StripesBase" ParentName="RF_BDP" Abstract="true">
     <programClass>RimForge.Disco.Programs.Stripes</programClass>
+    <inputs>
+      <everyX>2</everyX> <!-- Every Nth tile -->
+      <shiftInterval>20</shiftInterval>
+      <shiftDirection>1</shiftDirection> <!-- 1 is forwards, -1 is backwards -->
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef Name="RF_DP_Stripes_Hor" ParentName="RF_DP_StripesBase" Abstract="true">
-    <bools>
-      <li>true</li> <!-- Horizontal? -->
-    </bools>
-    <ints>
-      <li>2</li> <!-- Every Nth tile -->
-      <li>20</li> <!-- Shift interval -->
-      <li>1</li> <!-- Shift direction -->
-    </ints>
+    <inputs>
+      <horizontal>true</horizontal>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_Stripes_Hor">
     <defName>RF_DP_Stripes_Hor_Greyscale</defName>
-    <colors>
-      <li>(255, 255, 255)</li>
-      <li>(200, 200, 200)</li>
-      <li>(120, 120, 120)</li>
-      <li>(60, 60, 60)</li>
-    </colors>
+    <inputs>
+      <colors>
+        (255, 255, 255):
+        (200, 200, 200):
+        (120, 120, 120):
+        (60, 60, 60)
+      </colors>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef Name="RF_DP_Stripes_Vert" ParentName="RF_DP_StripesBase" Abstract="true">
-    <bools>
-      <li>false</li>
-    </bools>
-    <ints>
-      <li>2</li>
-      <li>20</li>
-      <li>1</li>
-    </ints>
+    <inputs>
+      <horizontal>false</horizontal>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_Stripes_Vert">
     <defName>RF_DP_Stripes_Vert_Greyscale</defName>
-    <colors>
-      <li>(255, 255, 255)</li>
-      <li>(200, 200, 200)</li>
-      <li>(120, 120, 120)</li>
-      <li>(60, 60, 60)</li>
-    </colors>
+    <inputs>
+      <colors>
+        (255, 255, 255):
+        (200, 200, 200):
+        (120, 120, 120):
+        (60, 60, 60)
+      </colors>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_Stripes_Vert">
     <defName>RF_DP_Stripes_Vert_Valencia</defName>
-    <colors>
-      <li>(245, 223, 24)</li>
-      <li>(232, 23, 51)</li>
-      <li>(27, 148, 247)</li>
-    </colors>
+    <inputs>
+      <colors>
+        (245, 223, 24):
+        (232, 23, 51):
+        (27, 148, 247)
+      </colors>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
 
@@ -466,6 +469,27 @@
     <defName>RF_DP_Video_LoneDigger</defName>
     <inputs>
       <filePath>C:\Users\The Superior One\Desktop\LoneDigger.bwcv</filePath>
+    </inputs>
+  </RimForge.DiscoProgramDef>
+
+  <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
+    <defName>RF_DP_Video_Gmod</defName>
+    <inputs>
+      <filePath>C:\Users\The Superior One\Desktop\Gmod.bwcv</filePath>
+    </inputs>
+  </RimForge.DiscoProgramDef>
+
+  <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
+    <defName>RF_DP_Video_Gmod_Small</defName>
+    <inputs>
+      <filePath>C:\Users\The Superior One\Desktop\Gmod_Small.bwcv</filePath>
+    </inputs>
+  </RimForge.DiscoProgramDef>
+
+  <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
+    <defName>RF_DP_Video_Shrek</defName>
+    <inputs>
+      <filePath>C:\Users\The Superior One\Desktop\Shrek.bwcv</filePath>
     </inputs>
   </RimForge.DiscoProgramDef>
 

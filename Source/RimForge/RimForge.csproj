@@ -96,6 +96,7 @@
     <Compile Include="Buildings\Building_TeslaCoil.cs" />
     <Compile Include="Buildings\Building_WallConnector.cs" />
     <Compile Include="Buildings\Building_WirelessPowerPylon.cs" />
+    <Compile Include="Disco\DiscoDict.cs" />
     <Compile Include="Disco\DiscoTracker.cs" />
     <Compile Include="Disco\EdgeDistanceCalculator.cs" />
     <Compile Include="Disco\GatheringWorker_Disco.cs" />

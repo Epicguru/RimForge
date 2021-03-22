@@ -9,6 +9,8 @@ namespace VideoTool
         public int Width { get; private set; }
         public int Height { get; private set; }
         public int FrameRate { get; private set; }
+        public long BytesLoaded => memStream?.Length ?? 0;
+
         public bool[] CurrentFrame;
 
         private MemoryStream memStream;

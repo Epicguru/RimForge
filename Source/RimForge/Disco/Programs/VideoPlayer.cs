@@ -27,7 +27,7 @@ namespace RimForge.Disco.Programs
         public override void Init()
         {
             WhiteColor = Def.Get("whiteColor", Color.white);
-            WhiteColor = Def.Get("blackColor", new Color(0, 0, 0, 0));
+            BlackColor = Def.Get("blackColor", new Color(0, 0, 0, 0));
 
             FilePath = Def.Get<string>("filePath");
 
@@ -38,6 +38,7 @@ namespace RimForge.Disco.Programs
                 {
                     VideoLoader vid = new VideoLoader();
                     vid.Load(FilePath);
+                    Core.Log($"Loaded {vid.BytesLoaded} bytes of video data from {FilePath}");
                     if (!vid.LoadNextFrame())
                         throw new Exception("Failed to load first frame");
                     this.video = vid;

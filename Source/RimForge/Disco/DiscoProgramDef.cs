@@ -11,7 +11,7 @@ namespace RimForge
     public class DiscoProgramDef : Def
     {
         public Type programClass;
-        private Dictionary<string, string> inputs = new Dictionary<string, string>();
+        private DiscoDict inputs = new DiscoDict();
 
         [XmlIgnore]
         private Dictionary<string, object> parsed = new Dictionary<string, object>();
@@ -28,11 +28,12 @@ namespace RimForge
                     return t;
 
                 Core.Warn($"Tried to get input '{inputName}' as type {typeof(T).Name}, but it was previously loaded as a {found.GetType().Name}");
+                return defaultValue;
             }
 
             if (!inputs.TryGetValue(inputName, out var rawText))
             {
-                Core.Error($"Did not find input called '{inputName}'");
+                //Core.Error($"Did not find input called '{inputName}'");
                 return defaultValue;
             }
 
@@ -118,16 +119,16 @@ namespace RimForge
         {
             bool worked;
 
-            if (type == typeof(int) || type == typeof(long))
+            if (type == typeof(int))
             {
-                worked = long.TryParse(rawText, out long l);
+                worked = int.TryParse(rawText, out int l);
                 value = l;
                 return worked;
             }
-            if (type == typeof(float) || type == typeof(double))
+            if (type == typeof(float))
             {
-                worked = double.TryParse(rawText, out double d);
-                value = d;
+                worked = float.TryParse(rawText, out float f);
+                value = f;
                 return worked;
             }
             if (type == typeof(bool))
@@ -157,14 +158,11 @@ namespace RimForge
                 }
                 return true;
             }
-            if (type == typeof(IntVec2) || type == typeof(IntVec3))
+            if (type == typeof(IntVec2))
             {
                 try
                 {
-                    if(type == typeof(IntVec2))
-                        value = ParseHelper.ParseIntVec2(rawText);
-                    else
-                        value = ParseHelper.ParseIntVec3(rawText);
+                    value = ParseHelper.ParseIntVec2(rawText);
                 }
                 catch (Exception)
                 {
@@ -173,14 +171,37 @@ namespace RimForge
                 }
                 return true;
             }
-            if (type == typeof(Vector2) || type == typeof(Vector3))
+            if (type == typeof(IntVec3))
             {
                 try
                 {
-                    if (type == typeof(Vector2))
-                        value = ParseHelper.FromStringVector2(rawText);
-                    else
-                        value = ParseHelper.FromStringVector3(rawText);
+                    value = ParseHelper.ParseIntVec3(rawText);
+                }
+                catch (Exception)
+                {
+                    value = default;
+                    return false;
+                }
+                return true;
+            }
+            if (type == typeof(Vector2))
+            {
+                try
+                {
+                    value = ParseHelper.FromStringVector2(rawText);
+                }
+                catch (Exception)
+                {
+                    value = default;
+                    return false;
+                }
+                return true;
+            }
+            if (type == typeof(Vector3))
+            {
+                try
+                {
+                    value = ParseHelper.FromStringVector3(rawText);
                 }
                 catch (Exception)
                 {
