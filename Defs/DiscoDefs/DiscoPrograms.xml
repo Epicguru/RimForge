@@ -149,38 +149,35 @@
   <!-- Noise -->
   <RimForge.DiscoProgramDef Name="RF_DP_NoiseBase" ParentName="RF_BDP" Abstract="true">
     <programClass>RimForge.Disco.Programs.Noise</programClass>
+    <inputs>
+      <scale>2</scale>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_NoiseBase">
     <defName>RF_DP_Noise_Default</defName>
-    <floats>
-      <li>1</li> <!-- Noise scale -->
-      <li>0.1</li> <!-- Brightness increase -->
-    </floats>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_NoiseBase">
     <defName>RF_DP_Noise_Light</defName>
-    <floats>
-      <li>2</li>
-      <li>0.2</li>
-    </floats>
+    <inputs>
+      <add>0.2</add>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_NoiseBase">
     <defName>RF_DP_Noise_VeryLight</defName>
-    <floats>
-      <li>2</li>
-      <li>0.45</li>
-    </floats>
+    <inputs>
+      <add>0.55</add>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_NoiseBase">
     <defName>RF_DP_Noise_Smooth</defName>
-    <floats>
-      <li>0.15</li>
-      <li>0.1</li>
-    </floats>
+    <inputs>
+      <scale>0.15</scale>
+      <add>0.2</add>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
 
