@@ -10,6 +10,7 @@ namespace RimForge.Disco.Programs
         private int currentIndex;
         private Color currentColor;
         private int counter;
+        private Color[] colors;
 
         public ColorCycle(DiscoProgramDef def) : base(def)
         {
@@ -17,7 +18,8 @@ namespace RimForge.Disco.Programs
 
         public override void Init()
         {
-            FadeTicks = Def.ints[0];
+            FadeTicks = Def.Get("transitionTime", 80);
+            colors = Def.Get<Color[]>("colors");
         }
 
         public override void Tick()
@@ -29,13 +31,13 @@ namespace RimForge.Disco.Programs
             {
                 counter = 0;
                 currentIndex++;
-                currentIndex %= Def.colors.Count;
+                currentIndex %= colors.Length;
             }
             float p = Mathf.Clamp01((float)counter / FadeTicks);
 
-            Color colorNow = Def.colors[currentIndex];
-            int nextIndex = currentIndex == Def.colors.Count - 1 ? 0 : currentIndex + 1;
-            Color nextColor = Def.colors[nextIndex];
+            Color colorNow = colors[currentIndex];
+            int nextIndex = currentIndex == colors.Length - 1 ? 0 : currentIndex + 1;
+            Color nextColor = colors[nextIndex];
 
             currentColor = Color.Lerp(colorNow, nextColor, p);
         }

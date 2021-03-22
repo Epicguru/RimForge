@@ -5,8 +5,9 @@ namespace RimForge.Disco.Programs
 {
     public class Noise : DiscoProgram
     {
-        public float Scale = 2;
-        public float Add = 0.5f;
+        public float Scale;
+        public float Multi;
+        public float Add;
 
         public Noise(DiscoProgramDef def) : base(def)
         {
@@ -14,16 +15,17 @@ namespace RimForge.Disco.Programs
 
         public override void Init()
         {
-            Scale = Def.floats[0];
+            Scale = Def.Get("scale", 2f);
             if ((int) Scale == Scale)
                 Scale += 0.02f;
-            Add = Def.floats[1];
+            Add = Def.Get("add", 0f);
+            Multi = Def.Get("multi", 1f);
         }
 
         public override Color ColorFor(IntVec3 cell)
         {
             float perlin = Mathf.PerlinNoise((cell.x + 0.2451f) * Scale, (cell.z + 0.2451f) * Scale);
-            float n = Mathf.Clamp01(perlin + Add);
+            float n = Mathf.Clamp01((Multi * perlin) + Add);
             return new Color(n, n, n, 1);
         }
     }

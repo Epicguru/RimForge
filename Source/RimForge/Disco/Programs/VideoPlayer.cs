@@ -8,7 +8,7 @@ namespace RimForge.Disco.Programs
 {
     public class VideoPlayer : DiscoProgram
     {
-        public Color HighColor = Color.white, LowColor = default;
+        public Color WhiteColor, BlackColor;
 
         public string FilePath { get; private set; } = @"C:\Users\The Superior One\Desktop\BadApple.bwcv";
         public int VideoWidth => video?.Width ?? -1;
@@ -26,10 +26,10 @@ namespace RimForge.Disco.Programs
 
         public override void Init()
         {
-            HighColor = Def.colors[0];
-            LowColor = Def.colors[1];
+            WhiteColor = Def.Get("whiteColor", Color.white);
+            BlackColor = Def.Get("blackColor", new Color(0, 0, 0, 0));
 
-            FilePath = Def.strings[0];
+            FilePath = Def.Get<string>("filePath");
 
             // Load video on another thread.
             Task.Run(() =>
@@ -38,6 +38,7 @@ namespace RimForge.Disco.Programs
                 {
                     VideoLoader vid = new VideoLoader();
                     vid.Load(FilePath);
+                    Core.Log($"Loaded {vid.BytesLoaded} bytes of video data from {FilePath}");
                     if (!vid.LoadNextFrame())
                         throw new Exception("Failed to load first frame");
                     this.video = vid;
@@ -103,7 +104,7 @@ namespace RimForge.Disco.Programs
             if (index == -1)
                 return default;
 
-            return video.CurrentFrame[index] ? HighColor : LowColor;
+            return video.CurrentFrame[index] ? WhiteColor : BlackColor;
         }
     }
 }

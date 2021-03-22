@@ -5,9 +5,9 @@ namespace RimForge.Disco.Programs
 {
     public class Checkerboard : DiscoProgram
     {
-        public Color ColorA = Color.yellow, ColorB = Color.red;
-        public int SwapInterval = 20;
-        public int SwapTime = 10;
+        public Color ColorA, ColorB;
+        public int SwapInterval;
+        public int SwapTime;
 
         private float lerp;
         private int counter;
@@ -19,10 +19,10 @@ namespace RimForge.Disco.Programs
 
         public override void Init()
         {
-            ColorA = Def.colors[0];
-            ColorB = Def.colors[1];
-            SwapInterval = Def.ints[0];
-            SwapTime = Def.ints[1];
+            ColorA = Def.Get("colorA", Color.yellow);
+            ColorB = Def.Get("colorB", Color.red);
+            SwapInterval = Def.Get("swapInterval", 20);
+            SwapTime = Def.Get("swapTime", 10);
         }
 
         public override void Tick()
