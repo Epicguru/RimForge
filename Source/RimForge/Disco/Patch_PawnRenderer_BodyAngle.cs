@@ -7,8 +7,8 @@ namespace RimForge.Disco
     [HarmonyPatch(typeof(PawnRenderer), "BodyAngle")]
     static class Patch_PawnRenderer_BodyAngle
     {
-        [TweakValue("RimForge", 0, 10)]
-        public static float TurnSpeed = 0.5f;
+        [TweakValue("RimForge", 0, 20)]
+        public static float TurnSpeed = 10f;
 
         static bool Prefix(Pawn ___pawn, ref float __result)
         {

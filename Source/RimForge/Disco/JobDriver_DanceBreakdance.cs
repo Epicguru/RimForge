@@ -16,7 +16,7 @@ namespace RimForge.Disco
 
             // Spin side-down.
             yield return SetPosture(PawnPosture.LayingOnGroundNormal);
-            yield return Toils_General.Wait(80);
+            yield return Toils_General.Wait(120);
 
             // Get up and do a little shuffle.
             yield return SetPosture(PawnPosture.Standing);
@@ -32,7 +32,7 @@ namespace RimForge.Disco
 
             // Spin fade-up
             yield return SetPosture(PawnPosture.LayingOnGroundFaceUp);
-            yield return Toils_General.Wait(80);
+            yield return Toils_General.Wait(120);
 
             // Get up and do a little shuffle.
             yield return SetPosture(PawnPosture.Standing);

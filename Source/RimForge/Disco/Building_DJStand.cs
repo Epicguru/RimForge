@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using RimForge.Buildings;
 using RimForge.Disco.Programs;
 using RimWorld;
@@ -81,55 +82,6 @@ namespace RimForge.Disco
             closedNodes.Clear();
         }
 
-        public static int[] CalcEdgeDistances(IReadOnlyList<IntVec3> cells)
-        {
-            int[] distances = new int[cells.Count];
-            for (int i = 0; i < distances.Length; i++)
-                distances[i] = -1;
-
-            // Re-using closed nodes hashset, name is misleading.
-            closedNodes.Clear();
-            closedNodes.AddRange(cells);
-
-            int DistanceToAir(IntVec3 start, IntVec3 dir)
-            {
-                if (dir.x == 0 && dir.z == 0)
-                    return -1;
-
-                IntVec3 pos = start + dir;
-                int dst = 0;
-
-                while (true)
-                {
-                    if (closedNodes.Contains(pos))
-                    {
-                        dst++;
-                        pos += dir;
-                        continue;
-                    }
-                    break;
-                }
-                return dst;
-            }
-
-            for(int i = 0; i < cells.Count; i++)
-            {
-                var cell = cells[i];
-                int dst = int.MaxValue;
-                dst = Mathf.Min(dst, DistanceToAir(cell, new IntVec3(-1, 0, 0)));
-                dst = Mathf.Min(dst, DistanceToAir(cell, new IntVec3(1, 0, 0)));
-                dst = Mathf.Min(dst, DistanceToAir(cell, new IntVec3(0, 0, 1)));
-                dst = Mathf.Min(dst, DistanceToAir(cell, new IntVec3(0, 0, -1)));
-                dst = Mathf.Min(dst, DistanceToAir(cell, new IntVec3(-1, 0, -1)));
-                dst = Mathf.Min(dst, DistanceToAir(cell, new IntVec3(-1, 0, 1)));
-                dst = Mathf.Min(dst, DistanceToAir(cell, new IntVec3(1, 0, 1)));
-                dst = Mathf.Min(dst, DistanceToAir(cell, new IntVec3(1, 0, -1)));
-
-                distances[i] = dst;
-            }
-            return distances;
-        }
-
         public SequenceHandler CurrentSequence;
         public List<(DiscoProgram program, BlendMode mode)> ActivePrograms = new List<(DiscoProgram, BlendMode)>();
         public CellRect FloorBounds => glowGrid?.Rect ?? default;
@@ -144,8 +96,9 @@ namespace RimForge.Disco
         private DiscoFloorGlowGrid glowGrid;
         private MaterialPropertyBlock block;
         private DiscoProgramDef tempGizmoProgram;
-        private int[] edgeDistances;
-        private int highestEdgeDistance;
+        private float[] edgeDistances;
+        private float highestEdgeDistance;
+        private bool runningTask = false;
 
         public override void PostMapInit()
         {
@@ -198,17 +151,27 @@ namespace RimForge.Disco
         {
             FloodFillDiscoFloorCells(Map, TryGetFloorStart(), Settings.DiscoMaxFloorSize, ref floorCells);
             glowGrid = floorCells.Count >= 2 ? new DiscoFloorGlowGrid(floorCells) : null;
+            block ??= new MaterialPropertyBlock();
+
             if (floorCells.Count >= 2)
             {
-                int[] temp = CalcEdgeDistances(floorCells);
+                if (runningTask)
+                {
+                    Core.Error("Background thread is already calculating edge distances. Wait a bit before recalculating floor, please!");
+                    return;
+                }
 
-                edgeDistances = RemapEdgeDistances(temp, out highestEdgeDistance);
+                runningTask = true;
+                Task.Run(() =>
+                {
+                    float[] temp = new EdgeDistanceCalculator().Run(floorCells);
+                    edgeDistances = RemapEdgeDistances(temp, out highestEdgeDistance);
+                    runningTask = false;
+                });
             }
-
-            block ??= new MaterialPropertyBlock();
         }
 
-        public int GetCellDistanceFromEdge(IntVec3 cell, bool inverted = false)
+        public float GetCellDistanceFromEdge(IntVec3 cell, bool inverted = false)
         {
             if (!FloorBounds.Contains(cell))
                 return -1;
@@ -226,7 +189,7 @@ namespace RimForge.Disco
             return edgeDistances[index];
         }
 
-        private int[] RemapEdgeDistances(int[] rawDistances, out int highest)
+        private float[] RemapEdgeDistances(float[] rawDistances, out float highest)
         {
             var cells = floorCells;
             var bounds = glowGrid.Rect;
@@ -240,7 +203,7 @@ namespace RimForge.Disco
 
             IntVec3 boundsMin = bounds.BottomLeft;
 
-            int[] forBounds = new int[bounds.Area];
+            float[] forBounds = new float[bounds.Area];
             for (int i = 0; i < forBounds.Length; i++)
                 forBounds[i] = -1;
 
@@ -248,7 +211,7 @@ namespace RimForge.Disco
             for (int i = 0; i < cells.Count; i++)
             {
                 IntVec3 cell = cells[i];
-                int rawDst = rawDistances[i];
+                float rawDst = rawDistances[i];
 
                 IntVec3 local = cell - boundsMin;
                 int localIndex = local.x + local.z * bounds.Width;
@@ -266,8 +229,8 @@ namespace RimForge.Disco
             {
                 foreach(var cell in floorCells)
                 {
-                    int dst = GetCellDistanceFromEdge(cell);
-                    GenMapUI.DrawThingLabel((Vector3)GenMapUI.LabelDrawPosFor(cell), dst.ToStringCached(), Color.cyan);
+                    float dst = GetCellDistanceFromEdge(cell);
+                    GenMapUI.DrawThingLabel((Vector3)GenMapUI.LabelDrawPosFor(cell), dst.ToString("F1"), Color.cyan);
                 }
             }
             else
@@ -410,14 +373,14 @@ namespace RimForge.Disco
                 glowGrid.GetColorAndMatrix(cell, out var color, out var matrix);
                 color.a *= aMulti;
                 Clamp(ref color);
+
+                //Map.glowGrid.glowGrid[Map.cellIndices.CellToIndex(cell)] = color;
                 if (color.a != 0f)
                 {
                     block.SetColor("_Color", color);
                     Graphics.DrawMesh(MeshPool.plane10, matrix, Content.DiscoFloorGlowGraphic.MatNorth, 0, Find.Camera, 0, block);
+                    //Map.glowGrid.MarkGlowGridDirty(cell);
                 }
-
-                Map.glowGrid.glowGrid[Map.cellIndices.CellToIndex(cell)] = color;
-                Map.glowGrid.MarkGlowGridDirty(cell);
             }
         }
 
