@@ -25,7 +25,7 @@
             <program>RF_DP_FadeIn</program>
           </li>
           <li>
-            <type>WaitForEnd</type>
+            <type>WaitLast</type>
           </li>
 
           <!-- Wait for a second -->
@@ -40,7 +40,7 @@
             <program>RF_DP_FadeOut</program>
           </li>
           <li>
-            <type>WaitForEnd</type>
+            <type>WaitLast</type>
           </li>
 
           <!-- Fade in stripes -->
@@ -54,7 +54,7 @@
             <program>RF_DP_FadeIn</program>
           </li>
           <li>
-            <type>WaitForEnd</type>
+            <type>WaitLast</type>
           </li>
 
           <!-- Leave the stripes up for another second -->
@@ -69,7 +69,7 @@
             <program>RF_DP_FadeOut</program>
           </li>
           <li>
-            <type>WaitForEnd</type>
+            <type>WaitLast</type>
           </li>
 
         </actions>

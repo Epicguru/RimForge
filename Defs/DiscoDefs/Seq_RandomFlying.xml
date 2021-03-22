@@ -52,7 +52,7 @@
             </randomProgramFrom>
           </li>
           <li>
-            <type>WaitForEnd</type>
+            <type>WaitLast</type>
           </li>
         </actions>
       </li>
@@ -63,7 +63,7 @@
         <program>RF_DP_FadeOut</program>
       </li>
       <li>
-        <type>WaitForEnd</type>
+        <type>WaitLast</type>
       </li>
       <li>
         <type>Wait</type>

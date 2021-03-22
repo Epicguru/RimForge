@@ -401,10 +401,7 @@ namespace RimForge.Disco
             str.Clear();
 
             str.Append("Sequence: ").AppendLine(CurrentSequence?.Def?.defName ?? "<null>");
-            str.Append("Floor cells: ").Append(floorCells.Count).AppendLine();
-            //str.Append("Glow grid: ").AppendLine(glowGrid == null ? "<null>" : "created");
-            //str.Append("Grid bounds: ").AppendLine(FloorBounds.ToString());
-            //str.Append("Mat. property block: ").AppendLine(block == null ? "<null>" : "created");
+            str.Append("Grid bounds: ").AppendLine(FloorBounds.ToString());
 
             foreach (var thing in ActivePrograms)
             {

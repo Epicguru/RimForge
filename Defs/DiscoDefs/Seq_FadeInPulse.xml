@@ -49,7 +49,7 @@
 
       <!-- Wait for the fade out to finish -->
       <li>
-        <type>WaitForEnd</type>
+        <type>WaitLast</type>
       </li>
 
     </actions>

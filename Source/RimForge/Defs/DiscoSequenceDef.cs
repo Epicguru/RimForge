@@ -1,8 +1,6 @@
-﻿using System;
+﻿using RimForge.Disco;
+using System;
 using System.Collections.Generic;
-using RimForge.Buildings;
-using RimForge.Disco;
-using RimForge.Disco.Programs;
 using UnityEngine;
 using Verse;
 
@@ -28,6 +26,10 @@ namespace RimForge
             }
         }
 
+        public IntVec2? minResolution;
+        public float weight = 1f;
+        public List<DiscoSequenceDef> prefer;
+
         private int? duration;
         public List<DiscoSequenceAction> actions = new List<DiscoSequenceAction>();
         public Type handlerType = typeof(SequenceHandler);
@@ -50,11 +52,12 @@ namespace RimForge
     {
         None,
         Wait,
+        WaitMem,
         Start,
         Add,
         Repeat,
         Clear,
-        WaitForEnd,
+        WaitLast,
         PickRandom,
         MemAdd,
         MemRemove,

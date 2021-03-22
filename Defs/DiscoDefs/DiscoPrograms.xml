@@ -141,8 +141,8 @@
     <RimForge.DiscoProgramDef ParentName="RF_DP_NoiseBase">
       <defName>RF_DP_Noise_Default</defName>
       <floats>
-        <li>1</li>
-        <li>0.1</li>
+        <li>1</li>   <!-- Noise scale -->
+        <li>0.1</li> <!-- Brightness increase -->
       </floats>
     </RimForge.DiscoProgramDef>
 
@@ -155,10 +155,18 @@
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef ParentName="RF_DP_NoiseBase">
+      <defName>RF_DP_Noise_VeryLight</defName>
+      <floats>
+        <li>2</li>
+        <li>0.45</li>
+      </floats>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_NoiseBase">
       <defName>RF_DP_Noise_Smooth</defName>
       <floats>
         <li>0.15</li>
-        <li>0.2</li>
+        <li>0.1</li>
       </floats>
     </RimForge.DiscoProgramDef>
 
@@ -430,6 +438,13 @@
       <defName>RF_DP_Video_GiveYouUp</defName>
       <strings>
         <li>C:\Users\The Superior One\Desktop\GiveYouUp.bwcv</li>
+      </strings>
+    </RimForge.DiscoProgramDef>
+
+    <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
+      <defName>RF_DP_Video_GiveYouUp_Small</defName>
+      <strings>
+        <li>C:\Users\The Superior One\Desktop\GiveYouUp_Small.bwcv</li>
       </strings>
     </RimForge.DiscoProgramDef>
 

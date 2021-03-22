@@ -16,6 +16,7 @@ namespace RimForge.Disco
         private bool waitForLast;
         private Queue<DiscoSequenceAction> actionQueue;
         private DiscoProgram lastAddedProgram;
+        private DiscoProgram toWaitFor;
         private Stack<DiscoProgram> memory = new Stack<DiscoProgram>();
 
         public SequenceHandler(DiscoSequenceDef def, Building_DJStand stand)
@@ -90,13 +91,6 @@ namespace RimForge.Disco
 
         public virtual void Tick()
         {
-            if (ticksToWait > 0)
-            {
-                ticksToWait--;
-                if(ticksToWait > 0)
-                    return;
-            }
-
             if (waitForLast)
             {
                 if (lastAddedProgram == null)
@@ -113,10 +107,26 @@ namespace RimForge.Disco
                 }
             }
 
+            if (toWaitFor != null)
+            {
+                if (toWaitFor.ShouldRemove)
+                    toWaitFor = null;
+                else
+                    return;
+            }
+
+            if (ticksToWait > 0)
+            {
+                ticksToWait--;
+                if (ticksToWait > 0)
+                    return;
+            }
+
             if (actionQueue.Count == 0)
             {
                 IsDone = true;
                 lastAddedProgram = null;
+                toWaitFor = null;
                 return;
             }
 
@@ -128,7 +138,7 @@ namespace RimForge.Disco
                     break;
             }
 
-            if (actionQueue.Count == 0 && !waitForLast && ticksToWait <= 0)
+            if (actionQueue.Count == 0 && !waitForLast && toWaitFor == null && ticksToWait <= 0)
                 IsDone = true;
         }
 
@@ -162,6 +172,23 @@ namespace RimForge.Disco
                     if (action.Duration > 0)
                         ticksToWait = action.Duration;
                     return false;
+                case DiscoSequenceActionType.WaitMem:
+                    if (CheckMem())
+                        return true;
+                    toWaitFor = memory.Peek();
+                    if (action.Duration > 0)
+                        ticksToWait = action.Duration;
+                    return false;
+                case DiscoSequenceActionType.WaitLast:
+                    if (lastAddedProgram == null || lastAddedProgram.ShouldRemove)
+                    {
+                        Core.Warn("Started WaitLast action but there is no previous program, or that program has already ended.");
+                        return true;
+                    }
+                    if (action.Duration > 0)
+                        ticksToWait = action.Duration;
+                    waitForLast = true;
+                    return false;
                 case DiscoSequenceActionType.Start:
                     var instance = action.Program?.MakeProgram(Stand);
                     if (instance == null)
@@ -186,14 +213,6 @@ namespace RimForge.Disco
                     if (action.addToMemory)
                         memory.Push(instance);
                     return true;
-                case DiscoSequenceActionType.WaitForEnd:
-                    if (lastAddedProgram == null || lastAddedProgram.ShouldRemove)
-                    {
-                        Core.Warn("Started WaitForEnd action but there is no previous program, or that program has already ended.");
-                        return true;
-                    }
-                    waitForLast = true;
-                    return false;
                 case DiscoSequenceActionType.MemAdd:
                     if (lastAddedProgram == null || lastAddedProgram.ShouldRemove)
                     {

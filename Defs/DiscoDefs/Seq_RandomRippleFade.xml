@@ -29,7 +29,7 @@
         <program>RF_DP_FadeIn</program>
       </li>
       <li>
-        <type>WaitForEnd</type>
+        <type>WaitLast</type>
       </li>
 
       <!-- Repeat 30 times... -->
@@ -74,7 +74,7 @@
         <program>RF_DP_FadeOut</program>
       </li>
       <li>
-        <type>WaitForEnd</type>
+        <type>WaitLast</type>
       </li>
       
     </actions>

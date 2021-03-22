@@ -15,7 +15,7 @@
         <program>RF_DP_FadeIn</program>
       </li>
       <li>
-        <type>WaitForEnd</type>
+        <type>WaitLast</type>
       </li>
 
       <!-- Add a beat circle overlay -->
@@ -63,7 +63,7 @@
         <program>RF_DP_FadeOut</program>
       </li>
       <li>
-        <type>WaitForEnd</type>
+        <type>WaitLast</type>
       </li>
       
     </actions>
