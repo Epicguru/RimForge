@@ -413,66 +413,66 @@
     <!-- Video! -->
     <RimForge.DiscoProgramDef Name="RF_DP_VideoBase" ParentName="RF_BDP" Abstract="true">
       <programClass>RimForge.Disco.Programs.VideoPlayer</programClass>
-      <colors>
-        <li>(255, 255, 255, 255)</li> <!-- High color -->
-        <li>(255, 255, 255, 0)</li>   <!-- Low color -->
-      </colors>
+      <inputs>
+        <whiteColor>(1, 1, 1, 1)</whiteColor>
+        <blackColor>(0, 0, 0, 0)</blackColor>
+      </inputs>
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
       <defName>RF_DP_Video_BadApple</defName>
-      <strings>
-        <li>C:\Users\The Superior One\Desktop\BadApple.bwcv</li> <!-- Compressed video file path -->
-      </strings>
+      <inputs>
+        <filePath>C:\Users\The Superior One\Desktop\BadApple.bwcv</filePath> <!-- Compressed video file path -->
+      </inputs>
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
       <defName>RF_DP_Video_BadApple_Small</defName>
-      <strings>
-        <li>C:\Users\The Superior One\Desktop\BadApple_Small.bwcv</li>
-      </strings>
+      <inputs>
+        <filePath>C:\Users\The Superior One\Desktop\BadApple_Small.bwcv</filePath>
+      </inputs>
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
       <defName>RF_DP_Video_BadApple_Tiny</defName>
-      <strings>
-        <li>C:\Users\The Superior One\Desktop\BadApple_Tiny.bwcv</li>
-      </strings>
+      <inputs>
+        <filePath>C:\Users\The Superior One\Desktop\BadApple_Tiny.bwcv</filePath>
+      </inputs>
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
       <defName>RF_DP_Video_GiveYouUp</defName>
-      <strings>
-        <li>C:\Users\The Superior One\Desktop\GiveYouUp.bwcv</li>
-      </strings>
+      <inputs>
+        <filePath>C:\Users\The Superior One\Desktop\GiveYouUp.bwcv</filePath>
+      </inputs>
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
       <defName>RF_DP_Video_GiveYouUp_Small</defName>
-      <strings>
-        <li>C:\Users\The Superior One\Desktop\GiveYouUp_Small.bwcv</li>
-      </strings>
+      <inputs>
+        <filePath>C:\Users\The Superior One\Desktop\GiveYouUp_Small.bwcv</filePath>
+      </inputs>
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
       <defName>RF_DP_Video_ZeroTwo</defName>
-      <strings>
-        <li>C:\Users\The Superior One\Desktop\ZeroTwo.bwcv</li>
-      </strings>
+      <inputs>
+        <filePath>C:\Users\The Superior One\Desktop\ZeroTwo.bwcv</filePath>
+      </inputs>
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
       <defName>RF_DP_Video_TheWolf</defName>
-      <strings>
-        <li>C:\Users\The Superior One\Desktop\TheWolf.bwcv</li>
-      </strings>
+      <inputs>
+        <filePath>C:\Users\The Superior One\Desktop\TheWolf.bwcv</filePath>
+      </inputs>
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef ParentName="RF_DP_VideoBase">
       <defName>RF_DP_Video_LoneDigger</defName>
-      <strings>
-        <li>C:\Users\The Superior One\Desktop\LoneDigger.bwcv</li>
-      </strings>
+      <inputs>
+        <filePath>C:\Users\The Superior One\Desktop\LoneDigger.bwcv</filePath>
+      </inputs>
     </RimForge.DiscoProgramDef>
 
 </Defs>

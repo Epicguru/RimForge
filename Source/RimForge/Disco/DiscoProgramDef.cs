@@ -2,6 +2,7 @@
 using RimForge.Disco.Programs;
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 using Verse;
 
@@ -10,8 +11,9 @@ namespace RimForge
     public class DiscoProgramDef : Def
     {
         public Type programClass;
-
         private Dictionary<string, string> inputs = new Dictionary<string, string>();
+
+        [XmlIgnore]
         private Dictionary<string, object> parsed = new Dictionary<string, object>();
 
         public T Get<T>(string inputName, T defaultValue = default)
@@ -133,6 +135,14 @@ namespace RimForge
                 worked = bool.TryParse(rawText, out bool b);
                 value = b;
                 return worked;
+            }
+            if (type == typeof(string))
+            {
+                if (rawText.StartsWith("\"") && rawText.EndsWith("\""))
+                    rawText = rawText.Substring(1, rawText.Length - 2);
+
+                value = rawText;
+                return true;
             }
             if (type == typeof(Color))
             {
