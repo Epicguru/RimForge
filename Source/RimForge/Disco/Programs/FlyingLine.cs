@@ -5,7 +5,7 @@ namespace RimForge.Disco.Programs
 {
     public class FlyingLine : DiscoProgram
     {
-        public Color LineColor = Color.white, DefaultColor = default;
+        public Color LineColor, DefaultColor;
         public int MoveInterval = 10;
         public bool Forwards = true;
 
@@ -20,13 +20,11 @@ namespace RimForge.Disco.Programs
 
         public override void Init()
         {
-            LineColor = Def.colors[0];
-            DefaultColor = Def.colors[1];
-
-            MoveInterval = Def.ints[0];
-            direction = (Direction)Def.ints[1];
-
-            Forwards = Def.bools[0];
+            LineColor = Def.Get("lineColor", Color.white);
+            DefaultColor = Def.Get("defaultColor", new Color(0, 0, 0, 0));
+            MoveInterval = Def.Get("moveInterval", 4);
+            direction = (Direction)Def.Get("direction", 0);
+            Forwards = Def.Get("forwards", true);
 
             var rect = DJStand.FloorBounds;
             var bl = new IntVec3(rect.minX, 0, rect.minZ);

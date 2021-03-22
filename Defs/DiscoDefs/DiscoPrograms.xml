@@ -241,73 +241,68 @@
   <!-- Flying lines -->
   <RimForge.DiscoProgramDef Name="RF_DP_LineBase" ParentName="RF_BDP" Abstract="true">
     <programClass>RimForge.Disco.Programs.FlyingLine</programClass>
-    <bools>
-      <li>true</li> <!-- Move forwards? -->
-    </bools>
-    <colors>
-      <li>(1, 1, 1, 1)</li> <!-- Line color -->
-      <li>(0, 0, 0, 0)</li> <!-- Everywhere else color -->
-    </colors>
+    <inputs>
+      <lineColor>(1, 1, 1, 1)</lineColor>
+      <defaultColor>(0, 0, 0, 0)</defaultColor>
+      <moveInterval>4</moveInterval>
+      <forwards>true</forwards>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef Name="RF_DP_Line_BW_Hor" ParentName="RF_DP_LineBase">
     <defName>RF_DP_Line_BW_Hor</defName>
-    <ints>
-      <li>5</li> <!-- Movement interval, in ticks -->
-      <li>0</li> <!-- Movement direction: 0 hor, 1 vert, 2 diag, 3 diag inverted -->
-    </ints>
+    <inputs>
+      <direction>0</direction>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_Line_BW_Hor">
     <defName>RF_DP_Line_BW_Hor_Back</defName>
-    <bools Inherit="false">
-      <li>false</li>
-    </bools>
+    <inputs>
+      <forwards>false</forwards>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef Name="RF_DP_Line_BW_Vert" ParentName="RF_DP_LineBase">
     <defName>RF_DP_Line_BW_Vert</defName>
-    <ints>
-      <li>5</li>
-      <li>1</li>
-    </ints>
+    <inputs>
+      <direction>1</direction>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_Line_BW_Vert">
     <defName>RF_DP_Line_BW_Vert_Back</defName>
-    <bools Inherit="false">
-      <li>false</li>
-    </bools>
+    <inputs>
+      <forwards>false</forwards>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef Name="RF_DP_Line_BW_Diag" ParentName="RF_DP_LineBase">
     <defName>RF_DP_Line_BW_Diag</defName>
-    <ints>
-      <li>5</li>
-      <li>2</li>
-    </ints>
+    <inputs>
+      <direction>2</direction>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_Line_BW_Diag">
     <defName>RF_DP_Line_BW_Diag_Back</defName>
-    <bools Inherit="false">
-      <li>false</li>
-    </bools>
+    <inputs>
+      <forwards>false</forwards>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef Name="RF_DP_Line_BW_Diag_Inv" ParentName="RF_DP_LineBase">
     <defName>RF_DP_Line_BW_Diag_Inv</defName>
-    <ints>
-      <li>5</li>
-      <li>3</li>
-    </ints>
+    <inputs>
+      <direction>3</direction>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_Line_BW_Diag_Inv">
     <defName>RF_DP_Line_BW_Diag_Inv_Back</defName> <!-- Def names be like: RimForge disco program line black-and-white diagonal inverted backwards -->
-    <bools Inherit="false">
-      <li>false</li>
-    </bools>
+    <inputs>
+      <forwards>false</forwards>
+    </inputs>
   </RimForge.DiscoProgramDef>
 
 
