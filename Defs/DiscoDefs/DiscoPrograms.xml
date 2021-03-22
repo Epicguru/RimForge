@@ -91,45 +91,46 @@
       </colors>
     </RimForge.DiscoProgramDef>
 
+
     <!-- Checkerboards -->
     <RimForge.DiscoProgramDef Name="RF_DP_CheckerboardBase" ParentName="RF_BDP" Abstract="true">
       <programClass>RimForge.Disco.Programs.Checkerboard</programClass>
-      <ints>
-        <li>20</li> <!-- Ticks spent on color.-->
-        <li>10</li> <!-- Transition ticks -->
-      </ints>
+      <inputs>
+        <swapInterval>20</swapInterval>
+        <swapTime>10</swapTime>
+      </inputs>
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef ParentName="RF_DP_CheckerboardBase">
       <defName>RF_DP_Checkerboard_PurpleYellow</defName>
-      <colors>
-        <li>(197, 89, 227)</li>  <!-- Checkerboard color A -->
-        <li>(255, 248, 166)</li> <!-- Checkerboard color B -->
-      </colors>
+      <inputs>
+        <colorA>(197, 89, 227)</colorA>
+        <colorB>(255, 248, 166)</colorB>
+      </inputs>
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef ParentName="RF_DP_CheckerboardBase">
       <defName>RF_DP_Checkerboard_CyanBlue</defName>
-      <colors>
-        <li>(36, 255, 248)</li>
-        <li>(87, 93, 181)</li>
-      </colors>
+      <inputs>
+        <colorA>(36, 255, 248)</colorA>
+        <colorB>(87, 93, 181)</colorB>
+      </inputs>
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef ParentName="RF_DP_CheckerboardBase">
       <defName>RF_DP_Checkerboard_Spain</defName>
-      <colors>
-        <li>(189, 9, 9)</li>
-        <li>(232, 207, 16)</li>
-      </colors>
+      <inputs>
+        <colorA>(189, 9, 9)</colorA>
+        <colorB>(232, 207, 16)</colorB>
+      </inputs>
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef ParentName="RF_DP_CheckerboardBase">
       <defName>RF_DP_Checkerboard_Grayscale</defName>
-      <colors>
-        <li>(190, 190, 190)</li>
-        <li>(255, 255, 255)</li>
-      </colors>
+      <inputs>
+        <colorA>(190, 190, 190)</colorA>
+        <colorB>(255, 255, 255)</colorB>
+      </inputs>
     </RimForge.DiscoProgramDef>
 
 
