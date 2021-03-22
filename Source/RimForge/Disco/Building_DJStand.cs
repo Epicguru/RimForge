@@ -151,6 +151,7 @@ namespace RimForge.Disco
                     int w = FloorBounds.Width;
                     int h = FloorBounds.Height;
                     CurrentSequence = DefDatabase<DiscoSequenceDef>.AllDefsListForReading.RandomElementByWeight(def => def.CanRunOn(w, h) ? def.weight : 0).CreateAndInitHandler(this);
+                    Core.Log($"Picked new random sequence: {CurrentSequence.Def.defName} for a {w}x{h} dance floor.");
                 }
                 try
                 {
@@ -296,6 +297,12 @@ namespace RimForge.Disco
             {
                 CurrentSequence = null;
                 SetProgramStack(null);
+            }
+
+            if (CurrentSequence == null && ActivePrograms.Count > 0 && !Prefs.DevMode)
+            {
+                SetProgramStack(null);
+                Core.Warn("Cleared program stack since there is no active sequence. Enable Dev Mod to disable this functionality.");
             }
 
             if (ActivePrograms.Count == 0)

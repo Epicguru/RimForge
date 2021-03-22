@@ -14,6 +14,7 @@ namespace RimForge.Disco
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
+            LordJob_Joinable_Disco discoLord = null;
             var reachPlatform = Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell);
             reachPlatform.finishActions ??= new List<System.Action>();
             reachPlatform.finishActions.Add(() =>
@@ -22,8 +23,9 @@ namespace RimForge.Disco
                 Messages.Message("RF.Disco.DJArrived".Translate(), t, MessageTypeDefOf.PositiveEvent);
 
                 var lordJob = pawn.Map?.lordManager?.LordOf(pawn)?.LordJob;
-                if (lordJob is LordJob_Joinable_Disco discoLord)
+                if (lordJob is LordJob_Joinable_Disco dl)
                 {
+                    discoLord = dl;
                     var stand = discoLord.DJStand;
                     stand.PickSequenceIfNull = true;
                 }
@@ -41,12 +43,8 @@ namespace RimForge.Disco
             toil.finishActions ??= new List<System.Action>();
             toil.finishActions.Add(() =>
             {
-                var lordJob = pawn.Map?.lordManager?.LordOf(pawn)?.LordJob;
-                if (lordJob is LordJob_Joinable_Disco discoLord)
-                {
-                    var stand = discoLord.DJStand;
-                    stand.PickSequenceIfNull = false;
-                }
+                Core.Log("Finished standing at DJ platform. Shutting down platform.");
+                discoLord.DJStand.PickSequenceIfNull = false;
             });
             yield return toil;
         }
