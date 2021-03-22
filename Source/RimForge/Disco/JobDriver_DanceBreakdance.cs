@@ -8,10 +8,12 @@ namespace RimForge.Disco
     {
         protected override IEnumerable<Toil> MakeNewToils()
         {
+            // Go to the dance floor or move across it slightly.
             var goToFloor = GoToDanceFloorOrMoveSlightly();
             if (goToFloor != null)
                 yield return goToFloor;
 
+            // Stand still.
             yield return Toils_General.StopDead();
 
             // Spin side-down.
@@ -30,7 +32,7 @@ namespace RimForge.Disco
             yield return FaceDir(0, -1);
             yield return Toils_General.Wait(25);
 
-            // Spin fade-up
+            // Spin face-up
             yield return SetPosture(PawnPosture.LayingOnGroundFaceUp);
             yield return Toils_General.Wait(120);
 

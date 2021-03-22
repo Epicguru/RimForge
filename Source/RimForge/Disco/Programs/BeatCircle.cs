@@ -7,15 +7,15 @@ namespace RimForge.Disco.Programs
     {
         public override bool UseRandomTickOffset => false;
 
-        public Color MiddleColor = Color.red, OtherColor = Color.white;
+        public Color CircleColor, OtherColor;
         public Vector3 Centre;
-        public bool Circular = true;
-        public float BaseRadius = 3;
-        public float BlendDst = 1f;
-        public float BeatVel = 1f;
-        public float BeatRecovery = 0.98f;
-        public float VelRecovery = 0.85f;
-        public int BeatInterval = 30;
+        public bool Circular;
+        public float BaseRadius;
+        public float BlendDst;
+        public float BeatVel;
+        public float BeatRecovery;
+        public float VelRecovery;
+        public int BeatInterval;
 
         private float vel;
         private float radius;
@@ -25,18 +25,18 @@ namespace RimForge.Disco.Programs
 
         public override void Init()
         {
-            MiddleColor = Def.colors[0];
-            OtherColor = Def.colors[1];
+            CircleColor = Def.Get("circleColor", Color.red);
+            OtherColor = Def.Get("otherColor", Color.white);
 
-            BeatInterval = Def.ints[0];
+            BeatInterval = Def.Get("beatInterval", 30);
 
-            Circular = Def.bools[0];
+            Circular = Def.Get("circular", true);
 
-            BaseRadius = Def.floats[0];
-            BlendDst = Def.floats[1];
-            BeatVel = Def.floats[2];
-            BeatRecovery = Def.floats[3];
-            VelRecovery = Def.floats[4];
+            BaseRadius = Def.Get("baseRadius", 0.5f);
+            BlendDst = Def.Get("blendDistance", 0.5f);
+            BeatVel = Def.Get("beatVelocity", 0.35f);
+            BeatRecovery = Def.Get("beatRecovery", 0.86f);
+            VelRecovery = Def.Get("velocityRecovery", 0.78f);
         }
 
         public override void Tick()
@@ -61,7 +61,7 @@ namespace RimForge.Disco.Programs
             float dstFromCentre = !Circular ? (cell - Centre.ToIntVec3()).LengthManhattan : (cell.ToVector3Shifted() - Centre).magnitude;
             float dstFromTarget = Mathf.Abs(radius - dstFromCentre);
             float lerp = DistanceToLerp(dstFromTarget);
-            return Color.Lerp(MiddleColor, OtherColor, lerp);
+            return Color.Lerp(CircleColor, OtherColor, lerp);
         }
 
         public virtual float DistanceToLerp(float dst)

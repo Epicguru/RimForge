@@ -146,8 +146,8 @@
     <Compile Include="Defs\AlloyDef.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Defs\CoilgunDef.cs" />
-    <Compile Include="Defs\DiscoProgramDef.cs" />
-    <Compile Include="Defs\DiscoSequenceDef.cs" />
+    <Compile Include="Disco\DiscoProgramDef.cs" />
+    <Compile Include="Disco\DiscoSequenceDef.cs" />
     <Compile Include="Defs\HeatingElementDef.cs" />
     <Compile Include="Defs\IngredientValueGetter_IgnoreVolume.cs" />
     <Compile Include="Disco\ThinkNode_ConditionalIsDJ.cs" />

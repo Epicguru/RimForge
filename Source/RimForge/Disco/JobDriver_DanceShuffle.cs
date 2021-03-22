@@ -8,21 +8,26 @@ namespace RimForge.Disco
     {
         protected override IEnumerable<Toil> MakeNewToils()
         {
+            // Go to the dance floor or move across it slightly.
             var goToFloor = GoToDanceFloorOrMoveSlightly();
             if (goToFloor != null)
                 yield return goToFloor;
 
+            // Stand still.
             yield return Toils_General.StopDead();
 
+            // This stuff here is just to make sure the pawn doesn't try to literally
+            // shuffle out of the disco room.
             var map = pawn.Map;
             var startRoom = pawn.Position.GetRoom(map);
             var startPos = pawn.Position;
-
             bool IsValidSpot(IntVec3 pos)
             {
                 return pos.GetRoom(map) == startRoom;
             }
 
+            // Local function that returns the pawn to the starting (center) cell,
+            // then faces forwards (south) and waits for 15 ticks.
             IEnumerable<Toil> Reset()
             {
                 yield return Toils_Goto.GotoCell(startPos, PathEndMode.OnCell);
@@ -30,6 +35,7 @@ namespace RimForge.Disco
                 yield return Toils_General.Wait(15);
             }
 
+            // Repeat twice...
             for (int i = 0; i < 2; i++)
             {
                 // Right

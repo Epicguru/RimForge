@@ -382,34 +382,31 @@
     <!-- Beat circle -->
     <RimForge.DiscoProgramDef Name="RF_DP_BeatCircleBase" ParentName="RF_BDP" Abstract="true">
       <programClass>RimForge.Disco.Programs.BeatCircle</programClass>
-      <bools>
-        <li>true</li> <!-- Circular? -->
-      </bools>
-      <floats>
-        <li>0.5</li>   <!-- Base radius -->
-        <li>0.5</li>   <!-- Blend distance -->
-        <li>0.35</li>  <!-- Beat vel (aprox. how high the beat jumps) -->
-        <li>0.86</li>  <!-- Beat recovery (how fast the circle returns to normal, smaller values make it faster) -->
-        <li>0.78</li>  <!-- Vel recovery (how soon the circle stops growing, smaller values make it sooner) -->
-      </floats>
-      <colors>
-        <li>(255, 255, 255, 255)</li>  <!-- Circle color -->
-        <li>(255, 255, 255, 0)</li>    <!-- Other color -->
-      </colors>
+      <inputs>
+        <circleColor>(255, 255, 255, 255)</circleColor>
+        <otherColor>(255, 255, 255, 0)</otherColor>
+        <beatInterval>30</beatInterval>
+        <circular>true</circular>
+        <baseRadius>0.5</baseRadius>
+        <blendDistance>0.5</blendDistance>
+        <beatVelocity>0.35</beatVelocity>
+        <beatRecovery>0.86</beatRecovery>
+        <velocityRecovery>0.78</velocityRecovery>
+      </inputs>
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef ParentName="RF_DP_BeatCircleBase">
       <defName>RF_DP_BeatCircle_90bpm</defName>
-      <ints>
-        <li>40</li>  <!-- Beat interval, in ticks -->
-      </ints>
+      <inputs>
+        <beatInterval>40</beatInterval>
+      </inputs>
     </RimForge.DiscoProgramDef>
 
     <RimForge.DiscoProgramDef ParentName="RF_DP_BeatCircleBase">
       <defName>RF_DP_BeatCircle_130bpm</defName>
-      <ints>
-        <li>28</li>
-      </ints>
+      <inputs>
+        <beatInterval>28</beatInterval>
+      </inputs>
     </RimForge.DiscoProgramDef>
 
 
