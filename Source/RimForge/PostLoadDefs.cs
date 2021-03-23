@@ -2,6 +2,8 @@
 using RimForge.Comps;
 using System;
 using System.Collections.Generic;
+using RimForge.Disco.Audio;
+using UnityEngine;
 using Verse;
 
 namespace RimForge
@@ -93,6 +95,9 @@ namespace RimForge
         private static void MiscOtherTasks()
         {
             Building_Coilgun.ShellDefs.AddRange(DefDatabase<CoilgunShellDef>.AllDefsListForReading);
+
+            const string PATH = @"D:\Steam\steamapps\common\RimWorld\Mods\RimForge\RitualChant.ogg";
+            SoundDefGenerator.GenerateFor(Core.ContentPack, "RitualChant_Generated", PATH, AudioType.OGGVORBIS);
         }
     }
 }

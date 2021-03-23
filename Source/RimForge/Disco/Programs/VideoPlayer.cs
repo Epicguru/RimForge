@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
@@ -31,6 +32,28 @@ namespace RimForge.Disco.Programs
             BlackColor = Def.Get("blackColor", new Color(0, 0, 0, 0));
             toRepeat = Def.Get("times", 1) - 1;
             FilePath = Def.Get<string>("filePath");
+
+            // Resolve the file path.
+            ModContentPack mcp = Def.modContentPack;
+            if (mcp == null)
+            {
+                string[] split = FilePath.Split('/');
+                split[0] = split[0].ToLowerInvariant();
+                Core.Warn($"Video program def '{Def.defName}' has been added by a patch operation. Attempting to resolve filepath...");
+                var found = LoadedModManager.RunningModsListForReading.FirstOrFallback(mod => mod.PackageId.ToLowerInvariant() == split[0]);
+                if (found == null)
+                {
+                    Core.Error($"Failed to resolve mod folder path from id '{split[0]}'. See below for how to solve this issue.");
+                    Core.Error("If you mod's package ID is 'my.mod.name' and your video file is in 'MyModFolder/Videos/Video.bwcv' then the correct filePath would be 'my.mod.name/Videos/Video.bwcv'");
+                    Remove();
+                    return;
+                }
+                Core.Warn("Successfully resolved file path.");
+                mcp = found;
+            }
+            FilePath = Path.Combine(mcp.RootDir, FilePath);
+            if (string.IsNullOrEmpty(new FileInfo(FilePath).Extension))
+                FilePath += ".bwcv";
 
             // Load video on another thread.
             Task.Run(() =>

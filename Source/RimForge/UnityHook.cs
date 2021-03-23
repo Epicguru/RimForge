@@ -1,5 +1,5 @@
-﻿using System;
-using RimForge.Disco;
+﻿using RimForge.Disco;
+using System;
 using UnityEngine;
 using Verse;
 

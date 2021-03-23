@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using HarmonyLib;
+using RimForge.Disco.Audio;
 using RimForge.Effects;
 using UnityEngine;
 using Verse;
