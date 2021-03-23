@@ -117,12 +117,14 @@ namespace RimForge.Disco
         {
             Remove();
             base.Destroy(mode);
+            SetProgramStack(null);
         }
 
         public override void Notify_MyMapRemoved()
         {
             Remove();
             base.Notify_MyMapRemoved();
+            SetProgramStack(null);
         }
 
         public override void Tick()
@@ -322,6 +324,7 @@ namespace RimForge.Disco
                     {
                         ActivePrograms.RemoveAt(i);
                         i--;
+                        layer.Dispose();
                         continue;
                     }
 
@@ -363,6 +366,10 @@ namespace RimForge.Disco
 
         public void SetProgramStack(DiscoProgram program)
         {
+            foreach (var item in ActivePrograms)
+            {
+                item.program.Dispose();
+            }
             ActivePrograms.Clear();
             if (program != null)
             {

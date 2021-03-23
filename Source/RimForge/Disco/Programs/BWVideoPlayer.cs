@@ -7,7 +7,7 @@ using VideoTool;
 
 namespace RimForge.Disco.Programs
 {
-    public class VideoPlayer : DiscoProgram
+    public class BWVideoPlayer : DiscoProgram
     {
         public Color WhiteColor, BlackColor;
 
@@ -22,7 +22,7 @@ namespace RimForge.Disco.Programs
         private CellRect vidBounds;
         private int toRepeat;
 
-        public VideoPlayer(DiscoProgramDef def) : base(def)
+        public BWVideoPlayer(DiscoProgramDef def) : base(def)
         {
         }
 

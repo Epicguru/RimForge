@@ -5,9 +5,9 @@ namespace RimForge.Disco.Programs
 {
     public class EdgeDistance : DiscoProgram
     {
-        public Color EdgeColor = Color.white, MiddleColor = new Color(1, 1, 1, 0);
-        public float SolidDistance = 1;
-        public float FadeDistance = 3;
+        public Color EdgeColor, MiddleColor;
+        public float SolidDistance;
+        public float FadeDistance;
 
         public EdgeDistance(DiscoProgramDef def) : base(def)
         {
@@ -15,7 +15,10 @@ namespace RimForge.Disco.Programs
 
         public override void Init()
         {
-            
+            EdgeColor = Def.Get("edgeColor", Color.white);
+            MiddleColor = Def.Get("middleColor", new Color(0, 0, 0, 0));
+            SolidDistance = Def.Get("solidDistance", 1f);
+            FadeDistance = Def.Get("fadeDistance", 3f);
         }
 
         protected virtual float GetColorLerp(float dst)

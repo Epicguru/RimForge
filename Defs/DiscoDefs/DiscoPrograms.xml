@@ -190,6 +190,14 @@
     <defName>RF_DP_EdgeDefault</defName>
   </RimForge.DiscoProgramDef>
 
+  <RimForge.DiscoProgramDef ParentName="RF_DP_EdgeBase">
+    <defName>RF_DP_EdgeSmall</defName>
+    <inputs>
+      <solidDistance>1</solidDistance>
+      <fadeDistance>2.2</fadeDistance>
+    </inputs>
+  </RimForge.DiscoProgramDef>
+
 
   <!-- Ripples -->
   <RimForge.DiscoProgramDef Name="RF_DP_RippleBase" ParentName="RF_BDP" Abstract="true">
@@ -409,7 +417,7 @@
 
   <!-- Video! -->
   <RimForge.DiscoProgramDef Name="RF_DP_VideoBase" ParentName="RF_BDP" Abstract="true">
-    <programClass>RimForge.Disco.Programs.VideoPlayer</programClass>
+    <programClass>RimForge.Disco.Programs.BWVideoPlayer</programClass>
     <inputs>
       <whiteColor>(1, 1, 1, 1)</whiteColor>
       <blackColor>(0, 0, 0, 0)</blackColor>
@@ -524,5 +532,29 @@
       <filePath>DiscoData/Shrek.bwcv</filePath>
     </inputs>
   </RimForge.DiscoProgramDef> -->
+
+
+  <!-- Color video -->
+  <RimForge.DiscoProgramDef Name="RF_DP_ColorVideoBase" ParentName="RF_BDP" Abstract="true">
+    <programClass>RimForge.Disco.Programs.ColorVideoPlayer</programClass>
+  </RimForge.DiscoProgramDef>
+
+  <RimForge.DiscoProgramDef ParentName="RF_DP_ColorVideoBase">
+    <defName>RF_DP_ColorVideo_ZeroTwo</defName>
+    <minFloorSize>(20, 20)</minFloorSize>
+    <inputs>
+      <filePath>DiscoData/ZeroTwo.mp4</filePath>
+    </inputs>
+  </RimForge.DiscoProgramDef>
+
+  <RimForge.DiscoProgramDef ParentName="RF_DP_ColorVideoBase">
+    <defName>RF_DP_ColorVideo_ZeroTwo_Small</defName>
+    <prefer>
+      <li>RF_DP_ColorVideo_ZeroTwo</li>
+    </prefer>
+    <inputs>
+      <filePath>DiscoData/ZeroTwo_Small.mp4</filePath>
+    </inputs>
+  </RimForge.DiscoProgramDef>
 
 </Defs>

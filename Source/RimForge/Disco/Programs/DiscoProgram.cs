@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Verse;
 
 namespace RimForge.Disco.Programs
 {
-    public abstract class DiscoProgram
+    public abstract class DiscoProgram : IDisposable
     {
         public virtual bool UseRandomTickOffset => true;
 
@@ -35,5 +36,10 @@ namespace RimForge.Disco.Programs
         }
 
         public abstract Color ColorFor(IntVec3 cell);
+
+        public virtual void Dispose()
+        {
+
+        }
     }
 }
