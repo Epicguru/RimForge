@@ -38,14 +38,14 @@ namespace RimForge.Disco.Programs
         {
             filePath = Def.Get<string>("filePath");
             volume = Def.Get("volume", 1f);
-            string format = Def.Get("format", "OGG");
+            string format = Def.Get("format", "OGGVORBIS");
             if (!Enum.TryParse<AudioType>(format.Trim(), true, out var formatEnum))
             {
                 Core.Error($"Failed to parse audio format '{format}'.");
                 Array arr = Enum.GetValues(typeof(AudioType));
                 object[] args = arr.Cast<object>().ToArray();
-                Core.Error($"Valid formats are: {string.Join(", ", args)}");
-                Core.Error("Hint: Use MPEG for .mp3 files, OGGVORBIS for .ogg files, WAV for .wav files.");
+                Core.Error($"Valid values are: {string.Join(", ", args)}");
+                Core.Error("Note: .mp3 is NOT SUPPORTED. I recommend using .ogg (OGGVORBIS) or .wav (WAV)");
                 Remove();
                 return;
             }
