@@ -87,6 +87,7 @@ namespace RimForge.Disco
         public CellRect FloorBounds => glowGrid?.Rect ?? default;
         public IReadOnlyList<IntVec3> DancingCells => floorCells;
         public bool PickSequenceIfNull;
+        public float CurrentSongAmplitude;
 
         private readonly List<FloatMenuOption> options = new List<FloatMenuOption>();
         private readonly List<FloatMenuOption> options2 = new List<FloatMenuOption>();
@@ -294,6 +295,8 @@ namespace RimForge.Disco
 
         public void TickFloor()
         {
+            CurrentSongAmplitude = 0f;
+
             CurrentSequence?.Tick();
             if (CurrentSequence != null && CurrentSequence.IsDone)
             {
@@ -331,6 +334,12 @@ namespace RimForge.Disco
                     try
                     {
                         layer.Tick();
+                        if(layer is IMusicVolumeReporter reporter)
+                        {
+                            float vol = reporter.GetMusicAmplitude();
+                            if (vol > CurrentSongAmplitude)
+                                CurrentSongAmplitude = vol;
+                        }    
                     }
                     catch (Exception e)
                     {
@@ -339,18 +348,21 @@ namespace RimForge.Disco
 
                     try
                     {
-                        glowGrid.SetAllColors(cell =>
+                        if (blendMode != BlendMode.Ignore)
                         {
-                            Color c = layer.ColorFor(cell);
-                            if (layer.OneMinus)
-                                c = Color.white - c;
-                            if (layer.OneMinusAlpha)
-                                c.a = 1f - c.a;
-                            if (layer.Tint != null)
-                                c *= layer.Tint.Value;
-                            return c;
-                        }, 
-                        first ? BlendMode.Override : blendMode);
+                            glowGrid.SetAllColors(cell =>
+                                {
+                                    Color c = layer.ColorFor(cell);
+                                    if (layer.OneMinus)
+                                        c = Color.white - c;
+                                    if (layer.OneMinusAlpha)
+                                        c.a = 1f - c.a;
+                                    if (layer.Tint != null)
+                                        c *= layer.Tint.Value;
+                                    return c;
+                                },
+                                first ? BlendMode.Override : blendMode);
+                        }
                     }
                     catch (Exception e)
                     {
@@ -541,6 +553,7 @@ namespace RimForge.Disco
 
             str.Append("Sequence: ").AppendLine(CurrentSequence?.Def?.defName ?? "<null>");
             str.Append("Grid bounds: ").AppendLine(FloorBounds.ToString());
+            str.Append("Current volume: ").AppendLine(CurrentSongAmplitude.ToString());
 
             foreach (var thing in ActivePrograms)
             {
@@ -586,7 +599,8 @@ namespace RimForge.Disco
             Override,
             Add,
             Multiply,
-            Normal
+            Normal,
+            Ignore
         }
     }
 }

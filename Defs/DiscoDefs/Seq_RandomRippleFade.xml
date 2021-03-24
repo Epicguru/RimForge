@@ -10,6 +10,13 @@
         <program>RF_DP_Noise_Light</program>
       </li>
 
+      <!-- Throw in some music -->
+      <li>
+        <type>Add</type>
+        <program>RF_DP_Song_CaramellDansen</program>
+        <blend>Ignore</blend>
+      </li>
+
       <!-- With random color cycle -->
       <li>
         <type>Add</type>

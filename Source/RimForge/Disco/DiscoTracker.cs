@@ -36,5 +36,11 @@ namespace RimForge.Disco
             if (stand != null && allStands.Contains(stand))
                 allStands.Remove(stand);
         }
+
+        public override void MapRemoved()
+        {
+            base.MapRemoved();
+            Core.Log("Map removed");
+        }
     }
 }

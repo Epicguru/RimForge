@@ -21,17 +21,24 @@ namespace RimForge.Disco.Programs
             FadeDistance = Def.Get("fadeDistance", 3f);
         }
 
+        protected virtual float PostProcessSolidDistance()
+        {
+            return SolidDistance;
+        }
+
         protected virtual float GetColorLerp(float dst)
         {
             // Where 0 is edge and 1 is middle.
 
-            if (dst < SolidDistance)
+            float solid = PostProcessSolidDistance();
+
+            if (dst < solid)
                 return 0f;
 
-            if (dst >= SolidDistance + FadeDistance)
+            if (dst >= solid + FadeDistance)
                 return 1f;
 
-            return (dst - SolidDistance) / FadeDistance;
+            return (dst - solid) / FadeDistance;
         }
 
         public override Color ColorFor(IntVec3 cell)

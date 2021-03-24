@@ -1,5 +1,6 @@
 ﻿using RimForge.Disco;
 using System;
+using RimForge.Disco.Audio;
 using UnityEngine;
 using Verse;
 
@@ -10,11 +11,27 @@ namespace RimForge
         [TweakValue("RimForge", 0, 1)]
         public static bool DrawDebugGUI = false;
 
+        public static event Action<bool> OnPauseChange;
+
         public static event Action UponApplicationQuit;
+        private bool lastPaused;
 
         private void Awake()
         {
             DontDestroyOnLoad(this.gameObject);
+        }
+
+        private void Update()
+        {
+            bool currentPaused = Find.TickManager?.Paused ?? false;
+            if (lastPaused != currentPaused)
+            {
+                OnPauseChange?.Invoke(currentPaused);
+                lastPaused = currentPaused;
+            }
+
+            bool removeAll = Current.ProgramState != ProgramState.Playing;
+            AudioSourceManager.Tick(removeAll);
         }
 
         private void OnApplicationQuit()

@@ -198,6 +198,16 @@
     </inputs>
   </RimForge.DiscoProgramDef>
 
+  <RimForge.DiscoProgramDef ParentName="RF_DP_EdgeBase">
+    <programClass>RimForge.Disco.Programs.EdgeDistanceWithVolume</programClass>
+    <defName>RF_DP_EdgeVolume</defName>
+    <inputs>
+      <solidDistance>-5</solidDistance>
+      <fadeDistance>2.2</fadeDistance>
+      <jumpAmplitude>12</jumpAmplitude>
+    </inputs>
+  </RimForge.DiscoProgramDef>
+
 
   <!-- Ripples -->
   <RimForge.DiscoProgramDef Name="RF_DP_RippleBase" ParentName="RF_BDP" Abstract="true">
@@ -417,7 +427,7 @@
 
   <!-- Video! -->
   <RimForge.DiscoProgramDef Name="RF_DP_VideoBase" ParentName="RF_BDP" Abstract="true">
-    <programClass>RimForge.Disco.Programs.BWVideoPlayer</programClass>
+    <programClass>RimForge.Disco.Programs.BWVideo</programClass>
     <inputs>
       <whiteColor>(1, 1, 1, 1)</whiteColor>
       <blackColor>(0, 0, 0, 0)</blackColor>
@@ -536,7 +546,7 @@
 
   <!-- Color video -->
   <RimForge.DiscoProgramDef Name="RF_DP_ColorVideoBase" ParentName="RF_BDP" Abstract="true">
-    <programClass>RimForge.Disco.Programs.ColorVideoPlayer</programClass>
+    <programClass>RimForge.Disco.Programs.ColorVideo</programClass>
   </RimForge.DiscoProgramDef>
 
   <RimForge.DiscoProgramDef ParentName="RF_DP_ColorVideoBase">
@@ -554,6 +564,30 @@
     </prefer>
     <inputs>
       <filePath>DiscoData/ZeroTwo_Small.mp4</filePath>
+    </inputs>
+  </RimForge.DiscoProgramDef>
+
+  <RimForge.DiscoProgramDef ParentName="RF_DP_ColorVideoBase">
+    <defName>RF_DP_ColorVideo_LoneDigger</defName>
+    <inputs>
+      <filePath>DiscoData/LoneDigger.mp4</filePath>
+    </inputs>
+  </RimForge.DiscoProgramDef>
+
+
+  <!-- Songs -->
+  <RimForge.DiscoProgramDef Name="RF_DP_SongBase" ParentName="RF_BDP" Abstract="true">
+    <programClass>RimForge.Disco.Programs.SongPlayer</programClass>
+    <inputs>
+      <volume>1</volume>
+    </inputs>
+  </RimForge.DiscoProgramDef>
+
+  <RimForge.DiscoProgramDef ParentName="RF_DP_SongBase">
+    <defName>RF_DP_Song_CaramellDansen</defName>
+    <inputs>
+      <filePath>DiscoData/CaramellDansen.ogg</filePath>
+      <format>OGGVORBIS</format>
     </inputs>
   </RimForge.DiscoProgramDef>
 

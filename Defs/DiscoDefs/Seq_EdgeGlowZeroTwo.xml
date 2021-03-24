@@ -4,34 +4,18 @@
     <defName>RF_S_EdgeGlowZeroTwo</defName>
     <actions>
 
-      <!-- Add edge with noise -->
-      <li>
-        <type>Start</type>
-        <program>RF_DP_EdgeDefault</program>
-      </li>
-      <li>
-        <type>Add</type>
-        <program>RF_DP_Noise_VeryLight</program>
-      </li>   
-      
       <!-- Put zero two in there. -->
       <li>
-        <type>Add</type>
-        <program>RF_DP_Video_ZeroTwo_Small</program>
-        <onlyIfMeetsSize>true</onlyIfMeetsSize>
-        <blend>Add</blend>
-      </li>
-
-      <!-- All w random color cycle -->
+        <type>Start</type>
+        <program>RF_DP_ColorVideo_ZeroTwo_Small</program>
+        <addToMemory>true</addToMemory>
+      </li>   
       <li>
         <type>Add</type>
-        <randomProgramFrom>
-          <li>RF_DP_Cycle_Vapourwave</li>
-          <li>RF_DP_Cycle_Radioactive</li>
-          <li>RF_DP_Cycle_Pastel</li>
-          <li>RF_DP_Cycle_Neon</li>
-        </randomProgramFrom>
-      </li>      
+        <program>RF_DP_EdgeVolume</program>
+        <tint>(255, 0, 212, 150)</tint>
+        <blend>Add</blend>
+      </li>
 
       <!-- Fade it in -->
       <li>
@@ -42,17 +26,9 @@
         <type>WaitLast</type>
       </li>
 
-      <!-- Wait then fade out -->
+      <!-- Wait for whole song -->
       <li>
-        <type>Wait</type>
-        <ticks>1000</ticks>
-      </li>
-      <li>
-        <type>Add</type>
-        <program>RF_DP_FadeOut</program>
-      </li>
-      <li>
-        <type>WaitLast</type>
+        <type>WaitMem</type>
       </li>
       
     </actions>

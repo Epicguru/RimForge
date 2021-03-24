@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using System.Linq;
+using RimForge.Disco.Audio;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Video;
@@ -7,7 +9,7 @@ using Object = UnityEngine.Object;
 
 namespace RimForge.Disco.Programs
 {
-    public class ColorVideoPlayer : DiscoProgram
+    public class ColorVideo : DiscoProgram, IMusicVolumeReporter
     {
         private static GameObject _tempGo;
         private static GameObject GetParentObject()
@@ -15,7 +17,7 @@ namespace RimForge.Disco.Programs
             if (_tempGo == null)
             {
                 _tempGo = new GameObject("Disco! video player");
-                Object.DontDestroyOnLoad(_tempGo);
+                //Object.DontDestroyOnLoad(_tempGo);
             }
             return _tempGo;
         }
@@ -34,14 +36,18 @@ namespace RimForge.Disco.Programs
         }
 
         private VideoPlayer player;
+        private ManagedAudioSource audioContainer;
         private Texture2D tempTex;
         private Color[] colorGrid;
         private CellRect vidBounds;
         private long currentFrameIndex = -1;
         private long lastRenderedFrame = -1;
         private bool isSubscribed = false;
+        private bool removed = false;
+        private float currentAmp;
+        private static float[] samples = new float[4096];
 
-        public ColorVideoPlayer(DiscoProgramDef def) : base(def)
+        public ColorVideo(DiscoProgramDef def) : base(def)
         {
         }
 
@@ -75,22 +81,41 @@ namespace RimForge.Disco.Programs
             path = Path.Combine(mcp.RootDir, path);
 
             player = GetParentObject().AddComponent<VideoPlayer>();
-            player.url = path;
             player.renderMode = VideoRenderMode.APIOnly;
-            player.isLooping = false;
-            player.audioOutputMode = VideoAudioOutputMode.Direct;
+            player.audioOutputMode = mute ? VideoAudioOutputMode.None : VideoAudioOutputMode.AudioSource;
+
             if (!mute)
-                player.SetDirectAudioVolume(0, volume);
-            else
-                player.SetDirectAudioMute(0, true);
+            {
+                audioContainer = AudioSourceManager.CreateSource(null, DJStand.Map);
+                audioContainer.TargetVolume = volume;
+                audioContainer.Area = DJStand.FloorBounds;
+                audioContainer.IsPlaying = () => player != null && !removed;
+                player.SetTargetAudioSource(0, audioContainer.Source);
+            }
+
+            player.isLooping = false;
             player.sendFrameReadyEvents = true;
             player.playbackSpeed = Find.TickManager.TickRateMultiplier;
             player.loopPointReached += OnVideoReachEnd;
             player.frameReady += Player_frameReady;
             player.errorReceived += Player_errorReceived;
 
+            OnPauseChange(Find.TickManager.Paused);
+            player.url = path;
+
             if(!isSubscribed)
-                Patch_TickManager_TogglePaused.OnPauseChange += OnPauseChange;
+                UnityHook.OnPauseChange += OnPauseChange;
+        }
+
+        private float GetSamplesAverage(int channel)
+        {
+            audioContainer.Source.GetOutputData(samples, channel);
+            double sum = 0;
+            foreach (var sample in samples)
+            {
+                sum += sample * sample;
+            }
+            return Mathf.Sqrt((float)(sum / samples.Length));
         }
 
         private void Player_errorReceived(VideoPlayer source, string message)
@@ -134,7 +159,16 @@ namespace RimForge.Disco.Programs
             if (TickCounter % every != 0)
                 return;
 
+            if (audioContainer != null && audioContainer.Source != null)
+            {
+                currentAmp = 0;
+                currentAmp += GetSamplesAverage(0);
+                currentAmp += GetSamplesAverage(1);
+                currentAmp /= audioContainer.Source.volume;
+            }
+
             tempTex ??= new Texture2D(tex.width, tex.height, tex.graphicsFormat, TextureCreationFlags.None);
+            //Core.Log($"{player.audioTrackCount}, {player.controlledAudioTrackCount}"); //, {player.GetTargetAudioSource(0)?.spatialBlend}, {player.GetTargetAudioSource(0).transform.position}");
 
             int gw = DJStand.FloorBounds.Width;
             int gh = DJStand.FloorBounds.Height;
@@ -185,6 +219,8 @@ namespace RimForge.Disco.Programs
         {
             base.Dispose();
 
+            removed = true;
+
             if (tempTex != null)
                 Object.Destroy(tempTex);
 
@@ -195,7 +231,12 @@ namespace RimForge.Disco.Programs
             }
 
             if(isSubscribed)
-                Patch_TickManager_TogglePaused.OnPauseChange -= OnPauseChange;
+                UnityHook.OnPauseChange -= OnPauseChange;
+        }
+
+        public float GetMusicAmplitude()
+        {
+            return currentAmp;
         }
     }
 }

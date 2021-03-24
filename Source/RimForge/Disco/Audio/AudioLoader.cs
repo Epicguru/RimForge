@@ -16,7 +16,7 @@ namespace RimForge.Disco.Audio
             if (!File.Exists(filePath))
                 throw new FileNotFoundException(filePath);
 
-            using UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(filePath, fileType);
+            using UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(new Uri(filePath), fileType);
             www.SendWebRequest();
 
             while (!www.isDone)
