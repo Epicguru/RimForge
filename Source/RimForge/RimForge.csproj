@@ -41,9 +41,6 @@
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=1.3.1.9, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpZipLib.1.3.1\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
     <Reference Include="Lib.InGameWiki, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lib.InGameWiki.1.5.0\lib\net472\net472\Lib.InGameWiki.dll</HintPath>
     </Reference>
@@ -63,10 +60,6 @@
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.AudioModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
@@ -83,27 +76,11 @@
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestAudioModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.VideoModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.VideoModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlloyHelper.cs" />
     <Compile Include="Buildings\Building_Capacitor.cs" />
     <Compile Include="Buildings\Building_Coilgun.cs" />
-    <Compile Include="Disco\Audio\AudioSourceManager.cs" />
-    <Compile Include="Disco\Audio\ManagedAudioSource.cs" />
-    <Compile Include="Disco\Audio\AudioLoader.cs" />
-    <Compile Include="Disco\Building_DJStand.cs" />
     <Compile Include="Buildings\Building_ForgeRewritten.cs" />
     <Compile Include="Buildings\Building_FueledHeatingElement.cs" />
     <Compile Include="Buildings\Building_LightningRod.cs" />
@@ -115,39 +92,6 @@
     <Compile Include="Buildings\Building_TeslaCoil.cs" />
     <Compile Include="Buildings\Building_WallConnector.cs" />
     <Compile Include="Buildings\Building_WirelessPowerPylon.cs" />
-    <Compile Include="Disco\DiscoDict.cs" />
-    <Compile Include="Disco\DiscoTracker.cs" />
-    <Compile Include="Disco\EdgeDistanceCalculator.cs" />
-    <Compile Include="Disco\GatheringWorker_Disco.cs" />
-    <Compile Include="Disco\JobDriver_Dance.cs" />
-    <Compile Include="Disco\JobDriver_DanceBreakdance.cs" />
-    <Compile Include="Disco\JobDriver_DanceShuffle.cs" />
-    <Compile Include="Disco\JobDriver_DanceTwist.cs" />
-    <Compile Include="Disco\JobDriver_StandAtDJPlatform.cs" />
-    <Compile Include="Disco\JobGiver_DanceRandom.cs" />
-    <Compile Include="Disco\JobGiver_StandAtDJPlatform.cs" />
-    <Compile Include="Disco\LordJob_Joinable_Disco.cs" />
-    <Compile Include="Disco\LordToilData_Disco.cs" />
-    <Compile Include="Disco\LordToil_Disco.cs" />
-    <Compile Include="Disco\Patch_PawnRenderer_BodyAngle.cs" />
-    <Compile Include="Disco\Programs\Checkerboard.cs" />
-    <Compile Include="Disco\Programs\BeatCircle.cs" />
-    <Compile Include="Disco\Programs\ColorCycle.cs" />
-    <Compile Include="Disco\Programs\ColorVideo.cs" />
-    <Compile Include="Disco\Programs\DiscoProgram.cs" />
-    <Compile Include="Disco\Programs\EdgeDistanceWithVolume.cs" />
-    <Compile Include="Disco\Programs\EdgeDistance.cs" />
-    <Compile Include="Disco\Programs\Fade.cs" />
-    <Compile Include="Disco\Programs\FlyingLine.cs" />
-    <Compile Include="Disco\Programs\IMusicVolumeReporter.cs" />
-    <Compile Include="Disco\Programs\Noise.cs" />
-    <Compile Include="Disco\Programs\Ripple.cs" />
-    <Compile Include="Disco\Programs\BWVideo.cs" />
-    <Compile Include="Disco\Programs\SongPlayer.cs" />
-    <Compile Include="Disco\SequenceHandler.cs" />
-    <Compile Include="Disco\Programs\Solid.cs" />
-    <Compile Include="Disco\Programs\Stripes.cs" />
-    <Compile Include="Disco\DiscoFloorGlowGrid.cs" />
     <Compile Include="Buildings\Util\DrawPart.cs" />
     <Compile Include="Buildings\Util\PlaceWorker_WallConnector.cs" />
     <Compile Include="Buildings\Util\RitualTracker.cs" />
@@ -170,11 +114,8 @@
     <Compile Include="Defs\AlloyDef.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Defs\CoilgunDef.cs" />
-    <Compile Include="Disco\DiscoProgramDef.cs" />
-    <Compile Include="Disco\DiscoSequenceDef.cs" />
     <Compile Include="Defs\HeatingElementDef.cs" />
     <Compile Include="Defs\IngredientValueGetter_IgnoreVolume.cs" />
-    <Compile Include="Disco\ThinkNode_ConditionalIsDJ.cs" />
     <Compile Include="Effects\Bezier.cs" />
     <Compile Include="Effects\ElectricArc.cs" />
     <Compile Include="Effects\BezierElectricArc.cs" />
@@ -212,12 +153,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\VideoTool\VideoTool.csproj">
-      <Project>{bd253532-1828-40ba-b934-1e57c6dcfbd9}</Project>
-      <Name>VideoTool</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
