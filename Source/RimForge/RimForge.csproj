@@ -56,6 +56,10 @@
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
@@ -88,10 +92,10 @@
     <Compile Include="Buildings\Building_TeslaCoil.cs" />
     <Compile Include="Buildings\Building_WallConnector.cs" />
     <Compile Include="Buildings\Building_WirelessPowerPylon.cs" />
-    <Compile Include="Buildings\DrawPart.cs" />
-    <Compile Include="Buildings\PlaceWorker_WallConnector.cs" />
-    <Compile Include="Buildings\RitualTracker.cs" />
-    <Compile Include="Buildings\RodTracker.cs" />
+    <Compile Include="Buildings\Util\DrawPart.cs" />
+    <Compile Include="Buildings\Util\PlaceWorker_WallConnector.cs" />
+    <Compile Include="Buildings\Util\RitualTracker.cs" />
+    <Compile Include="Buildings\Util\RodTracker.cs" />
     <Compile Include="Command_TargetWithMessage.cs" />
     <Compile Include="Comps\CompCapacitor.cs" />
     <Compile Include="Comps\CompProperties_Capacitor.cs" />
@@ -99,7 +103,7 @@
     <Compile Include="Comps\CompProperties_WirelessPower.cs" />
     <Compile Include="Comps\CompShowAlloyInfo.cs" />
     <Compile Include="Comps\CompWirelessPower.cs" />
-    <Compile Include="Buildings\HeatingElement.cs" />
+    <Compile Include="Buildings\Building_HeatingElement.cs" />
     <Compile Include="Comps\IConditionalGlower.cs" />
     <Compile Include="Comps\ICustomOverlayDrawer.cs" />
     <Compile Include="Content.cs" />

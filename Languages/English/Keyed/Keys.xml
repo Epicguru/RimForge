@@ -149,4 +149,7 @@ There is a {1}% chance of failure.</RF.Ritual.FailWarning>
 
 <RF.WallConnector.MustPlaceWithFreeSpace>There must be an empty space for the cables to connect to.</RF.WallConnector.MustPlaceWithFreeSpace>
 
+<RF.Disco.DJArrived>The DJ has arrived. Let's get this party started!</RF.Disco.DJArrived>
+<RF.Disco.AtTheDisco>At the disco</RF.Disco.AtTheDisco>
+
  </LanguageData>

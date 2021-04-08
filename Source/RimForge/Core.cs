@@ -1,6 +1,6 @@
-﻿using System;
-using HarmonyLib;
+﻿using HarmonyLib;
 using RimForge.Effects;
+using System;
 using UnityEngine;
 using Verse;
 

@@ -6,7 +6,7 @@ using Verse;
 
 namespace RimForge.Buildings
 {
-    public class Building_PoweredHeatingElement : HeatingElement, IConditionalGlower
+    public class Building_PoweredHeatingElement : Building_HeatingElement, IConditionalGlower
     {
         public const float IDLE_POWER_DRAW = 50;
 

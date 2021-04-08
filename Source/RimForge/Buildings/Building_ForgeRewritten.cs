@@ -25,7 +25,7 @@ namespace RimForge.Buildings
             }
         }
 
-        private HashSet<HeatingElement> heatingElements = new HashSet<HeatingElement>();
+        private HashSet<Building_HeatingElement> heatingElements = new HashSet<Building_HeatingElement>();
         private int tickCounter;
         private int ticksSinceUsed = 100;
         private float workPercentage = 0f;
@@ -58,7 +58,7 @@ namespace RimForge.Buildings
                 int index = 0;
                 foreach(var cell in GetHeatingElementLookCells())
                 {
-                    var thing = map.thingGrid.ThingAt<HeatingElement>(cell);
+                    var thing = map.thingGrid.ThingAt<Building_HeatingElement>(cell);
                     if (thing != null)
                     {
                         if(!heatingElements.Contains(thing))
@@ -176,7 +176,7 @@ namespace RimForge.Buildings
 
         private void SanitizeHeatingElements()
         {
-            heatingElements ??= new HashSet<HeatingElement>();
+            heatingElements ??= new HashSet<Building_HeatingElement>();
             heatingElements.RemoveWhere(h => h.DestroyedOrNull());
         }
 
