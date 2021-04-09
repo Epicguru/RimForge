@@ -149,6 +149,7 @@
     <Compile Include="RFDefOf.cs" />
     <Compile Include="Power\WirelessPower.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Thoughts\ThoughtWorker_SpecialWeapon.cs" />
     <Compile Include="UnityHook.cs" />
     <Compile Include="WikiLoader.cs" />
   </ItemGroup>

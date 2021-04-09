@@ -28,6 +28,8 @@ namespace RimForge
         public static ThoughtDef RF_RitualBlessed;
         public static ThoughtDef RF_RitualBadThought;
         public static ThoughtDef RF_WaveOfHate;
+        public static ThingDef RF_SwordOfRapture;
+        public static ThingDef RF_SwordOfDarkness;
 
         // Vanilla ones.
         public static ThingDef Column;

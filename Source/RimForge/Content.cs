@@ -7,6 +7,7 @@ namespace RimForge
     public static class Content
     {
         public static readonly Texture2D SignalIcon, CopyIcon, PasteIcon, LinkIcon, RitualStartIcon;
+        public static readonly Texture2D BuildBlueprintIcon;
 
         public static Graphic ForgeIdle, ForgeGlowAll, ForgeGlowSides;
         public static Graphic HEFueledIdle, HEFueledGlow;
@@ -24,11 +25,12 @@ namespace RimForge
 
         static Content()
         {
-            SignalIcon      = ContentFinder<Texture2D>.Get("RF/UI/Signal");
-            CopyIcon        = ContentFinder<Texture2D>.Get("RF/UI/Copy");
-            PasteIcon       = ContentFinder<Texture2D>.Get("RF/UI/Paste");
-            LinkIcon        = ContentFinder<Texture2D>.Get("RF/UI/Link");
-            RitualStartIcon = ContentFinder<Texture2D>.Get("RF/UI/RitualStart");
+            SignalIcon         = ContentFinder<Texture2D>.Get("RF/UI/Signal");
+            CopyIcon           = ContentFinder<Texture2D>.Get("RF/UI/Copy");
+            PasteIcon          = ContentFinder<Texture2D>.Get("RF/UI/Paste");
+            LinkIcon           = ContentFinder<Texture2D>.Get("RF/UI/Link");
+            RitualStartIcon    = ContentFinder<Texture2D>.Get("RF/UI/RitualStart");
+            BuildBlueprintIcon = ContentFinder<Texture2D>.Get("RF/UI/BuildBlueprint");
         }
 
         internal static void LoadForgeTextures(Building forge)

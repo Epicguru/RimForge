@@ -39,6 +39,8 @@ namespace RimForge
         public static float RitualFailCoefficient = 1f;
         [TweakValue("RimForge", 0f, 1f)]
         public static float RitualFailMajorChance = 1f / 3f;
+        [TweakValue("RimForge", 0f, 1f)]
+        public static bool RitualMustBeAtNight = true;
 
         // TRAITS
         [TweakValue("RimForge", 0, 20)]

@@ -14,7 +14,7 @@ An obsession or hatred revolving around Machine God Zir has lead this individual
           <MoveSpeed>1.5</MoveSpeed>
         </statFactors>
         <statOffsets>
-          <MentalBreakThreshold>-1</MentalBreakThreshold>
+          <MentalBreakThreshold>+0.65</MentalBreakThreshold>
         </statOffsets>
       </li>
     </degreeDatas>

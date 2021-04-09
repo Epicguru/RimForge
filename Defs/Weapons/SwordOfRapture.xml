@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <ThingDef ParentName="BaseMeleeWeapon_Sharp_Quality">
+  <ThingDef ParentName="BaseMeleeWeapon_Blunt_Quality">
     <defName>RF_SwordOfRapture</defName>
     <label>Sen, Sword of Rapture</label>
     <description>A purified and restored version of Ea, Sword of Darkness.
 Despite it's designation as a sword, it's blade is actually blunt, dealing heavy crushing blows.
-People who hold this weapon feel it's warmth radiating through them.</description>
+
+People who hold this weapon feel it's warmth radiating through them, increased effect if they have the Blessing of Zir.</description>
     <graphicData>
-      <texPath>RF/Weapons/GaeBulg</texPath>
+      <texPath>RF/Weapons/SwordOfRapture</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(1.65,1.65)</drawSize>
+      <drawSize>(1.35,1.45)</drawSize>
     </graphicData>
     <techLevel>Spacer</techLevel>
     <thingSetMakerTags>
@@ -35,9 +36,9 @@ People who hold this weapon feel it's warmth radiating through them.</descriptio
     </recipeMaker>
 
     <equippedStatOffsets>
-      <MoveSpeed>0.5</MoveSpeed> <!-- Gives +0.5 cps movement boost. Because I can. -->
+      <MoveSpeed>0.4</MoveSpeed> <!-- Gives +0.5 cps movement boost. Because I can. -->
     </equippedStatOffsets>    
-    <equippedAngleOffset>20</equippedAngleOffset>
+    <equippedAngleOffset>-40</equippedAngleOffset>
     <tools>
       <li>
         <label>blade</label>

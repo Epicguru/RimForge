@@ -1,6 +1,4 @@
 ﻿using HarmonyLib;
-using RimForge.Comps;
-using RimWorld;
 using Verse;
 
 namespace RimForge.Patches

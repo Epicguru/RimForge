@@ -152,4 +152,7 @@ There is a {1}% chance of failure.</RF.Ritual.FailWarning>
 <RF.Disco.DJArrived>The DJ has arrived. Let's get this party started!</RF.Disco.DJArrived>
 <RF.Disco.AtTheDisco>At the disco</RF.Disco.AtTheDisco>
 
+<RF.Thoughts.CarryingBlessed>Carrying blessed weapon: {0}</RF.Thoughts.CarryingBlessed>
+<RF.Thoughts.CarryingCursed>Carrying cursed weapon: {0}</RF.Thoughts.CarryingCursed>
+
  </LanguageData>
