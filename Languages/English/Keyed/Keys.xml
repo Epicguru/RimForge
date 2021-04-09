@@ -140,7 +140,7 @@ There is a {1}% chance of failure.</RF.Ritual.FailWarning>
 <RF.LDP.RemovedLinkRoofBuilt>A roof was built over {0}, so the connection to it has been severed.</RF.LDP.RemovedLinkRoofBuilt>
 <RF.LDP.RemovedLinkRoofBuiltSelf>A roof was built over this {0}, so all connections to it have been severed.</RF.LDP.RemovedLinkRoofBuiltSelf>
 
-<RF.Forge.BillNotHot>Forge not capable of reaching temperature ({0})</RF.Forge.BillNotHot>
+<RF.Forge.BillNotHot>Forge not capable of temperature ({0})</RF.Forge.BillNotHot>
 <RF.Forge.Providing> providing up to </RF.Forge.Providing> <!-- The leading and trailing whitespace is important -->
 <RF.Forge.HeatingElementsHeader>Connected heating elements:</RF.Forge.HeatingElementsHeader>
 <RF.HeatingElement.CurrentPowerLevel>Current power level: {0}</RF.HeatingElement.CurrentPowerLevel>

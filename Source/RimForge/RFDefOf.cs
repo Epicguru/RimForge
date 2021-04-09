@@ -23,8 +23,11 @@ namespace RimForge
         public static ThingDef RF_Motes_MuzzleFlash;
         public static ThingDef RF_Motes_RitualDistort;
         public static TraitDef RF_BlessingOfZir;
+        public static TraitDef RF_ZirsCorruption;
         public static ThingDef RF_Forge;
-        public static ThoughtDef RF_RitualBlessed, RF_RitualBadThought;
+        public static ThoughtDef RF_RitualBlessed;
+        public static ThoughtDef RF_RitualBadThought;
+        public static ThoughtDef RF_WaveOfHate;
 
         // Vanilla ones.
         public static ThingDef Column;

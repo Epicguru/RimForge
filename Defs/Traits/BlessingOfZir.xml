@@ -21,7 +21,9 @@
         </statOffsets>
       </li>
     </degreeDatas>
-    <conflictingTraits></conflictingTraits>
+    <conflictingTraits>
+      <li>RF_ZirsCorruption</li>
+    </conflictingTraits>
   </TraitDef>
 
 </Defs>

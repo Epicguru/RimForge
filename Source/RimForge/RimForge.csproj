@@ -129,6 +129,7 @@
     <Compile Include="Effects\VelocityParticle.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="Graphic_MultiNoRot.cs" />
+    <Compile Include="Patches\Patch_Pawn_Kill.cs" />
     <Compile Include="Patches\Patch_BillProduction_DoInterface.cs" />
     <Compile Include="Patches\Patch_BillProduction_ShouldDoNow.cs" />
     <Compile Include="Patches\Patch_BuildingWorkTable_IngredientStackCells.cs" />

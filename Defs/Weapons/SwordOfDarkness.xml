@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="BaseMeleeWeapon_Sharp_Quality">
+    <defName>RF_SwordOfDarkness</defName>
+    <label>Ea, Sword of Darkness</label>
+    <description>A cursed weapon, it's great power comes from the corrupted mind of it's wielder.
+Can be reforged into 'Sen, Sword of Rapture' at a smithing table.</description>
+    <graphicData>
+      <texPath>RF/Weapons/GaeBulg</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.65,1.65)</drawSize>
+    </graphicData>
+    <techLevel>Spacer</techLevel>
+    <thingSetMakerTags>
+      <li>RewardStandardQualitySuper</li>
+    </thingSetMakerTags>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <WorkToMake>24000</WorkToMake>
+      <Mass>5</Mass>
+    </statBases>
+
+    <costList>
+      <RF_BrokenSwordOfDarkness>1</RF_BrokenSwordOfDarkness>
+      <RF_Staballoy>40</RF_Staballoy>
+      <ComponentSpacer>4</ComponentSpacer>
+    </costList>
+    <recipeMaker>
+      <researchPrerequisite>LongBlades</researchPrerequisite>
+      <skillRequirements>
+        <Crafting>10</Crafting>
+      </skillRequirements>
+    </recipeMaker>
+
+    <equippedStatOffsets>
+      <MoveSpeed>0.5</MoveSpeed> <!-- Gives +0.5 cps movement boost. Because I can. -->
+    </equippedStatOffsets>    
+    <equippedAngleOffset>20</equippedAngleOffset>
+    <tools>
+      <li>
+        <label>blade</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>40</power>
+        <armorPenetration>1.5</armorPenetration>
+        <cooldownTime>1.1</cooldownTime>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompOversizedWeapon.CompProperties_OversizedWeapon"></li>
+    </comps>
+  </ThingDef>
+
+</Defs>
