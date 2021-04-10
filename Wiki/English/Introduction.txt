@@ -7,9 +7,42 @@ Description: A brief guide to help you explore the RimForge mod.
 ENDTAGS
 
 #Welcome to RimForge's wiki! Thank you for downloading my mod.#
-#RimForge has 4 main areas: alloys, power, defences and utility.#
-#!Utility:#
+#RimForge has 5 main areas: alloys, power, defences, weapons and deities#
+
+#!Alloys#
+#There are many new metal alloys to be created using the <b>Forge</b>.#
+@RF_Forge@
+#Each alloy has unique properties and uses, and some are required to build and craft items from this mod.
+Check out the wiki pages for more info on each alloy.#
+
+#!Power:#
 #Power poles: unlocked with Electricity research, they work just as you would expect, carrying electrical currents in overhead cables.#
 @RF_PowerPole@
 #Lightning rods: unlocked with Electricity research. A lightning rod catches any lightning strike in a large radius and turns it into useful electrical energy.#
 @RF_LightningRod@
+#Fully wireless power using the <b>Wireless Power Pylons</b>, even across multiple maps:#
+@RF_WirelessPowerPylon@
+
+#!Defences#
+#There are new ultra-powerful defenses to keep your colony safe.
+Front and foremost, the huge <b>Coilgun</b> can kill many enemies in a single shot, even behind cover:#
+@RF_Coilgun@
+#For tacticians who would rather keep their enemies alive, the <b>Tesla Coils</b> provide a reliable and convenient way to stun and electrocute any enemies that pass between them.#
+@RF_TeslaCoil@
+@RF_TeslaCoilWireless@
+
+#!Weapons#
+#Several new melee and ranged weapons are introduced. Most are very powerful but may require complex alloys to craft.
+All are <i>Combat Extended</i> compatible.#
+#<b>Melee Weapons:</b>#
+@RF_GaeBulg@
+@RF_VirtuousTreaty@
+@RF_SwordOfDarkness@
+@RF_SwordOfRapture@
+#<b>Guns:</b>#
+@RF_StableRifle@
+
+#!Deities#
+#Will you praise <color=red>Machine God Zir</color>#?.
+Using the <b>Ritual Core</b> you can perform a <i>blessing ritual</i> to greatly increase a colonist's machining, crafting and construction abilities, at the cost of a human life.
+However doing so may anger fanatics within enemy factions... Dare to take this risk?#

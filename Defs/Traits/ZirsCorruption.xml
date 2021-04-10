@@ -10,12 +10,11 @@
         <description>[PAWN_nameDef]'s mind has been twisted by Zir!
 An obsession or hatred revolving around Machine God Zir has lead this individual to madness, but also unlocked previously unknown physical prowess.</description>
         <statFactors>
-          <GeneralLaborSpeed>0.5</GeneralLaborSpeed>
-          <MoveSpeed>1.5</MoveSpeed>
+          <GeneralLaborSpeed>0.25</GeneralLaborSpeed>
+          <MoveSpeed>3</MoveSpeed>
+          <MentalBreakThreshold>4</MentalBreakThreshold>
+          <MeleeHitChance>1.5</MeleeHitChance>
         </statFactors>
-        <statOffsets>
-          <MentalBreakThreshold>+0.65</MentalBreakThreshold>
-        </statOffsets>
       </li>
     </degreeDatas>
     <conflictingTraits>

@@ -25,6 +25,7 @@ People who's mind has not be corrupted by Zir will feel terrible if they equip t
       <li>RewardStandardQualitySuper</li>
     </thingSetMakerTags>
     <statBases>
+      <MarketValue>2200</MarketValue>
       <MaxHitPoints>300</MaxHitPoints>
       <Mass>5</Mass>
     </statBases>

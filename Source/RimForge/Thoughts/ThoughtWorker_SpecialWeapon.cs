@@ -9,20 +9,6 @@ namespace RimForge.Thoughts
     {
         protected override ThoughtState CurrentStateInternal(Pawn p)
         {
-            GetTraits(p, out bool blessed, out bool cursed);
-
-            if (cursed)
-            {
-                // Spawn particles.
-                var sparks = new RitualSparks();
-                Vector2 target = p.Position.ToVector3Shifted().WorldToFlat();
-                sparks.Position = target + Rand.InsideUnitCircle * 1.5f;
-                sparks.GravitateTowards = target;
-                sparks.Velocity = Rand.InsideUnitCircle.normalized * 1.5f;
-                sparks.Color = Color.black;
-                sparks.Spawn(p.Map);
-            }
-
             var holdingDef = p.equipment?.Primary?.def;
             if (holdingDef == null)
                 return false;
@@ -30,6 +16,7 @@ namespace RimForge.Thoughts
             // Blessed weapons
             if (holdingDef == RFDefOf.RF_SwordOfRapture)
             {
+                GetTraits(p, out bool blessed, out bool cursed);
                 if(blessed) // Bonus for blessed pawns holding blessed sword
                     return ThoughtState.ActiveAtStage(1, "RF.Thoughts.CarryingBlessed".Translate(holdingDef.LabelCap));
 
@@ -43,6 +30,8 @@ namespace RimForge.Thoughts
             // Cursed weapons.
             if (holdingDef == RFDefOf.RF_SwordOfDarkness)
             {
+                GetTraits(p, out bool _, out bool cursed);
+
                 if (cursed)
                     return false; // Cursed pawns are unaffected by the cursed weapon.
 

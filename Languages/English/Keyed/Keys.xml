@@ -155,4 +155,14 @@ There is a {1}% chance of failure.</RF.Ritual.FailWarning>
 <RF.Thoughts.CarryingBlessed>Carrying blessed weapon: {0}</RF.Thoughts.CarryingBlessed>
 <RF.Thoughts.CarryingCursed>Carrying cursed weapon: {0}</RF.Thoughts.CarryingCursed>
 
+<RF.Raiders.WarningTitle>Corrupted raiders</RF.Raiders.WarningTitle>
+<RF.Raiders.WarningContent>The members of {0} have heard about your colonists performing Zir's Blessing Ritual, and believe it to be the highest form of heresy.
+{1} of the raiders are so obsessed and enfuriated that they have lost their minds are are hellbent on slaughtering your colonists at any cost!
+
+These {2} have 'Zir's Corruption', and they move faster, hit harder and carry unique and powerful weapons. Furthermore, upon death they will unleash a wave of pure hatred that will temporarily paralyze all nearby people and will cause a large mood debuff.
+You should focus on taking out these attackers first, ideally from a distance.
+
+These Corrupted raiders are:
+{3}</RF.Raiders.WarningContent>
+
  </LanguageData>

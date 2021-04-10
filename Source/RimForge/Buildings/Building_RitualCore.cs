@@ -103,7 +103,7 @@ namespace RimForge.Buildings
         }
 
         private static readonly List<IntVec3> tempCells = new List<IntVec3>(8);
-
+        
         // Ex-tweakValues
         private static float ArcDuration = 1;
         private static float ArcMag = 0.55f;

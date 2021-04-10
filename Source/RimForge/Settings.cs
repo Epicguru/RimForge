@@ -42,8 +42,10 @@ namespace RimForge
         [TweakValue("RimForge", 0f, 1f)]
         public static bool RitualMustBeAtNight = true;
 
-        // TRAITS
+        // OTHER
         [TweakValue("RimForge", 0, 20)]
-        public static float CorruptionWaveRadius = 3.5f;
+        public static float HateWaveRadius = 5.5f;
+        [TweakValue("RimForge", 0, 1000)]
+        public static int HateWaveStunDuration = 400;
     }
 }

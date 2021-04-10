@@ -14,4 +14,29 @@
     </stages>
   </ThoughtDef>
 
+  <ThoughtDef>
+    <defName>RF_Corrupted</defName>
+    <workerClass>RimForge.Thoughts.ThoughtWorker_Corrupted</workerClass>
+    <stages>
+      <li>
+        <label>Zir's corruption</label>
+        <description>This person's mind has been broken by an obsession or hatred towards the deity Zir and it's followers.</description>
+        <baseMoodEffect>-50</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RF_ZirKiller</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>attacking Zir's followers</label>
+        <description>Finally, I have the chance to kill the heretical followers of Zir!</description>
+        <baseMoodEffect>75</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
 </Defs>
