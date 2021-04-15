@@ -5,10 +5,10 @@ ENDTAGS
 #First you will need to have a power grid with at least 1 regular battery.
 Then you will have to build a Capacitor and connect it to the same power grid.#
 @RF_Capacitor@
-#This capacitor will 'steal' energy out of the battery, in order to charge itself first.#
-#Now you can build the Coilgun in a strategic location.
-<b>Important:</b>#
-#The coilgun has a minumum range that is aproximately as large as the radius of it's barrel.
+#This capacitor will 'steal' energy out of the battery, in order to charge itself first.
+Now you can build the Coilgun in a strategic location.#
+#<b>Important:</b>
+The coilgun has a minumum range that is aproximately as large as the radius of it's barrel.
 After this minumum range, anything and anyone standing between the gun and it's target will be killed, including friendly pawns.#
 
 #!Ammo#
@@ -28,5 +28,4 @@ You can change what ammo type the Coilgun uses by selecting it and pressing <i>C
 #Once these conditions are met, select the Coilgun and click <i>Fire at target</i>.
 You can then select your target.
 The red squares will indicate what positions will be hit by the projectile.
-However, depending on the ammo used, the projectile may not travel the full distance indicated by the red squares if there are obstacles in the way.
-For example, when using <i>SP shells</i> and firing at a mountain, the projectile will be stopped whereas using <i>AP shells</i> it will travel through the mountain.#
+However, depending on the ammo used, the projectile may not travel the full distance indicated by the red squares if there are obstacles in the way.#

@@ -43,6 +43,6 @@ All are <i>Combat Extended</i> compatible.#
 @RF_StableRifle@
 
 #!Deities#
-#Will you praise <color=red>Machine God Zir</color>#?.
+#Will you praise <color=red>Machine God Zir</color>?.
 Using the <b>Ritual Core</b> you can perform a <i>blessing ritual</i> to greatly increase a colonist's machining, crafting and construction abilities, at the cost of a human life.
 However doing so may anger fanatics within enemy factions... Dare to take this risk?#
