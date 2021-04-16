@@ -8,13 +8,22 @@ namespace RimForge.Patches
     [HarmonyPatch(typeof(DefOfHelper), "RebindAllDefOfs")]
     static class Patch_DefOfHelper_RebindAllDefOfs
     {
+        static bool hasRun = false;
+
         static void Postfix()
         {
+            if (hasRun)
+                return;
+            hasRun = true;
+
             try
             {
+                if (!Settings.UseCustomTab)
+                    return;
+
                 var cat = MakeCategoryDef();
                 DefDatabase<DesignationCategoryDef>.Add(cat);
-                PostLoadDefs.CategorizeBuildings(cat);
+                CategorizeBuildings(cat);
             }
             catch (Exception e)
             {
@@ -31,6 +40,18 @@ namespace RimForge.Patches
                 modContentPack = Core.ContentPack,
                 showPowerGrid = false
             };
+        }
+
+        static void CategorizeBuildings(DesignationCategoryDef cat)
+        {
+            foreach (var def in Core.ContentPack.AllDefs)
+            {
+                if (def is ThingDef td && typeof(Building).IsAssignableFrom(td.thingClass))
+                {
+                    if (td.designationCategory != null)
+                        td.designationCategory = cat;
+                }
+            }
         }
     }
 }

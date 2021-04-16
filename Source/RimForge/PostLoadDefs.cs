@@ -2,7 +2,6 @@
 using RimForge.Comps;
 using System;
 using System.Collections.Generic;
-using RimWorld;
 using Verse;
 
 namespace RimForge
@@ -90,18 +89,6 @@ namespace RimForge
             
             RFDefOf.RF_Forge.recipes ??= new List<RecipeDef>();
             RFDefOf.RF_Forge.recipes.AddRange(recipes);
-        }
-
-        internal static void CategorizeBuildings(DesignationCategoryDef cat)
-        {
-            foreach(var def in Core.ContentPack.AllDefs)
-            {
-                if (def is ThingDef td && typeof(Building).IsAssignableFrom(td.thingClass))
-                {
-                    if(td.designationCategory != null)
-                        td.designationCategory = cat;
-                }
-            }
         }
 
         private static void MiscOtherTasks()

@@ -7,7 +7,7 @@ namespace RimForge
     public static class Content
     {
         public static readonly Texture2D SignalIcon, CopyIcon, PasteIcon, LinkIcon, RitualStartIcon;
-        public static readonly Texture2D BuildBlueprintIcon, RitualGearTexture;
+        public static readonly Texture2D BuildBlueprintIcon, RitualGearTexture, CapacitorCharge;
 
         public static Graphic ForgeIdle, ForgeGlowAll, ForgeGlowSides;
         public static Graphic HEFueledIdle, HEFueledGlow;
@@ -21,7 +21,6 @@ namespace RimForge
 
         public static Graphic RitualCircle, RitualCircleText, RitualGear, RitualBall;
         public static Graphic RitualSymbolA, RitualSymbolB;
-        public static Graphic DiscoFloorGlowGraphic;
 
         static Content()
         {
@@ -32,6 +31,7 @@ namespace RimForge
             RitualStartIcon    = ContentFinder<Texture2D>.Get("RF/UI/RitualStart");
             BuildBlueprintIcon = ContentFinder<Texture2D>.Get("RF/UI/BuildBlueprint");
             RitualGearTexture  = ContentFinder<Texture2D>.Get("RF/Effects/RitualGear");
+            CapacitorCharge    = ContentFinder<Texture2D>.Get("RF/Effects/CapacitorCharge");
         }
 
         internal static void LoadForgeTextures(Building forge)

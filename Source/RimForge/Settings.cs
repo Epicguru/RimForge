@@ -29,8 +29,8 @@ namespace RimForge
         public static float CoilgunBaseDamageMultiplier = 1f;
         [TweakValue("RimForge", 0, 5)]
         public static float CoilgunBuildingDamageMulti = 1f;
-        [TweakValue("RimForge", 100, 10000)]
-        public static float CoilgunBasePowerReq = 2000;
+        [TweakValue("RimForge", 0, 10)]
+        public static float CoilgunBasePowerReq = 1;
         [TweakValue("RimForge", 0, 1)]
         public static bool CoilgunSplatterBlood = true;
 
@@ -47,5 +47,8 @@ namespace RimForge
         public static float HateWaveRadius = 5.5f;
         [TweakValue("RimForge", 0, 1000)]
         public static int HateWaveStunDuration = 400;
+
+        // Preferences
+        public static bool UseCustomTab = true;
     }
 }

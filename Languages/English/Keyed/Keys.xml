@@ -80,15 +80,12 @@ WARNING: Firing cannot be cancelled once started!</RF.Coilgun.AttackDesc>
 <RF.Coilgun.DisabledNoCaps>Cannot fire: not enough capacitors or not enough energy stored in capacitors.</RF.Coilgun.DisabledNoCaps>
 <RF.Coilgun.DisabledNoPower>Cannot fire: not powered.</RF.Coilgun.DisabledNoPower>
 <RF.Coilgun.DisabledNoShell>Cannot fire: shell not loaded.</RF.Coilgun.DisabledNoShell>
-<RF.Coilgun.CapState>{0} Wd stored in {1} connected capacitors. (min. {2} Wd to fire)</RF.Coilgun.CapState>
+<RF.Coilgun.CapState>Capacitor power: {0}% across {1} capacitors. (req. {2}% to fire)</RF.Coilgun.CapState>
 <RF.Coilgun.ChangeShellLabel>Change shell type</RF.Coilgun.ChangeShellLabel>
 <RF.Coilgun.ChangeShellDesc>Change the type of shell that is loaded into this coilgun.
 This action ejects the current shell onto the ground, and a colonist will have to load a new one.</RF.Coilgun.ChangeShellDesc>
 
-<RF.Cap.Stored>Stored: {0} Wd of power ({1}%)</RF.Cap.Stored>
-<RF.Cap.NotConnected>Not connected to power grid!</RF.Cap.NotConnected>
-<RF.Cap.NoBatteries>There are no batteries on the power grid! There must be at least 1 battery on the same power grid as this capacitor!</RF.Cap.NoBatteries>
-<RF.Cap.NoPower>There is not enough power to recharge this capacitor!</RF.Cap.NoPower>
+<RF.Cap.Stored>Stored power: {0}%</RF.Cap.Stored>
 
 <RF.LR.FailNoPowerNet>Lightning rod caught lightning bolt, but is not connected to a power grid!</RF.LR.FailNoPowerNet>
 <RF.LR.FailNoBatteries>Lightning rod caught lightning bolt, but there are no batteries on the power grid! The power was harmlessly passed into the ground.</RF.LR.FailNoBatteries>
