@@ -129,6 +129,11 @@
     <Compile Include="Effects\VelocityParticle.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="Graphic_MultiNoRot.cs" />
+    <Compile Include="Misc\CursedPawnUtil.cs" />
+    <Compile Include="Misc\WaveOfHate.cs" />
+    <Compile Include="Patches\Patch_IncidentWorker_RaidEnemy_GenerateRaidLoot.cs" />
+    <Compile Include="Patches\Patch_DefOfHelper_RebindAllDefOfs.cs" />
+    <Compile Include="Patches\Patch_Pawn_Kill.cs" />
     <Compile Include="Patches\Patch_BillProduction_DoInterface.cs" />
     <Compile Include="Patches\Patch_BillProduction_ShouldDoNow.cs" />
     <Compile Include="Patches\Patch_BuildingWorkTable_IngredientStackCells.cs" />
@@ -139,6 +144,8 @@
     <Compile Include="Patches\Patch_ModContentLoaderTex2D_LoadTexture.cs" />
     <Compile Include="Patches\Patch_OverlayDrawer_RenderBrokenDownOverlay.cs" />
     <Compile Include="Patches\Patch_QualityUtility_GenerateQualityCreatedByPawn.cs" />
+    <Compile Include="Patches\Patch_Pawn_SpawnSetup.cs" />
+    <Compile Include="Patches\Patch_TraitSet_GainTrait.cs" />
     <Compile Include="Patches\Patch_WeatherEvent_LightningStrike_FireEvent.cs" />
     <Compile Include="PostLoadDefs.cs" />
     <Compile Include="Power\PowerChannel.cs" />
@@ -148,6 +155,9 @@
     <Compile Include="RFDefOf.cs" />
     <Compile Include="Power\WirelessPower.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Thoughts\ThoughtWorker_Corrupted.cs" />
+    <Compile Include="Thoughts\ThoughtWorker_SpecialWeapon.cs" />
+    <Compile Include="TraitTracker.cs" />
     <Compile Include="UnityHook.cs" />
     <Compile Include="WikiLoader.cs" />
   </ItemGroup>

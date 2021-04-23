@@ -103,7 +103,7 @@ namespace RimForge.Buildings
         }
 
         private static readonly List<IntVec3> tempCells = new List<IntVec3>(8);
-
+        
         // Ex-tweakValues
         private static float ArcDuration = 1;
         private static float ArcMag = 0.55f;
@@ -491,7 +491,9 @@ namespace RimForge.Buildings
                         ButtonText = "RF.Ritual.IUnderstand".Translate(),
                         OnAccept = act
                     });
-                }
+                },
+                disabled = GetReasonsCannotStartRitual().Any(),
+                disabledReason = GetReasonsCannotStartRitual().FirstOrDefault()
             };
 
             string label = DrawGuide ? "RF.Ritual.DrawGuideHideLabel".Translate() : "RF.Ritual.DrawGuideShowLabel".Translate();
@@ -499,6 +501,7 @@ namespace RimForge.Buildings
 
             yield return new Command_Action()
             {
+                icon = Content.BuildBlueprintIcon,
                 defaultLabel = label,
                 defaultDesc = desc,
                 action = () =>
@@ -686,6 +689,8 @@ namespace RimForge.Buildings
                         continue;
                     if (pawn.story?.traits?.HasTrait(RFDefOf.RF_BlessingOfZir) ?? false)
                         continue;
+                    if (pawn.story?.traits?.HasTrait(RFDefOf.RF_ZirsCorruption) ?? false)
+                        continue;
 
                     if (prefer != null && pawn != prefer)
                         continue;
@@ -698,6 +703,9 @@ namespace RimForge.Buildings
 
         public bool IsValidTimePeriod()
         {
+            if (!Settings.RitualMustBeAtNight)
+                return true;
+
             var map = Map;
             int hour = GenLocalDate.HourOfDay(map);
             
@@ -751,7 +759,7 @@ namespace RimForge.Buildings
 
         public override void DoWindowContents(Rect inRect)
         {
-            Verse.Text.Font = GameFont.Medium;
+            Verse.Text.Font = GameFont.Small;
             Rect textRect = inRect;
             textRect.height -= 150;
             Widgets.Label(textRect, Text);

@@ -41,13 +41,14 @@
     <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
     <comps>
       <li Class="RimForge.Comps.CompProperties_Capacitor">
-        <maxStoredWd>2000</maxStoredWd>
+        <powerRequirement>2000</powerRequirement>
+        <ticksToCharge>2500</ticksToCharge>
       </li>
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
         <transmitsPower>false</transmitsPower>
+        <basePowerConsumption>2000</basePowerConsumption>
         <shortCircuitInRain>false</shortCircuitInRain>
-        <basePowerConsumption>0</basePowerConsumption>
       </li>
     </comps>
     <researchPrerequisites>

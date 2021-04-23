@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThoughtDef>
+    <defName>RF_WeaponThought</defName>
+    <workerClass>RimForge.Thoughts.ThoughtWorker_SpecialWeapon</workerClass>
+    <stages>
+
+      <!-- Regular pawn carrying blessed weapon -->
+      <li>
+        <label>blessed weapon</label>
+        <description>The weapon I'm carring radiates warmth and fills me with positive feelings. </description>
+        <baseMoodEffect>8</baseMoodEffect>
+      </li>
+
+      <!-- Blessed pawn carrying blessed weapon -->
+      <li>
+        <label>blessed weapon</label>
+        <description>The weapon I'm carring radiates warmth and fills me with positive feelings.\nI feel that this weapon symbolizes my link with the great Machine God Zir.</description>
+        <baseMoodEffect>16</baseMoodEffect>
+      </li>
+
+      <!-- Regular pawn carrying cursed weapon -->
+      <li>
+        <label>cursed weapon</label>
+        <description>The weapon I'm carrying radiates waves of evil and makes me think awful thoughts. I don't want to hold this cursed weapon for a second longer.</description>
+        <baseMoodEffect>-25</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

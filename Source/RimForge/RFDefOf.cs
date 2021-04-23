@@ -23,11 +23,19 @@ namespace RimForge
         public static ThingDef RF_Motes_MuzzleFlash;
         public static ThingDef RF_Motes_RitualDistort;
         public static TraitDef RF_BlessingOfZir;
+        public static TraitDef RF_ZirsCorruption;
         public static ThingDef RF_Forge;
-        public static ThoughtDef RF_RitualBlessed, RF_RitualBadThought;
+        public static ThoughtDef RF_RitualBlessed;
+        public static ThoughtDef RF_RitualBadThought;
+        public static ThoughtDef RF_WaveOfHate;
+        public static ThoughtDef RF_ZirKiller;
+        public static ThingDef RF_SwordOfRapture;
+        public static ThingDef RF_SwordOfDarkness;
+        public static LetterDef RF_CursedRaiders;
 
         // Vanilla ones.
         public static ThingDef Column;
         public static BodyPartDef Spine;
+        public static ThingCategoryDef WeaponsMelee;
     }
 }

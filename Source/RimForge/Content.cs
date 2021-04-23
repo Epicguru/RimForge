@@ -7,6 +7,7 @@ namespace RimForge
     public static class Content
     {
         public static readonly Texture2D SignalIcon, CopyIcon, PasteIcon, LinkIcon, RitualStartIcon;
+        public static readonly Texture2D BuildBlueprintIcon, RitualGearTexture, CapacitorCharge;
 
         public static Graphic ForgeIdle, ForgeGlowAll, ForgeGlowSides;
         public static Graphic HEFueledIdle, HEFueledGlow;
@@ -20,15 +21,17 @@ namespace RimForge
 
         public static Graphic RitualCircle, RitualCircleText, RitualGear, RitualBall;
         public static Graphic RitualSymbolA, RitualSymbolB;
-        public static Graphic DiscoFloorGlowGraphic;
 
         static Content()
         {
-            SignalIcon      = ContentFinder<Texture2D>.Get("RF/UI/Signal");
-            CopyIcon        = ContentFinder<Texture2D>.Get("RF/UI/Copy");
-            PasteIcon       = ContentFinder<Texture2D>.Get("RF/UI/Paste");
-            LinkIcon        = ContentFinder<Texture2D>.Get("RF/UI/Link");
-            RitualStartIcon = ContentFinder<Texture2D>.Get("RF/UI/RitualStart");
+            SignalIcon         = ContentFinder<Texture2D>.Get("RF/UI/Signal");
+            CopyIcon           = ContentFinder<Texture2D>.Get("RF/UI/Copy");
+            PasteIcon          = ContentFinder<Texture2D>.Get("RF/UI/Paste");
+            LinkIcon           = ContentFinder<Texture2D>.Get("RF/UI/Link");
+            RitualStartIcon    = ContentFinder<Texture2D>.Get("RF/UI/RitualStart");
+            BuildBlueprintIcon = ContentFinder<Texture2D>.Get("RF/UI/BuildBlueprint");
+            RitualGearTexture  = ContentFinder<Texture2D>.Get("RF/Effects/RitualGear");
+            CapacitorCharge    = ContentFinder<Texture2D>.Get("RF/Effects/CapacitorCharge");
         }
 
         internal static void LoadForgeTextures(Building forge)
@@ -121,16 +124,6 @@ namespace RimForge
             HEPoweredIdle = Make("RF/Buildings/HeatingElement_PoweredIdle");
             HEPoweredPowerOn = Make("RF/Buildings/HeatingElement_PoweredPowerOn");
             HEPoweredGlow = Make("RF/Buildings/HeatingElement_PoweredGlow");
-        }
-
-        internal static void LoadDiscoFloorGraphics(Building b)
-        {
-            var gd = b.DefaultGraphic.data;
-            Graphic MakeUnlit(string path, Vector2 size)
-            {
-                return GraphicDatabase.Get(gd.graphicClass, path, RFDefOf.Transparent.Shader, size, Color.white, Color.white, gd, gd.shaderParameters);
-            }
-            DiscoFloorGlowGraphic = MakeUnlit("RF/Effects/DiscoFloorGlow", Vector2.one);
         }
     }
 }

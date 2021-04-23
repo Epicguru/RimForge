@@ -242,19 +242,19 @@ namespace RimForge.Buildings
         {
             base.DrawExtraSelectionOverlays();
 
-            GetCapacitorState(out int count, out float stored);
-            if (count > 0 && stored < Settings.CoilgunBasePowerReq)
-            {
-                GenDraw.FillableBarRequest r = new GenDraw.FillableBarRequest();
-                r.center = this.DrawPos + new Vector3(0, 0, -3);
-                r.size = FuelBarSize;
-                r.fillPercent = stored / Settings.CoilgunBasePowerReq;
-                r.filledMat = CompCapacitor.FuelBarFilledMat;
-                r.unfilledMat = CompCapacitor.FuelBarUnfilledMatSolid;
-                r.margin = 0.15f;
-                r.rotation = Rot4.North;
-                GenDraw.DrawFillableBar(r);
-            }
+            //GetCapacitorState(out int count, out float stored);
+            //if (count > 0 && stored < Settings.CoilgunBasePowerReq)
+            //{
+            //    GenDraw.FillableBarRequest r = new GenDraw.FillableBarRequest();
+            //    r.center = this.DrawPos + new Vector3(0, 0, -3);
+            //    r.size = FuelBarSize;
+            //    r.fillPercent = stored / Settings.CoilgunBasePowerReq;
+            //    r.filledMat = CompCapacitor.FuelBarFilledMat;
+            //    r.unfilledMat = CompCapacitor.FuelBarUnfilledMatSolid;
+            //    r.margin = 0.15f;
+            //    r.rotation = Rot4.North;
+            //    GenDraw.DrawFillableBar(r);
+            //}
 
             if (!DrawAffectedCells)
                 return;
@@ -327,21 +327,21 @@ namespace RimForge.Buildings
             }
         }
 
-        private void RemoveCapacitorPower(float wd)
+        private void RemoveCapacitorPower(float capacitors)
         {
-            float toRemove = wd;
+            float toRemove = capacitors;
             foreach(var cap in GetConnectedCapacitors())
             {
                 if (toRemove <= 0f)
                     return;
 
-                float take = Mathf.Min(toRemove, cap.CompCap.StoredWd);
-                cap.CompCap.StoredWd -= take;
+                float take = Mathf.Min(toRemove, cap.CompCap.PercentageStored);
+                cap.CompCap.PercentageStored -= take;
                 toRemove -= take;
             }
 
             if (toRemove > 0)
-                Core.Error($"Tried to remove {wd} Wd of power from capacitors, could only remove {wd - toRemove} Wd.");
+                Core.Error($"Tried to remove {capacitors} capacitor percentage of power from capacitors, could only remove {capacitors - toRemove}.");
         }
 
         private void GetCapacitorState(out int count, out float stored)
@@ -351,7 +351,7 @@ namespace RimForge.Buildings
             foreach (var cap in GetConnectedCapacitors())
             {
                 count++;
-                stored += cap.CompCap.StoredWd;
+                stored += cap.CompCap.PercentageStored;
             }
         }
 
@@ -788,7 +788,7 @@ namespace RimForge.Buildings
             string basic = base.GetInspectString();
             GetCapacitorState(out int connected, out float stored);
 
-            string capState = "RF.Coilgun.CapState".Translate(stored.ToString("F0"), connected, Settings.CoilgunBasePowerReq);
+            string capState = "RF.Coilgun.CapState".Translate((stored * 100f).ToString("F0"), connected, (Settings.CoilgunBasePowerReq * 100f).ToString("F0"));
 
             if(!string.IsNullOrWhiteSpace(basic))
                 return $"{basic.TrimEnd()}\n{capState}";

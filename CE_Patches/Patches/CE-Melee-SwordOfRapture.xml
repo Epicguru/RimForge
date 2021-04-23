@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <Operation Class="PatchOperationSequence">
+    <operations>
+
+      <!-- === RF_SwordOfRapture === -->
+
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="RF_SwordOfRapture"]/tools</xpath>
+        <value>
+          <tools>
+            <li Class="CombatExtended.ToolCE">
+              <label>blade</label>
+              <capacities>
+                <li>Blunt</li>
+              </capacities>
+              <power>45</power>
+              <cooldownTime>0.9</cooldownTime>
+              <armorPenetrationBlunt>45</armorPenetrationBlunt>
+              <armorPenetrationSharp>5</armorPenetrationSharp>
+              <linkedBodyPartsGroup>Edge</linkedBodyPartsGroup>
+            </li>
+          </tools>
+        </value>
+      </li>
+
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RF_SwordOfRapture"]/statBases</xpath>
+        <value>
+          <Bulk>17</Bulk>
+          <MeleeCounterParryBonus>1.3</MeleeCounterParryBonus>
+        </value>
+      </li>
+
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RF_SwordOfRapture"]/equippedStatOffsets</xpath>
+        <value>
+          <MeleeCritChance>0.5</MeleeCritChance>
+          <MeleeParryChance>1.1</MeleeParryChance>
+          <MeleeDodgeChance>0.5</MeleeDodgeChance>
+        </value>
+      </li>
+
+    </operations>
+  </Operation>
+  
+</Patch>

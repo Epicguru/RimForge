@@ -18,6 +18,9 @@ namespace RimForge
 
         private void Update()
         {
+            if (Current.Game == null)
+                return;
+
             bool currentPaused = Find.TickManager?.Paused ?? false;
             if (lastPaused != currentPaused)
             {

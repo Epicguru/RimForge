@@ -29,8 +29,8 @@ namespace RimForge
         public static float CoilgunBaseDamageMultiplier = 1f;
         [TweakValue("RimForge", 0, 5)]
         public static float CoilgunBuildingDamageMulti = 1f;
-        [TweakValue("RimForge", 100, 10000)]
-        public static float CoilgunBasePowerReq = 2000;
+        [TweakValue("RimForge", 0, 10)]
+        public static float CoilgunBasePowerReq = 1;
         [TweakValue("RimForge", 0, 1)]
         public static bool CoilgunSplatterBlood = true;
 
@@ -39,11 +39,16 @@ namespace RimForge
         public static float RitualFailCoefficient = 1f;
         [TweakValue("RimForge", 0f, 1f)]
         public static float RitualFailMajorChance = 1f / 3f;
+        [TweakValue("RimForge", 0f, 1f)]
+        public static bool RitualMustBeAtNight = true;
 
-        // DISCO
-        [TweakValue("RimForge", 100, 32768)]
-        public static int DiscoMaxFloorSize = 5000;
-        [TweakValue("RimForge", 0, 1)]
-        public static float DiscoFloorColorIntensity = 0.65f;
+        // OTHER
+        [TweakValue("RimForge", 0, 20)]
+        public static float HateWaveRadius = 5.5f;
+        [TweakValue("RimForge", 0, 1000)]
+        public static int HateWaveStunDuration = 400;
+
+        // Preferences
+        public static bool UseCustomTab = true;
     }
 }
