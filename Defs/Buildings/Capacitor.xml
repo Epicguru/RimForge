@@ -23,7 +23,7 @@
     <size>(1, 1)</size>
     <costList>
       <Steel>20</Steel>
-      <ComponentIndustrial>4</ComponentIndustrial>
+      <ComponentSpacer>4</ComponentSpacer>
       <RF_Copper>50</RF_Copper>
     </costList>
     <statBases>

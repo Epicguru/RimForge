@@ -145,6 +145,7 @@
     <Compile Include="Patches\Patch_OverlayDrawer_RenderBrokenDownOverlay.cs" />
     <Compile Include="Patches\Patch_QualityUtility_GenerateQualityCreatedByPawn.cs" />
     <Compile Include="Patches\Patch_Pawn_SpawnSetup.cs" />
+    <Compile Include="Patches\Patch_SkillRequirement_Multiple.cs" />
     <Compile Include="Patches\Patch_TraitSet_GainTrait.cs" />
     <Compile Include="Patches\Patch_WeatherEvent_LightningStrike_FireEvent.cs" />
     <Compile Include="PostLoadDefs.cs" />

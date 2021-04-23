@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using RimForge.Effects;
 using System;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -8,6 +9,7 @@ namespace RimForge
 {
     public class Core : Mod
     {
+        public static SkillDef BlessingSkillDef { get; private set; }
         public static ModContentPack ContentPack { get; private set; }
         public static Core Instance { get; private set; }
 
@@ -58,6 +60,18 @@ namespace RimForge
             UnityHook.UponApplicationQuit += () =>
             {
                 MapEffectHandler.ThreadedHandler?.Stop();
+            };
+
+            // Blessing skill def, used to make recipes that only blessed pawns can do.
+            BlessingSkillDef = new SkillDef()
+            {
+                defName = "RF_BlessingSkill_RuntimeGenerated",
+                label = "Blessing of Zir (trait)",
+                skillLabel = "Blessing of Zir (trait)",
+                description = "Requirement: pawn must have the Blessing of Zir trait.",
+                modContentPack = Content,
+                usuallyDefinedInBackstories = false,
+                pawnCreatorSummaryVisible = false
             };
         }
     }
