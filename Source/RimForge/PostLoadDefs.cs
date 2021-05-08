@@ -27,7 +27,6 @@ namespace RimForge
             Core.Log($"Completed def processing in {watch.ElapsedMilliseconds} milliseconds.");
             Core.Log($"There are {AlloyHelper.AllAlloyDefs.Count} recipes ({AlloyHelper.AllCraftableAlloys.Count} craftable alloys), and {AlloyHelper.AllRimForgeResources.Count} general resources.");
 
-            //CategorizeBuildings();
             MiscOtherTasks();
         }
 

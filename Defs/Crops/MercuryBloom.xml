@@ -1,0 +1,35 @@
+<Defs>
+  <ThingDef ParentName="PlantBase">
+    <defName>RF_Plant_MercuryBloom</defName>
+    <label>mercury bloom</label>
+    <description>A Mercury Bloom plant.
+It seems that this plant is especially efficient at absorbing the mercury naturally present in the soil.
+This mercury is a key ingredient in making Mercury Ultraweave.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Nutrition>0.1</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/CottonPlant</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>14</pathCost>
+    <ingestible />
+    <plant>
+      <growDays>10</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RF_Mercury</harvestedThingDef>
+      <harvestYield>4</harvestYield>
+      <sowTags>
+        <li>Ground</li>
+        <li>Hydroponic</li>
+      </sowTags>
+      <topWindExposure>0.1</topWindExposure>
+      <immatureGraphicPath>Things/Plant/CottonPlant_Immature</immatureGraphicPath>
+      <visualSizeRange>0.3~1.05</visualSizeRange>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+</Defs>

@@ -1,0 +1,34 @@
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RF_Mercury</defName>
+    <label>mercury</label>
+    <description>Vials of liquid mercury, extracted from the Mercury Bloom plant.
+Can be refined into Mercury Ultraweave at fabrication bench by a colonist if they have the Blessing of Zir.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <useHitPoints>false</useHitPoints>
+    <graphicData>
+      <texPath>RF/Resources/Mercury</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+
+    <statBases>
+      <Mass>0.02</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <techLevel>Industrial</techLevel>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Metal_Drop</soundDrop>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <tradeability>Sellable</tradeability>
+    <stackLimit>500</stackLimit>
+    <burnableByRecipe>false</burnableByRecipe>
+    <smeltable>false</smeltable>
+  </ThingDef>
+</Defs>

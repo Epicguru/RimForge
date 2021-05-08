@@ -18,7 +18,6 @@ namespace RimForge
         public static ThingDef RF_Tin;
         public static StatCategoryDef RF_RimForgeStats;
         public static ShaderTypeDef TransparentPostLight;
-        public static ShaderTypeDef Transparent;
         public static SoundDef RF_Sound_CoilgunFire;
         public static ThingDef RF_Motes_MuzzleFlash;
         public static ThingDef RF_Motes_RitualDistort;
@@ -32,6 +31,7 @@ namespace RimForge
         public static ThingDef RF_SwordOfRapture;
         public static ThingDef RF_SwordOfDarkness;
         public static LetterDef RF_CursedRaiders;
+        public static ThingDef RF_MercuryUltraweave;
 
         // Vanilla ones.
         public static ThingDef Column;
