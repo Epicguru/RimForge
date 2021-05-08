@@ -32,6 +32,7 @@ namespace RimForge
         public static ThingDef RF_SwordOfDarkness;
         public static LetterDef RF_CursedRaiders;
         public static ThingDef RF_MercuryUltraweave;
+        public static ThingDef RF_Motes_Growth;
 
         // Vanilla ones.
         public static ThingDef Column;

@@ -42,6 +42,12 @@ namespace RimForge
         [TweakValue("RimForge", 0f, 1f)]
         public static bool RitualMustBeAtNight = true;
 
+        // GREENHOUSE
+        [TweakValue("RimForge", 1, 5000)]
+        public static int MaxGreenhouseSize = 300;
+        [TweakValue("RimForge", 0f, 10f)]
+        public static float GreenhouseGrowthAccelerationFactor = 1f;
+
         // OTHER
         [TweakValue("RimForge", 0, 20)]
         public static float HateWaveRadius = 5.5f;

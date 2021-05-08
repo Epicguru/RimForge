@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+    <ThingDef ParentName="MoteBase">
+        <defName>RF_Motes_Growth</defName>
+        <graphicData>
+            <texPath>RF/Motes/GrowthMotes</texPath>
+            <shaderType>MoteGlow</shaderType>
+            <graphicClass>Graphic_Random</graphicClass>
+        </graphicData>
+        <altitudeLayer>MoteOverhead</altitudeLayer>
+        <drawOffscreen>false</drawOffscreen>
+        <mote>
+            <fadeInTime>0.2</fadeInTime>
+            <solidTime>0.3</solidTime>
+            <fadeOutTime>1.0</fadeOutTime>
+            <growthRate>-0.25</growthRate>
+            <rotateTowardsTarget>true</rotateTowardsTarget>
+        </mote>
+    </ThingDef>
+
+</Defs>
