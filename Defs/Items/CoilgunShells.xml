@@ -18,6 +18,9 @@
     <tradeTags>
       <li>ExoticMisc</li>
     </tradeTags>
+    <researchPrerequisites>
+      <li>RF_Research_Coilgun</li>
+    </researchPrerequisites>
     <techLevel>Spacer</techLevel>
     <soundInteract>Metal_Drop</soundInteract>
     <soundDrop>Metal_Drop</soundDrop>

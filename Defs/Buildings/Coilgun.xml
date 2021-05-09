@@ -34,6 +34,12 @@ However, damage is reduced after passing through solid objects.</description>
       <Mass>400</Mass>
       <Beauty>-25</Beauty>
     </statBases>
+    <costList>
+      <Steel>300</Steel>
+      <RF_Copper>150</RF_Copper>
+      <ComponentSpacer>5</ComponentSpacer>
+      <RF_Staballoy>50</RF_Staballoy>
+    </costList>
     <tickerType>Normal</tickerType>
     <passability>PassThroughOnly</passability>
     <pathCost>150</pathCost>
@@ -45,6 +51,9 @@ However, damage is reduced after passing through solid objects.</description>
     <building>
       <ai_combatDangerous>true</ai_combatDangerous>
     </building>
+    <researchPrerequisites>
+      <li>RF_Research_Coilgun</li>
+    </researchPrerequisites>
     <designationHotKey>Misc3</designationHotKey>
     <uiIconScale>1</uiIconScale>
     <comps>

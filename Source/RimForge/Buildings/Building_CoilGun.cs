@@ -1,5 +1,4 @@
-﻿using RimForge.Comps;
-using RimForge.Effects;
+﻿using RimForge.Effects;
 using RimWorld;
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,6 @@ namespace RimForge.Buildings
         public static float CoilgunRecoil = 0.6f;
         [TweakValue("RimForge", 1, 100)]
         public static int BloodTrailLength = 20;
-        public static readonly Vector2 FuelBarSize = new Vector2(3f, 0.4f);
         public static List<CoilgunShellDef> ShellDefs = new List<CoilgunShellDef>();
 
         private const float TurretTurnSpeed = 60f / 60f;
