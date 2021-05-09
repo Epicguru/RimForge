@@ -152,14 +152,14 @@ namespace RimForge.Buildings
             FuelComp.Props.fuelLabel = GetCurrentShellType().LabelCap;
             FuelComp.Props.fuelGizmoLabel = GetCurrentShellType().LabelCap;
 
-            Graphic topGraphic()
+            Graphic TopGraphic()
             {
                 bool wantsFrontArcs = ArmLerp >= 0.7f;
                 if (wantsFrontArcs)
                     return Content.CoilgunTopGlow;
                 return Content.CoilgunTop;
             }
-            Graphic cableGraphic()
+            Graphic CableGraphic()
             {
                 bool wantsFrontArcs = ArmLerp >= 0.7f;
                 if (wantsFrontArcs)
@@ -169,8 +169,8 @@ namespace RimForge.Buildings
 
             if (Top != null)
             {
-                Top.Graphic = topGraphic();
-                Cables.Graphic = cableGraphic();
+                Top.Graphic = TopGraphic();
+                Cables.Graphic = CableGraphic();
             }
 
             TickState();
@@ -683,7 +683,7 @@ namespace RimForge.Buildings
             if (Top == null)
                 Setup();
 
-            GetCapacitorState(out int capCount, out float stored);
+            GetCapacitorState(out int capCount, out var _);
 
             if (capCount == 0)
             {

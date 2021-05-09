@@ -166,5 +166,8 @@ These Corrupted raiders are:
 <RF.Greenhouse.RoomOutdoors>The greenhouse area is not an enclosed room!</RF.Greenhouse.RoomOutdoors>
 <RF.Greenhouse.RoomNotSealed>The greenhouse room does not have a roof.</RF.Greenhouse.RoomNotSealed>
 <RF.Greenhouse.RoomTooBig>The greenhouse room is too large. Max size is {0} cells, current size is {1} cells.</RF.Greenhouse.RoomTooBig>
+<RF.Greenhouse.Rotate>Change gas output position</RF.Greenhouse.Rotate>
+<RF.Greenhouse.RotateDesc>Adjust the position where this controller will input and output gas (the blue circle).
+Allows you to build the controller into a wall and target the correct room.</RF.Greenhouse.RotateDesc>
 
  </LanguageData>

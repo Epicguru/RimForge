@@ -21,6 +21,7 @@ namespace RimForge
 
         public static Graphic RitualCircle, RitualCircleText, RitualGear, RitualBall;
         public static Graphic RitualSymbolA, RitualSymbolB;
+        public static Graphic[] GreenhouseActiveFrames;
 
         static Content()
         {
@@ -124,6 +125,24 @@ namespace RimForge
             HEPoweredIdle = Make("RF/Buildings/HeatingElement_PoweredIdle");
             HEPoweredPowerOn = Make("RF/Buildings/HeatingElement_PoweredPowerOn");
             HEPoweredGlow = Make("RF/Buildings/HeatingElement_PoweredGlow");
+        }
+
+        internal static void LoadGreenhouseFrames(Building greenhouse)
+        {
+            var gd = greenhouse.DefaultGraphic.data;
+            Graphic Make(string path)
+            {
+                return GraphicDatabase.Get(gd.graphicClass, path, gd.shaderType.Shader, Vector2.one, Color.white, Color.white, gd, gd.shaderParameters);
+            }
+
+            GreenhouseActiveFrames = new Graphic[15];
+            for (int i = 0; i < GreenhouseActiveFrames.Length; i++)
+            {
+                int frameNum = i * 2;
+                string name = frameNum.ToString().PadLeft(4, '0');
+                string path = $"RF/Buildings/Greenhouse/{name}";
+                GreenhouseActiveFrames[i] = Make(path);
+            }
         }
     }
 }

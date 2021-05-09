@@ -47,6 +47,8 @@ namespace RimForge
         public static int MaxGreenhouseSize = 300;
         [TweakValue("RimForge", 0f, 10f)]
         public static float GreenhouseGrowthAccelerationFactor = 1f;
+        [TweakValue("RimForge", 0.01f, 100f)]
+        public static float GreenWattsPerCell = 25;
 
         // OTHER
         [TweakValue("RimForge", 0, 20)]

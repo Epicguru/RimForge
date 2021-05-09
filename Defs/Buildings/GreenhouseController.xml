@@ -11,10 +11,9 @@ Any enclosed room (up to a maximum size) is considered to be a greenhouse.
 Note: for performance reasons, the plant's growth rate stat does not appear to change, but they will be growing faster.</description>
     <thingClass>RimForge.Buildings.Building_GreenhouseController</thingClass>
     <graphicData>
-      <texPath>RF/Buildings/RitualCoreActive</texPath>
+      <texPath>RF/Buildings/Greenhouse/Idle</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(1,2)</drawSize>
-      <drawOffset>(0,0,0.5)</drawOffset>
+      <drawSize>(1,1)</drawSize>
     </graphicData>
     <passability>Impassable</passability>
     <designationCategory>Misc</designationCategory>
@@ -28,16 +27,21 @@ Note: for performance reasons, the plant's growth rate stat does not appear to c
     <category>Building</category>
     <altitudeLayer>Building</altitudeLayer>
     <size>(1, 1)</size>
+    <rotatable>false</rotatable>
     <costList>
       <Steel>20</Steel>
       <ComponentSpacer>4</ComponentSpacer>
       <RF_Copper>50</RF_Copper>
     </costList>
-    <hasInteractionCell>true</hasInteractionCell>
-    <interactionCellOffset>(1,0,0)</interactionCellOffset>
-    <placeWorkers>
-      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
-    </placeWorkers>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <transmitsPower>false</transmitsPower>
+        <shortCircuitInRain>false</shortCircuitInRain>
+        <basePowerConsumption>50</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"></li>
+    </comps>
     <statBases>
       <MaxHitPoints>100</MaxHitPoints>
       <WorkToBuild>5000</WorkToBuild>

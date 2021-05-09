@@ -1,11 +1,12 @@
 ﻿using RimWorld;
 using System.Collections.Generic;
+using RimForge.Comps;
 using UnityEngine;
 using Verse;
 
 namespace RimForge.Buildings
 {
-    public class Building_GreenhouseController : Building
+    public class Building_GreenhouseController : Building, ICustomOverlayDrawer
     {
         public const int INTERVAL = 30;
 
@@ -22,9 +23,32 @@ namespace RimForge.Buildings
         [TweakValue("_RimForge", 0, 1000f)]
         public static float MoteRotation = 360f;
 
-        public Room GreenhouseRoom => InteractionCell.GetRoom(Map, RegionType.Set_All);
+        public string OverlayTexturePath => "RF/UI/WarningIcon";
 
+        public override Graphic Graphic
+        {
+            get
+            {
+                if (!IsRunning)
+                    return base.DefaultGraphic;
+
+                if (Content.GreenhouseActiveFrames == null)
+                    Content.LoadGreenhouseFrames(this);
+
+                return Content.GreenhouseActiveFrames[frame];
+            }
+        }
+
+        public bool IsRunning { get; private set; }
+        public Room GreenhouseRoom => GreenhouseCell.Impassable(Map) ? null : GreenhouseCell.GetRoom(Map, RegionType.Set_All);
+        public IntVec3 GreenhouseCell => Position + new Rot4(cellRotation).AsVector2.FlatToWorld(0).ToIntVec3();
+        public CompPowerTrader PowerTrader => trader ??= GetComp<CompPowerTrader>();
+
+        private int frame;
+        private CompPowerTrader trader;
+        private int cellRotation;
         private int tickCounter;
+        private int tickCounter2;
 
         public virtual float GetSpecialPlantGrowthPerTick(Plant plant)
         {
@@ -38,19 +62,43 @@ namespace RimForge.Buildings
             return (float) (1.0 / (60000.0 * plant.def.plant.growDays)) * rateBase * Settings.GreenhouseGrowthAccelerationFactor * (INTERVAL);
         }
 
+        public override void ExposeData()
+        {
+            base.ExposeData();
+
+            Scribe_Values.Look(ref cellRotation, "RF_greenhouseRotation");
+        }
+
         public override void Tick()
         {
             base.Tick();
 
+            tickCounter2++;
+            if (tickCounter2 % 3 == 0)
+            {
+                frame++;
+                if (frame > 14)
+                    frame = 0;
+            }
+
             tickCounter++;
             if (tickCounter < INTERVAL)
                 return;
-
             tickCounter = 0;
 
+            IsRunning = false;
+
+            // Update power consumption.
             var room = GreenhouseRoom;
+            UpdatePowerUsage(room);
+
+            if (!PowerTrader.PowerOn)
+                return;
+
             if (room == null || GetRoomError(room) != null)
                 return;
+
+            IsRunning = true;
 
             if (Settings.GreenhouseGrowthAccelerationFactor <= 0f)
                 return;
@@ -89,11 +137,25 @@ namespace RimForge.Buildings
 
             if (Rand.Chance(MoteMainChance))
             {
-                var mote = MoteMaker.MakeStaticMote(Position.ToVector3Shifted() + Rand.InsideUnitCircleVec3 * 0.2f + new Vector3(0, 0, 0.25f), map, RFDefOf.RF_Motes_Growth, Rand.Range(MoteScaleMin, MoteScaleMax));
+                var mote = (MoteThrown)MoteMaker.MakeStaticMote(Position.ToVector3Shifted() + Rand.InsideUnitCircleVec3 * 0.2f + new Vector3(0, 0, -0.1f), map, RFDefOf.RF_Motes_Air, Rand.Range(0.25f, 0.4f));
                 if (mote != null)
                 {
-                    mote.rotationRate = Rand.Value * MoteRotation * Rand.Sign;
+                    mote.Velocity = new Vector3(0, 0, Rand.Range(1, 2));
                 }
+            }
+        }
+
+        private void UpdatePowerUsage(Room room)
+        {
+            if (room != null && GetRoomError(room) == null)
+            {
+                int count = room.CellCount;
+                float watts = Settings.GreenWattsPerCell * count;
+                PowerTrader.PowerOutput = -Mathf.Max(50, watts);
+            }
+            else
+            {
+                PowerTrader.PowerOutput = -50;
             }
         }
 
@@ -105,13 +167,25 @@ namespace RimForge.Buildings
             if (room.TouchesMapEdge)
                 return "RF.Greenhouse.RoomOutdoors".Translate();
 
-            if (room.UsesOutdoorTemperature) // Note: this only check that there is at least 75% roof in the room. There can still be vents, open doors etc. that make temperature control difficult.
-                return "RF.Greenhouse.RoomNotSealed".Translate();
-
             if (room.CellCount > Settings.MaxGreenhouseSize)
                 return "RF.Greenhouse.RoomTooBig".Translate(Settings.MaxGreenhouseSize, room.CellCount);
 
+            if (room.UsesOutdoorTemperature) // Note: this only check that there is at least 75% roof in the room. There can still be vents, open doors etc. that make temperature control difficult.
+                return "RF.Greenhouse.RoomNotSealed".Translate();
+
             return null;
+        }
+
+        public override void Draw()
+        {
+            base.Draw();
+
+            // There is power but there is an error with the room. Let the user know.
+            if (PowerTrader.PowerOn && GetRoomError(GreenhouseRoom) != null)
+            {
+                // Draws the warning icon because of the Harmony patch.
+                Map.overlayDrawer.DrawOverlay(this, OverlayTypes.BrokenDown);
+            }
         }
 
         private static readonly List<IntVec3> cells = new List<IntVec3>(512);
@@ -119,20 +193,41 @@ namespace RimForge.Buildings
         {
             base.DrawExtraSelectionOverlays();
 
+            GenDraw.DrawCircleOutline(GreenhouseCell.ToVector3Shifted(), 0.45f, SimpleColor.Cyan);
+
             var room = GreenhouseRoom;
             if (GetRoomError(room) != null)
                 return;
 
             cells.Clear();
             cells.AddRange(room.Cells);
+            cells.Add(Position);
 
             GenDraw.DrawFieldEdges(cells, Color.green);
+        }
+
+        public override IEnumerable<Gizmo> GetGizmos()
+        {
+            foreach (var gizmo in base.GetGizmos())
+                yield return gizmo;
+
+            yield return new Command_Action()
+            {
+                defaultLabel = "RF.Greenhouse.Rotate".Translate(),
+                defaultDesc = "RF.Greenhouse.RotateDesc".Translate(),
+                action = () =>
+                {
+                    cellRotation++;
+                    if (cellRotation >= 4)
+                        cellRotation = 0;
+                }
+            };
         }
 
         public override string GetInspectString()
         {
             string error = GetRoomError(GreenhouseRoom);
-            return $"{base.GetInspectString().TrimEnd()}{(error == null ? "" : $"\n{error}")}";
+            return $"{base.GetInspectString().TrimEnd()}{(error == null ? "" : $"\nError: {error}")}";
         }
     }
 }
