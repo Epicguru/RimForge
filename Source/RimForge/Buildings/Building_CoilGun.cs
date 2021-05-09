@@ -481,6 +481,7 @@ namespace RimForge.Buildings
                 }
             }
 
+            bool hasDoneExplosion = false;
             string stoppedAfterHitting = null;
             foreach (var cell in list.TakeWhile(cell => cell.InBounds(map)))
             {
@@ -540,11 +541,17 @@ namespace RimForge.Buildings
                                 MoteMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
                                 MoteMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
                             }
+
+                            if (!hasDoneExplosion && shellDef.explosionDamageType != null && shellDef.explosionRadius > 0)
+                            {
+                                GenExplosion.DoExplosion(cell, map, shellDef.explosionRadius, shellDef.explosionDamageType, this, shellDef.explosionDamage ?? -1, shellDef.explosionArmorPen ?? -1f);
+                                hasDoneExplosion = true;
+                            }
                         }
 
-                        if (b != null)
+                        if (b != null || shellDef.pawnsCountAsPen)
                         {
-                            if (b.def.altitudeLayer < AltitudeLayer.DoorMoveable)
+                            if (b != null && b.def.altitudeLayer < AltitudeLayer.DoorMoveable)
                                 continue;
 
                             damage *= shellDef.penDamageMultiplier * Settings.CoilgunPenDamageMultiplier;
@@ -553,7 +560,7 @@ namespace RimForge.Buildings
                             if (shellDef.maxPen >= 0 && penDepth > shellDef.maxPen)
                             {
                                 keepGoing = false;
-                                stoppedAfterHitting = b.LabelCap;
+                                stoppedAfterHitting = b?.GetCustomLabelNoCount(false) ?? pawn.LabelCap;
                             }
                         }
                     }

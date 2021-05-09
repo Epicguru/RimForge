@@ -23,7 +23,7 @@ Highly durable and resistant to even heavy gunfire.</description>
       <productCount>25</productCount>
       <researchPrerequisite>Devilstrand</researchPrerequisite>   
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
-      <workSkill>Tailoring</workSkill>
+      <workSkill>Crafting</workSkill>
       <effectWorking>Tailor</effectWorking>
       <soundWorking>Recipe_Tailoring</soundWorking>
       <recipeUsers>
