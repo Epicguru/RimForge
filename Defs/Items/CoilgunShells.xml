@@ -41,9 +41,9 @@ Very effective against infantry and small mechanoids and useful for destroying s
     </graphicData>
 
     <!-- Shell properties -->
-    <maxPen>-1</maxPen>
+    <maxPen>-1</maxPen> <!-- Does not have a maximum pen depth, it just keeps going -->
     <baseDamage>120</baseDamage>
-    <penDamageMultiplier>0.95</penDamageMultiplier>
+    <penDamageMultiplier>0.96</penDamageMultiplier> <!-- Slightly less damage after each surface pen. -->
 
   </RimForge.CoilgunShellDef>
 
@@ -58,7 +58,7 @@ Because of this poor penetration, it requires line of sight to be effective. Ver
     </graphicData>
 
     <!-- Shell properties -->
-    <maxPen>5</maxPen>
+    <maxPen>5</maxPen> <!-- Can only go through 5 surfaces before completely stopping. --> 
     <baseDamage>700</baseDamage>
     <penDamageMultiplier>0.75</penDamageMultiplier>
 

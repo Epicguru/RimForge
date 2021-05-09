@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RF_GreenhouseController</defName>
+    <label>greenhouse controller</label>
+    <description>When placed in a greenhouse, consumes vast amounts of electricity to control air gas composition.
+Plants growing within the greenhouse will grow at 2x the regular speed during the day, and will keep growing at 1x speed during the night.
+    
+Any enclosed room (up to a maximum size) is considered to be a greenhouse.
+Note: for performance reasons, the plant's growth rate stat does not appear to change, but they will be growing faster.</description>
+    <thingClass>RimForge.Buildings.Building_GreenhouseController</thingClass>
+    <graphicData>
+      <texPath>RF/Buildings/Greenhouse/Idle</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <passability>Impassable</passability>
+    <designationCategory>Misc</designationCategory>
+    <drawerType>RealtimeOnly</drawerType>
+    <selectable>true</selectable>
+    <canOverlapZones>false</canOverlapZones>
+    <castEdgeShadows>true</castEdgeShadows>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <tickerType>Normal</tickerType>
+    <drawOffscreen>true</drawOffscreen>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <size>(1, 1)</size>
+    <rotatable>false</rotatable>
+    <costList>
+      <Steel>20</Steel>
+      <ComponentSpacer>4</ComponentSpacer>
+      <RF_Copper>50</RF_Copper>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <transmitsPower>false</transmitsPower>
+        <shortCircuitInRain>false</shortCircuitInRain>
+        <basePowerConsumption>50</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"></li>
+    </comps>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <WorkToBuild>5000</WorkToBuild>
+      <Flammability>0.25</Flammability>
+      <Beauty>-2</Beauty>
+      <Cleanliness>2</Cleanliness>
+      <Mass>30</Mass>
+    </statBases>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+  </ThingDef>
+
+</Defs>

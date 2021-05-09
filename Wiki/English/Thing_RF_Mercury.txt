@@ -1,0 +1,12 @@
+
+ENDTAGS
+
+#Extracted from the <b>Mercury Bloom</b> plant:#
+@RF_Plant_MercuryBloom@
+
+#It is used to craft <color=\#dc1e78><b>Mercury Ultraweave</b></color> by combining it with <color=\#15eded><b>Plasteel</b></color> and <color=\#e82309><b>Devilstrand</b></color>#
+@RF_MercuryUltraweave@
+@Plasteel@
+@DevilstrandCloth@
+
+#See the Mercury Ultraweave page for more info on crafting.#

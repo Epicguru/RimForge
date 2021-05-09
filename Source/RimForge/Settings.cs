@@ -33,6 +33,8 @@ namespace RimForge
         public static float CoilgunBasePowerReq = 1;
         [TweakValue("RimForge", 0, 1)]
         public static bool CoilgunSplatterBlood = true;
+        [TweakValue("RimForge", 0, 1)]
+        public static bool CoilgunDisplayDamageReport = true;
 
         // RITUAL
         [TweakValue("RimForge", 0f, 1f)]
@@ -41,6 +43,14 @@ namespace RimForge
         public static float RitualFailMajorChance = 1f / 3f;
         [TweakValue("RimForge", 0f, 1f)]
         public static bool RitualMustBeAtNight = true;
+
+        // GREENHOUSE
+        [TweakValue("RimForge", 1, 5000)]
+        public static int MaxGreenhouseSize = 300;
+        [TweakValue("RimForge", 0f, 10f)]
+        public static float GreenhouseGrowthAccelerationFactor = 1f;
+        [TweakValue("RimForge", 0.01f, 100f)]
+        public static float GreenWattsPerCell = 25;
 
         // OTHER
         [TweakValue("RimForge", 0, 20)]

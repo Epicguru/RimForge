@@ -1,0 +1,14 @@
+ID: RF_BlessingOfZir
+Title: The Blessing of Zir
+Icon: RF/UI/BlessingSymbol
+
+ENDTAGS
+
+#!Machine God Zir#
+#Some claim that <b>Zir</b> is a benevolent deity as old as civilization itself, others claim it to be a devilish force to be feared and avoided, while others maintain that it is an archotech supercomputer the size of a solar system.
+What is undisputed is the undeniable existence of this <b>Machine God</b>. It is known to occasionally bestow its blessing upon mortals, allowing them to surpass human limits and create machines of immense complexity that would have otherwise been impossible.#
+
+#!The blessing ritual#
+#It is rumoured that the favour of <b>Machine God Zir</b> can be gained by offering a sacrifice of blood. Building a <b>Ritual Core</b> and following the ritual instructions, including sacrificing a prisoner, should be enough to grant a colonist the <color=\#f0e516>Blessing of Zir</color>.#
+#See the Ritual Core page for more info:#
+@RF_RitualCore@

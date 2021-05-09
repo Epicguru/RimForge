@@ -83,6 +83,7 @@
     <Compile Include="Buildings\Building_Coilgun.cs" />
     <Compile Include="Buildings\Building_ForgeRewritten.cs" />
     <Compile Include="Buildings\Building_FueledHeatingElement.cs" />
+    <Compile Include="Buildings\Building_GreenhouseController.cs" />
     <Compile Include="Buildings\Building_LightningRod.cs" />
     <Compile Include="Buildings\Building_LongDistanceCabled.cs" />
     <Compile Include="Buildings\Building_LongDistancePower.cs" />

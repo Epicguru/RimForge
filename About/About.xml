@@ -7,15 +7,18 @@
     <li>1.2</li>
   </supportedVersions>
   <url>https://github.com/Epicguru/RimForge</url>
-  <description>A mid-tech modpack that changes and expands upon power and smithing:
+  <description>A mid-tech modpack that add new materials, weapons, turrets, power, utilities and more:
 
 * Wireless electrical power.
 * Tesla coils! Fry those raiders!
-* New ores: copper and tin.
+* A huge mounted coilgun that can fire through mountains.
 * Many new metal alloys: bronze, gilded plasteel, staballoy etc. With unique stats and purposes.
 * A forge, to create metal alloys, with a forge temperature system.
 * New melee weapons. Some require the new alloys. No particular theme.
 * New 'stabilized' guns, with Bronze as their main crafting material. Improved accuracy but reduced damage.
+* A greenhouse controller, to greatly accelerate crop growth indoors.
+* Mercury Ultraweave, an upgrade from devilstrand and hyperweave.
+* A 'blessing' and 'curse' system. Sacrifice a prisoner to receive the blessing of the machine god, but beware cursed raiders.
 
 Also supports:
 

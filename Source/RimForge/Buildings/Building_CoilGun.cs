@@ -152,14 +152,14 @@ namespace RimForge.Buildings
             FuelComp.Props.fuelLabel = GetCurrentShellType().LabelCap;
             FuelComp.Props.fuelGizmoLabel = GetCurrentShellType().LabelCap;
 
-            Graphic topGraphic()
+            Graphic TopGraphic()
             {
                 bool wantsFrontArcs = ArmLerp >= 0.7f;
                 if (wantsFrontArcs)
                     return Content.CoilgunTopGlow;
                 return Content.CoilgunTop;
             }
-            Graphic cableGraphic()
+            Graphic CableGraphic()
             {
                 bool wantsFrontArcs = ArmLerp >= 0.7f;
                 if (wantsFrontArcs)
@@ -169,8 +169,8 @@ namespace RimForge.Buildings
 
             if (Top != null)
             {
-                Top.Graphic = topGraphic();
-                Cables.Graphic = cableGraphic();
+                Top.Graphic = TopGraphic();
+                Cables.Graphic = CableGraphic();
             }
 
             TickState();
@@ -432,7 +432,6 @@ namespace RimForge.Buildings
             var shellDef = GetCurrentShellType();
 
             float damage = shellDef.baseDamage * Settings.CoilgunBaseDamageMultiplier;
-            //Core.Log($"Base damage: {damage}, multi: {Settings.CoilgunPenDamageMultiplier}, building multi: {Settings.CoilgunBuildingDamageMulti}");
 
             int affected = 0;
             int cells = 0;
@@ -484,6 +483,7 @@ namespace RimForge.Buildings
                 }
             }
 
+            string stoppedAfterHitting = null;
             foreach (var cell in list.TakeWhile(cell => cell.InBounds(map)))
             {
                 cells++;
@@ -511,18 +511,11 @@ namespace RimForge.Buildings
                         if (thing is Pawn p && (p.Downed || p.Dead))
                             continue;
 
-                        if (thing is Building b)
-                        {
-                            if (b.def.altitudeLayer < AltitudeLayer.DoorMoveable)
-                                continue;
-                            damage *= shellDef.penDamageMultiplier * Settings.CoilgunPenDamageMultiplier;
-                            penDepth++;
-                        }
-
                         Pawn pawn = thing as Pawn;
-                        if (thing is Building || pawn != null)
+                        Building b = thing as Building;
+                        if (b != null || pawn != null)
                         {
-                            var info = new DamageInfo(RFDefOf.RF_CoilgunDamage, damage * Settings.CoilgunBuildingDamageMulti, 100, instigator: this);
+                            var info = new DamageInfo(RFDefOf.RF_CoilgunDamage, damage * (b == null ? 1f : Settings.CoilgunBuildingDamageMulti), 100, instigator: this);
                             var result = thing.TakeDamage(info);
                             affected++;
                             totalDamage += result.totalDamageDealt;
@@ -551,8 +544,20 @@ namespace RimForge.Buildings
                             }
                         }
 
-                        if (shellDef.maxPen >= 0 && penDepth > shellDef.maxPen)
-                            keepGoing = false;
+                        if (b != null)
+                        {
+                            if (b.def.altitudeLayer < AltitudeLayer.DoorMoveable)
+                                continue;
+
+                            damage *= shellDef.penDamageMultiplier * Settings.CoilgunPenDamageMultiplier;
+                            penDepth++;
+
+                            if (shellDef.maxPen >= 0 && penDepth > shellDef.maxPen)
+                            {
+                                keepGoing = false;
+                                stoppedAfterHitting = b.LabelCap;
+                            }
+                        }
                     }
                     catch (Exception e)
                     {
@@ -573,6 +578,14 @@ namespace RimForge.Buildings
             RemoveCapacitorPower(Settings.CoilgunBasePowerReq);
             ClearLoadedShell();
             Core.Log($"Hit {affected} things for total {totalDamage} damage, scanned {cells} of {list.Count} cells.");
+
+            if (Settings.CoilgunDisplayDamageReport)
+            {
+                if(stoppedAfterHitting != null)
+                    Messages.Message("RF.Coilgun.DamageReportStopped".Translate(shellDef.LabelCap, affected, totalDamage, stoppedAfterHitting), MessageTypeDefOf.NeutralEvent, false);
+                else
+                    Messages.Message("RF.Coilgun.DamageReport".Translate(shellDef.LabelCap, affected, totalDamage), MessageTypeDefOf.NeutralEvent, false);
+            }
         }
 
         private void DoMuzzleFlash()
@@ -683,7 +696,7 @@ namespace RimForge.Buildings
             if (Top == null)
                 Setup();
 
-            GetCapacitorState(out int capCount, out float stored);
+            GetCapacitorState(out int capCount, out var _);
 
             if (capCount == 0)
             {

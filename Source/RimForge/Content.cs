@@ -8,6 +8,7 @@ namespace RimForge
     {
         public static readonly Texture2D SignalIcon, CopyIcon, PasteIcon, LinkIcon, RitualStartIcon;
         public static readonly Texture2D BuildBlueprintIcon, RitualGearTexture, CapacitorCharge;
+        public static readonly Texture2D ArrowIcon;
 
         public static Graphic ForgeIdle, ForgeGlowAll, ForgeGlowSides;
         public static Graphic HEFueledIdle, HEFueledGlow;
@@ -21,10 +22,12 @@ namespace RimForge
 
         public static Graphic RitualCircle, RitualCircleText, RitualGear, RitualBall;
         public static Graphic RitualSymbolA, RitualSymbolB;
+        public static Graphic[] GreenhouseActiveFrames;
 
         static Content()
         {
             SignalIcon         = ContentFinder<Texture2D>.Get("RF/UI/Signal");
+            ArrowIcon          = ContentFinder<Texture2D>.Get("RF/UI/Arrow");
             CopyIcon           = ContentFinder<Texture2D>.Get("RF/UI/Copy");
             PasteIcon          = ContentFinder<Texture2D>.Get("RF/UI/Paste");
             LinkIcon           = ContentFinder<Texture2D>.Get("RF/UI/Link");
@@ -124,6 +127,24 @@ namespace RimForge
             HEPoweredIdle = Make("RF/Buildings/HeatingElement_PoweredIdle");
             HEPoweredPowerOn = Make("RF/Buildings/HeatingElement_PoweredPowerOn");
             HEPoweredGlow = Make("RF/Buildings/HeatingElement_PoweredGlow");
+        }
+
+        internal static void LoadGreenhouseFrames(Building greenhouse)
+        {
+            var gd = greenhouse.DefaultGraphic.data;
+            Graphic Make(string path)
+            {
+                return GraphicDatabase.Get(gd.graphicClass, path, gd.shaderType.Shader, Vector2.one, Color.white, Color.white, gd, gd.shaderParameters);
+            }
+
+            GreenhouseActiveFrames = new Graphic[15];
+            for (int i = 0; i < GreenhouseActiveFrames.Length; i++)
+            {
+                int frameNum = i * 2;
+                string name = frameNum.ToString().PadLeft(4, '0');
+                string path = $"RF/Buildings/Greenhouse/{name}";
+                GreenhouseActiveFrames[i] = Make(path);
+            }
         }
     }
 }
