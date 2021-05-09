@@ -20,6 +20,9 @@
     <placeWorkers>
       <li>PlaceWorker_Heater</li>
     </placeWorkers>
+    <researchPrerequisites>
+      <li>RF_Research_Forge</li>
+    </researchPrerequisites> 
   </ThingDef>
 
   <RimForge.HeatingElementDef ParentName="RF_HeatingElementBase">

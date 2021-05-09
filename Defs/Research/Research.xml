@@ -20,9 +20,22 @@
     <description>Investigate the ritual that grants the Blessing of Zir at the cost of a human sacrifice.
 Enables you to build the Ritual Core.</description>
     <baseCost>1000</baseCost>
-    <techLevel>Indistrial</techLevel>
+    <techLevel>Industrial</techLevel>
     <researchViewX>1.00</researchViewX>
     <researchViewY>6.60</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RF_Research_Forge</defName>
+    <label>alloy forge</label>
+    <description>Learn how the build the forge, a building that allows you to create powerful metal alloys.</description>
+    <baseCost>600</baseCost>
+    <techLevel>Medieval</techLevel>
+    <prerequisites>
+      <li>Smithing</li>
+    </prerequisites>
+    <researchViewX>2.00</researchViewX>
+    <researchViewY>3.50</researchViewY>
   </ResearchProjectDef>
 
 </Defs>

@@ -50,7 +50,10 @@
     <costList>
       <Steel>350</Steel>
       <ComponentIndustrial>8</ComponentIndustrial>
-    </costList>    
+    </costList>   
+    <researchPrerequisites>
+      <li>RF_Research_Forge</li>
+    </researchPrerequisites> 
     <inspectorTabs>
       <li>ITab_Bills</li>
      </inspectorTabs>
