@@ -4,9 +4,9 @@
     <ThingDef ParentName="MoteBase">
         <defName>RF_Motes_Growth</defName>
         <graphicData>
-            <texPath>RF/Motes/GrowthMotes</texPath>
+            <texPath>RF/Motes/GrowthMotes/GrowthMote</texPath>
             <shaderType>MoteGlow</shaderType>
-            <graphicClass>Graphic_Random</graphicClass>
+            <!-- <graphicClass>Graphic_Random</graphicClass> -->
         </graphicData>
         <altitudeLayer>MoteOverhead</altitudeLayer>
         <drawOffscreen>false</drawOffscreen>

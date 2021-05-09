@@ -2,10 +2,9 @@
 ENDTAGS
 
 #!How to set up#
-#First you will need to have a power grid with at least 1 regular battery.
-Then you will have to build a Capacitor and connect it to the same power grid.#
+#You must build at least 1 capacitor and connect it to the same power grid as the coilgun:#
 @RF_Capacitor@
-#This capacitor will 'steal' energy out of the battery, in order to charge itself first.
+#This capacitor will charge over time. Note that it does not output power like a regular battery.
 Now you can build the Coilgun in a strategic location.#
 #<b>Important:</b>
 The coilgun has a minumum range that is aproximately as large as the radius of it's barrel.

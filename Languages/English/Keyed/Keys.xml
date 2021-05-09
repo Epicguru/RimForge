@@ -164,7 +164,7 @@ These Corrupted raiders are:
 
 <RF.Greenhouse.RoomMissing>There is no greenhouse room!</RF.Greenhouse.RoomMissing>
 <RF.Greenhouse.RoomOutdoors>The greenhouse area is not an enclosed room!</RF.Greenhouse.RoomOutdoors>
-<RF.Greenhouse.RoomNotSealed>The greenhouse room is not airtight. Make sure it has a roof and that there are no air vents.</RF.Greenhouse.RoomNotSealed>
+<RF.Greenhouse.RoomNotSealed>The greenhouse room does not have a roof.</RF.Greenhouse.RoomNotSealed>
 <RF.Greenhouse.RoomTooBig>The greenhouse room is too large. Max size is {0} cells, current size is {1} cells.</RF.Greenhouse.RoomTooBig>
 
  </LanguageData>
