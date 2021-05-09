@@ -19,6 +19,10 @@ Note: for performance reasons, the plant's growth rate stat does not appear to c
     <designationCategory>Misc</designationCategory>
     <drawerType>RealtimeOnly</drawerType>
     <selectable>true</selectable>
+    <fillPercent>1</fillPercent>
+    <coversFloor>true</coversFloor>
+    <holdsRoof>true</holdsRoof>
+    <blockLight>true</blockLight>
     <canOverlapZones>false</canOverlapZones>
     <castEdgeShadows>true</castEdgeShadows>
     <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>

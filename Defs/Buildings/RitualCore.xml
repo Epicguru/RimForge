@@ -28,6 +28,9 @@ Praise the machine god!</description>
     <altitudeLayer>BuildingOnTop</altitudeLayer>
     <pathCost>20</pathCost>
     <size>(1, 1)</size>
+    <researchPrerequisites>
+      <li>RF_Research_Ritual</li>
+    </researchPrerequisites>
     <costList>
       <Steel>20</Steel>
       <ComponentIndustrial>4</ComponentIndustrial>

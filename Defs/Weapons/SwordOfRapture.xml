@@ -29,7 +29,7 @@ People who hold this weapon feel it's warmth radiating through them, increased e
       <ComponentSpacer>4</ComponentSpacer>
     </costList>
     <recipeMaker>
-      <researchPrerequisite>LongBlades</researchPrerequisite>
+      <researchPrerequisite>RF_Research_Ritual</researchPrerequisite>
       <skillRequirements>
         <Crafting>10</Crafting>
       </skillRequirements>
