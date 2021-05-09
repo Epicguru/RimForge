@@ -1,5 +1,4 @@
-﻿using RimForge.Comps;
-using RimForge.Effects;
+﻿using RimForge.Effects;
 using RimWorld;
 using System;
 using System.Collections.Generic;

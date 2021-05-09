@@ -1,0 +1,28 @@
+
+<Defs>
+
+  <ResearchProjectDef>
+    <defName>RF_Research_Coilgun</defName>
+    <label>liandry coilgun</label>
+    <description>Enables the construction of the Liandry Coilgun, a huge mounted coilgun that can fire through mountains.</description>
+    <baseCost>2500</baseCost>
+    <techLevel>Spacer</techLevel>
+    <prerequisites>
+      <li>GunTurrets</li>
+    </prerequisites>
+    <researchViewX>10.00</researchViewX>
+    <researchViewY>3.60</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RF_Research_Ritual</defName>
+    <label>Blessing of Zir ritual</label>
+    <description>Investigate the ritual that grants the Blessing of Zir at the cost of a human sacrifice.
+Enables you to build the Ritual Core.</description>
+    <baseCost>1000</baseCost>
+    <techLevel>Indistrial</techLevel>
+    <researchViewX>1.00</researchViewX>
+    <researchViewY>6.60</researchViewY>
+  </ResearchProjectDef>
+
+</Defs>
