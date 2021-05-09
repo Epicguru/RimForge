@@ -84,6 +84,8 @@ WARNING: Firing cannot be cancelled once started!</RF.Coilgun.AttackDesc>
 <RF.Coilgun.ChangeShellLabel>Change shell type</RF.Coilgun.ChangeShellLabel>
 <RF.Coilgun.ChangeShellDesc>Change the type of shell that is loaded into this coilgun.
 This action ejects the current shell onto the ground, and a colonist will have to load a new one.</RF.Coilgun.ChangeShellDesc>
+<RF.Coilgun.DamageReport>The {0} hit {1} objects for a total of {2} damage.</RF.Coilgun.DamageReport>
+<RF.Coilgun.DamageReportStopped>The {0} hit {1} objects for a total of {2} damage, but disintegrated upon hitting {3}.</RF.Coilgun.DamageReportStopped>
 
 <RF.Cap.Stored>Stored power: {0}%</RF.Cap.Stored>
 
@@ -166,8 +168,8 @@ These Corrupted raiders are:
 <RF.Greenhouse.RoomOutdoors>The greenhouse area is not an enclosed room!</RF.Greenhouse.RoomOutdoors>
 <RF.Greenhouse.RoomNotSealed>The greenhouse room does not have a roof.</RF.Greenhouse.RoomNotSealed>
 <RF.Greenhouse.RoomTooBig>The greenhouse room is too large. Max size is {0} cells, current size is {1} cells.</RF.Greenhouse.RoomTooBig>
-<RF.Greenhouse.Rotate>Change gas output position</RF.Greenhouse.Rotate>
-<RF.Greenhouse.RotateDesc>Adjust the position where this controller will input and output gas (the blue circle).
+<RF.Greenhouse.Rotate>Change gas output side</RF.Greenhouse.Rotate>
+<RF.Greenhouse.RotateDesc>Adjust the side where this controller will input and output gas (the blue circle).
 Allows you to build the controller into a wall and target the correct room.</RF.Greenhouse.RotateDesc>
 
  </LanguageData>

@@ -64,7 +64,8 @@
     <defName>RF_Capacitor</defName>
     <label>coilgun capacitor</label>
     <description>An electrical capacitor that is required to fire a Liandry Coilgun.
-Rather than taking in energy directly, these capacitors drain energy from batteries, so at least 1 battery must be placed in the same power grid as this capacitor.</description>
+Charges up over time.
+Note: Will not output electricity like a normal battery.</description>
   </ThingDef>
 
 </Defs>

@@ -33,6 +33,8 @@ namespace RimForge
         public static float CoilgunBasePowerReq = 1;
         [TweakValue("RimForge", 0, 1)]
         public static bool CoilgunSplatterBlood = true;
+        [TweakValue("RimForge", 0, 1)]
+        public static bool CoilgunDisplayDamageReport = true;
 
         // RITUAL
         [TweakValue("RimForge", 0f, 1f)]

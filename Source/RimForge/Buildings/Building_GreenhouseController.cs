@@ -220,7 +220,10 @@ namespace RimForge.Buildings
                     cellRotation++;
                     if (cellRotation >= 4)
                         cellRotation = 0;
-                }
+                },
+                icon = Content.ArrowIcon,
+                defaultIconColor = Color.cyan,
+                iconAngle = new Rot4(cellRotation).AsAngle - 90f
             };
         }
 
