@@ -54,9 +54,6 @@ However, damage is reduced after passing through solid objects.</description>
     <researchPrerequisites>
       <li>RF_Research_Coilgun</li>
     </researchPrerequisites>
-    <descriptionHyperlinks>
-      <ThingDef>RF_Capacitor</ThingDef>
-    </descriptionHyperlinks>
     <designationHotKey>Misc3</designationHotKey>
     <uiIconScale>1</uiIconScale>
     <comps>

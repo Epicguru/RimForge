@@ -17,7 +17,7 @@ The Coilgun must be reloaded by a colonist after every shot.
 You can change what ammo type the Coilgun uses by selecting it and pressing <i>Change shell type</i>#
 @RF_CoilgunShellAP@
 @RF_CoilgunShellSP@
-@MachiningTable@
+@TableMachining@
 
 #!Firing#
 #There are 3 conditions for the Coilgun to fire:
