@@ -38,4 +38,17 @@ Enables you to build the Ritual Core.</description>
     <researchViewY>3.50</researchViewY>
   </ResearchProjectDef>
 
+  <ResearchProjectDef>
+    <defName>RF_Research_Greenhouses</defName>
+    <label>greenhouse controller</label>
+    <description>Build a greenhouse controller using advanced alloys, allowing your colonists to greatly increase the growing speed of indoor crops.</description>
+    <baseCost>1500</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Hydroponics</li>
+    </prerequisites>
+    <researchViewX>6.00</researchViewX>
+    <researchViewY>0.50</researchViewY>
+  </ResearchProjectDef>
+
 </Defs>

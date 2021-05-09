@@ -33,9 +33,9 @@ Note: for performance reasons, the plant's growth rate stat does not appear to c
     <size>(1, 1)</size>
     <rotatable>false</rotatable>
     <costList>
-      <Steel>20</Steel>
-      <ComponentSpacer>4</ComponentSpacer>
+      <RF_GildedPlasteel>100</RF_GildedPlasteel>
       <RF_Copper>50</RF_Copper>
+      <ComponentSpacer>4</ComponentSpacer>
     </costList>
     <comps>
       <li Class="CompProperties_Power">
@@ -46,6 +46,9 @@ Note: for performance reasons, the plant's growth rate stat does not appear to c
       </li>
       <li Class="CompProperties_Flickable"></li>
     </comps>
+    <researchPrerequisites>
+      <li>RF_Research_Greenhouses</li>
+    </researchPrerequisites>
     <statBases>
       <MaxHitPoints>100</MaxHitPoints>
       <WorkToBuild>5000</WorkToBuild>
