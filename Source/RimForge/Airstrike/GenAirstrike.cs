@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RimForge.Effects;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -44,25 +45,61 @@ namespace RimForge.Airstrike
                 int duration = GetAirstrikeDuration(debug_FirstPoint.Value, final);
                 tempStrikes.Clear();
 
+                var map = Find.CurrentMap;
+
                 int index = 0;
+                int startDelay = 120;
                 foreach (var point in GeneratePoints(debug_FirstPoint.Value, final, count))
                 {
                     MoteAt(point);
 
                     float p = index / (count - 1f);
-                    int tick = Mathf.RoundToInt(duration * p);
+                    int tick = Mathf.RoundToInt(duration * p) + startDelay;
 
                     var strike = new SingleStrike();
                     strike.Cell = point;
                     strike.ExplodeOnTick = tick;
                     tempStrikes.Add(strike);
 
+                    // Bomb drop effect.
+                    var bomb = new BombShadowEffect(point.ToVector3ShiftedWithAltitude(AltitudeLayer.MoteOverhead), tick);
+                    bomb.Spawn(map);
+
                     index++;
                 }
-                debug_FirstPoint = null;
 
-                Find.CurrentMap.GetComponent<AirstrikeComp>().Spawn(new AirstrikeInstance(tempStrikes));
+                map.GetComponent<AirstrikeComp>().Spawn(new AirstrikeInstance(tempStrikes));
                 tempStrikes.Clear();
+
+                // Make drone shadow.
+                IntVec3 droneStart = AtEdgeOfMap(map, debug_FirstPoint.Value, final, 1);
+                IntVec3 droneEnd = AtEdgeOfMap(map, debug_FirstPoint.Value, final, -1);
+                int time = Mathf.RoundToInt((droneStart - droneEnd).LengthHorizontal * 0.38f);
+
+                var drone = new DroneShadowEffect(droneStart.ToVector3ShiftedWithAltitude(AltitudeLayer.Skyfaller), droneEnd.ToVector3ShiftedWithAltitude(AltitudeLayer.Skyfaller), time);
+                drone.Spawn(map);
+
+                debug_FirstPoint = null;
+            }
+        }
+
+        private static IntVec3 AtEdgeOfMap(Map map, IntVec3 a, IntVec3 b, int sign)
+        {
+            Vector3 dir = (a.ToVector3Shifted() - b.ToVector3Shifted()).normalized;
+            const float STEP = 10f;
+
+            if (a == b)
+                return a;
+
+            var bounds = new BoundsInt(0, 0, 0, map.Size.x, map.Size.y, map.Size.z);
+
+            Vector3 current = a.ToVector3Shifted();
+            while (true)
+            {
+                current += dir * STEP * sign;
+                IntVec3 pos = current.ToIntVec3();
+                if (!bounds.Contains(new Vector3Int(pos.x, pos.y, pos.z)))
+                    return pos;
             }
         }
 

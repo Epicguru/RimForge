@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimForge
@@ -23,6 +24,9 @@ namespace RimForge
         public static Graphic RitualCircle, RitualCircleText, RitualGear, RitualBall;
         public static Graphic RitualSymbolA, RitualSymbolB;
         public static Graphic[] GreenhouseActiveFrames;
+        public static Graphic DroneShadowGraphic;
+        public static Graphic BombShadowGraphic;
+        public static Graphic FallingBombGraphic;
 
         static Content()
         {
@@ -35,6 +39,12 @@ namespace RimForge
             BuildBlueprintIcon = ContentFinder<Texture2D>.Get("RF/UI/BuildBlueprint");
             RitualGearTexture  = ContentFinder<Texture2D>.Get("RF/Effects/RitualGear");
             CapacitorCharge    = ContentFinder<Texture2D>.Get("RF/Effects/CapacitorCharge");
+
+            const float DRONE_RATIO = 343f / 214f;
+            const float DRONE_SCALE = 5f;
+            DroneShadowGraphic = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneShadowSoft", ShaderTypeDefOf.Transparent.Shader, new Vector2(DRONE_SCALE, DRONE_SCALE * DRONE_RATIO), new Color(1, 1, 1, 0.5f), Color.white);
+            BombShadowGraphic = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/BombShadow", ShaderTypeDefOf.Transparent.Shader, new Vector2(1, 1), new Color(1, 1, 1, 1), Color.white);
+            FallingBombGraphic = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/FallingBomb", ShaderTypeDefOf.Transparent.Shader, new Vector2(1, 1), new Color(1, 1, 1, 1), Color.white);
         }
 
         internal static void LoadForgeTextures(Building forge)

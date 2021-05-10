@@ -23,6 +23,11 @@ namespace RimForge.Airstrike
             IsDone = tick >= ExplodeOnTick;
             if (IsDone)
             {
+                // Check for overhead mountain.
+                var roof = Cell.GetRoof(instance.Map);
+                if (roof != null && roof.isThickRoof)
+                    return;
+
                 // Explode!
                 GenExplosion.DoExplosion(Cell, instance.Map, 6, DamageDefOf.Bomb, instance.Instigator);
             }

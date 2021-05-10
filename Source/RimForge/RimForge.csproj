@@ -85,6 +85,7 @@
     <Compile Include="AlloyHelper.cs" />
     <Compile Include="Buildings\Building_Capacitor.cs" />
     <Compile Include="Buildings\Building_Coilgun.cs" />
+    <Compile Include="Buildings\Building_DroneLauncher.cs" />
     <Compile Include="Buildings\Building_ForgeRewritten.cs" />
     <Compile Include="Buildings\Building_FueledHeatingElement.cs" />
     <Compile Include="Buildings\Building_GreenhouseController.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Buildings\Building_WallConnector.cs" />
     <Compile Include="Buildings\Building_WirelessPowerPylon.cs" />
     <Compile Include="Buildings\Util\DrawPart.cs" />
+    <Compile Include="Buildings\Util\ICustomTargetingUser.cs" />
     <Compile Include="Buildings\Util\PlaceWorker_WallConnector.cs" />
     <Compile Include="Buildings\Util\RitualTracker.cs" />
     <Compile Include="Buildings\Util\RodTracker.cs" />
@@ -122,6 +124,8 @@
     <Compile Include="Defs\HeatingElementDef.cs" />
     <Compile Include="Defs\IngredientValueGetter_IgnoreVolume.cs" />
     <Compile Include="Effects\Bezier.cs" />
+    <Compile Include="Effects\BombShadowEffect.cs" />
+    <Compile Include="Effects\DroneShadowEffect.cs" />
     <Compile Include="Effects\ElectricArc.cs" />
     <Compile Include="Effects\BezierElectricArc.cs" />
     <Compile Include="Effects\FollowBezierSpark.cs" />

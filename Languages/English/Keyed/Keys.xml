@@ -85,7 +85,7 @@ WARNING: Firing cannot be cancelled once started!</RF.Coilgun.AttackDesc>
 <RF.Coilgun.ChangeShellDesc>Change the type of shell that is loaded into this coilgun.
 This action ejects the current shell onto the ground, and a colonist will have to load a new one.</RF.Coilgun.ChangeShellDesc>
 <RF.Coilgun.DamageReport>The {0} hit {1} objects for a total of {2} damage.</RF.Coilgun.DamageReport>
-<RF.Coilgun.DamageReportStopped>The {0} hit {1} objects for a total of {2} damage, but disintegrated upon hitting {3}.</RF.Coilgun.DamageReportStopped>
+<RF.Coilgun.DamageReportStopped>The {0} hit {1} objects for a total of {2} damage, before disintegrated upon hitting {3}.</RF.Coilgun.DamageReportStopped>
 
 <RF.Cap.Stored>Stored power: {0}%</RF.Cap.Stored>
 
