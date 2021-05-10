@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="Airstrike\AirstrikeComp.cs" />
     <Compile Include="Airstrike\AirstrikeInstance.cs" />
+    <Compile Include="Airstrike\GenAirstrike.cs" />
     <Compile Include="Airstrike\SingleStrike.cs" />
     <Compile Include="AlloyHelper.cs" />
     <Compile Include="Buildings\Building_Capacitor.cs" />

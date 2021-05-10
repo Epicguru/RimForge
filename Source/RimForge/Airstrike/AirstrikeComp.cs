@@ -11,6 +11,15 @@ namespace RimForge.Airstrike
         {
         }
 
+        public void Spawn(AirstrikeInstance instance)
+        {
+            if (instance == null || airstrikes.Contains(instance))
+                return;
+
+            instance.Map = this.map;
+            airstrikes.Add(instance);
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();

@@ -12,6 +12,13 @@ namespace RimForge.Airstrike
         private List<SingleStrike> strikes = new List<SingleStrike>();
         private int tick;
 
+        public AirstrikeInstance() { }
+
+        public AirstrikeInstance(IEnumerable<SingleStrike> strikes)
+        {
+            this.strikes.AddRange(strikes);
+        }
+
         public void ExposeData()
         {
             Scribe_Collections.Look(ref strikes, "strikePositions", LookMode.Deep);
