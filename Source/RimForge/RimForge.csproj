@@ -142,6 +142,7 @@
     <Compile Include="Misc\WaveOfHate.cs" />
     <Compile Include="Patches\Patch_IncidentWorker_RaidEnemy_GenerateRaidLoot.cs" />
     <Compile Include="Patches\Patch_DefOfHelper_RebindAllDefOfs.cs" />
+    <Compile Include="Patches\Patch_Targeter_StopTargeting.cs" />
     <Compile Include="Patches\Patch_Pawn_Kill.cs" />
     <Compile Include="Patches\Patch_BillProduction_DoInterface.cs" />
     <Compile Include="Patches\Patch_BillProduction_ShouldDoNow.cs" />

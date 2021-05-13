@@ -10,6 +10,7 @@ namespace RimForge.Airstrike
     {
         private static IntVec3? debug_FirstPoint;
         private static List<SingleStrike> tempStrikes = new List<SingleStrike>();
+        private static List<IntVec3> tempCells = new List<IntVec3>();
 
         private static void MoteAt(IntVec3 cell)
         {
@@ -17,21 +18,21 @@ namespace RimForge.Airstrike
         }
 
         [DebugAction("RimForge", "Airstrike (3)", actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]
-        private static void Debug_DrawPoints3() => Debug_DrawPoints(3);
+        private static void Debug_DoStrike3() => Debug_DoStrike(3);
 
         [DebugAction("RimForge", "Airstrike (5)", actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]
-        private static void Debug_DrawPoints5() => Debug_DrawPoints(5);
+        private static void Debug_DoStrike5() => Debug_DoStrike(5);
 
         [DebugAction("RimForge", "Airstrike (10)", actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]
-        private static void Debug_DrawPoints10() => Debug_DrawPoints(10);
+        private static void Debug_DoStrike10() => Debug_DoStrike(10);
 
         [DebugAction("RimForge", "Airstrike (20)", actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]
-        private static void Debug_DrawPoints20() => Debug_DrawPoints(20);
+        private static void Debug_DoStrike20() => Debug_DoStrike(20);
 
         [DebugAction("RimForge", "Airstrike (50)", actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]
-        private static void Debug_DrawPoints50() => Debug_DrawPoints(50);
+        private static void Debug_DoStrike50() => Debug_DoStrike(50);
 
-        private static void Debug_DrawPoints(int count)
+        private static void Debug_DoStrike(int count)
         {
             if (debug_FirstPoint == null)
             {
@@ -41,46 +42,75 @@ namespace RimForge.Airstrike
             }
             else
             {
-                IntVec3 final = UI.MouseCell();
-                int duration = GetAirstrikeDuration(debug_FirstPoint.Value, final);
-                tempStrikes.Clear();
-
-                var map = Find.CurrentMap;
-
-                int index = 0;
-                int startDelay = 120;
-                foreach (var point in GeneratePoints(debug_FirstPoint.Value, final, count))
-                {
-                    MoteAt(point);
-
-                    float p = index / (count - 1f);
-                    int tick = Mathf.RoundToInt(duration * p) + startDelay;
-
-                    var strike = new SingleStrike();
-                    strike.Cell = point;
-                    strike.ExplodeOnTick = tick;
-                    tempStrikes.Add(strike);
-
-                    // Bomb drop effect.
-                    var bomb = new BombShadowEffect(point.ToVector3ShiftedWithAltitude(AltitudeLayer.MoteOverhead), tick);
-                    bomb.Spawn(map);
-
-                    index++;
-                }
-
-                map.GetComponent<AirstrikeComp>().Spawn(new AirstrikeInstance(tempStrikes));
-                tempStrikes.Clear();
-
-                // Make drone shadow.
-                IntVec3 droneStart = AtEdgeOfMap(map, debug_FirstPoint.Value, final, 1);
-                IntVec3 droneEnd = AtEdgeOfMap(map, debug_FirstPoint.Value, final, -1);
-                int time = Mathf.RoundToInt((droneStart - droneEnd).LengthHorizontal * 0.38f);
-
-                var drone = new DroneShadowEffect(droneStart.ToVector3ShiftedWithAltitude(AltitudeLayer.Skyfaller), droneEnd.ToVector3ShiftedWithAltitude(AltitudeLayer.Skyfaller), time);
-                drone.Spawn(map);
-
+                DoStrike(debug_FirstPoint.Value, UI.MouseCell(), count);
                 debug_FirstPoint = null;
             }
+        }
+
+        public static void DoStrike(IntVec3 start, IntVec3 end, int bombCount)
+        {
+            if (bombCount < 2)
+                bombCount = 2;
+
+            int duration = GetAirstrikeDuration(start, end);
+            tempStrikes.Clear();
+
+            var map = Find.CurrentMap;
+
+            int index = 0;
+            int startDelay = 120;
+            foreach (var point in GeneratePoints(start, end, bombCount))
+            {
+                MoteAt(point);
+
+                float p = index / (bombCount - 1f);
+                int tick = Mathf.RoundToInt(duration * p) + startDelay;
+
+                var strike = new SingleStrike();
+                strike.Cell = point;
+                strike.ExplodeOnTick = tick;
+                tempStrikes.Add(strike);
+
+                // Bomb drop effect.
+                var bomb = new BombShadowEffect(point.ToVector3ShiftedWithAltitude(AltitudeLayer.MoteOverhead), tick);
+                bomb.Spawn(map);
+
+                index++;
+            }
+
+            map.GetComponent<AirstrikeComp>().Spawn(new AirstrikeInstance(tempStrikes));
+            tempStrikes.Clear();
+
+            // Make drone shadow.
+            IntVec3 droneStart = AtEdgeOfMap(map, start, end, 1);
+            IntVec3 droneEnd = AtEdgeOfMap(map, start, end, -1);
+            int time = Mathf.RoundToInt((droneStart - droneEnd).LengthHorizontal * 0.38f);
+
+            var drone = new DroneShadowEffect(droneStart.ToVector3ShiftedWithAltitude(AltitudeLayer.Skyfaller), droneEnd.ToVector3ShiftedWithAltitude(AltitudeLayer.Skyfaller), time);
+            drone.Spawn(map);
+        }
+
+        public static void DrawStrikePreview(IntVec3 start, IntVec3 end, Map map, int bombCount, float explosionRadius)
+        {
+            int index = 0;
+            tempCells.Clear();
+            foreach(var cell in GeneratePoints(start, end, bombCount))
+            {
+                tempCells.Add(cell);
+
+                int t = (int)(Time.unscaledTime * 6f);
+                t = t % bombCount;
+                bool drawRadius = t == index;
+                bool thickRoof = cell.GetRoof(map)?.isThickRoof ?? false;
+
+                if (explosionRadius > 0 && drawRadius && !thickRoof)
+                {
+                    GenExplosion.RenderPredictedAreaOfEffect(cell, explosionRadius);
+                }
+
+                index++;
+            }
+            GenDraw.DrawFieldEdges(tempCells, Color.red);
         }
 
         private static IntVec3 AtEdgeOfMap(Map map, IntVec3 a, IntVec3 b, int sign)

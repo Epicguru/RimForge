@@ -3,6 +3,7 @@ using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RimForge.Patches;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
@@ -782,7 +783,7 @@ namespace RimForge.Buildings
                 {
                     canTargetLocations = true
                 },
-                action = target =>
+                action = (target, _) =>
                 {
                     if (!target.IsValid)
                         return;
@@ -793,6 +794,8 @@ namespace RimForge.Buildings
                     CurrentTargetInfo = target;
                     LastKnowPos = Position;
                 },
+                icon = Content.CoilgunShootIcon,
+                defaultIconColor = new Color32(252, 194, 3, 255),
                 user = this,
                 disabled = capCount <= 0 || capPower < Settings.CoilgunBasePowerReq || !hasPower || !hasShell,
                 disabledReason = !hasPower ? "RF.Coilgun.DisabledNoPower".Translate() : !hasShell ? "RF.Coilgun.DisabledNoShell".Translate() : "RF.Coilgun.DisabledNoCaps".Translate()
@@ -829,17 +832,17 @@ namespace RimForge.Buildings
             return capState;
         }
 
-        public void OnStartTargeting()
+        public void OnStartTargeting(int _)
         {
             DrawAffectedCells = true;
         }
 
-        public void OnStopTargeting()
+        public void OnStopTargeting(int _)
         {
             DrawAffectedCells = false;
         }
 
-        public void SetTargetInfo(LocalTargetInfo info)
+        public void SetTargetInfo(LocalTargetInfo info, int _)
         {
             CurrentTargetInfo = info;
         }
@@ -847,26 +850,41 @@ namespace RimForge.Buildings
 
     public class Command_TargetCustom : Command
     {
-        public Action<LocalTargetInfo> action;
+        public Action<LocalTargetInfo, int> action;
         public TargetingParameters targetingParams;
         public ICustomTargetingUser user;
+        public int times = 1;
+        public Func<bool> continueCheck;
 
         public override void ProcessInput(Event ev)
         {
             base.ProcessInput(ev);
+            StartTargeting(0);
+        }
+
+        private void StartTargeting(int index)
+        {
             SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
-            Find.Targeter.BeginTargeting(this.targetingParams, action, targ =>
+            user.OnStartTargeting(index);
+            Find.Targeter.BeginTargeting(targetingParams, t => action(t, index), targ =>
             {
                 if (targ.IsValid)
                 {
-                    user.SetTargetInfo(targ);
+                    user.SetTargetInfo(targ, index);
                     GenDraw.DrawTargetHighlight(targ);
                 }
             }, null, actionWhenFinished: () =>
             {
-                user.OnStopTargeting();
+                user.OnStopTargeting(index);
+                int nextIndex = index + 1;
+                if (nextIndex < times && (continueCheck?.Invoke() ?? true))
+                {
+                    Patch_Targeter_StopTargeting.PerformOnce = () =>
+                    {
+                        StartTargeting(nextIndex);
+                    };
+                }
             });
-            user.OnStartTargeting();
         }
 
         public override bool InheritInteractionsFrom(Gizmo other) => false;

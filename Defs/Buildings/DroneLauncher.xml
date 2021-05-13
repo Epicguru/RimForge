@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RF_DroneLauncher</defName>
+    <label>strike drone launcher</label>
+    <description>A station for deploying an unmanned air-strike drone.
+The drone can be sent to carpet bomb invading raiders or it can travel long distances to provide support when attacking enemy bases.</description>
+    <thingClass>RimForge.Buildings.Building_DroneLauncher</thingClass>
+    <graphicData>
+      <texPath>RF/Buildings/Greenhouse/Idle</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,2)</drawSize>
+    </graphicData>
+    <passability>Impassable</passability>
+    <designationCategory>Security</designationCategory>
+    <drawerType>RealtimeOnly</drawerType>
+    <selectable>true</selectable>
+    <fillPercent>1</fillPercent>
+    <coversFloor>true</coversFloor>
+    <holdsRoof>false</holdsRoof>
+    <blockLight>false</blockLight>
+    <canOverlapZones>false</canOverlapZones>
+    <castEdgeShadows>true</castEdgeShadows>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <tickerType>Normal</tickerType>
+    <drawOffscreen>true</drawOffscreen>
+    <category>Building</category>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <size>(3, 2)</size>
+    <rotatable>false</rotatable>
+    <costList>
+      <RF_GildedPlasteel>100</RF_GildedPlasteel>
+      <RF_Copper>50</RF_Copper>
+      <ComponentSpacer>4</ComponentSpacer>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <transmitsPower>false</transmitsPower>
+        <shortCircuitInRain>false</shortCircuitInRain>
+        <basePowerConsumption>200</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"></li>
+    </comps>
+    <!-- <researchPrerequisites>
+      <li>RF_Research_Greenhouses</li>
+    </researchPrerequisites> -->
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <WorkToBuild>8000</WorkToBuild>
+      <Flammability>0.25</Flammability>
+      <Beauty>-2</Beauty>
+      <Cleanliness>1</Cleanliness>
+      <Mass>100</Mass>
+    </statBases>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <constructionSkillPrerequisite>14</constructionSkillPrerequisite>
+  </ThingDef>
+
+</Defs>
