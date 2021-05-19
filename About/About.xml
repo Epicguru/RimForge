@@ -9,6 +9,7 @@
   <url>https://github.com/Epicguru/RimForge</url>
   <description>A mid-tech modpack that add new materials, weapons, turrets, power, utilities and more:
 
+* Power lines (wow, very pretty, such aesthetic).
 * Wireless electrical power.
 * Tesla coils! Fry those raiders!
 * A huge mounted coilgun that can fire through mountains.
@@ -19,6 +20,8 @@
 * A greenhouse controller, to greatly accelerate crop growth indoors.
 * Mercury Ultraweave, an upgrade from devilstrand and hyperweave.
 * A 'blessing' and 'curse' system. Sacrifice a prisoner to receive the blessing of the machine god, but beware cursed raiders.
+* Blessed and Cursed unique weapons, that have special effects and buffs / debuffs when used.
+* A strike drone. You can add carpet bombing tribals to your list of crimes against humanity.
 
 Also supports:
 
@@ -47,5 +50,6 @@ Shows useful information about the mod's items and buildings, such as how to set
   <loadAfter>
     <li>brrainz.harmony</li>
     <li>co.uk.epicguru.ingamewiki</li>
+    <li>CETeam.CombatExtended</li>
   </loadAfter>
 </ModMetaData>

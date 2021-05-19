@@ -103,6 +103,7 @@
     <Compile Include="Buildings\Util\PlaceWorker_WallConnector.cs" />
     <Compile Include="Buildings\Util\RitualTracker.cs" />
     <Compile Include="Buildings\Util\RodTracker.cs" />
+    <Compile Include="CombatExtended\CECompat.cs" />
     <Compile Include="Command_TargetWithMessage.cs" />
     <Compile Include="Comps\CompCapacitor.cs" />
     <Compile Include="Comps\CompProperties_Capacitor.cs" />
@@ -158,7 +159,7 @@
     <Compile Include="Patches\Patch_SkillRequirement_Multiple.cs" />
     <Compile Include="Patches\Patch_TraitSet_GainTrait.cs" />
     <Compile Include="Patches\Patch_WeatherEvent_LightningStrike_FireEvent.cs" />
-    <Compile Include="PostLoadDefs.cs" />
+    <Compile Include="StartupLoading.cs" />
     <Compile Include="Power\PowerChannel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Defs\RatioHolder.cs" />

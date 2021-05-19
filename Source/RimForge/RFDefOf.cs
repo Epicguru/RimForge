@@ -38,5 +38,6 @@ namespace RimForge
         public static ThingDef Column;
         public static BodyPartDef Spine;
         public static ThingCategoryDef WeaponsMelee;
+        public static ThingDef Shell_HighExplosive;
     }
 }

@@ -47,7 +47,14 @@ namespace RimForge
             BombShadowGraphic = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/BombShadow", ShaderTypeDefOf.Transparent.Shader, new Vector2(1, 1), new Color(1, 1, 1, 1), Color.white);
             FallingBombGraphic = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/FallingBomb", ShaderTypeDefOf.Transparent.Shader, new Vector2(1, 1), new Color(1, 1, 1, 1), Color.white);
 
-            DroneNorth = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneEast", ShaderTypeDefOf.Cutout.Shader, new Vector2(1.749f, 2.540f), new Color(1, 1, 1, 1), Color.white);
+            const float SCALE = 3.5f;
+            float ratio = 867f / 597f;
+            DroneEast = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneEast", ShaderTypeDefOf.Cutout.Shader, new Vector2(SCALE, SCALE * ratio), new Color(1, 1, 1, 1), Color.white);
+            DroneWest = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneWest", ShaderTypeDefOf.Cutout.Shader, new Vector2(SCALE, SCALE * ratio), new Color(1, 1, 1, 1), Color.white);
+            ratio = 536f / 986f;
+            DroneNorth = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneNorth", ShaderTypeDefOf.Cutout.Shader, new Vector2(SCALE, SCALE * ratio), new Color(1, 1, 1, 1), Color.white);
+            ratio = 584f / 986f;
+            DroneSouth = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneSouth", ShaderTypeDefOf.Cutout.Shader, new Vector2(SCALE, SCALE * ratio), new Color(1, 1, 1, 1), Color.white);
         }
 
         internal static void LoadForgeTextures(Building forge)

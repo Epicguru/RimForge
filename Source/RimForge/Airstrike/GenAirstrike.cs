@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RimForge.CombatExtended;
 using RimForge.Effects;
 using RimWorld;
 using UnityEngine;
@@ -42,12 +43,13 @@ namespace RimForge.Airstrike
             }
             else
             {
-                DoStrike(debug_FirstPoint.Value, UI.MouseCell(), count);
+                var bomb = CECompat.IsCEActive ? CECompat.GetProjectile(RFDefOf.Shell_HighExplosive) : RFDefOf.Shell_HighExplosive.projectileWhenLoaded;
+                DoStrike(bomb, debug_FirstPoint.Value, UI.MouseCell(), count);
                 debug_FirstPoint = null;
             }
         }
 
-        public static void DoStrike(IntVec3 start, IntVec3 end, int bombCount)
+        public static void DoStrike(ThingDef bombDef, IntVec3 start, IntVec3 end, int bombCount, int delayTicks = 0)
         {
             if (bombCount < 2)
                 bombCount = 2;
@@ -58,7 +60,7 @@ namespace RimForge.Airstrike
             var map = Find.CurrentMap;
 
             int index = 0;
-            int startDelay = 120;
+            int startDelay = 120 + delayTicks;
             foreach (var point in GeneratePoints(start, end, bombCount))
             {
                 MoteAt(point);
@@ -69,6 +71,7 @@ namespace RimForge.Airstrike
                 var strike = new SingleStrike();
                 strike.Cell = point;
                 strike.ExplodeOnTick = tick;
+                strike.ProjectileDef = bombDef;
                 tempStrikes.Add(strike);
 
                 // Bomb drop effect.
@@ -86,7 +89,7 @@ namespace RimForge.Airstrike
             IntVec3 droneEnd = AtEdgeOfMap(map, start, end, -1);
             int time = Mathf.RoundToInt((droneStart - droneEnd).LengthHorizontal * 0.38f);
 
-            var drone = new DroneShadowEffect(droneStart.ToVector3ShiftedWithAltitude(AltitudeLayer.Skyfaller), droneEnd.ToVector3ShiftedWithAltitude(AltitudeLayer.Skyfaller), time);
+            var drone = new DroneShadowEffect(droneStart.ToVector3ShiftedWithAltitude(AltitudeLayer.Skyfaller), droneEnd.ToVector3ShiftedWithAltitude(AltitudeLayer.Skyfaller), time, delayTicks);
             drone.Spawn(map);
         }
 

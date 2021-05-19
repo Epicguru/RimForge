@@ -175,5 +175,8 @@ Allows you to build the controller into a wall and target the correct room.</RF.
 <RF.DL.TargetLabel>Launch strike (local map)</RF.DL.TargetLabel>
 <RF.DL.TargetDesc>Select a position for a drone strike on this map.</RF.DL.TargetDesc>
 <RF.DL.AlreadyTargeting>Already targeting.</RF.DL.AlreadyTargeting>
+<RF.DL.Blocked>Cannot launch, the done is blocked by {0}!</RF.DL.Blocked>
+
+<RF.LoadLabel>RimForge is crunching numbers...</RF.LoadLabel>
 
  </LanguageData>

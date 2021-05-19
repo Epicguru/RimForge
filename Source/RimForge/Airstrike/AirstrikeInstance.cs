@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Verse;
 
 namespace RimForge.Airstrike
@@ -40,7 +41,14 @@ namespace RimForge.Airstrike
 
             foreach (var item in strikes)
             {
-                item.Tick(this, tick);
+                try
+                {
+                    item.Tick(this, tick);
+                }
+                catch(Exception e)
+                {
+                    Core.Error("SingleStrike.Tick() exception:", e);
+                }
             }
 
             var next = strikes[0];

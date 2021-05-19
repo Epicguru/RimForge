@@ -2,14 +2,14 @@
 using RimForge.Comps;
 using System;
 using System.Collections.Generic;
+using RimForge.CombatExtended;
 using Verse;
 
 namespace RimForge
 {
-    [StaticConstructorOnStartup]
-    internal static class PostLoadDefs
+    internal static class StartupLoading
     {
-        static PostLoadDefs()
+        internal static void DoLoad()
         {
             Core.Log("Starting def processing...");
             var watch = new System.Diagnostics.Stopwatch();
@@ -72,6 +72,14 @@ namespace RimForge
             // then it is considered 'part' of this mod's resources.
             foreach (var def in DefDatabase<ThingDef>.AllDefsListForReading)
             {
+                if (!CECompat.IsCEActive)
+                {
+                    if (def.IsShell)
+                    {
+                        Building_DroneLauncher.LoadableBombs.Add(def);
+                    }
+                }
+
                 var extension = def?.GetModExtension<Extension>();
                 if (extension == null)
                     continue;
@@ -88,6 +96,14 @@ namespace RimForge
             
             RFDefOf.RF_Forge.recipes ??= new List<RecipeDef>();
             RFDefOf.RF_Forge.recipes.AddRange(recipes);
+
+            if (CECompat.IsCEActive)
+            {
+                foreach (var item in CECompat.GetCEMortarShells())
+                {
+                    Building_DroneLauncher.LoadableBombs.Add(item);
+                }
+            }
         }
 
         private static void MiscOtherTasks()

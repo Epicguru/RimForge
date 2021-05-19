@@ -526,7 +526,7 @@ namespace RimForge.Buildings
                             continue;
                         if (thing is Pawn p && (p.Downed || p.Dead))
                             continue;
-
+                        
                         Pawn pawn = thing as Pawn;
                         Building b = thing as Building;
                         if (b != null || pawn != null)
@@ -565,8 +565,7 @@ namespace RimForge.Buildings
                                 hasDoneExplosion = true;
                             }
                         }
-
-                        if (b != null || shellDef.pawnsCountAsPen)
+                        if (b != null || (pawn != null && shellDef.pawnsCountAsPen))
                         {
                             if (b != null && b.def.altitudeLayer < AltitudeLayer.DoorMoveable)
                                 continue;
