@@ -3,6 +3,7 @@ ID: RF_Introduction
 Title: Introduction to RimForge
 Icon: RF/Resources/Bronze
 Description: A brief guide to help you explore the RimForge mod.
+Background: RF/UI/RimForgeBG
 
 ENDTAGS
 
@@ -24,9 +25,11 @@ Check out the wiki pages for more info on each alloy.#
 @RF_WirelessPowerPylon@
 
 #!Defences#
-#There are new ultra-powerful defenses to keep your colony safe.
+#There are new ultra-powerful defences to keep your colony safe.
 Front and foremost, the huge <b>Coilgun</b> can kill many enemies in a single shot, even behind cover:#
 @RF_Coilgun@
+A specialized strike drone, to do bombing runs on local targets or travel to distant maps to provide air support:
+@RF_DroneLauncher@
 #For tacticians who would rather keep their enemies alive, the <b>Tesla Coils</b> provide a reliable and convenient way to stun and electrocute any enemies that pass between them.#
 @RF_TeslaCoil@
 @RF_TeslaCoilWireless@
@@ -43,6 +46,8 @@ All are <i>Combat Extended</i> compatible.#
 @RF_StableRifle@
 
 #!Deities#
-#Will you praise <color=red>Machine God Zir</color>?.
+#Will you praise <color=\#ff6e63>Machine God Zir</color>?.
 Using the <b>Ritual Core</b> you can perform a <i>blessing ritual</i> to greatly increase a colonist's machining, crafting and construction abilities, at the cost of a human life.
 However doing so may anger fanatics within enemy factions... Dare to take this risk?#
+~RF_BlessingOfZir~
+@RF_RitualCore@

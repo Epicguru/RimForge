@@ -1,6 +1,4 @@
-﻿using RimForge.Effects;
-using RimWorld;
-using UnityEngine;
+﻿using RimWorld;
 using Verse;
 
 namespace RimForge.Thoughts

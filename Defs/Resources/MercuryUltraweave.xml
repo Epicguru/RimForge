@@ -33,7 +33,7 @@ Highly durable and resistant to even heavy gunfire.</description>
     </recipeMaker>
 
     <statBases>
-      <StuffPower_Armor_Sharp>2.5</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Sharp>2.3</StuffPower_Armor_Sharp>
       <StuffPower_Armor_Blunt>1.7</StuffPower_Armor_Blunt>
       <StuffPower_Armor_Heat>1.2</StuffPower_Armor_Heat>
       <StuffPower_Insulation_Cold>25</StuffPower_Insulation_Cold>
@@ -58,7 +58,7 @@ Highly durable and resistant to even heavy gunfire.</description>
         <li>Fabric</li>
       </categories>
       <color>(220,30,120)</color>
-      <commonality>0.2</commonality>
+      <commonality>0.1</commonality>
     </stuffProps>
     <thingCategories>
       <li>Textiles</li>

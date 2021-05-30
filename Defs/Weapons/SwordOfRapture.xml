@@ -31,6 +31,7 @@ People who hold this weapon feel it's warmth radiating through them, increased e
     <recipeMaker>
       <researchPrerequisite>RF_Research_Ritual</researchPrerequisite>
       <skillRequirements>
+        <RF_BlessingOfZir>0</RF_BlessingOfZir>
         <Crafting>10</Crafting>
       </skillRequirements>
     </recipeMaker>

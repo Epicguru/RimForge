@@ -3,6 +3,7 @@ using RimWorld;
 using System.Collections.Generic;
 using System.Text;
 using RimForge.Misc;
+using UnityEngine;
 using Verse;
 
 namespace RimForge.Patches
@@ -16,7 +17,7 @@ namespace RimForge.Patches
 
             if (pawns != null && pawns.Count > 0)
             {
-                int toChange = 2;
+                int toChange = Mathf.RoundToInt(2f * Settings.CursedRaidersNumberMultiplier);
                 List<Pawn> changed = new List<Pawn>(toChange);
                 foreach (var converted in CursedPawnUtil.TryMakeCursed(pawns, toChange))
                 {

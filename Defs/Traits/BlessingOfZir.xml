@@ -10,10 +10,10 @@
         <description>[PAWN_nameDef] has received the blessing of machine god Zir!
 [PAWN_nameDef] is able to easily understand the inner workings of machines and devices, allowing [PAWN_objective] to craft and build items of higher quality as well as work faster.</description>
         <statFactors>
-          <GeneralLaborSpeed>1.5</GeneralLaborSpeed>
-          <SmeltingSpeed>2</SmeltingSpeed>
+          <GeneralLaborSpeed>1.25</GeneralLaborSpeed>
+          <SmeltingSpeed>1.5</SmeltingSpeed>
+          <ConstructionSpeed>1.25</ConstructionSpeed>
           <ButcheryMechanoidSpeed>2</ButcheryMechanoidSpeed>
-          <ConstructionSpeed>1.2</ConstructionSpeed>
         </statFactors>
         <statOffsets>
           <ButcheryMechanoidEfficiency>0.5</ButcheryMechanoidEfficiency>

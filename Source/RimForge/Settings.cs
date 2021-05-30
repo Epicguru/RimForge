@@ -52,7 +52,14 @@ namespace RimForge
         [TweakValue("RimForge", 0.01f, 100f)]
         public static float GreenWattsPerCell = 25;
 
+        // AIRSTRIKE
+        [TweakValue("RimForge", 1, 100)]
+        public static int AirstrikeExplosionDamage = 20;
+
+
         // OTHER
+        [TweakValue("RimForge", 0, 2f)]
+        public static float CursedRaidersNumberMultiplier = 1f;
         [TweakValue("RimForge", 0, 20)]
         public static float HateWaveRadius = 5.5f;
         [TweakValue("RimForge", 0, 1000)]

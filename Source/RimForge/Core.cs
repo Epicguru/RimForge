@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using RimForge.Effects;
 using System;
+using RimForge.CombatExtended;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -54,13 +55,15 @@ namespace RimForge
             // Create MonoBehaviour hook.
             var go = new GameObject("RimForge hook");
             go.AddComponent<UnityHook>();
-            Log("Created Unity hook game object.");
 
             // When the game closes, shut down this particle processing thread.
             UnityHook.UponApplicationQuit += () =>
             {
                 MapEffectHandler.ThreadedHandler?.Stop();
             };
+
+            if (CECompat.IsCEActive)
+                Log("Combat Extended detected! Running in Combat Extended mode.");
 
             // Blessing skill def, used to make recipes that only blessed pawns can do.
             BlessingSkillDef = new SkillDef()
@@ -73,6 +76,8 @@ namespace RimForge
                 usuallyDefinedInBackstories = false,
                 pawnCreatorSummaryVisible = false
             };
+
+            LongEventHandler.QueueLongEvent(StartupLoading.DoLoad, "RF.LoadLabel", false, null);
         }
     }
 }

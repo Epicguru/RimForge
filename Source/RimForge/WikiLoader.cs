@@ -12,6 +12,7 @@ namespace RimForge
                 return;
 
             wiki.WikiTitle = "RimForge";
+            wiki.NoSpoilerMode = false;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimForge
@@ -8,7 +9,7 @@ namespace RimForge
     {
         public static readonly Texture2D SignalIcon, CopyIcon, PasteIcon, LinkIcon, RitualStartIcon;
         public static readonly Texture2D BuildBlueprintIcon, RitualGearTexture, CapacitorCharge;
-        public static readonly Texture2D ArrowIcon;
+        public static readonly Texture2D ArrowIcon, CoilgunShootIcon, MissilesIcon;
 
         public static Graphic ForgeIdle, ForgeGlowAll, ForgeGlowSides;
         public static Graphic HEFueledIdle, HEFueledGlow;
@@ -23,6 +24,8 @@ namespace RimForge
         public static Graphic RitualCircle, RitualCircleText, RitualGear, RitualBall;
         public static Graphic RitualSymbolA, RitualSymbolB;
         public static Graphic[] GreenhouseActiveFrames;
+        public static Graphic DroneShadowGraphic, FallingBombGraphic, BombShadowGraphic;
+        public static Graphic DroneNorth, DroneEast, DroneSouth, DroneWest;
 
         static Content()
         {
@@ -33,8 +36,25 @@ namespace RimForge
             LinkIcon           = ContentFinder<Texture2D>.Get("RF/UI/Link");
             RitualStartIcon    = ContentFinder<Texture2D>.Get("RF/UI/RitualStart");
             BuildBlueprintIcon = ContentFinder<Texture2D>.Get("RF/UI/BuildBlueprint");
+            CoilgunShootIcon   = ContentFinder<Texture2D>.Get("RF/UI/CoilgunFire");
+            MissilesIcon       = ContentFinder<Texture2D>.Get("RF/UI/Missiles");
             RitualGearTexture  = ContentFinder<Texture2D>.Get("RF/Effects/RitualGear");
             CapacitorCharge    = ContentFinder<Texture2D>.Get("RF/Effects/CapacitorCharge");
+
+            const float DRONE_RATIO = 343f / 214f;
+            const float DRONE_SCALE = 5f;
+            DroneShadowGraphic = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneShadowSoft", ShaderTypeDefOf.Transparent.Shader, new Vector2(DRONE_SCALE, DRONE_SCALE * DRONE_RATIO), new Color(1, 1, 1, 0.5f), Color.white);
+            BombShadowGraphic = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/BombShadow", ShaderTypeDefOf.Transparent.Shader, new Vector2(1, 1), new Color(1, 1, 1, 1), Color.white);
+            FallingBombGraphic = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/FallingBomb", ShaderTypeDefOf.Transparent.Shader, new Vector2(1, 1), new Color(1, 1, 1, 1), Color.white);
+
+            const float SCALE = 3.5f;
+            float ratio = 867f / 597f;
+            DroneEast = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneEast", ShaderTypeDefOf.Cutout.Shader, new Vector2(SCALE, SCALE * ratio), new Color(1, 1, 1, 1), Color.white);
+            DroneWest = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneWest", ShaderTypeDefOf.Cutout.Shader, new Vector2(SCALE, SCALE * ratio), new Color(1, 1, 1, 1), Color.white);
+            ratio = 986f / 536f;
+            DroneNorth = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneNorth", ShaderTypeDefOf.Cutout.Shader, new Vector2(SCALE * ratio, SCALE), new Color(1, 1, 1, 1), Color.white);
+            ratio = 986f / 584f;
+            DroneSouth = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneSouth", ShaderTypeDefOf.Cutout.Shader, new Vector2(SCALE * ratio, SCALE), new Color(1, 1, 1, 1), Color.white);
         }
 
         internal static void LoadForgeTextures(Building forge)

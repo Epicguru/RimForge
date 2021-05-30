@@ -4,7 +4,9 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RF_WallConnector</defName>
     <label>wall connector</label>
-    <description>An electrical connector, built into a wall</description>
+    <description>An endpoint for power cables that is built into a wall.
+This is a good way to connect power poles up to a building's power grid.
+Make sure that there is not already a power cable in the spot you are trying to build this in!</description>
     <thingClass>RimForge.Buildings.Building_WallConnector</thingClass>
     <graphicData>
       <texPath>RF/Buildings/WallConnector</texPath>

@@ -12,8 +12,12 @@ namespace RimForge.Patches
             var trait = __instance.story?.traits?.GetTrait(RFDefOf.RF_ZirsCorruption);
             if (trait == null)
                 return;
-            
+
             //Core.Warn("PAWN WITH TRAIT DIED");
+
+            if (Settings.HateWaveRadius <= 0f)
+                return;
+
             WaveOfHate.StartAt(__instance);
         }
     }

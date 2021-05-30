@@ -3,13 +3,14 @@ using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RimForge.Patches;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
 
 namespace RimForge.Buildings
 {
-    public class Building_Coilgun : Building
+    public class Building_Coilgun : Building, ICustomTargetingUser
     {
         [TweakValue("RimForge", 0, 20)]
         public static float CoilgunRecoil = 0.6f;
@@ -240,20 +241,6 @@ namespace RimForge.Buildings
         {
             base.DrawExtraSelectionOverlays();
 
-            //GetCapacitorState(out int count, out float stored);
-            //if (count > 0 && stored < Settings.CoilgunBasePowerReq)
-            //{
-            //    GenDraw.FillableBarRequest r = new GenDraw.FillableBarRequest();
-            //    r.center = this.DrawPos + new Vector3(0, 0, -3);
-            //    r.size = FuelBarSize;
-            //    r.fillPercent = stored / Settings.CoilgunBasePowerReq;
-            //    r.filledMat = CompCapacitor.FuelBarFilledMat;
-            //    r.unfilledMat = CompCapacitor.FuelBarUnfilledMatSolid;
-            //    r.margin = 0.15f;
-            //    r.rotation = Rot4.North;
-            //    GenDraw.DrawFillableBar(r);
-            //}
-
             if (!DrawAffectedCells)
                 return;
 
@@ -265,6 +252,36 @@ namespace RimForge.Buildings
             //Core.Log($"{endPos} - {Position} = {dir}, {Position} + {dir} * {mapSize} = {newEndPos}");
             var list = GetAffectedCells(newEndPos);
             GenDraw.DrawFieldEdges(list, Color.red);
+
+            var currentShell = GetCurrentShellType();
+            if (currentShell?.explosionDamageType == null || currentShell.explosionRadius <= 0f)
+                return;
+
+            list.Sort((a, b) =>
+            {
+                int sqrDstA = (a - Position).LengthHorizontalSquared;
+                int sqrDstB = (b - Position).LengthHorizontalSquared;
+                return sqrDstA - sqrDstB;
+            });
+
+            foreach (var cell in list)
+            {
+                if (!cell.InBounds(map))
+                    break;
+
+                foreach(var thing in map.thingGrid.ThingsListAtFast(cell))
+                {
+                    if (thing == null || thing.Destroyed)
+                        continue;
+
+                    if ((thing is Building b && b.def.altitudeLayer >= AltitudeLayer.DoorMoveable) || thing is Pawn {Dead: false, Downed: false})
+                    {
+                        GenDraw.DrawTargetHighlightWithLayer(cell, AltitudeLayer.MoteOverhead);
+                        GenExplosion.RenderPredictedAreaOfEffect(cell, currentShell.explosionRadius);
+                        return;
+                    }
+                }
+            }
         }
 
         public CoilgunShellDef GetLoadedShell()
@@ -509,7 +526,7 @@ namespace RimForge.Buildings
                             continue;
                         if (thing is Pawn p && (p.Downed || p.Dead))
                             continue;
-
+                        
                         Pawn pawn = thing as Pawn;
                         Building b = thing as Building;
                         if (b != null || pawn != null)
@@ -541,15 +558,14 @@ namespace RimForge.Buildings
                                 MoteMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
                                 MoteMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
                             }
-
-                            if (!hasDoneExplosion && shellDef.explosionDamageType != null && shellDef.explosionRadius > 0)
+                            
+                            if (!hasDoneExplosion && shellDef.explosionDamageType != null && shellDef.explosionRadius > 0 && (b == null || b.def.altitudeLayer >= AltitudeLayer.DoorMoveable))
                             {
                                 GenExplosion.DoExplosion(cell, map, shellDef.explosionRadius, shellDef.explosionDamageType, this, shellDef.explosionDamage ?? -1, shellDef.explosionArmorPen ?? -1f);
                                 hasDoneExplosion = true;
                             }
                         }
-
-                        if (b != null || shellDef.pawnsCountAsPen)
+                        if (b != null || (pawn != null && shellDef.pawnsCountAsPen))
                         {
                             if (b != null && b.def.altitudeLayer < AltitudeLayer.DoorMoveable)
                                 continue;
@@ -766,7 +782,7 @@ namespace RimForge.Buildings
                 {
                     canTargetLocations = true
                 },
-                action = target =>
+                action = (target, _) =>
                 {
                     if (!target.IsValid)
                         return;
@@ -777,7 +793,9 @@ namespace RimForge.Buildings
                     CurrentTargetInfo = target;
                     LastKnowPos = Position;
                 },
-                gun = this,
+                icon = Content.CoilgunShootIcon,
+                defaultIconColor = new Color32(252, 194, 3, 255),
+                user = this,
                 disabled = capCount <= 0 || capPower < Settings.CoilgunBasePowerReq || !hasPower || !hasShell,
                 disabledReason = !hasPower ? "RF.Coilgun.DisabledNoPower".Translate() : !hasShell ? "RF.Coilgun.DisabledNoShell".Translate() : "RF.Coilgun.DisabledNoCaps".Translate()
             };
@@ -812,30 +830,60 @@ namespace RimForge.Buildings
                 return $"{basic.TrimEnd()}\n{capState}";
             return capState;
         }
+
+        public void OnStartTargeting(int _)
+        {
+            DrawAffectedCells = true;
+        }
+
+        public void OnStopTargeting(int _)
+        {
+            DrawAffectedCells = false;
+        }
+
+        public void SetTargetInfo(LocalTargetInfo info, int _)
+        {
+            CurrentTargetInfo = info;
+        }
     }
 
     public class Command_TargetCustom : Command
     {
-        public Action<LocalTargetInfo> action;
+        public Action<LocalTargetInfo, int> action;
         public TargetingParameters targetingParams;
-        public Building_Coilgun gun;
+        public ICustomTargetingUser user;
+        public int times = 1;
+        public Func<bool> continueCheck;
 
         public override void ProcessInput(Event ev)
         {
             base.ProcessInput(ev);
+            StartTargeting(0);
+        }
+
+        private void StartTargeting(int index)
+        {
             SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
-            Find.Targeter.BeginTargeting(this.targetingParams, action, targ =>
+            user.OnStartTargeting(index);
+            Find.Targeter.BeginTargeting(targetingParams, t => action(t, index), targ =>
             {
                 if (targ.IsValid)
                 {
-                    gun.CurrentTargetInfo = targ;
+                    user.SetTargetInfo(targ, index);
                     GenDraw.DrawTargetHighlight(targ);
                 }
             }, null, actionWhenFinished: () =>
             {
-                gun.DrawAffectedCells = false;
+                user.OnStopTargeting(index);
+                int nextIndex = index + 1;
+                if (nextIndex < times && (continueCheck?.Invoke() ?? true))
+                {
+                    Patch_Targeter_StopTargeting.PerformOnce = () =>
+                    {
+                        StartTargeting(nextIndex);
+                    };
+                }
             });
-            gun.DrawAffectedCells = true;
         }
 
         public override bool InheritInteractionsFrom(Gizmo other) => false;

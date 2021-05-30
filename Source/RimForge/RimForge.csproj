@@ -1,171 +1,32 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3071BB96-12E8-4155-8636-BAC6EB2BD141}</ProjectGuid>
+    <TargetFramework>net472</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RimForge</RootNamespace>
-    <AssemblyName>RimForge</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <LangVersion>preview</LangVersion>
-  </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\Assemblies\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <OutputPath>E:\Steam Games\steamapps\common\RimWorld\Mods\RimForge\Assemblies\</OutputPath>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="0Harmony, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lib.Harmony.2.0.4\lib\net472\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Lib.InGameWiki, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lib.InGameWiki.1.5.0\lib\net472\net472\Lib.InGameWiki.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <Content Remove="C:\Users\The Superior One\.nuget\packages\lib.ingamewiki\1.6.0\contentFiles\any\net472\Icon.ico" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="AlloyHelper.cs" />
-    <Compile Include="Buildings\Building_Capacitor.cs" />
-    <Compile Include="Buildings\Building_Coilgun.cs" />
-    <Compile Include="Buildings\Building_ForgeRewritten.cs" />
-    <Compile Include="Buildings\Building_FueledHeatingElement.cs" />
-    <Compile Include="Buildings\Building_GreenhouseController.cs" />
-    <Compile Include="Buildings\Building_LightningRod.cs" />
-    <Compile Include="Buildings\Building_LongDistanceCabled.cs" />
-    <Compile Include="Buildings\Building_LongDistancePower.cs" />
-    <Compile Include="Buildings\Building_PoweredHeatingElement.cs" />
-    <Compile Include="Buildings\Building_PowerPole.cs" />
-    <Compile Include="Buildings\Building_RitualCore.cs" />
-    <Compile Include="Buildings\Building_TeslaCoil.cs" />
-    <Compile Include="Buildings\Building_WallConnector.cs" />
-    <Compile Include="Buildings\Building_WirelessPowerPylon.cs" />
-    <Compile Include="Buildings\Util\DrawPart.cs" />
-    <Compile Include="Buildings\Util\PlaceWorker_WallConnector.cs" />
-    <Compile Include="Buildings\Util\RitualTracker.cs" />
-    <Compile Include="Buildings\Util\RodTracker.cs" />
-    <Compile Include="Command_TargetWithMessage.cs" />
-    <Compile Include="Comps\CompCapacitor.cs" />
-    <Compile Include="Comps\CompProperties_Capacitor.cs" />
-    <Compile Include="Comps\CompProperties_ShowAlloyInfo.cs" />
-    <Compile Include="Comps\CompProperties_WirelessPower.cs" />
-    <Compile Include="Comps\CompShowAlloyInfo.cs" />
-    <Compile Include="Comps\CompWirelessPower.cs" />
-    <Compile Include="Buildings\Building_HeatingElement.cs" />
-    <Compile Include="Comps\IConditionalGlower.cs" />
-    <Compile Include="Comps\ICustomOverlayDrawer.cs" />
-    <Compile Include="Content.cs" />
-    <Compile Include="Damage\DamageWorker_Propagate.cs" />
-    <Compile Include="Damage\DamageWorker_Electrical.cs" />
-    <Compile Include="Defs\CoilgunShellDef.cs" />
-    <Compile Include="Defs\DefGenHelper.cs" />
-    <Compile Include="Defs\AlloyDef.cs" />
-    <Compile Include="Core.cs" />
-    <Compile Include="Defs\CoilgunDef.cs" />
-    <Compile Include="Defs\HeatingElementDef.cs" />
-    <Compile Include="Defs\IngredientValueGetter_IgnoreVolume.cs" />
-    <Compile Include="Effects\Bezier.cs" />
-    <Compile Include="Effects\ElectricArc.cs" />
-    <Compile Include="Effects\BezierElectricArc.cs" />
-    <Compile Include="Effects\FollowBezierSpark.cs" />
-    <Compile Include="Effects\LinearElectricArc.cs" />
-    <Compile Include="Effects\MapEffect.cs" />
-    <Compile Include="Effects\MapEffectHandler.cs" />
-    <Compile Include="Effects\RitualSparks.cs" />
-    <Compile Include="Effects\ThreadedEffect.cs" />
-    <Compile Include="Effects\ThreadedEffectHandler.cs" />
-    <Compile Include="Effects\VelocityParticle.cs" />
-    <Compile Include="Extension.cs" />
-    <Compile Include="Graphic_MultiNoRot.cs" />
-    <Compile Include="Misc\CursedPawnUtil.cs" />
-    <Compile Include="Misc\WaveOfHate.cs" />
-    <Compile Include="Patches\Patch_IncidentWorker_RaidEnemy_GenerateRaidLoot.cs" />
-    <Compile Include="Patches\Patch_DefOfHelper_RebindAllDefOfs.cs" />
-    <Compile Include="Patches\Patch_Pawn_Kill.cs" />
-    <Compile Include="Patches\Patch_BillProduction_DoInterface.cs" />
-    <Compile Include="Patches\Patch_BillProduction_ShouldDoNow.cs" />
-    <Compile Include="Patches\Patch_BuildingWorkTable_IngredientStackCells.cs" />
-    <Compile Include="Patches\Patch_CompGlower_ShouldBeLitNow.cs" />
-    <Compile Include="Patches\Patch_DynamicDrawManager_DrawDynamicThings.cs" />
-    <Compile Include="Patches\Patch_GenAdj_CellsAdjacentCardinal.cs" />
-    <Compile Include="Patches\Patch_MaterialPool_MatFrom.cs" />
-    <Compile Include="Patches\Patch_ModContentLoaderTex2D_LoadTexture.cs" />
-    <Compile Include="Patches\Patch_OverlayDrawer_RenderBrokenDownOverlay.cs" />
-    <Compile Include="Patches\Patch_QualityUtility_GenerateQualityCreatedByPawn.cs" />
-    <Compile Include="Patches\Patch_Pawn_SpawnSetup.cs" />
-    <Compile Include="Patches\Patch_SkillRequirement_Multiple.cs" />
-    <Compile Include="Patches\Patch_TraitSet_GainTrait.cs" />
-    <Compile Include="Patches\Patch_WeatherEvent_LightningStrike_FireEvent.cs" />
-    <Compile Include="PostLoadDefs.cs" />
-    <Compile Include="Power\PowerChannel.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Defs\RatioHolder.cs" />
-    <Compile Include="Defs\RecipeGenerator.cs" />
-    <Compile Include="RFDefOf.cs" />
-    <Compile Include="Power\WirelessPower.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="Thoughts\ThoughtWorker_Corrupted.cs" />
-    <Compile Include="Thoughts\ThoughtWorker_SpecialWeapon.cs" />
-    <Compile Include="TraitTracker.cs" />
-    <Compile Include="UnityHook.cs" />
-    <Compile Include="WikiLoader.cs" />
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.2.2905" />
+    <PackageReference Include="Lib.Harmony" Version="2.0.4" />
+    <PackageReference Include="Lib.InGameWiki">
+      <Version>1.7.0</Version>
+    </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>
