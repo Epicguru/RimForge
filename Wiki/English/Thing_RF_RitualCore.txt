@@ -1,0 +1,15 @@
+
+ENDTAGS
+
+#!Basic Requirements#
+#You should construct this ritual core in an area with around 4 tiles of free space around it in each direction.
+Once it has been constructed, you will be shown a 'ghost' blueprint, indicating where you should construct an additional 8 <color=/#ebbc46>Copper Columns</color>.
+Once all of these columns have been built, the ritual is ready to begin.#
+
+#!Ritual Requirements:#
+#<b>1.</b> You must have a human prisoner to offer as a sacrifice.#
+#<b>2.</b> You must draft up the target colonist and place them <b>directly adjacent to the ritual core</b>.#
+#<b>3.</b> The ritual must be performed around midnight (can be disabled in settings).#
+#Once all these conditions are met, click the <i>start ritual</i> button on the Ritual Core.
+You will then be prompted to select the sacrifice, and the ritual will begin.
+Throughout the duration of the ritual, <b>the target colonist must not move away from the ritual core</b>, or the ritual will be cancelled.#

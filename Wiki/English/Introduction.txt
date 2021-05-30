@@ -28,6 +28,8 @@ Check out the wiki pages for more info on each alloy.#
 #There are new ultra-powerful defenses to keep your colony safe.
 Front and foremost, the huge <b>Coilgun</b> can kill many enemies in a single shot, even behind cover:#
 @RF_Coilgun@
+A specialized strike drone, to do bombing runs on local targets or travel to distant maps to provide air support:
+@RF_DroneLauncher@
 #For tacticians who would rather keep their enemies alive, the <b>Tesla Coils</b> provide a reliable and convenient way to stun and electrocute any enemies that pass between them.#
 @RF_TeslaCoil@
 @RF_TeslaCoilWireless@
