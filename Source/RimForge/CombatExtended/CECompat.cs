@@ -60,9 +60,12 @@ namespace RimForge.CombatExtended
                 if ((bool)isMortarAmmo.GetValue(def) == false)
                     continue;
 
+                if (!def.label.Contains("81mm"))
+                    continue;
+
                 if (cache)
                 {
-                    ThingDef proj = null;
+                    ThingDef proj;
                     try
                     {
                         proj = GetProjectile(def);

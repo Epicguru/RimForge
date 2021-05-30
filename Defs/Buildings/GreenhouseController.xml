@@ -35,7 +35,7 @@ Note: for performance reasons, the plant's growth rate stat does not appear to c
     <costList>
       <RF_GildedPlasteel>100</RF_GildedPlasteel>
       <RF_Copper>50</RF_Copper>
-      <ComponentSpacer>4</ComponentSpacer>
+      <ComponentSpacer>12</ComponentSpacer>
     </costList>
     <comps>
       <li Class="CompProperties_Power">

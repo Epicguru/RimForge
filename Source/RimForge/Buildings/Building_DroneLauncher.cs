@@ -106,6 +106,10 @@ namespace RimForge.Buildings
                 }
             }
 
+            var comp = GetComp<CompRefuelable>();
+            comp.Props.fuelLabel = CurrentBombDef.LabelCap;
+            comp.Props.fuelGizmoLabel = CurrentBombDef.LabelCap;
+
             if (isFlying)
             {
                 bool spawnSmoke = false;
@@ -202,6 +206,8 @@ namespace RimForge.Buildings
         {
             if(Rotation.IsHorizontal)
                 return DrawPos + new Vector3(0, 0, 0.35f);
+            if (Rotation == Rot4.North)
+                return DrawPos + new Vector3(0, 0, -0.25f);
             return DrawPos + new Vector3(0, 0, 0.5f);
         }
 
@@ -236,11 +242,12 @@ namespace RimForge.Buildings
             if (loaded == null)
                 return;
 
+            if (LoadedShellCount <= 0)
+                return;
+
             var thing = ThingMaker.MakeThing(loaded);
-            for (int i = 0; i < LoadedShellCount; i++)
-            {
-                GenPlace.TryPlaceThing(thing, Position - new IntVec3(0, 0, 3), Map, ThingPlaceMode.Near);
-            }
+            thing.stackCount = LoadedShellCount;
+            GenPlace.TryPlaceThing(thing, Position - new IntVec3(0, 0, 3), Map, ThingPlaceMode.Near);
 
             ClearLoadedShells();
         }
@@ -257,8 +264,8 @@ namespace RimForge.Buildings
 
             yield return new Command_Action()
             {
-                defaultLabel = "RF.Coilgun.ChangeShellLabel".Translate(),
-                defaultDesc = "RF.Coilgun.ChangeShellDesc".Translate(),
+                defaultLabel = "RF.DL.ChangeShellLabel".Translate(),
+                defaultDesc = "RF.DL.ChangeShellDesc".Translate(),
                 action = () =>
                 {
                     Func<ThingDef, string> labelGetter = shell => shell.LabelCap;
@@ -285,8 +292,8 @@ namespace RimForge.Buildings
                 defaultDesc = "RF.DL.TargetDesc".Translate(),
                 icon = Content.MissilesIcon,
                 defaultIconColor = Color.yellow,
-                disabled = drawAffectedCells || isBlocked,
-                disabledReason = isBlocked ? "RF.DL.Blocked".Translate(blockedBy) : "RF.DL.AlreadyTargeting".Translate(),
+                disabled = drawAffectedCells || isBlocked || LoadedShellCount < 1,
+                disabledReason = LoadedShellCount < 1 ? "RF.DL.NoShells".Translate() : isBlocked ? "RF.DL.Blocked".Translate(blockedBy) : "RF.DL.AlreadyTargeting".Translate(),
                 continueCheck = () => keepGoing,
                 action = (t, i) =>
                 {
@@ -303,7 +310,16 @@ namespace RimForge.Buildings
 
                     if (i == 1)
                     {
-                        DoStrike();
+                        const float MIN_DST = 5f;
+                        bool hasDistance = (firstPosition.Value - secondPosition.Value).LengthHorizontal >= MIN_DST;
+
+                        if(hasDistance)
+                            DoStrike();
+                        else
+                            Messages.Message("RF.DL.NotEnoughDistance".Translate(MIN_DST), MessageTypeDefOf.RejectInput, false);
+
+                        firstPosition = null;
+                        secondPosition = null;
                     }
                 },
                 user = this,
@@ -319,9 +335,7 @@ namespace RimForge.Buildings
 
         public void DoStrike()
         {
-            GenAirstrike.DoStrike(CECompat.IsCEActive ? CECompat.GetProjectile(CurrentBombDef) : CurrentBombDef.projectileWhenLoaded, firstPosition.Value, secondPosition.Value, 10, 200);
-            firstPosition = null;
-            secondPosition = null;
+            GenAirstrike.DoStrike(this, CECompat.IsCEActive ? CECompat.GetProjectile(CurrentBombDef) : CurrentBombDef.projectileWhenLoaded, firstPosition.Value, secondPosition.Value, LoadedShellCount, 200);
 
             isFlying = true;
             ticksFlying = 0;
@@ -394,7 +408,7 @@ namespace RimForge.Buildings
             else
                 radius = CurrentBombDef?.projectileWhenLoaded?.projectile?.explosionRadius ?? -1;
 
-            GenAirstrike.DrawStrikePreview(firstPosition.Value, secondPosition.Value, Map, 10, radius);
+            GenAirstrike.DrawStrikePreview(firstPosition.Value, secondPosition.Value, Map, LoadedShellCount, radius);
         }
 
         public void OnStartTargeting(int index)

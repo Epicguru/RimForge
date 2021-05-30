@@ -172,10 +172,17 @@ These Corrupted raiders are:
 <RF.Greenhouse.RotateDesc>Adjust the side where this controller will input and output gas (the blue circle).
 Allows you to build the controller into a wall and target the correct room.</RF.Greenhouse.RotateDesc>
 
-<RF.DL.TargetLabel>Launch strike (local map)</RF.DL.TargetLabel>
+<RF.DL.ChangeShellLabel>Change bomb type</RF.DL.ChangeShellLabel>
+<RF.DL.ChangeShellDesc>Change the type of bombs loaded into the drone. Any mortar shell can be loaded as a bomb (81mm in Combat Extended).
+Any bombs that are already loaded will be safely ejected onto the ground.</RF.DL.ChangeShellDesc>
+<RF.DL.TargetLabel>Launch strike</RF.DL.TargetLabel>
 <RF.DL.TargetDesc>Select a position for a drone strike on this map.</RF.DL.TargetDesc>
 <RF.DL.AlreadyTargeting>Already targeting.</RF.DL.AlreadyTargeting>
 <RF.DL.Blocked>Cannot launch, the done is blocked by {0}!</RF.DL.Blocked>
+<RF.DL.NoShells>Cannot launch, there must be at least 1 shell loaded.</RF.DL.NoShells>
+<RF.DL.NotEnoughDistance>There is not enough distance between the bombing start and end positions!
+Click once to select the start position, then move your mouse and click on the end position.
+There must be at least {0} cells between these two positions.</RF.DL.NotEnoughDistance>
 
 <RF.LoadLabel>RimForge is crunching numbers...</RF.LoadLabel>
 

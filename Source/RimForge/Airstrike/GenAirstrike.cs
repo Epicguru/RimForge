@@ -44,12 +44,12 @@ namespace RimForge.Airstrike
             else
             {
                 var bomb = CECompat.IsCEActive ? CECompat.GetProjectile(RFDefOf.Shell_HighExplosive) : RFDefOf.Shell_HighExplosive.projectileWhenLoaded;
-                DoStrike(bomb, debug_FirstPoint.Value, UI.MouseCell(), count);
+                DoStrike(null, bomb, debug_FirstPoint.Value, UI.MouseCell(), count);
                 debug_FirstPoint = null;
             }
         }
 
-        public static void DoStrike(ThingDef bombDef, IntVec3 start, IntVec3 end, int bombCount, int delayTicks = 0)
+        public static void DoStrike(Thing instigator, ThingDef bombDef, IntVec3 start, IntVec3 end, int bombCount, int delayTicks = 0)
         {
             if (bombCount < 2)
                 bombCount = 2;
@@ -81,7 +81,7 @@ namespace RimForge.Airstrike
                 index++;
             }
 
-            map.GetComponent<AirstrikeComp>().Spawn(new AirstrikeInstance(tempStrikes));
+            map.GetComponent<AirstrikeComp>().Spawn(new AirstrikeInstance(tempStrikes) { Instigator = instigator } );
             tempStrikes.Clear();
 
             // Make drone shadow.

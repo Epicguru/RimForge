@@ -41,7 +41,6 @@ namespace RimForge.Airstrike
                     return;
 
                 // Explode!
-                //GenExplosion.DoExplosion(Cell, instance.Map, 6, DamageDefOf.Bomb, instance.Instigator, Settings.AirstrikeExplosionDamage);
                 if (ProjectileDef == null)
                 {
                     Core.Warn("Null projectile def, explosion not spawned...");
@@ -53,32 +52,27 @@ namespace RimForge.Airstrike
                     // Combat extended explosions.
                     var proj = ThingMaker.MakeThing(ProjectileDef, null);
                     GenSpawn.Spawn(proj, Cell, instance.Map);
-                    Core.Log(proj.def.defName);
-                    Core.Log(proj.GetType().FullName);
 
                     exactPosition ??= AccessTools.Property(AccessTools.TypeByName("CombatExtended.ProjectileCE"), "ExactPosition");
                     impactCEMethod ??= AccessTools.Method("CombatExtended.ProjectileCE:ImpactSomething");
-                    launchCEMethod ??= AccessTools.Method("CombatExtended.ProjectileCE:Launch", new Type[]{ typeof(Thing), typeof(Vector2), typeof(Thing) });
-
-                    Core.Log(impactCEMethod.Name);
-                    Core.Log(exactPosition.Name);
-                    Core.Log(launchCEMethod.Name);
+                    launchCEMethod ??= AccessTools.Method("CombatExtended.ProjectileCE:Launch", new Type[]{ typeof(Thing), typeof(Vector2), typeof(float), typeof(float), typeof(float), typeof(float), typeof(Thing) });
 
                     try
                     {
                         exactPosition.SetValue(proj, Cell.ToVector3ShiftedWithAltitude(AltitudeLayer.Building));
-                        launchCEMethod.Invoke(proj, new object[] { null, Cell.ToVector3Shifted().WorldToFlat(), null });
-                        impactCEMethod.Invoke(proj, emptyArgs);
+                        launchCEMethod.Invoke(proj, new object[] { instance.Instigator, Cell.ToVector3Shifted().WorldToFlat(), -1f, -1f, 0f, -1f, null });
+                        //impactCEMethod.Invoke(proj, emptyArgs);
                     }
-                    catch (Exception e)
+                    catch
                     {
-                        Core.Error("Error", e);
+                        //Core.Error("Error in CE explosion invocation", e);
                     }
                 }
                 else
                 {
                     // Regular game explosions.
                     var proj = GenSpawn.Spawn(ProjectileDef, Cell, instance.Map) as Projectile;
+                    proj.Launch(instance.Instigator, Cell, Cell, ProjectileHitFlags.IntendedTarget);
                     impactMethod.Invoke(proj, emptyArgs);
                 }
             }

@@ -5,7 +5,7 @@
     <defName>RF_DroneLauncher</defName>
     <label>strike drone launcher</label>
     <description>A station for deploying an unmanned air-strike drone.
-The drone can be sent to carpet bomb invading raiders or it can travel long distances to provide support when attacking enemy bases.</description>
+The drone can be sent to carpet bomb invading raiders.</description>
     <thingClass>RimForge.Buildings.Building_DroneLauncher</thingClass>
     <graphicData>
       <texPath>RF/Buildings/DroneLauncher</texPath>
@@ -39,7 +39,7 @@ The drone can be sent to carpet bomb invading raiders or it can travel long dist
       <li Class="CompProperties_Refuelable">
         <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
         <fuelConsumptionRate>0.0</fuelConsumptionRate>
-        <fuelCapacity>10</fuelCapacity>
+        <fuelCapacity>6</fuelCapacity>
         <fuelFilter>
           <thingDefs>
           </thingDefs>
@@ -50,13 +50,7 @@ The drone can be sent to carpet bomb invading raiders or it can travel long dist
         <drawFuelGaugeInMap>false</drawFuelGaugeInMap>
         <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
         <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
-        <initialConfigurableTargetFuelLevel>5</initialConfigurableTargetFuelLevel>
-      </li>
-      <li Class="CompProperties_Power">
-        <compClass>CompPowerTrader</compClass>
-        <transmitsPower>false</transmitsPower>
-        <shortCircuitInRain>false</shortCircuitInRain>
-        <basePowerConsumption>200</basePowerConsumption>
+        <initialConfigurableTargetFuelLevel>6</initialConfigurableTargetFuelLevel>
       </li>
       <li Class="CompProperties_Flickable"></li>
     </comps>

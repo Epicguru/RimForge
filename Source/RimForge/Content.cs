@@ -51,10 +51,10 @@ namespace RimForge
             float ratio = 867f / 597f;
             DroneEast = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneEast", ShaderTypeDefOf.Cutout.Shader, new Vector2(SCALE, SCALE * ratio), new Color(1, 1, 1, 1), Color.white);
             DroneWest = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneWest", ShaderTypeDefOf.Cutout.Shader, new Vector2(SCALE, SCALE * ratio), new Color(1, 1, 1, 1), Color.white);
-            ratio = 536f / 986f;
-            DroneNorth = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneNorth", ShaderTypeDefOf.Cutout.Shader, new Vector2(SCALE, SCALE * ratio), new Color(1, 1, 1, 1), Color.white);
-            ratio = 584f / 986f;
-            DroneSouth = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneSouth", ShaderTypeDefOf.Cutout.Shader, new Vector2(SCALE, SCALE * ratio), new Color(1, 1, 1, 1), Color.white);
+            ratio = 986f / 536f;
+            DroneNorth = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneNorth", ShaderTypeDefOf.Cutout.Shader, new Vector2(SCALE * ratio, SCALE), new Color(1, 1, 1, 1), Color.white);
+            ratio = 986f / 584f;
+            DroneSouth = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneSouth", ShaderTypeDefOf.Cutout.Shader, new Vector2(SCALE * ratio, SCALE), new Color(1, 1, 1, 1), Color.white);
         }
 
         internal static void LoadForgeTextures(Building forge)
