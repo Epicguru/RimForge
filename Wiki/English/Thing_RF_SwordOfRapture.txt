@@ -1,6 +1,6 @@
 
 ENDTAGS
 
-#A purified version of the Sword of Darkness. While not quite a strong as it's previous form, it grants a mood bonus to whoever is holding it.
+#A purified version of the Sword of Darkness. While not quite as strong as its previous form, it grants a mood bonus to whoever is holding it.
 
 Pawns with the <color=\#f0e516>Blessing of Zir</color> trait will receive an even greater mood bonus.#

@@ -25,7 +25,7 @@ Check out the wiki pages for more info on each alloy.#
 @RF_WirelessPowerPylon@
 
 #!Defences#
-#There are new ultra-powerful defenses to keep your colony safe.
+#There are new ultra-powerful defences to keep your colony safe.
 Front and foremost, the huge <b>Coilgun</b> can kill many enemies in a single shot, even behind cover:#
 @RF_Coilgun@
 A specialized strike drone, to do bombing runs on local targets or travel to distant maps to provide air support:

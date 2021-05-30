@@ -12,7 +12,6 @@
         <statFactors>
           <GeneralLaborSpeed>1.25</GeneralLaborSpeed>
           <SmeltingSpeed>1.5</SmeltingSpeed>
-          <CraftingSpeed>1.5</CraftingSpeed>
           <ConstructionSpeed>1.25</ConstructionSpeed>
           <ButcheryMechanoidSpeed>2</ButcheryMechanoidSpeed>
         </statFactors>

@@ -14,7 +14,7 @@ namespace RimForge
 
         public static bool AlloyCheck(ThingDef thing)
         {
-            return thing != null && thing.HasComp(typeof(CompShowAlloyInfo));
+            return thing != null && thing.HasComp(typeof(CompShowAlloyInfo)) || thing.defName == "RF_MercuryUltraweave";
         }
 
         static IEnumerable<WikiElement> Parse(CustomElementArgs args)
@@ -50,10 +50,11 @@ namespace RimForge
 
             yield return WikiElement.Create(str.ToString());
 
-            if (AlloyHelper.AllCraftableAlloys.TryGetValue(def, out var found) && found != null)
-            {
+            if (def.defName == "RF_Copper" || def.defName == "RF_Tin")
+                yield break;
 
-            }
+            yield return WikiElement.Create("This is a metal alloy that can be created at the Forge:");
+            yield return new WikiElement() {DefForIconAndLabel = def};
         }
 
         static float? GetStat(ThingDef def, string defName)

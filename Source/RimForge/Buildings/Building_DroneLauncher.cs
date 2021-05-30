@@ -5,6 +5,7 @@ using RimForge.CombatExtended;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace RimForge.Buildings
 {
@@ -335,10 +336,13 @@ namespace RimForge.Buildings
 
         public void DoStrike()
         {
-            GenAirstrike.DoStrike(this, CECompat.IsCEActive ? CECompat.GetProjectile(CurrentBombDef) : CurrentBombDef.projectileWhenLoaded, firstPosition.Value, secondPosition.Value, LoadedShellCount, 200);
+            GenAirstrike.DoStrike(this, CECompat.IsCEActive ? CECompat.GetProjectile(CurrentBombDef) : CurrentBombDef.projectileWhenLoaded, firstPosition.Value, secondPosition.Value, LoadedShellCount, 200, RFDefOf.RF_Sound_Drone);
 
             isFlying = true;
             ticksFlying = 0;
+
+            //SoundInfo info = SoundInfo.InMap(this);
+            //RFDefOf.RF_Sound_DroneLaunch.PlayOneShot(info);
         }
 
         public IEnumerable<IntVec3> GetLaunchCells()

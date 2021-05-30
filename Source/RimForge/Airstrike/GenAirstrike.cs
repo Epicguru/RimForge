@@ -49,7 +49,7 @@ namespace RimForge.Airstrike
             }
         }
 
-        public static void DoStrike(Thing instigator, ThingDef bombDef, IntVec3 start, IntVec3 end, int bombCount, int delayTicks = 0)
+        public static void DoStrike(Thing instigator, ThingDef bombDef, IntVec3 start, IntVec3 end, int bombCount, int delayTicks = 0, SoundDef playAfterDelay = null)
         {
             if (bombCount < 2)
                 bombCount = 2;
@@ -81,7 +81,7 @@ namespace RimForge.Airstrike
                 index++;
             }
 
-            map.GetComponent<AirstrikeComp>().Spawn(new AirstrikeInstance(tempStrikes) { Instigator = instigator } );
+            map.GetComponent<AirstrikeComp>().Spawn(new AirstrikeInstance(tempStrikes) { Instigator = instigator, DelayTicks = delayTicks, SoundAfterDelay = playAfterDelay } );
             tempStrikes.Clear();
 
             // Make drone shadow.

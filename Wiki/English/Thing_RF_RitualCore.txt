@@ -1,9 +1,9 @@
 
 ENDTAGS
 
-#!Basic Requirements#
+#!Basic Setup#
 #You should construct this ritual core in an area with around 4 tiles of free space around it in each direction.
-Once it has been constructed, you will be shown a 'ghost' blueprint, indicating where you should construct an additional 8 <color=/#ebbc46>Copper Columns</color>.
+Once it has been constructed, you will be shown a 'ghost' blueprint, indicating where you should construct an additional 8 <color=\#ebbc46>Copper Columns</color>.
 Once all of these columns have been built, the ritual is ready to begin.#
 
 #!Ritual Requirements:#
@@ -13,3 +13,12 @@ Once all of these columns have been built, the ritual is ready to begin.#
 #Once all these conditions are met, click the <i>start ritual</i> button on the Ritual Core.
 You will then be prompted to select the sacrifice, and the ritual will begin.
 Throughout the duration of the ritual, <b>the target colonist must not move away from the ritual core</b>, or the ritual will be cancelled.#
+
+#!Ritual#
+#Once started the ritual will run for a couple of in-game hours. During this time the colonist must not move away from their spot.
+Once the ritual is complete, the target colonist will receive the <color=\#f0e516>Blessing of Zir</color> trait.#
+
+#!Repeating the ritual#
+#The ritual can be performed again by sacrificing another prisoner and using a new colonist who does not already have the trait.
+However, every time the ritual is completed there is an ever-increasing chance of the next ritual failing, with potentially lethal consequences.
+You will be warned of this before the ritual begins, and you will be shown the percentage chance to fail.#

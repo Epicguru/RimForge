@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Verse;
+using Verse.Sound;
 
 namespace RimForge.Airstrike
 {
@@ -9,6 +10,8 @@ namespace RimForge.Airstrike
         public bool IsDone;
         public Thing Instigator;
         public Map Map;
+        public int DelayTicks;
+        public SoundDef SoundAfterDelay;
 
         private List<SingleStrike> strikes = new List<SingleStrike>();
         private int tick;
@@ -26,6 +29,8 @@ namespace RimForge.Airstrike
             Scribe_Values.Look(ref tick, "tick");
             Scribe_Values.Look(ref IsDone, "isDone");
             Scribe_References.Look(ref Instigator, "instigator");
+            Scribe_Defs.Look(ref SoundAfterDelay, "sound");
+            Scribe_Values.Look(ref DelayTicks, "delayTicks");
 
             strikes ??= new List<SingleStrike>();
         }
@@ -38,6 +43,10 @@ namespace RimForge.Airstrike
             this.Map = comp.map;
 
             tick++;
+            if (tick == DelayTicks)
+            {
+                SoundAfterDelay?.PlayOneShotOnCamera(Map);
+            }
 
             foreach (var item in strikes)
             {
