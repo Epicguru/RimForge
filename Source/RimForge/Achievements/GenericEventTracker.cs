@@ -57,6 +57,9 @@ namespace RimForge.Achievements
         None,
         CoilsFire,
         DroneAntimatter,
-        DroneAntimatterFull
+        DroneAntimatterFull,
+        RitualPerformed,
+        Ritual50ChanceFailure,
+        RitualFailure
     }
 }

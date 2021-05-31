@@ -294,4 +294,44 @@
     <order>20</order>
   </AchievementsExpanded.AchievementDef>
 
+  <!-- Ritual -->
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_RitualDone</defName>
+    <label>No Price Too Steep</label>
+    <description>Complete the Blessing Ritual using the Ritual Core.</description>
+    <texPath>RF/AC/Ritual</texPath>
+    <tracker Class="RimForge.Achievements.GenericEventTracker">
+      <trigger>RitualPerformed</trigger>
+    </tracker>
+    <points>12</points>
+    <tab>RF_AC_Tab</tab>
+    <order>21</order>
+  </AchievementsExpanded.AchievementDef>
+
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_RitualRisky</defName>
+    <label>Fearless</label>
+    <description>Begin a Blessing Ritual with a >50% chance of failure.</description>
+    <texPath>RF/AC/Ritual50</texPath>
+    <tracker Class="RimForge.Achievements.GenericEventTracker">
+      <trigger>Ritual50ChanceFailure</trigger>
+    </tracker>
+    <points>40</points>
+    <tab>RF_AC_Tab</tab>
+    <order>22</order>
+  </AchievementsExpanded.AchievementDef>
+
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_RitualFailure</defName>
+    <label>Too Close To The Sun</label>
+    <description>Perform too many rituals and incurr the wrath of Zir.</description>
+    <texPath>RF/AC/RitualHeart</texPath>
+    <tracker Class="RimForge.Achievements.GenericEventTracker">
+      <trigger>RitualFailure</trigger>
+    </tracker>
+    <points>15</points>
+    <tab>RF_AC_Tab</tab>
+    <order>23</order>
+  </AchievementsExpanded.AchievementDef>
+
 </Defs>
