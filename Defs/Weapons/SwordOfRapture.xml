@@ -13,6 +13,7 @@ People who hold this weapon feel it's warmth radiating through them, increased e
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1.35,1.45)</drawSize>
     </graphicData>
+    <tradeability>Sellable</tradeability>
     <techLevel>Spacer</techLevel>
     <thingSetMakerTags>
       <li>RewardStandardQualitySuper</li>

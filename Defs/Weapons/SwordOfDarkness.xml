@@ -12,6 +12,7 @@ People who's mind has not be corrupted by Zir will feel terrible if they equip t
     <techLevel>Spacer</techLevel>
     <smeltable>true</smeltable>
     <burnableByRecipe>true</burnableByRecipe>
+    <tradeability>Sellable</tradeability>
     <thingCategories>
       <li>WeaponsMelee</li>
     </thingCategories>
@@ -25,7 +26,7 @@ People who's mind has not be corrupted by Zir will feel terrible if they equip t
       <li>RewardStandardQualitySuper</li>
     </thingSetMakerTags>
     <statBases>
-      <MarketValue>2200</MarketValue>
+      <MarketValue>6000</MarketValue>
       <MaxHitPoints>300</MaxHitPoints>
       <Mass>5</Mass>
     </statBases>

@@ -77,7 +77,7 @@ namespace RimForge
                 pawnCreatorSummaryVisible = false
             };
 
-            LongEventHandler.QueueLongEvent(StartupLoading.DoLoad, "RF.LoadLabel", false, null);
+            LongEventHandler.QueueLongEvent(StartupLoading.DoLoadLate, "RF.LoadLabel", false, null);
         }
     }
 }

@@ -341,8 +341,8 @@ namespace RimForge.Buildings
             isFlying = true;
             ticksFlying = 0;
 
-            //SoundInfo info = SoundInfo.InMap(this);
-            //RFDefOf.RF_Sound_DroneLaunch.PlayOneShot(info);
+            SoundInfo info = SoundInfo.InMap(this);
+            RFDefOf.RF_Sound_DroneLaunch.PlayOneShot(info);
         }
 
         public IEnumerable<IntVec3> GetLaunchCells()
