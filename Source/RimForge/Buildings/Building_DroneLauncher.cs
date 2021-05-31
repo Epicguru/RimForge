@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using RimForge.Achievements;
 using RimForge.Airstrike;
 using RimForge.CombatExtended;
 using RimWorld;
@@ -47,6 +48,14 @@ namespace RimForge.Buildings
                 var comp = GetComp<CompRefuelable>();
                 comp.ConsumeFuel(comp.Fuel);
                 comp.Refuel(value);
+            }
+        }
+        public int MaxLoadedShellCount
+        {
+            get
+            {
+                var comp = GetComp<CompRefuelable>();
+                return Mathf.RoundToInt(comp.Props.fuelCapacity);
             }
         }
 
@@ -336,6 +345,18 @@ namespace RimForge.Buildings
 
         public void DoStrike()
         {
+            bool isAntimatter = CurrentBombDef == ThingDefOf.Shell_AntigrainWarhead;
+
+            if (isAntimatter)
+            {
+                GenericEventTracker.Fire(AchievementEvent.DroneAntimatter);
+
+                if (LoadedShellCount >= MaxLoadedShellCount)
+                {
+                    GenericEventTracker.Fire(AchievementEvent.DroneAntimatterFull);
+                }
+            }
+
             GenAirstrike.DoStrike(this, CECompat.IsCEActive ? CECompat.GetProjectile(CurrentBombDef) : CurrentBombDef.projectileWhenLoaded, firstPosition.Value, secondPosition.Value, LoadedShellCount, 200, RFDefOf.RF_Sound_Drone);
 
             isFlying = true;

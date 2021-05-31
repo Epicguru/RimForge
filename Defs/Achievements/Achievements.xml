@@ -126,7 +126,7 @@
     </tracker>
     <points>15</points>
     <tab>RF_AC_Tab</tab>
-    <!-- <order>0</order> -->
+    <order>8</order>
   </AchievementsExpanded.AchievementDef>
 
   <AchievementsExpanded.AchievementDef>
@@ -139,7 +139,7 @@
     </tracker>
     <points>5</points>
     <tab>RF_AC_Tab</tab>
-    <!-- <order>0</order> -->
+    <order>9</order>
   </AchievementsExpanded.AchievementDef>
 
   <AchievementsExpanded.AchievementDef>
@@ -153,7 +153,7 @@
     </tracker>
     <points>5</points>
     <tab>RF_AC_Tab</tab>
-    <!-- <order>0</order> -->
+    <order>10</order>
   </AchievementsExpanded.AchievementDef>
 
   <AchievementsExpanded.AchievementDef>
@@ -166,7 +166,7 @@
     </tracker>
     <points>10</points>
     <tab>RF_AC_Tab</tab>
-    <!-- <order>0</order> -->
+    <order>11</order>
   </AchievementsExpanded.AchievementDef>
 
   <AchievementsExpanded.AchievementDef>
@@ -180,7 +180,7 @@
     </tracker>
     <points>5</points>
     <tab>RF_AC_Tab</tab>
-    <!-- <order>0</order> -->
+    <order>12</order>
   </AchievementsExpanded.AchievementDef>
 
   <AchievementsExpanded.AchievementDef>
@@ -193,7 +193,105 @@
     </tracker>
     <points>30</points>
     <tab>RF_AC_Tab</tab>
-    <!-- <order>0</order> -->
+    <order>13</order>
+  </AchievementsExpanded.AchievementDef>
+
+  <!-- Forge -->
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_BuildForge</defName>
+    <label>Hot Topic</label>
+    <description>Build a Forge.</description>
+    <texPath>RF/AC/HotTopic</texPath>
+    <tracker Class="AchievementsExpanded.BuildingTracker">
+      <def>RF_Forge</def>
+      <count>1</count>
+    </tracker>
+    <points>10</points>
+    <tab>RF_AC_Tab</tab>
+    <order>14</order>
+  </AchievementsExpanded.AchievementDef>
+
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_CraftBronze</defName>
+    <label>Bronze Age</label>
+    <description>Create 50 Bronze using the Forge.</description>
+    <texPath>RF/AC/Bronze</texPath>
+    <tracker Class="RimForge.Achievements.ItemCraftTrackerWithCount">
+      <def>RF_Bronze</def>
+      <count>50</count>
+    </tracker>
+    <points>5</points>
+    <tab>RF_AC_Tab</tab>
+    <order>15</order>
+  </AchievementsExpanded.AchievementDef>
+
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_CraftAdamantium</defName>
+    <label>Very Hot Topic</label>
+    <description>Create 50 Adamantium using the Forge.</description>
+    <texPath>RF/AC/Adamantium</texPath>
+    <tracker Class="RimForge.Achievements.ItemCraftTrackerWithCount">
+      <def>RF_Adamantium</def>
+      <count>50</count>
+    </tracker>
+    <points>7</points>
+    <tab>RF_AC_Tab</tab>
+    <order>16</order>
+  </AchievementsExpanded.AchievementDef>
+
+  <!-- Power or Electrical -->
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_BuildPower</defName>
+    <label>Immersive Engineering</label>
+    <description>Build 2 power poles.</description>
+    <texPath>RF/AC/Poles</texPath>
+    <tracker Class="AchievementsExpanded.BuildingTracker">
+      <def>RF_PowerPole</def>
+      <count>2</count>
+    </tracker>
+    <points>5</points>
+    <tab>RF_AC_Tab</tab>
+    <order>17</order>
+  </AchievementsExpanded.AchievementDef>
+
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_CoilZap</defName>
+    <label>Non-Voluntary Electrotherapy</label>
+    <description>Zap an enemy with a Tesla Coil.</description>
+    <texPath>RF/AC/Coils</texPath>
+    <tracker Class="RimForge.Achievements.GenericEventTracker">
+      <trigger>CoilsFire</trigger>
+    </tracker>
+    <points>10</points>
+    <tab>RF_AC_Tab</tab>
+    <order>18</order>
+  </AchievementsExpanded.AchievementDef>
+
+  <!-- Drone strikes -->
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_DroneNuke</defName>
+    <label>Seems Unfair</label>
+    <description>Drop an Antigrain Warhead from a strike drone.</description>
+    <texPath>RF/AC/Antigrain</texPath>
+    <tracker Class="RimForge.Achievements.GenericEventTracker">
+      <trigger>DroneAntimatter</trigger>
+    </tracker>
+    <points>15</points>
+    <tab>RF_AC_Tab</tab>
+    <order>19</order>
+  </AchievementsExpanded.AchievementDef>
+
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_DroneNukeMany</defName>
+    <label>Sending A Message</label>
+    <description>Drop 6 Antigrain Warheads from a strike drone in a single run.</description>
+    <texPath>RF/AC/AntigrainMany</texPath>
+    <tracker Class="RimForge.Achievements.GenericEventTracker">
+      <trigger>DroneAntimatterFull</trigger>
+    </tracker>
+    <points>75</points>
+    <tab>RF_AC_Tab</tab>
+    <order>20</order>
   </AchievementsExpanded.AchievementDef>
 
 </Defs>

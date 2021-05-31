@@ -2,6 +2,7 @@
 using RimForge.Effects;
 using RimWorld;
 using System.Collections.Generic;
+using RimForge.Achievements;
 using RimForge.Comps;
 using UnityEngine;
 using Verse;
@@ -220,6 +221,8 @@ namespace RimForge.Buildings
                     Core.Error($"Exception when trying to data pawn with tesla coil. Pawn: '{pawn.LabelCap}'", e);
                 }
             }
+
+            GenericEventTracker.Fire(AchievementEvent.CoilsFire);
 
             CooldownTicksRemaining = Settings.TeslaCooldown;
         }
