@@ -10,9 +10,9 @@ namespace RimForge.Achievements
 
         public int minKills;
 
-        protected CoilgunExplosiveTracker() {}
+        public CoilgunExplosiveTracker() {}
 
-        protected CoilgunExplosiveTracker(CoilgunExplosiveTracker other)
+        public CoilgunExplosiveTracker(CoilgunExplosiveTracker other)
             :base(other)
         {
             this.minKills = other.minKills;
