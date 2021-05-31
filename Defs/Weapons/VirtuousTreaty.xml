@@ -3,7 +3,7 @@
 
   <ThingDef ParentName="BaseMeleeWeapon_Sharp_Quality">
     <defName>RF_VirtuousTreaty</defName>
-    <label>virtuous treaty</label>
+    <label>Virtuous Treaty</label>
     <description>A huge longsword with a strange offset blade. Deals huge damage with high armor penetration.
 
 Memories from another time stir within its pearly blade.</description>

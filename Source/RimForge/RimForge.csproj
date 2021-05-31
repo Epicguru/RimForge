@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
@@ -8,7 +8,7 @@
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <OutputPath>E:\Steam Games\steamapps\common\RimWorld\Mods\RimForge\Assemblies\</OutputPath>
+    <OutputPath>..\..\Assemblies\</OutputPath>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
@@ -18,14 +18,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="C:\Users\The Superior One\.nuget\packages\lib.ingamewiki\1.6.0\contentFiles\any\net472\Icon.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="AchievementsExpanded" Version="1.0.8" />
     <PackageReference Include="Krafs.Rimworld.Ref" Version="1.2.2905" />
     <PackageReference Include="Lib.Harmony" Version="2.0.4" />
     <PackageReference Include="Lib.InGameWiki">
-      <Version>1.7.0</Version>
+      <Version>1.7.1</Version>
     </PackageReference>
   </ItemGroup>
 

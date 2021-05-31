@@ -1,0 +1,187 @@
+<Defs>
+
+  <AchievementsExpanded.AchievementTabDef>
+    <defName>RF_AC_Tab</defName>
+    <label>RimForge</label>
+    <sorted>true</sorted>
+  </AchievementsExpanded.AchievementTabDef>
+
+  <!-- Virtuous Treaty -->
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_CraftTreaty</defName>
+    <label>Vague Hope (Cold Rain)</label>
+    <description>Craft a Virtuous Treaty of normal quality or higher.</description>
+    <texPath>RF/AC/Treaty1</texPath>
+    <tracker Class="AchievementsExpanded.ItemCraftTracker">
+      <def>RF_VirtuousTreaty</def>
+      <count>1</count>
+      <quality>Normal</quality>
+    </tracker>
+    <points>5</points>
+    <tab>RF_AC_Tab</tab>
+    <order>0.1</order>
+  </AchievementsExpanded.AchievementDef>
+
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_TreatyFirstKill</defName>
+    <label>Voice of no Return</label>
+    <description>Have a colonist kill a human using a Virtuous Treaty.</description>
+    <texPath>RF/AC/Treaty2</texPath>
+    <tracker Class="RimForge.Achievements.KillWithWeaponTracker">
+      <weaponDef>RF_VirtuousTreaty</weaponDef>
+      <raceDef>Human</raceDef>
+      <instigatorFactionDefs>
+        <li>PlayerColony</li>
+				<li>PlayerTribe</li>
+      </instigatorFactionDefs>
+      <count>1</count>
+    </tracker>
+    <points>2</points>
+    <tab>RF_AC_Tab</tab>
+    <order>1</order>
+  </AchievementsExpanded.AchievementDef>
+
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_TreatyManyKills</defName>
+    <label>Wretched Weaponry</label>
+    <description>Kill 50 humans using a Virtuous Treaty.</description>
+    <texPath>RF/AC/Treaty2</texPath>
+    <tracker Class="RimForge.Achievements.KillWithWeaponTracker">
+      <weaponDef>RF_VirtuousTreaty</weaponDef>
+      <raceDef>Human</raceDef>
+      <instigatorFactionDefs>
+        <li>PlayerColony</li>
+				<li>PlayerTribe</li>
+      </instigatorFactionDefs>
+      <count>50</count>
+    </tracker>
+    <points>25</points>
+    <tab>RF_AC_Tab</tab>
+    <order>2</order>
+  </AchievementsExpanded.AchievementDef>
+
+  <!-- Gae Bulg -->
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_CraftGae</defName>
+    <label>Hard To Pronounce</label>
+    <description>Craft a gáe bulg of normal quality or higher.</description>
+    <texPath>RF/AC/Gae1</texPath>
+    <tracker Class="AchievementsExpanded.ItemCraftTracker">
+      <def>RF_GaeBulg</def>
+      <count>1</count>
+      <quality>Normal</quality>
+    </tracker>
+    <points>5</points>
+    <tab>RF_AC_Tab</tab>
+    <order>3</order>
+  </AchievementsExpanded.AchievementDef>
+
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_GaeFirstKill</defName>
+    <label>Lethal Lancer</label>
+    <description>Have a colonist kill a human using a gáe bulg.</description>
+    <texPath>RF/AC/Gae2</texPath>
+    <tracker Class="RimForge.Achievements.KillWithWeaponTracker">
+      <weaponDef>RF_GaeBulg</weaponDef>
+      <raceDef>Human</raceDef>
+      <instigatorFactionDefs>
+        <li>PlayerColony</li>
+				<li>PlayerTribe</li>
+      </instigatorFactionDefs>
+      <count>1</count>
+    </tracker>
+    <points>2</points>
+    <tab>RF_AC_Tab</tab>
+    <order>4</order>
+  </AchievementsExpanded.AchievementDef>
+
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_GaeManyKills</defName>
+    <label>Pole Dancer</label>
+    <description>Kill 50 humans using a gáe bulg.</description>
+    <texPath>RF/AC/Gae2</texPath>
+    <tracker Class="RimForge.Achievements.KillWithWeaponTracker">
+      <weaponDef>RF_GaeBulg</weaponDef>
+      <raceDef>Human</raceDef>
+      <instigatorFactionDefs>
+        <li>PlayerColony</li>
+				<li>PlayerTribe</li>
+      </instigatorFactionDefs>
+      <count>50</count>
+    </tracker>
+    <points>25</points>
+    <tab>RF_AC_Tab</tab>
+    <order>5</order>
+  </AchievementsExpanded.AchievementDef>
+
+  <!-- Coilgun -->
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_BuildCoilgun</defName>
+    <label>Might Be Overkill</label>
+    <description>Build a Liandry Coilgun.</description>
+    <texPath>RF/Buildings/Coilgun/Icon</texPath>
+    <tracker Class="AchievementsExpanded.BuildingTracker">
+      <def>RF_Coilgun</def>
+      <count>1</count>
+    </tracker>
+    <points>15</points>
+    <tab>RF_AC_Tab</tab>
+    <!-- <order>0</order> -->
+  </AchievementsExpanded.AchievementDef>
+
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_CoilgunFarPen</defName>
+    <label>Wallbang</label>
+    <description>Kill a pawn with the Coilgun after shooting through 20 solid tiles.</description>
+    <texPath>RF/Items/CoilgunShell_AP</texPath>
+    <tracker Class="RimForge.Achievements.CoilgunDepthTracker">
+      <minDepth>20</minDepth>
+    </tracker>
+    <points>5</points>
+    <tab>RF_AC_Tab</tab>
+    <!-- <order>0</order> -->
+  </AchievementsExpanded.AchievementDef>
+
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_CoilgunMultikill</defName>
+    <label>Can't Stop Won't Stop</label>
+    <description>Kill 5 pawns with a single AP or SP Coilgun shell.</description>
+    <texPath>RF/Items/CoilgunShell_AP</texPath>
+    <tracker Class="RimForge.Achievements.CoilgunMultikillTracker">
+      <minKills>5</minKills>
+      <exceptShell>RF_CoilgunShellHE</exceptShell>
+    </tracker>
+    <points>5</points>
+    <tab>RF_AC_Tab</tab>
+    <!-- <order>0</order> -->
+  </AchievementsExpanded.AchievementDef>
+
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_CoilgunExplosion</defName>
+    <label>Blown Away</label>
+    <description>Kill 10 pawns with a single HE Coilgun shell.</description>
+    <texPath>RF/Items/CoilgunShell_HE</texPath>
+    <tracker Class="RimForge.Achievements.CoilgunMultikillTracker">
+      <minKills>10</minKills>
+      <onlyShell>RF_CoilgunShellHE</onlyShell>
+    </tracker>
+    <points>5</points>
+    <tab>RF_AC_Tab</tab>
+    <!-- <order>0</order> -->
+  </AchievementsExpanded.AchievementDef>
+
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_CoilgunHighDamage</defName>
+    <label>Over... 2000?</label>
+    <description>Kill at least 1 pawn and deal a total of over 2000 damage with a single Coilgun shot.</description>
+    <texPath>RF/Items/CoilgunShell_SP</texPath>
+    <tracker Class="RimForge.Achievements.CoilgunDamageTracker">
+      <minKills>1</minKills>
+      <minDamage>2000.01</minDamage>
+    </tracker>
+    <points>5</points>
+    <tab>RF_AC_Tab</tab>
+    <!-- <order>0</order> -->
+  </AchievementsExpanded.AchievementDef>
+
+</Defs>
