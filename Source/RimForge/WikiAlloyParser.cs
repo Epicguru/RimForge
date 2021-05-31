@@ -54,7 +54,7 @@ namespace RimForge
                 yield break;
 
             yield return WikiElement.Create("This is a metal alloy that can be created at the Forge:");
-            yield return new WikiElement() {DefForIconAndLabel = def};
+            yield return new WikiElement() { DefForIconAndLabel = RFDefOf.RF_Forge };
         }
 
         static float? GetStat(ThingDef def, string defName)
@@ -68,7 +68,7 @@ namespace RimForge
                     return stat.value;
             }
 
-            return 0f;
+            return null;
         }
 
         static float? GetStuffStat(ThingDef def, string defName)
@@ -82,7 +82,7 @@ namespace RimForge
                     return stat.value;
             }
 
-            return 0f;
+            return null;
         }
 
         static void ShowStat(string name, float? value, float? expected, char? append, bool invertedPositive = false)

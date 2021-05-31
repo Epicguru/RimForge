@@ -10,6 +10,8 @@ namespace RimForge.Buildings
 {
     public class Building_ForgeRewritten : Building_WorkTable, IConditionalGlower
     {
+        private static List<BuildableDef> allHeatingElements;
+
         public int ConnectedHeatingElementCount => heatingElements?.Count ?? 0;
         public bool IsBeingUsed { get; private set; }
 
@@ -198,6 +200,9 @@ namespace RimForge.Buildings
         {
             str.Clear();
 
+            if ((heatingElements?.Count ?? 0) == 0)
+                return "RF.Forge.MissingElement".Translate();
+
             string providing = "RF.Forge.Providing".Translate();
             str.AppendLine("RF.Forge.HeatingElementsHeader".Translate());
             foreach (var element in heatingElements)
@@ -210,12 +215,37 @@ namespace RimForge.Buildings
             if (heatingElements.Count == 0)
                 str.AppendLine("RF.None".Translate().CapitalizeFirst());
 
-            return $"{base.GetInspectString()}\nTemperature: {AmbientTemperature.ToStringTemperature("F0")} (capable of {GetPotentialHeat().ToStringTemperature("F0")})\n{str.ToString().TrimEnd()}".Trim();
+            return "RF.Forge.Temperature".Translate(GetPotentialHeat().ToStringTemperature("F0")) + $"\n{str}";
         }
 
         public bool ShouldGlowNow()
         {
             return IsBeingUsed;
+        }
+
+        public override IEnumerable<Gizmo> GetGizmos()
+        {
+            foreach (var gizmo in base.GetGizmos())
+                yield return gizmo;
+
+            if(allHeatingElements == null)
+            {
+                allHeatingElements = new List<BuildableDef>();
+                foreach (var def in DefDatabase<ThingDef>.AllDefsListForReading)
+                {
+                    if (def.thingClass.IsInstanceOfType(typeof(Building_HeatingElement)))
+                    {
+                        allHeatingElements.Add(def);
+                    }
+                }
+            }
+
+            foreach (var item in allHeatingElements)
+            {
+                var allowedDesignator = BuildCopyCommandUtility.BuildCommand(item, null, "RF.HeatingElement.Build".Translate(item.label), null, true);
+                if (allowedDesignator != null)
+                    yield return allowedDesignator;
+            }
         }
     }
 }

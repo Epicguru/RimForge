@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using RimForge.Effects;
+﻿using RimForge.Effects;
 using RimForge.Misc;
 using RimWorld;
 using RimWorld.Planet;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using Verse;
-using Verse.AI;
 
 namespace RimForge
 {
@@ -29,9 +28,16 @@ namespace RimForge
             {
                 Core.Log(pawn == null ? "<null>" : $"{pawn.LabelShortCap} on {pawn.Map}");
             }
+
+            Core.Log($"{current.cursedPawns.Count} pawns with blessing:");
+            foreach (var pawn in current.blessedPawns)
+            {
+                Core.Log(pawn == null ? "<null>" : $"{pawn.LabelShortCap} on {pawn.Map}");
+            }
         }
 
         private HashSet<Pawn> cursedPawns = new HashSet<Pawn>();
+        private HashSet<Pawn> blessedPawns = new HashSet<Pawn>();
         private List<ExplosionEffect> explosionEffects = new List<ExplosionEffect>();
         private float gearRot;
 
@@ -39,10 +45,27 @@ namespace RimForge
         {
         }
 
+        public IEnumerable<Pawn> GetBlessedPawns(Map ofMap, FactionDef ofFaction)
+        {
+            Sanitize();
+            foreach(var pawn in blessedPawns)
+            {
+                if (ofFaction == null || pawn.Faction?.def == ofFaction)
+                {
+                    if (ofMap == null || pawn.Map == ofMap)
+                    {
+                        yield return pawn;
+                    }
+                }
+            }
+        }
+
         public void TryAdd(Pawn pawn)
         {
             if (pawn?.story?.traits?.HasTrait(RFDefOf.RF_ZirsCorruption) ?? false)
-                Add(pawn);
+                cursedPawns.Add(pawn);
+            if (pawn?.story?.traits?.HasTrait(RFDefOf.RF_BlessingOfZir) ?? false)
+                blessedPawns.Add(pawn);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -52,11 +75,7 @@ namespace RimForge
         private void Sanitize()
         {
             cursedPawns?.RemoveWhere(p => p.DestroyedOrNull() || p.Dead || !HasTrait(p, RFDefOf.RF_ZirsCorruption));
-        }
-
-        private void Add(Pawn pawn)
-        {
-            cursedPawns.Add(pawn);
+            blessedPawns?.RemoveWhere(p => p.DestroyedOrNull() || p.Dead || !HasTrait(p, RFDefOf.RF_BlessingOfZir));
         }
 
         public override void ExposeData()
@@ -64,7 +83,9 @@ namespace RimForge
             base.ExposeData();
 
             Scribe_Collections.Look(ref cursedPawns, "rf_cursedPawns", LookMode.Reference);
+            Scribe_Collections.Look(ref blessedPawns, "rf_blessedPawns", LookMode.Reference);
             cursedPawns ??= new HashSet<Pawn>();
+            blessedPawns ??= new HashSet<Pawn>();
             Sanitize();
 
             Scribe_Collections.Look(ref explosionEffects, "rf_explosionEffects", LookMode.Deep);

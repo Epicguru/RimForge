@@ -7,9 +7,15 @@ using Verse;
 
 namespace RimForge
 {
+    [StaticConstructorOnStartup]
     internal static class StartupLoading
     {
-        internal static void DoLoad()
+        static StartupLoading()
+        {
+            DoLoadEarly();
+        }
+
+        internal static void DoLoadEarly()
         {
             Core.Log("Starting def processing...");
             var watch = new System.Diagnostics.Stopwatch();
@@ -28,6 +34,19 @@ namespace RimForge
             Core.Log($"There are {AlloyHelper.AllAlloyDefs.Count} recipes ({AlloyHelper.AllCraftableAlloys.Count} craftable alloys), and {AlloyHelper.AllRimForgeResources.Count} general resources.");
 
             MiscOtherTasks();
+        }
+
+        internal static void DoLoadLate()
+        {
+            Core.Log("Doing late load...");
+
+            if (CECompat.IsCEActive)
+            {
+                foreach (var item in CECompat.GetCEMortarShells())
+                {
+                    Building_DroneLauncher.LoadableBombs.Add(item);
+                }
+            }
         }
 
         private static void ProcessDefs()
@@ -93,17 +112,8 @@ namespace RimForge
 
             // Generate forge recipes from alloy defs.
             var recipes = RecipeGenerator.GenAlloySmeltDefs(AlloyHelper.AllAlloyDefs);
-            
             RFDefOf.RF_Forge.recipes ??= new List<RecipeDef>();
             RFDefOf.RF_Forge.recipes.AddRange(recipes);
-
-            if (CECompat.IsCEActive)
-            {
-                foreach (var item in CECompat.GetCEMortarShells())
-                {
-                    Building_DroneLauncher.LoadableBombs.Add(item);
-                }
-            }
         }
 
         private static void MiscOtherTasks()

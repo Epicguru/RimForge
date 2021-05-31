@@ -34,8 +34,8 @@
         <onCamera>false</onCamera>
         <tempoAffectedByGameSpeed>true</tempoAffectedByGameSpeed>
         <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>RF/DroneLaunch</clipFolderPath>
+          <li Class="AudioGrain_Clip">
+            <clipPath>RF/DroneLaunch</clipPath>
           </li>
         </grains>
         <sustainLoop>false</sustainLoop>
@@ -55,8 +55,8 @@
         <onCamera>true</onCamera>
         <tempoAffectedByGameSpeed>true</tempoAffectedByGameSpeed>
         <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>RF/Drone</clipFolderPath>
+          <li Class="AudioGrain_Clip">
+            <clipPath>RF/Drone</clipPath>
           </li>
         </grains>
         <sustainLoop>false</sustainLoop>

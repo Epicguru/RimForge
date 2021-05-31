@@ -58,7 +58,7 @@ namespace RimForge
 
 
         // OTHER
-        [TweakValue("RimForge", 0, 2f)]
+        [TweakValue("RimForge", 0f, 5f)]
         public static float CursedRaidersNumberMultiplier = 1f;
         [TweakValue("RimForge", 0, 20)]
         public static float HateWaveRadius = 5.5f;
