@@ -29,6 +29,9 @@ namespace RimForge.Achievements
 
         public override bool Trigger(int kills, float totalDamage, CoilgunShellDef shellDef)
         {
+            if (shellDef == null)
+                return false;
+
             bool isOnly = this.onlyShell == null || this.onlyShell == shellDef;
             bool isNotExcluded = this.exceptShell == null || this.exceptShell != shellDef;
 

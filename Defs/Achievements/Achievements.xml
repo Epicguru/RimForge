@@ -171,14 +171,27 @@
 
   <AchievementsExpanded.AchievementDef>
     <defName>RF_AC_CoilgunHighDamage</defName>
-    <label>Over... 2000?</label>
-    <description>Kill at least 1 pawn and deal a total of over 2000 damage with a single Coilgun shot.</description>
-    <texPath>RF/AC/Shell2K</texPath>
+    <label>Over... 5000?</label>
+    <description>Kill at least 1 pawn and deal a total of over 5000 damage with a single Coilgun shot.</description>
+    <texPath>RF/AC/Shell5K</texPath>
     <tracker Class="RimForge.Achievements.CoilgunDamageTracker">
       <minKills>1</minKills>
       <minDamage>2000.01</minDamage>
     </tracker>
     <points>5</points>
+    <tab>RF_AC_Tab</tab>
+    <!-- <order>0</order> -->
+  </AchievementsExpanded.AchievementDef>
+
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_CoilgunMany</defName>
+    <label>Never Saw It Coming</label>
+    <description>Kill 200 pawns with the Liandry Coilgun.</description>
+    <texPath>RF/AC/CoilgunMany</texPath>
+    <tracker Class="RimForge.Achievements.CoilgunAnyKillTracker">
+      <count>200</count>
+    </tracker>
+    <points>30</points>
     <tab>RF_AC_Tab</tab>
     <!-- <order>0</order> -->
   </AchievementsExpanded.AchievementDef>
