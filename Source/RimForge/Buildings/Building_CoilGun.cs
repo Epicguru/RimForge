@@ -590,6 +590,8 @@ namespace RimForge.Buildings
                             
                             if (!hasDoneExplosion && shellDef.explosionDamageType != null && shellDef.explosionRadius > 0 && (b == null || b.def.altitudeLayer >= AltitudeLayer.DoorMoveable))
                             {
+                                if(shellDef.useHEKillTracker)
+                                    HEShellKillTracker.BeginCapture();
                                 GenExplosion.DoExplosion(cell, map, shellDef.explosionRadius, shellDef.explosionDamageType, this, shellDef.explosionDamage ?? -1, shellDef.explosionArmorPen ?? -1f);
                                 hasDoneExplosion = true;
                             }

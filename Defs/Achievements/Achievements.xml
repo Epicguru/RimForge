@@ -45,7 +45,7 @@
     <defName>RF_AC_TreatyManyKills</defName>
     <label>Wretched Weaponry</label>
     <description>Kill 50 humans using a Virtuous Treaty.</description>
-    <texPath>RF/AC/Treaty2</texPath>
+    <texPath>RF/AC/Treaty3</texPath>
     <tracker Class="RimForge.Achievements.KillWithWeaponTracker">
       <weaponDef>RF_VirtuousTreaty</weaponDef>
       <raceDef>Human</raceDef>
@@ -99,7 +99,7 @@
     <defName>RF_AC_GaeManyKills</defName>
     <label>Pole Dancer</label>
     <description>Kill 50 humans using a gáe bulg.</description>
-    <texPath>RF/AC/Gae2</texPath>
+    <texPath>RF/AC/Gae3</texPath>
     <tracker Class="RimForge.Achievements.KillWithWeaponTracker">
       <weaponDef>RF_GaeBulg</weaponDef>
       <raceDef>Human</raceDef>
@@ -119,7 +119,7 @@
     <defName>RF_AC_BuildCoilgun</defName>
     <label>Might Be Overkill</label>
     <description>Build a Liandry Coilgun.</description>
-    <texPath>RF/Buildings/Coilgun/Icon</texPath>
+    <texPath>RF/AC/Coilgun</texPath>
     <tracker Class="AchievementsExpanded.BuildingTracker">
       <def>RF_Coilgun</def>
       <count>1</count>
@@ -133,7 +133,7 @@
     <defName>RF_AC_CoilgunFarPen</defName>
     <label>Wallbang</label>
     <description>Kill a pawn with the Coilgun after shooting through 20 solid tiles.</description>
-    <texPath>RF/Items/CoilgunShell_AP</texPath>
+    <texPath>RF/AC/ShellAP</texPath>
     <tracker Class="RimForge.Achievements.CoilgunDepthTracker">
       <minDepth>20</minDepth>
     </tracker>
@@ -146,7 +146,7 @@
     <defName>RF_AC_CoilgunMultikill</defName>
     <label>Can't Stop Won't Stop</label>
     <description>Kill 5 pawns with a single AP or SP Coilgun shell.</description>
-    <texPath>RF/Items/CoilgunShell_AP</texPath>
+    <texPath>RF/AC/ShellSP</texPath>
     <tracker Class="RimForge.Achievements.CoilgunMultikillTracker">
       <minKills>5</minKills>
       <exceptShell>RF_CoilgunShellHE</exceptShell>
@@ -160,12 +160,11 @@
     <defName>RF_AC_CoilgunExplosion</defName>
     <label>Blown Away</label>
     <description>Kill 10 pawns with a single HE Coilgun shell.</description>
-    <texPath>RF/Items/CoilgunShell_HE</texPath>
-    <tracker Class="RimForge.Achievements.CoilgunMultikillTracker">
+    <texPath>RF/AC/ShellHE</texPath>
+    <tracker Class="RimForge.Achievements.CoilgunExplosiveTracker">
       <minKills>10</minKills>
-      <onlyShell>RF_CoilgunShellHE</onlyShell>
     </tracker>
-    <points>5</points>
+    <points>10</points>
     <tab>RF_AC_Tab</tab>
     <!-- <order>0</order> -->
   </AchievementsExpanded.AchievementDef>
@@ -174,7 +173,7 @@
     <defName>RF_AC_CoilgunHighDamage</defName>
     <label>Over... 2000?</label>
     <description>Kill at least 1 pawn and deal a total of over 2000 damage with a single Coilgun shot.</description>
-    <texPath>RF/Items/CoilgunShell_SP</texPath>
+    <texPath>RF/AC/Shell2K</texPath>
     <tracker Class="RimForge.Achievements.CoilgunDamageTracker">
       <minKills>1</minKills>
       <minDamage>2000.01</minDamage>

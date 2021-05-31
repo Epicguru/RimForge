@@ -1,9 +1,11 @@
-﻿using RimForge.Effects;
+﻿using System;
+using RimForge.Effects;
 using RimForge.Misc;
 using RimWorld;
 using RimWorld.Planet;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using RimForge.Buildings;
 using UnityEngine;
 using Verse;
 
@@ -92,9 +94,25 @@ namespace RimForge
             explosionEffects ??= new List<ExplosionEffect>();
         }
 
+        public override void FinalizeInit()
+        {
+            base.FinalizeInit();
+            HEShellKillTracker.Init();
+        }
+
         public override void WorldComponentTick()
         {
             base.WorldComponentTick();
+
+            // TODO move this to a better place?
+            try
+            {
+                HEShellKillTracker.Tick();
+            }
+            catch (Exception e)
+            {
+                Core.Error($"Exception ticking HE Shell kill tracker:\n{e}");
+            }
 
             const float TICKS_TO_EXPLODE = 480;
             for (int i = 0; i < explosionEffects.Count; i++)
@@ -159,31 +177,6 @@ namespace RimForge
                 sparks.Color = Rand.Chance(0.5f) ? new Color(0.25f, 0.18f, 0.18f, 0.65f) : new Color(0.18f, 0.25f, 0.18f, 0.6f);
                 sparks.Spawn(map);
             }
-        }
-
-        private Material mat;
-        public void OnDrawLate(Map map)
-        {
-            // Disabled for now, don't like how it looked.
-
-            //foreach (var pawn in cursedPawns)
-            //{
-            //    if (pawn?.Map != map)
-            //        continue;
-            //    if (pawn.DestroyedOrNull() || pawn.Dead)
-            //        continue;
-
-            //    Vector3 drawPos = pawn.DrawPos;
-            //    drawPos.y = AltitudeLayer.ItemImportant.AltitudeFor();
-            //    if (mat == null)
-            //    {
-            //        mat = new Material(ShaderTypeDefOf.Cutout.Shader);
-            //        mat.SetTexture("_MainTex", Content.RitualGearTexture);
-            //        mat.color = Color.black;
-            //    }
-                
-            //    Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(drawPos, Quaternion.Euler(0, gearRot + pawn.thingIDNumber * 40, 0), Vector3.one), mat, 0);
-            //}
         }
 
         public void StartExplosionEffect(ExplosionEffect e)

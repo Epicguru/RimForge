@@ -2,6 +2,8 @@
 using RimForge.Comps;
 using System;
 using System.Collections.Generic;
+using AchievementsExpanded;
+using RimForge.Achievements;
 using RimForge.CombatExtended;
 using Verse;
 
@@ -119,6 +121,30 @@ namespace RimForge
         private static void MiscOtherTasks()
         {
             Building_Coilgun.ShellDefs.AddRange(DefDatabase<CoilgunShellDef>.AllDefsListForReading);
+
+            HEShellKillTracker.ReportKills += (e, count) =>
+            {
+                if (e == null )
+                    return;
+
+                #region VEA
+                foreach (var card in AchievementPointManager.GetCards<CoilgunExplosiveTracker>())
+                {
+                    try
+                    {
+                        if ((card.tracker as CoilgunExplosiveTracker).Trigger(e, count))
+                        {
+                            card.UnlockCard();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Core.Error($"Unable to trigger event for card validation. To avoid further errors {card.def.LabelCap} has been automatically unlocked.\n\nException={ex.Message}");
+                        card.UnlockCard();
+                    }
+                }
+                #endregion
+            };
         }
     }
 }

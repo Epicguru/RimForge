@@ -9,6 +9,7 @@ namespace RimForge
         public float penDamageMultiplier = 0.95f;
         public bool pawnsCountAsPen = false;
 
+        public bool useHEKillTracker = false;
         public float explosionRadius = 5f;
         public DamageDef explosionDamageType;
         public int? explosionDamage;
