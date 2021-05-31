@@ -9,7 +9,7 @@ namespace RimForge.Patches
     {
         static void Postfix(Pawn ___pawn, Trait trait)
         {
-            if (trait.def == RFDefOf.RF_ZirsCorruption)
+            if (trait.def == RFDefOf.RF_ZirsCorruption || trait.def == RFDefOf.RF_BlessingOfZir)
             {
                 TraitTracker.Current?.TryAdd(___pawn);
             }

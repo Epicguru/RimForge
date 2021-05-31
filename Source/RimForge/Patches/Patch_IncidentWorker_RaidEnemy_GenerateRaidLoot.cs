@@ -17,7 +17,15 @@ namespace RimForge.Patches
 
             if (pawns != null && pawns.Count > 0)
             {
-                int toChange = Mathf.RoundToInt(2f * Settings.CursedRaidersNumberMultiplier);
+                int blessedCount = 0;
+                foreach (var _ in TraitTracker.Current.GetBlessedPawns(pawns[0].Map, Faction.OfPlayerSilentFail.def))
+                {
+                    blessedCount++;
+                }
+                if (blessedCount == 0)
+                    return;
+
+                int toChange = Mathf.RoundToInt(blessedCount * Settings.CursedRaidersNumberMultiplier);
                 List<Pawn> changed = new List<Pawn>(toChange);
                 foreach (var converted in CursedPawnUtil.TryMakeCursed(pawns, toChange))
                 {

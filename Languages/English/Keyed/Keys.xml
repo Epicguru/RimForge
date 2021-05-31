@@ -142,7 +142,11 @@ There is a {1}% chance of failure.</RF.Ritual.FailWarning>
 <RF.Forge.BillNotHot>Forge not capable of temperature ({0})</RF.Forge.BillNotHot>
 <RF.Forge.Providing> providing up to </RF.Forge.Providing> <!-- The leading and trailing whitespace is important -->
 <RF.Forge.HeatingElementsHeader>Connected heating elements:</RF.Forge.HeatingElementsHeader>
+<RF.Forge.Temperature>Capable of temperature: {0}</RF.Forge.Temperature>
+<RF.Forge.MissingElement>Build at least 1 heating element directly adjacent (left or right) to begin making alloys.</RF.Forge.MissingElement>
+
 <RF.HeatingElement.CurrentPowerLevel>Current power level: {0}</RF.HeatingElement.CurrentPowerLevel>
+<RF.HeatingElement.Build>Build a {0}</RF.HeatingElement.Build>
 
 <RF.Blessing.IncreasedMessage>Blessing of Zir: Increased quality to {0}</RF.Blessing.IncreasedMessage>
 
