@@ -272,7 +272,7 @@
     <defName>RF_AC_DroneNuke</defName>
     <label>Seems Unfair</label>
     <description>Drop an Antigrain Warhead from a strike drone.</description>
-    <texPath>RF/AC/Antigrain</texPath>
+    <texPath>RF/AC/Drone</texPath>
     <tracker Class="RimForge.Achievements.GenericEventTracker">
       <trigger>DroneAntimatter</trigger>
     </tracker>
@@ -285,7 +285,7 @@
     <defName>RF_AC_DroneNukeMany</defName>
     <label>Sending A Message</label>
     <description>Drop 6 Antigrain Warheads from a strike drone in a single run.</description>
-    <texPath>RF/AC/AntigrainMany</texPath>
+    <texPath>RF/AC/Drone2</texPath>
     <tracker Class="RimForge.Achievements.GenericEventTracker">
       <trigger>DroneAntimatterFull</trigger>
     </tracker>
