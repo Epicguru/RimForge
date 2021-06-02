@@ -539,6 +539,7 @@ namespace RimForge.Buildings
                         if (b != null || pawn != null)
                         {
                             var info = new DamageInfo(RFDefOf.RF_CoilgunDamage, damage * (b == null ? 1f : Settings.CoilgunBuildingDamageMulti), 100, instigator: this);
+                            info.SetIgnoreArmor(true);
                             var result = thing.TakeDamage(info);
                             affected++;
                             totalDamage += result.totalDamageDealt;

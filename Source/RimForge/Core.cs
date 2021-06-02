@@ -31,6 +31,8 @@ namespace RimForge
                 Verse.Log.Error(exception.ToString());
         }
 
+        public readonly Harmony HarmonyInstance; 
+
         public Core(ModContentPack content) : base(content)
         {
             Log("Hello, world!");
@@ -38,10 +40,10 @@ namespace RimForge
             ContentPack = content;
 
             // Apply harmony patches.
-            var harmony = new Harmony("co.uk.epicguru.rimforge");
+            HarmonyInstance = new Harmony("co.uk.epicguru.rimforge");
             try
             {
-                harmony.PatchAll();
+                HarmonyInstance.PatchAll();
             }
             catch (Exception e)
             {
@@ -49,7 +51,7 @@ namespace RimForge
             }
             finally
             {
-                Log($"Patched {harmony.GetPatchedMethods().EnumerableCount()} methods:\n{string.Join(",\n", harmony.GetPatchedMethods())}");
+                Log($"Patched {HarmonyInstance.GetPatchedMethods().EnumerableCount()} methods:\n{string.Join(",\n", HarmonyInstance.GetPatchedMethods())}");
             }
 
             // Create MonoBehaviour hook.

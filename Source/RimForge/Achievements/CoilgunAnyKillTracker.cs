@@ -19,9 +19,6 @@ namespace RimForge.Achievements
             if (killedThings.Contains(pawn.GetUniqueLoadID()))
                 return false;
 
-            if (dinfo.HasValue)
-                Core.Log($"Instigator: {dinfo.Value.Instigator} ({dinfo?.Instigator?.def == RFDefOf.RF_Coilgun})");
-
             if (dinfo?.Instigator?.def != RFDefOf.RF_Coilgun)
                 return false;
 

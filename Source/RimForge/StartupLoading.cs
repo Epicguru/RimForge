@@ -3,8 +3,10 @@ using RimForge.Comps;
 using System;
 using System.Collections.Generic;
 using AchievementsExpanded;
+using HarmonyLib;
 using RimForge.Achievements;
 using RimForge.CombatExtended;
+using RimForge.Patches;
 using Verse;
 
 namespace RimForge
@@ -44,6 +46,18 @@ namespace RimForge
 
             if (CECompat.IsCEActive)
             {
+                try
+                {
+                    var original = AccessTools.Method("CombatExtended.CompSuppressable:AddSuppression");
+                    var patchRaw = AccessTools.Method(typeof(Patch_CompSuppressable_AddSuppression), nameof(Patch_CompSuppressable_AddSuppression.Prefix));
+                    var patch = new HarmonyMethod(patchRaw);
+                    Core.Instance.HarmonyInstance.Patch(original, prefix: patch);
+                }
+                catch(Exception e)
+                {
+                    Core.Error("Failed to patch CombatExtended suppression:", e);
+                }
+
                 foreach (var item in CECompat.GetCEMortarShells())
                 {
                     Building_DroneLauncher.LoadableBombs.Add(item);
