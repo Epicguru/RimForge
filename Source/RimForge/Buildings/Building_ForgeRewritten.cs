@@ -215,7 +215,7 @@ namespace RimForge.Buildings
             if (heatingElements.Count == 0)
                 str.AppendLine("RF.None".Translate().CapitalizeFirst());
 
-            return "RF.Forge.Temperature".Translate(GetPotentialHeat().ToStringTemperature("F0")) + $"\n{str}";
+            return "RF.Forge.Temperature".Translate(GetPotentialHeat().ToStringTemperature("F0")) + $"\n{str}".TrimEnd();
         }
 
         public bool ShouldGlowNow()

@@ -33,7 +33,8 @@
     <defName>RF_Forge</defName>
     <thingClass>RimForge.Buildings.Building_ForgeRewritten</thingClass>
     <label>forge</label>
-    <description>A metal-smelting forge. Melts down metals, to create alloys out of them.</description>
+    <description>A metal-smelting forge. Melts down metals, to create alloys out of them.
+Requires at least 1 heating element to be built directly adjacent (left or right) to it in order to generate heat and create alloys.</description>
     <graphicData>
       <texPath>RF/Buildings/ForgeIdle</texPath>
       <graphicClass>Graphic_Single</graphicClass>
