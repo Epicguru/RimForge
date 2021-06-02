@@ -51,8 +51,9 @@ namespace RimForge.Airstrike
 
         public static void DoStrike(Thing instigator, ThingDef bombDef, IntVec3 start, IntVec3 end, int bombCount, int delayTicks = 0, SoundDef playAfterDelay = null)
         {
-            if (bombCount < 2)
-                bombCount = 2;
+            bool isSingle = start == end;
+            if (isSingle)
+                bombCount = 1;
 
             int duration = GetAirstrikeDuration(start, end);
             tempStrikes.Clear();
@@ -65,7 +66,7 @@ namespace RimForge.Airstrike
             {
                 MoteAt(point);
 
-                float p = index / (bombCount - 1f);
+                float p = isSingle ? 0f : index / (bombCount - 1f);
                 int tick = Mathf.RoundToInt(duration * p) + startDelay;
 
                 var strike = new SingleStrike();
@@ -85,6 +86,8 @@ namespace RimForge.Airstrike
             tempStrikes.Clear();
 
             // Make drone shadow.
+            if(start == end)
+                end += new IntVec3(Rand.InsideUnitCircleVec3 * 50f);
             IntVec3 droneStart = AtEdgeOfMap(map, start, end, 1);
             IntVec3 droneEnd = AtEdgeOfMap(map, start, end, -1);
             int time = Mathf.RoundToInt((droneStart - droneEnd).LengthHorizontal * 0.38f);
@@ -95,6 +98,12 @@ namespace RimForge.Airstrike
 
         public static void DrawStrikePreview(IntVec3 start, IntVec3 end, Map map, int bombCount, float explosionRadius)
         {
+            if (start == end)
+            {
+                GenExplosion.RenderPredictedAreaOfEffect(start, explosionRadius);
+                return;
+            }
+
             int index = 0;
             tempCells.Clear();
             foreach(var cell in GeneratePoints(start, end, bombCount))
@@ -139,11 +148,17 @@ namespace RimForge.Airstrike
         private static int GetAirstrikeDuration(IntVec3 from, IntVec3 to)
         {
             float dst = (from - to).LengthHorizontal;
-            return Mathf.Max(Mathf.RoundToInt(dst * 1.5f), 1);
+            return Mathf.Max(Mathf.RoundToInt(dst * 1.5f), 0);
         }
 
         private static IEnumerable<IntVec3> GeneratePoints(IntVec3 start, IntVec3 end, int count)
         {
+            if (start == end)
+            {
+                yield return start;
+                yield break;
+            }
+
             Vector3 startFloat = start.ToVector3();
             Vector3 endFloat = end.ToVector3();
 

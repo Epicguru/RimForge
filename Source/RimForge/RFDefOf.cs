@@ -36,6 +36,7 @@ namespace RimForge
         public static LetterDef RF_CursedRaiders;
         public static ThingDef RF_Motes_Growth;
         public static ThingDef RF_Motes_Air;
+        public static CoilgunShellDef RF_CoilgunShellAP;
 
         // Vanilla ones.
         public static ThingDef Column;

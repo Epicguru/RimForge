@@ -54,6 +54,20 @@ namespace RimForge.Buildings
 
         public DrawPart Top, Cables, LeftPivot, RightPivot;
         public DrawPart BarLeft, BarRight;
+        public CoilgunShellDef CurrentShellDef
+        {
+            get
+            {
+                return FuelComp.Props.fuelFilter.AnyAllowedDef as CoilgunShellDef;
+            }
+            set
+            {
+                FuelComp.Props.fuelFilter.SetDisallowAll();
+                if(value != null)
+                    FuelComp.Props.fuelFilter.SetAllow(value, true);
+                shellDef = value;
+            }
+        }
 
         private List<LinearElectricArc> backArcs = new List<LinearElectricArc>();
         private List<LinearElectricArc> frontArcs = new List<LinearElectricArc>();
@@ -63,6 +77,7 @@ namespace RimForge.Buildings
         private List<Building_Capacitor> rawCapacitors = new List<Building_Capacitor>();
         private int ticksSinceCapacitorRefresh;
         private int tickCounter;
+        private CoilgunShellDef shellDef;
         private Dictionary<int, List<Action>> tickActions = new Dictionary<int, List<Action>>(128);
 
         public override void ExposeData()
@@ -78,6 +93,9 @@ namespace RimForge.Buildings
             Scribe_Values.Look(ref ticksSinceCapacitorRefresh, "coil_ticksSinceCapRefresh");
             Scribe_Collections.Look(ref rawCapacitors, "coil_rawCaps", LookMode.Reference);
             rawCapacitors ??= new List<Building_Capacitor>();
+
+            Scribe_Defs.Look(ref shellDef, "coil_shellDef");
+            CurrentShellDef = shellDef;
         }
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
@@ -85,6 +103,7 @@ namespace RimForge.Buildings
             base.SpawnSetup(map, respawningAfterLoad);
 
             DrawAffectedCells = false;
+            CurrentShellDef ??= RFDefOf.RF_CoilgunShellAP;
         }
 
         public virtual void Setup()
@@ -151,8 +170,8 @@ namespace RimForge.Buildings
                 tickActions.Remove(tickCounter);
             }
 
-            FuelComp.Props.fuelLabel = GetCurrentShellType().LabelCap;
-            FuelComp.Props.fuelGizmoLabel = GetCurrentShellType().LabelCap;
+            FuelComp.Props.fuelLabel = CurrentShellDef.LabelCap;
+            FuelComp.Props.fuelGizmoLabel = CurrentShellDef.LabelCap;
 
             Graphic TopGraphic()
             {
@@ -256,7 +275,7 @@ namespace RimForge.Buildings
             var list = GetAffectedCells(newEndPos);
             GenDraw.DrawFieldEdges(list, Color.red);
 
-            var currentShell = GetCurrentShellType();
+            var currentShell = CurrentShellDef;
             if (currentShell?.explosionDamageType == null || currentShell.explosionRadius <= 0f)
                 return;
 
@@ -287,29 +306,17 @@ namespace RimForge.Buildings
             }
         }
 
-        public CoilgunShellDef GetLoadedShell()
+        public bool HasLoadedShell()
         {
-            return FuelComp.Fuel > 0 ? GetCurrentShellType() : null;
-        }
-
-        public CoilgunShellDef GetCurrentShellType()
-        {
-            return FuelComp.Props.fuelFilter.AnyAllowedDef as CoilgunShellDef;
-        }
-
-        public void SetCurrentShellType(ThingDef def)
-        {
-            FuelComp.Props.fuelFilter.SetDisallowAll();
-            FuelComp.Props.fuelFilter.SetAllow(def, true);
+            return FuelComp.Fuel > 0;
         }
 
         public void EjectLoadedShell()
         {
-            var loaded = GetLoadedShell();
-            if (loaded == null)
+            if (!HasLoadedShell())
                 return;
 
-            var thing = ThingMaker.MakeThing(loaded);
+            var thing = ThingMaker.MakeThing(CurrentShellDef);
             GenPlace.TryPlaceThing(thing, Position - new IntVec3(0, 0, 3), Map, ThingPlaceMode.Near);
 
             ClearLoadedShell();
@@ -447,7 +454,7 @@ namespace RimForge.Buildings
             var list = GetAffectedCells(newEndPos);
             CurrentTargetInfo = LocalTargetInfo.Invalid;
 
-            var shellDef = GetCurrentShellType();
+            var shellDef = CurrentShellDef;
 
             float damage = shellDef.baseDamage * Settings.CoilgunBaseDamageMultiplier;
 
@@ -825,7 +832,7 @@ namespace RimForge.Buildings
 
             GetCapacitorState(out int capCount, out float capPower);
             bool hasPower = PowerComp.PowerOn;
-            bool hasShell = GetLoadedShell() != null;
+            bool hasShell = HasLoadedShell();
 
             yield return new Command_TargetCustom()
             {
@@ -859,16 +866,19 @@ namespace RimForge.Buildings
                 action = () =>
                 {
                     Func<ThingDef, string> labelGetter  = shell => shell.LabelCap;
-                    Func<ThingDef, Action> actionGetter = shell => () =>
+                    Func<ThingDef, Action> actionGetter = shell =>
                     {
-                        if (GetCurrentShellType() == shell)
-                            return;
-                        EjectLoadedShell();
-                        SetCurrentShellType(shell);
+                        if (shell == CurrentShellDef)
+                            return null;
+                        return () =>
+                        {
+                            EjectLoadedShell();
+                            CurrentShellDef = (CoilgunShellDef) shell;
+                        };
                     };
                     FloatMenuUtility.MakeMenu(ShellDefs, labelGetter, actionGetter);
                 },
-                icon = GetCurrentShellType()?.uiIcon
+                icon = CurrentShellDef?.uiIcon
             };
         }
 
