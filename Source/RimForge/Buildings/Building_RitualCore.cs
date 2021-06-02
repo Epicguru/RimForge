@@ -4,6 +4,7 @@ using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RimForge.Achievements;
 using UnityEngine;
 using Verse;
 
@@ -305,8 +306,10 @@ namespace RimForge.Buildings
 
                 if (failLevel > 0)
                 {
+                    GenericEventTracker.Fire(AchievementEvent.RitualFailure);
+
                     // Kill the sacrifice.
-                    if(SacrificePawn != null)
+                    if (SacrificePawn != null)
                         TakeHeart(SacrificePawn);
 
                     if (failLevel == 2)
@@ -335,6 +338,8 @@ namespace RimForge.Buildings
                 Trait trait = new Trait(RFDefOf.RF_BlessingOfZir, forced: true);
                 TargetPawn.story.traits.GainTrait(trait);
                 TargetPawn.TryGiveThought(RFDefOf.RF_RitualBlessed);
+
+                GenericEventTracker.Fire(AchievementEvent.RitualPerformed);
 
                 // Give negative thoughts to all colonists.
                 int thoughtLevel = SacrificePawn.guilt.IsGuilty ? 1 : 0;
@@ -489,7 +494,12 @@ namespace RimForge.Buildings
                     {
                         Text = "RF.Ritual.FailWarning".Translate(GetPrettyTimesString(timesPerformed), (chanceToFail * 100f).ToString("F0")),
                         ButtonText = "RF.Ritual.IUnderstand".Translate(),
-                        OnAccept = act
+                        OnAccept = () =>
+                        {
+                            if (chanceToFail > 0.5f)
+                                GenericEventTracker.Fire(AchievementEvent.Ritual50ChanceFailure);
+                            act();
+                        }
                     });
                 },
                 disabled = GetReasonsCannotStartRitual().Any(),

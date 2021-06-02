@@ -190,4 +190,7 @@ There must be at least {0} cells between these two positions.</RF.DL.NotEnoughDi
 
 <RF.LoadLabel>RimForge is crunching numbers...</RF.LoadLabel>
 
+<RC.AC.AlreadyGoodStanding>Your colonists are already in good standing with Machine God Zir.</RC.AC.AlreadyGoodStanding>
+<RC.AC.IncreasedStanding>Your offering has been accepted by the Machine God. Chance of ritual failure has decreased to {0}.</RC.AC.IncreasedStanding>
+
  </LanguageData>

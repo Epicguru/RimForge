@@ -40,7 +40,7 @@ This one burns wood to produce heat.</description>
     </costList>
 
     <!-- Means that with 2 wood-fired heaters, it is possible to make bronze, for tribal playthroughs. -->
-    <maxAddedHeat>450</maxAddedHeat>
+    <maxAddedHeat>500</maxAddedHeat>
     <activeFuelBurnRate>200</activeFuelBurnRate>
 
     <comps>
@@ -81,7 +81,7 @@ This one burns chemfuel to produce heat, an upgrade from burning wood.</descript
       <ComponentIndustrial>5</ComponentIndustrial>
     </costList>
 
-    <maxAddedHeat>750</maxAddedHeat>
+    <maxAddedHeat>800</maxAddedHeat>
     <activeFuelBurnRate>200</activeFuelBurnRate>
 
     <comps>
@@ -123,7 +123,7 @@ Only consumes power when the forge is active.</description>
       <ComponentSpacer>2</ComponentSpacer>
     </costList>
 
-    <maxAddedHeat>900</maxAddedHeat>
+    <maxAddedHeat>1000</maxAddedHeat>
     <activePowerDraw>2000</activePowerDraw> <!-- Uses 2KW at 100% power -->
 
     <comps>

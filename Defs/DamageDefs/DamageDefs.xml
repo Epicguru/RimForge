@@ -120,4 +120,10 @@ Very painful.</description>
     </injuryProps>
   </HediffDef>
 
+  <!-- Custom HE shell damage worker, to track explosion kills -->
+  <DamageDef ParentName="Bomb">
+    <defName>RF_ShellHE_Bomb</defName>
+    <workerClass>RimForge.Damage.DamageWorker_AddInjuryForShellHE</workerClass>
+  </DamageDef>
+
 </Defs>

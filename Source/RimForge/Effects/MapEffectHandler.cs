@@ -14,7 +14,7 @@ namespace RimForge.Effects
         public static MapEffectHandler Current => Find.World?.GetComponent<MapEffectHandler>();
         public static ThreadedEffectHandler ThreadedHandler = new ThreadedEffectHandler();
 
-        private TraitTracker traitTracker;
+        //private TraitTracker traitTracker;
 
         [DebugAction("RimForge", "Debug Map Effects")]
         private static void DebugMapEffects()
@@ -140,8 +140,8 @@ namespace RimForge.Effects
 
         private void OnDrawLate(Map map)
         {
-            traitTracker ??= TraitTracker.Current;
-            traitTracker?.OnDrawLate(map);
+            //traitTracker ??= TraitTracker.Current;
+            //traitTracker?.OnDrawLate(map);
 
             if (map != null && effects.TryGetValue(map.uniqueID, out var found))
             {

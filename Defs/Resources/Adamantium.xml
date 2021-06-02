@@ -43,10 +43,23 @@ It's dark surface is strangely beautiful.</description>
       </statFactors>
     </stuffProps>
     <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+
     <modExtensions>
+
       <li Class="RimForge.Extension">
         <meltingPoint>2000</meltingPoint>
       </li>
+
+      <!-- Melee weapons made from adamantium deflect bullets. Nice. -->
+      <li Class="Rimforge.StuffCompGiver">
+        <onlyMeleeWeapons>true</onlyMeleeWeapons>
+        <compClass>RimForge.Comps.CompDeflector</compClass>
+        <props Class="RimForge.Comps.CompProperties_Deflector">
+          <deflectChance>1</deflectChance>
+          <reflectChance>1</reflectChance>
+        </props>
+      </li>
+
     </modExtensions>
 
   </ThingDef>

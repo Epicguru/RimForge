@@ -230,5 +230,19 @@ namespace RimForge
 
             pawn?.needs?.mood?.thoughts?.memories?.TryGainMemory(ThoughtMaker.MakeThought(def, level), otherPawn);
         }
+
+        /// <summary>
+        /// This is more performant that doing GetComp<CompDeflector>()
+        /// </summary>
+        public static CompDeflector GetDeflectorComp(this ThingWithComps thing)
+        {
+            for (int i = 0; i < thing.AllComps.Count; i++)
+            {
+                var comp = thing.AllComps[i];
+                if (comp is CompDeflector d)
+                    return d;
+            }
+            return null;
+        }
     }
 }

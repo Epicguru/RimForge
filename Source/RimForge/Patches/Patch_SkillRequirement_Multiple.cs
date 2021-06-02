@@ -1,6 +1,6 @@
-﻿using System.Xml;
-using HarmonyLib;
+﻿using HarmonyLib;
 using RimWorld;
+using System.Xml;
 using Verse;
 
 namespace RimForge.Patches

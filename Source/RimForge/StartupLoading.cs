@@ -2,7 +2,11 @@
 using RimForge.Comps;
 using System;
 using System.Collections.Generic;
+using AchievementsExpanded;
+using HarmonyLib;
+using RimForge.Achievements;
 using RimForge.CombatExtended;
+using RimForge.Patches;
 using Verse;
 
 namespace RimForge
@@ -42,6 +46,18 @@ namespace RimForge
 
             if (CECompat.IsCEActive)
             {
+                try
+                {
+                    var original = AccessTools.Method("CombatExtended.CompSuppressable:AddSuppression");
+                    var patchRaw = AccessTools.Method(typeof(Patch_CompSuppressable_AddSuppression), nameof(Patch_CompSuppressable_AddSuppression.Prefix));
+                    var patch = new HarmonyMethod(patchRaw);
+                    Core.Instance.HarmonyInstance.Patch(original, prefix: patch);
+                }
+                catch(Exception e)
+                {
+                    Core.Error("Failed to patch CombatExtended suppression:", e);
+                }
+
                 foreach (var item in CECompat.GetCEMortarShells())
                 {
                     Building_DroneLauncher.LoadableBombs.Add(item);
@@ -119,6 +135,30 @@ namespace RimForge
         private static void MiscOtherTasks()
         {
             Building_Coilgun.ShellDefs.AddRange(DefDatabase<CoilgunShellDef>.AllDefsListForReading);
+
+            HEShellKillTracker.ReportKills += (e, count) =>
+            {
+                if (e == null )
+                    return;
+
+                #region VEA
+                foreach (var card in AchievementPointManager.GetCards<CoilgunExplosiveTracker>())
+                {
+                    try
+                    {
+                        if ((card.tracker as CoilgunExplosiveTracker).Trigger(e, count))
+                        {
+                            card.UnlockCard();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Core.Error($"Unable to trigger event for card validation. To avoid further errors {card.def.LabelCap} has been automatically unlocked.\n\nException={ex.Message}");
+                        card.UnlockCard();
+                    }
+                }
+                #endregion
+            };
         }
     }
 }
