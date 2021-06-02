@@ -16,6 +16,9 @@ This mercury is a key ingredient in making Mercury Ultraweave.</description>
     <selectable>true</selectable>
     <pathCost>14</pathCost>
     <ingestible />
+    <researchPrerequisites>
+      <li>RF_Research_Mercury</li>
+    </researchPrerequisites>
     <plant>
       <growDays>10</growDays>
       <dieIfLeafless>true</dieIfLeafless>

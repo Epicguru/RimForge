@@ -21,7 +21,7 @@ Highly durable and resistant to even heavy gunfire.</description>
         <RF_BlessingOfZir>0</RF_BlessingOfZir>
       </skillRequirements>
       <productCount>25</productCount>
-      <researchPrerequisite>Devilstrand</researchPrerequisite>   
+      <researchPrerequisite>RF_Research_Mercury</researchPrerequisite>   
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
       <workSkill>Crafting</workSkill>
       <effectWorking>Tailor</effectWorking>
