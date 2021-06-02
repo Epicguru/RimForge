@@ -6,12 +6,8 @@ namespace RimForge.Achievements
     public class ItemCraftTrackerWithCount : ItemCraftTracker
     {
         public ItemCraftTrackerWithCount() { }
-
         public ItemCraftTrackerWithCount(ItemCraftTrackerWithCount other)
-            : base(other)
-        {
-
-        }
+            : base(other) { }
 
         public override bool Trigger(Thing thing)
         {

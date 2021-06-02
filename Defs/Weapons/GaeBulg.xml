@@ -23,7 +23,7 @@ It has more spikey bits to make it easier to poke people with.</description>
     </thingSetMakerTags>
     <statBases>
       <MaxHitPoints>300</MaxHitPoints>
-      <WorkToMake>24000</WorkToMake>
+      <WorkToMake>19000</WorkToMake>
       <Mass>5</Mass>
     </statBases>
     <equippedStatOffsets>

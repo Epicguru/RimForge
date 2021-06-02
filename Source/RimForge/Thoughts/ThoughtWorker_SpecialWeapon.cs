@@ -26,7 +26,7 @@ namespace RimForge.Thoughts
             }
 
             // Cursed weapons.
-            if (holdingDef == RFDefOf.RF_SwordOfDarkness)
+            if (holdingDef == RFDefOf.RF_SwordOfDarkness || holdingDef == RFDefOf.RF_CursedKhopesh)
             {
                 GetTraits(p, out bool _, out bool cursed);
 

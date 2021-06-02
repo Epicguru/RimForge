@@ -17,7 +17,7 @@
               </capacities>
               <power>45</power>
               <cooldownTime>0.9</cooldownTime>
-              <armorPenetrationBlunt>45</armorPenetrationBlunt>
+              <armorPenetrationBlunt>35</armorPenetrationBlunt>
               <armorPenetrationSharp>5</armorPenetrationSharp>
               <linkedBodyPartsGroup>Edge</linkedBodyPartsGroup>
             </li>

@@ -33,6 +33,7 @@ namespace RimForge
         public static ThoughtDef RF_ZirKiller;
         public static ThingDef RF_SwordOfRapture;
         public static ThingDef RF_SwordOfDarkness;
+        public static ThingDef RF_CursedKhopesh;
         public static LetterDef RF_CursedRaiders;
         public static ThingDef RF_Motes_Growth;
         public static ThingDef RF_Motes_Air;
