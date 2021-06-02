@@ -25,14 +25,16 @@ namespace RimForge.Patches
                 if (blessedCount == 0)
                     return;
 
-                int toChange = Mathf.RoundToInt(blessedCount * Settings.CursedRaidersNumberMultiplier);
+                int toChange = Mathf.RoundToInt(blessedCount * Settings.CursedRaidersNumberScale * Rand.Range(Settings.CursedRaidersNumberMultiplierMin, Settings.CursedRaidersNumberMultiplierMax));
+                if (toChange <= 0)
+                    return;
                 List<Pawn> changed = new List<Pawn>(toChange);
                 foreach (var converted in CursedPawnUtil.TryMakeCursed(pawns, toChange))
                 {
                     Core.Log($"{converted.LabelShortCap} is now a cursed raider");
                     changed.Add(converted);
                 }
-                if (changed.Count > 0)
+                if (changed.Count > 0 && Settings.SendRaiderLetter)
                 {
                     // Send letter.
                     SendLetter(parms, changed);
