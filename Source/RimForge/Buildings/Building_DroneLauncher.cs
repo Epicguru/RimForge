@@ -28,12 +28,21 @@ namespace RimForge.Buildings
         private static readonly List<IntVec3> tempCells = new List<IntVec3>();
         private static readonly List<IntVec3> tempCells2 = new List<IntVec3>();
 
-        public ThingDef CurrentBombDef
+        public ThingDef CurrentShellDef
         {
             get
             {
                 var comp = GetComp<CompRefuelable>();
                 return comp.Props.fuelFilter.AnyAllowedDef;
+            }
+            set
+            {
+                var comp = GetComp<CompRefuelable>();
+                comp.Props.fuelFilter.SetDisallowAll();
+                if (value != null)
+                    comp.Props.fuelFilter.SetAllow(value, true);
+
+                shellDef = value;
             }
         }
         public int LoadedShellCount
@@ -69,6 +78,7 @@ namespace RimForge.Buildings
         private bool isBlocked;
         private string blockedBy;
         private int timer;
+        private ThingDef shellDef;
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
@@ -82,12 +92,7 @@ namespace RimForge.Buildings
             isFlying = false;
             ticksFlying = 0;
 
-            if (CurrentBombDef == null)
-            {
-                var comp = GetComp<CompRefuelable>();
-                comp.Props.fuelFilter.SetDisallowAll();
-                comp.Props.fuelFilter.SetAllow(RFDefOf.Shell_HighExplosive, true);
-            }
+            CurrentShellDef ??= RFDefOf.Shell_HighExplosive;
         }
 
         public override void ExposeData()
@@ -95,6 +100,8 @@ namespace RimForge.Buildings
             base.ExposeData();
 
             Scribe_Values.Look(ref isBlocked, "RF_isBlocked");
+            Scribe_Defs.Look(ref shellDef, "RF_loadedShell");
+            CurrentShellDef = shellDef;
         }
 
         public override void Tick()
@@ -117,8 +124,8 @@ namespace RimForge.Buildings
             }
 
             var comp = GetComp<CompRefuelable>();
-            comp.Props.fuelLabel = CurrentBombDef.LabelCap;
-            comp.Props.fuelGizmoLabel = CurrentBombDef.LabelCap;
+            comp.Props.fuelLabel = CurrentShellDef.LabelCap;
+            comp.Props.fuelGizmoLabel = CurrentShellDef.LabelCap;
 
             if (isFlying)
             {
@@ -248,7 +255,7 @@ namespace RimForge.Buildings
 
         public void EjectLoadedShells()
         {
-            var loaded = CurrentBombDef;
+            var loaded = CurrentShellDef;
             if (loaded == null)
                 return;
 
@@ -279,20 +286,19 @@ namespace RimForge.Buildings
                 action = () =>
                 {
                     Func<ThingDef, string> labelGetter = shell => shell.LabelCap;
-                    Func<ThingDef, Action> actionGetter = shell => () =>
+                    Func<ThingDef, Action> actionGetter = shell =>
                     {
-                        if (CurrentBombDef == shell)
-                            return;
-
-                        EjectLoadedShells();
-
-                        var comp = GetComp<CompRefuelable>();
-                        comp.Props.fuelFilter.SetDisallowAll();
-                        comp.Props.fuelFilter.SetAllow(shell, true);
+                        if (shell == CurrentShellDef)
+                            return null;
+                        return () =>
+                        {
+                            EjectLoadedShells();
+                            CurrentShellDef = shell;
+                        };
                     };
                     FloatMenuUtility.MakeMenu(LoadableBombs, labelGetter, actionGetter);
                 },
-                icon = CurrentBombDef?.uiIcon
+                icon = CurrentShellDef?.uiIcon
             };
 
             yield return new Command_TargetCustom()
@@ -310,18 +316,27 @@ namespace RimForge.Buildings
                     if (!t.IsValid)
                         return;
 
-                    if (i == 0)
+                    if(LoadedShellCount == 1)
                     {
                         firstPosition = t.Cell;
-                        keepGoing = true;
+                        secondPosition = t.Cell;
+                        keepGoing = false;
                     }
                     else
-                        secondPosition = t.Cell;
+                    {
+                        if (i == 0)
+                        {
+                            firstPosition = t.Cell;
+                            keepGoing = true;
+                        }
+                        else
+                            secondPosition = t.Cell;
+                    }
 
-                    if (i == 1)
+                    if (i == 1 || LoadedShellCount == 1)
                     {
                         const float MIN_DST = 5f;
-                        bool hasDistance = (firstPosition.Value - secondPosition.Value).LengthHorizontal >= MIN_DST;
+                        bool hasDistance = LoadedShellCount == 1 || (firstPosition.Value - secondPosition.Value).LengthHorizontal >= MIN_DST;
 
                         if(hasDistance)
                             DoStrike();
@@ -345,7 +360,7 @@ namespace RimForge.Buildings
 
         public void DoStrike()
         {
-            bool isAntimatter = CurrentBombDef == ThingDefOf.Shell_AntigrainWarhead;
+            bool isAntimatter = CurrentShellDef == ThingDefOf.Shell_AntigrainWarhead;
 
             if (isAntimatter)
             {
@@ -357,7 +372,8 @@ namespace RimForge.Buildings
                 }
             }
 
-            GenAirstrike.DoStrike(this, CECompat.IsCEActive ? CECompat.GetProjectile(CurrentBombDef) : CurrentBombDef.projectileWhenLoaded, firstPosition.Value, secondPosition.Value, LoadedShellCount, 200, RFDefOf.RF_Sound_Drone);
+            GenAirstrike.DoStrike(this, CECompat.IsCEActive ? CECompat.GetProjectile(CurrentShellDef) : CurrentShellDef.projectileWhenLoaded, firstPosition.Value, secondPosition.Value, LoadedShellCount, 200, RFDefOf.RF_Sound_Drone);
+            ClearLoadedShells();
 
             isFlying = true;
             ticksFlying = 0;
@@ -424,14 +440,18 @@ namespace RimForge.Buildings
             if (!drawAffectedCells)
                 return;
 
-            if (firstPosition == null || secondPosition == null)
-                return;
-
             float radius;
             if (CECompat.IsCEActive)
-                radius = CECompat.GetExplosionRadius(CurrentBombDef);
+                radius = CECompat.GetExplosionRadius(CurrentShellDef);
             else
-                radius = CurrentBombDef?.projectileWhenLoaded?.projectile?.explosionRadius ?? -1;
+                radius = CurrentShellDef?.projectileWhenLoaded?.projectile?.explosionRadius ?? -1;
+
+            if (firstPosition == null || secondPosition == null)
+            {
+                if (firstPosition != null && LoadedShellCount == 1)
+                    GenAirstrike.DrawStrikePreview(firstPosition.Value, firstPosition.Value, Map, 1, radius);
+                return;
+            }
 
             GenAirstrike.DrawStrikePreview(firstPosition.Value, secondPosition.Value, Map, LoadedShellCount, radius);
         }
