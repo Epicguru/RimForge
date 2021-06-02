@@ -51,5 +51,6 @@ Shows useful information about the mod's items and buildings, such as how to set
     <li>brrainz.harmony</li>
     <li>co.uk.epicguru.ingamewiki</li>
     <li>CETeam.CombatExtended</li>
+    <li>jecrell.jecstools</li>
   </loadAfter>
 </ModMetaData>

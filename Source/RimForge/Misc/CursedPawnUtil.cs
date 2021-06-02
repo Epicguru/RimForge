@@ -48,7 +48,7 @@ namespace RimForge.Misc
 
             GiveTrait(pawn);
             TintClothes(pawn);
-            ReplaceWeapon(pawn, RFDefOf.RF_SwordOfDarkness);
+            ReplaceWeapon(pawn, Rand.Chance(0.3333f) ? RFDefOf.RF_SwordOfDarkness : RFDefOf.RF_CursedKhopesh);
             GiveTempMoodBoost(pawn);
         }
 

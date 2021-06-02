@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <ThingDef ParentName="BaseMeleeWeapon_Sharp_Quality">
+  <ThingDef ParentName="BaseMeleeWeapon_Sharp">
     <defName>RF_VirtuousTreaty</defName>
     <label>Virtuous Treaty</label>
     <description>A huge longsword with a strange offset blade. Deals huge damage with high armor penetration.
@@ -33,8 +33,9 @@ Memories from another time stir within its pearly blade.</description>
       <li>RewardStandardQualitySuper</li>
     </thingSetMakerTags>
     <statBases>
+      <MarketValue>3500</MarketValue>
       <MaxHitPoints>500</MaxHitPoints>
-      <WorkToMake>32000</WorkToMake>
+      <WorkToMake>22000</WorkToMake>
       <Mass>8</Mass>
     </statBases>
     <equippedStatOffsets>
@@ -63,8 +64,8 @@ Memories from another time stir within its pearly blade.</description>
           <li>Cut</li>
         </capacities>
         <power>35</power>
-        <armorPenetration>0.85</armorPenetration>
-        <cooldownTime>2.5</cooldownTime>
+        <armorPenetration>0.9</armorPenetration>
+        <cooldownTime>2.25</cooldownTime>
       </li>
     </tools>
     <comps>

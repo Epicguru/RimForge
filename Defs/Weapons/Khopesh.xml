@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="BaseMeleeWeapon_Sharp_Quality">
+    <defName>RF_Khopesh</defName>
+    <label>khopesh</label>
+    <description>The khopesh saw an increase in popularity after humans left Old Earth.
+It was sought after as an ornamental sidearm, and quickly gained popularity across many colony worlds.</description>
+    <techLevel>Medieval</techLevel>
+    <smeltable>true</smeltable>
+    <burnableByRecipe>true</burnableByRecipe>
+    <tradeability>All</tradeability>
+
+    <graphicData>
+      <texPath>RF/Weapons/Khopesh</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.3,1.3)</drawSize>
+    </graphicData>
+    <statBases>
+      <WorkToMake>6000</WorkToMake>
+      <MarketValue>600</MarketValue>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Mass>4</Mass>
+    </statBases>
+
+    <recipeMaker>
+      <researchPrerequisite>LongBlades</researchPrerequisite>
+    </recipeMaker>
+    <costList>
+      <WoodLog>20</WoodLog>
+      <Steel>60</Steel>
+    </costList>
+
+    <equippedStatOffsets>
+      <MoveSpeed>0.4</MoveSpeed> <!-- Gives +0.5 cps movement boost. Because I can. -->
+    </equippedStatOffsets>    
+    <equippedAngleOffset>-40</equippedAngleOffset>
+    <tools>
+      <li>
+        <label>blade</label>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>15</power>
+        <armorPenetration>0.5</armorPenetration>
+        <cooldownTime>1.1</cooldownTime>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompOversizedWeapon.CompProperties_OversizedWeapon"></li>
+    </comps>
+  </ThingDef>
+
+</Defs>

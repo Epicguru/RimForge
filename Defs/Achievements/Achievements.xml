@@ -19,7 +19,7 @@
     </tracker>
     <points>5</points>
     <tab>RF_AC_Tab</tab>
-    <order>0.1</order>
+    <order>0.5</order>
   </AchievementsExpanded.AchievementDef>
 
   <AchievementsExpanded.AchievementDef>
@@ -176,7 +176,7 @@
     <texPath>RF/AC/Shell5K</texPath>
     <tracker Class="RimForge.Achievements.CoilgunDamageTracker">
       <minKills>1</minKills>
-      <minDamage>2000.01</minDamage>
+      <minDamage>5000.01</minDamage>
     </tracker>
     <points>5</points>
     <tab>RF_AC_Tab</tab>
@@ -332,6 +332,24 @@
     <points>15</points>
     <tab>RF_AC_Tab</tab>
     <order>23</order>
+  </AchievementsExpanded.AchievementDef>
+
+  <AchievementsExpanded.AchievementDef>
+    <defName>RF_AC_DualWeapons</defName>
+    <label>Deadly Precision</label>
+    <description>Craft 1 of each Stable weapon variety, minumum Masterwork level.</description>
+    <texPath>RF/AC/DualGun</texPath>
+    <tracker Class="RimForge.Achievements.ItemCraftMultiple">
+      <count>1</count>
+      <quality>Masterwork</quality>
+      <toCraft>
+        <li>RF_StableRifle</li>
+        <li>RF_StablePistol</li>
+      </toCraft>
+    </tracker>
+    <points>16</points>
+    <tab>RF_AC_Tab</tab>
+    <order>-1</order>
   </AchievementsExpanded.AchievementDef>
 
 </Defs>

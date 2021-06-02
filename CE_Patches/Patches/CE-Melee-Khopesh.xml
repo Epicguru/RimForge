@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <Operation Class="PatchOperationSequence">
+    <operations>
+
+      <!-- === RF_Khopesh === -->
+
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="RF_Khopesh"]/tools</xpath>
+        <value>
+          <tools>
+            <li Class="CombatExtended.ToolCE">
+              <label>blade</label>
+              <capacities>
+                <li>Cut</li>
+              </capacities>
+              <power>20</power>
+              <cooldownTime>1.2</cooldownTime>
+              <armorPenetrationBlunt>12</armorPenetrationBlunt>
+              <armorPenetrationSharp>14</armorPenetrationSharp>
+              <linkedBodyPartsGroup>Edge</linkedBodyPartsGroup>          
+            </li>
+          </tools>
+        </value>
+      </li>
+
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RF_Khopesh"]/statBases</xpath>
+        <value>
+          <Bulk>10</Bulk>
+          <MeleeCounterParryBonus>0.8</MeleeCounterParryBonus>
+        </value>
+      </li>
+
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RF_Khopesh"]/equippedStatOffsets</xpath>
+        <value>
+          <MeleeCritChance>0.3</MeleeCritChance>
+          <MeleeParryChance>0.5</MeleeParryChance>
+          <MeleeDodgeChance>0.3</MeleeDodgeChance>
+        </value>
+      </li>
+
+    </operations>
+  </Operation>
+  
+</Patch>
