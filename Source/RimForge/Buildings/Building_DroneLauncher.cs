@@ -101,7 +101,26 @@ namespace RimForge.Buildings
 
             Scribe_Values.Look(ref isBlocked, "RF_isBlocked");
             Scribe_Defs.Look(ref shellDef, "RF_loadedShell");
+
+            if (Scribe.mode == LoadSaveMode.LoadingVars)
+                ReplaceFuelProps(GetComp<CompRefuelable>());
+
             CurrentShellDef = shellDef;
+        }
+
+        public override void PostMake()
+        {
+            base.PostMake();
+            ReplaceFuelProps(GetComp<CompRefuelable>());
+            CurrentShellDef = shellDef;
+        }
+
+        public void ReplaceFuelProps(CompRefuelable comp)
+        {
+            var props = comp.Props;
+            var newProps = props.CloneObject();
+            newProps.fuelFilter = new ThingFilter();
+            comp.props = newProps;
         }
 
         public override void Tick()

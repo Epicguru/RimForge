@@ -3,10 +3,9 @@ ENDTAGS
 
 #!Power poles!#
 #Wow, so pretty. Very industrial. Much aesthetic.
-Power poles and cables work exactly as you would expect. They connect to each other and transfer an electrical current,
-just like regular cables.
+Power poles and cables work exactly as you would expect. They connect to each other and transfer an electrical current, just like regular cables.
 In order to connect poles together, select the first pole and click on the <b>Connect to...</b> button.
-This will then allow you to select the target pole. A cable will not link these two poles, and electricity can flow.#
+This will then allow you to select the target pole. A cable will link these two poles, and electricity can flow.#
 
 $RF/Wiki/Poles$
 
@@ -21,6 +20,9 @@ To do this, first select all poles using the steps above, then hold the Shift ke
 You can then click the auto connect button.
 
 <i>Note: Auto connecting will remove all existing connections.</i>#
+
+#!Copper vs Tin#
+#Copper and Tin power poles and cables are functionally identical, but tin poles will have grey cables whereas copper poles will have (you guessed it) copper-colored cables.#
 
 #!Why can't I connect these poles?#
 #<b> * </b>There is a maximum distance between power poles. This can be configured in the mod settings.

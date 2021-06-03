@@ -95,6 +95,10 @@ namespace RimForge.Buildings
             rawCapacitors ??= new List<Building_Capacitor>();
 
             Scribe_Defs.Look(ref shellDef, "coil_shellDef");
+
+            if (Scribe.mode == LoadSaveMode.LoadingVars)
+                ReplaceFuelProps(GetComp<CompRefuelable>());
+
             CurrentShellDef = shellDef;
         }
 
@@ -104,6 +108,21 @@ namespace RimForge.Buildings
 
             DrawAffectedCells = false;
             CurrentShellDef ??= RFDefOf.RF_CoilgunShellAP;
+        }
+
+        public override void PostMake()
+        {
+            base.PostMake();
+            ReplaceFuelProps(FuelComp);
+            CurrentShellDef = shellDef;
+        }
+
+        public void ReplaceFuelProps(CompRefuelable comp)
+        {
+            var props = comp.Props;
+            var newProps = props.CloneObject();
+            newProps.fuelFilter = new ThingFilter();
+            comp.props = newProps;
         }
 
         public virtual void Setup()
@@ -878,6 +897,21 @@ namespace RimForge.Buildings
                     FloatMenuUtility.MakeMenu(ShellDefs, labelGetter, actionGetter);
                 },
                 icon = CurrentShellDef?.uiIcon
+            };
+            yield return new Command_Target()
+            {
+                defaultLabel = "check props",
+                targetingParams = new TargetingParameters()
+                {
+                    canTargetLocations = true
+                },
+                action = t =>
+                {
+                    if (t is Building_Coilgun coilgun)
+                    {
+                        Log.Warning($"Other: {coilgun.CurrentShellDef}, self: {this.CurrentShellDef}, Equal props: {coilgun.GetComp<CompRefuelable>().Props == this.GetComp<CompRefuelable>().Props}, equal comp: {coilgun.GetComp<CompRefuelable>() == this.GetComp<CompRefuelable>()}");
+                    }
+                }
             };
         }
 
