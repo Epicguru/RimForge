@@ -37,12 +37,27 @@ namespace RimForge
             Core.Log($"Completed def processing in {watch.ElapsedMilliseconds} milliseconds.");
             Core.Log($"There are {AlloyHelper.AllAlloyDefs.Count} recipes ({AlloyHelper.AllCraftableAlloys.Count} craftable alloys), and {AlloyHelper.AllRimForgeResources.Count} general resources.");
 
-            MiscOtherTasks();
+            MiscLoadEarlyTasks();
         }
 
         internal static void DoLoadLate()
         {
             Core.Log("Doing late load...");
+
+            // Necessary to let the game know that we actually have settings to save and load.
+            Core.Instance.GetSettings<Settings>();
+
+            // Toggle ore generation.
+            if (!Settings.GenerateCopper)
+            {
+                var def = RFDefOf.RF_MineableCopper;
+                def.building.mineableScatterCommonality = 0f;
+            }
+            if (!Settings.GenerateTin)
+            {
+                var def = RFDefOf.RF_MineableTin;
+                def.building.mineableScatterCommonality = 0f;
+            }
 
             if (CECompat.IsCEActive)
             {
@@ -132,7 +147,7 @@ namespace RimForge
             RFDefOf.RF_Forge.recipes.AddRange(recipes);
         }
 
-        private static void MiscOtherTasks()
+        private static void MiscLoadEarlyTasks()
         {
             Building_Coilgun.ShellDefs.AddRange(DefDatabase<CoilgunShellDef>.AllDefsListForReading);
 

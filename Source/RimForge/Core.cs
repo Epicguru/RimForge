@@ -81,5 +81,13 @@ namespace RimForge
 
             LongEventHandler.QueueLongEvent(StartupLoading.DoLoadLate, "RF.LoadLabel", false, null);
         }
+
+        public override void DoSettingsWindowContents(Rect inRect)
+        {
+            Settings.DrawUI(inRect);
+        }
+
+        public override string SettingsCategory() => "RimForge";
+        
     }
 }
