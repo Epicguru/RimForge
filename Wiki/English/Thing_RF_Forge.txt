@@ -1,0 +1,26 @@
+
+ENDTAGS
+
+#!Setup#
+#Once the forge is built, it requires at least one heating element to beging creating alloys:#
+@RF_WoodHeatingElement@
+@RF_ChemfuelHeatingElement@
+@RF_PoweredHeatingElement@
+#<b>The heating elements must be placed directly adjacent to the forge, on the left and right sides.</b>
+Each heaing elememt produces a different maximum temperature. Higher temperatures are required to create more advanced alloys.
+The arc-furnace heating element is the most powerful, but consumes a lot of power when in use.#
+
+$RF/Wiki/Forge$
+#<i>An example forge setup. You can mix and match heating elements.</i>#
+
+#!Making alloys#
+#You add bills to the forge just like any other crafting station.
+Unlike regular crafting however, you may see an 'insufficient temperature' message over the bill if the forge cannot produce enough heat.#
+
+#!Which alloy should I make?#
+#Most alloys has advantages and disadvantages.
+For example bronze has overall good stats (sharp damage, sharp armor, max hitpoints) but is slow to build and craft with, and reduces beauty.
+Staballoy is very strong, makes for very powerful melee weapons, but is very slow to work with and is hideous to look at.
+Gold doré makes very beautiful and valuable items and buildings, but has poor stats for weapons.
+
+Most of the important stats are listed out on the wiki pages for each alloy, although some stats can only be found by using the regular Rimworld inspector (click on the (i) button).#

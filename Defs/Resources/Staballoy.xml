@@ -35,10 +35,13 @@ It's strength allows to to be forged into wickedly sharp bladed weapons, but the
         <MaxHitPoints>4.5</MaxHitPoints>
         <Beauty>0.25</Beauty>
         <Flammability>0</Flammability>
-        <WorkToMake>2.5</WorkToMake>
-        <WorkToBuild>3.0</WorkToBuild>
+        <WorkToMake>2.25</WorkToMake>
+        <WorkToBuild>2.5</WorkToBuild>
         <MeleeWeapon_CooldownMultiplier>1.5</MeleeWeapon_CooldownMultiplier>
       </statFactors>
+      <statOffsets>
+        <Beauty>-15</Beauty>
+      </statOffsets>
     </stuffProps>
     <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 
