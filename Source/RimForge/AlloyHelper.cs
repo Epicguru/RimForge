@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
+using HarmonyLib;
 using RimForge.Comps;
 using RimWorld;
 using UnityEngine;
@@ -243,6 +245,21 @@ namespace RimForge
                     return d;
             }
             return null;
+        }
+
+        /// <summary>
+        /// Clones a object via shallow copy, using reflection to access MemberwiseClone.
+        /// </summary>
+        /// <typeparam name="T">Object Type to clone.</typeparam>
+        /// <param name="obj">Object to clone.</param>
+        /// <returns>The new Object reference.</returns>
+        public static T CloneObject<T>(this T obj) where T : class
+        {
+            if (obj == null)
+                return null;
+
+            var memberwiseClone = AccessTools.Method(typeof(T), "MemberwiseClone");
+            return (T)memberwiseClone.Invoke(obj, new object[]{});
         }
     }
 }

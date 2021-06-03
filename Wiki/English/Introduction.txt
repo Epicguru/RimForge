@@ -38,12 +38,15 @@ A specialized strike drone, to do bombing runs on local targets or travel to dis
 #Several new melee and ranged weapons are introduced. Most are very powerful but may require complex alloys to craft.
 All are <i>Combat Extended</i> compatible.#
 #<b>Melee Weapons:</b>#
+@RF_Khopesh@
+@RF_CursedKhopesh@
 @RF_GaeBulg@
 @RF_VirtuousTreaty@
 @RF_SwordOfDarkness@
 @RF_SwordOfRapture@
 #<b>Guns:</b>#
 @RF_StableRifle@
+@RF_StablePistol@
 
 #!Deities#
 #Will you praise <color=\#ff6e63>Machine God Zir</color>?.
