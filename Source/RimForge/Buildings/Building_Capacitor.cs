@@ -33,7 +33,7 @@ namespace RimForge.Buildings
             var matrix = Matrix4x4.TRS(pos, Quaternion.identity, size);
 
             block ??= new MaterialPropertyBlock();
-            block.SetVector("_MainTex_ST", new Vector4(1, lerp, 0, 0));
+            block.SetVector("_MainTex_ST", new Vector4(1, lerp, 0f, 0f));
             block.SetColor("_Color", Color.Lerp(Color.red, Color.green, lerp));
 
             Graphics.DrawMesh(MeshPool.plane10, matrix, ChargeMat, 0, null, 0, block);

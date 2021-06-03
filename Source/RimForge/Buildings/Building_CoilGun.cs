@@ -817,7 +817,6 @@ namespace RimForge.Buildings
                 float rot = TurretRotation * Mathf.Deg2Rad;
                 Vector3 dir = new Vector3(Mathf.Cos(rot), 0f, Mathf.Sin(rot)) * 500f;
                 Vector3 pos = DrawPos + dir;
-                //Core.Log($"Drawing {beamLerp} at {pos}, {TurretRotation}");
 
                 Content.CoilgunBeam.MatSouth.color = color;
                 //Content.CoilgunBeam.MatSouth.SetTextureOffset("_MainTex", new Vector2(-BeamPct, 0));

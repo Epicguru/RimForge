@@ -69,7 +69,6 @@ Requires Coilgun Capacitors to be connected to the same power grid in order to f
         <fuelCapacity>1</fuelCapacity>
         <fuelFilter>
           <thingDefs>
-            <li>RF_CoilgunShellAP</li>
           </thingDefs>
         </fuelFilter>
         <autoRefuelPercent>0.1</autoRefuelPercent>

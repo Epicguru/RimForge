@@ -36,8 +36,11 @@ Makes for very good tools, weapons and armor, at the cost of beauty and construc
         <Flammability>0</Flammability>
         <WorkToMake>1.4</WorkToMake>
         <WorkToBuild>1.4</WorkToBuild>
-        <MeleeWeapon_CooldownMultiplier>0.8</MeleeWeapon_CooldownMultiplier>
+        <MeleeWeapon_CooldownMultiplier>1.1</MeleeWeapon_CooldownMultiplier>
       </statFactors>
+      <statOffsets>
+        <Beauty>-1</Beauty>
+      </statOffsets>
     </stuffProps>
     <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
 

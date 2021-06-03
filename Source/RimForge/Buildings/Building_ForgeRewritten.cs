@@ -32,6 +32,7 @@ namespace RimForge.Buildings
         private int ticksSinceUsed = 100;
         private float workPercentage = 0f;
         private AlloyDef workAlloyDef;
+        private MaterialPropertyBlock block;
 
         public override void ExposeData()
         {
@@ -135,17 +136,23 @@ namespace RimForge.Buildings
 
             // 1: hidden
             // 0: full show
-            float lerp = Mathf.Lerp(1f, 0f, workPercentage);
+            float lerp = Mathf.Lerp(1f, 0f, workPercentage + 0.4f * (1f - 0.4f));
 
-            // TODO make shader 
             void DrawMetal(Graphic graphic, Color color, float lerp)
             {
-                color.a = 0.7f;
-                graphic.MatSouth.color = color;
+                color.a = 0.85f;
                 float worldOffset = 3f * -lerp;
-                Vector2 texOffset = new Vector2(0f, lerp);
-                graphic.MatSouth.SetTextureOffset("_MainTex", texOffset);
-                graphic.Draw(pos + new Vector3(0, 0, -worldOffset), Rotation, this);
+
+                block ??= new MaterialPropertyBlock();
+                block.SetColor("_Color", color);
+                block.SetVector("_MainTex_ST", new Vector4(1, 1, 0, lerp));
+
+                Quaternion rot = Quaternion.identity;
+                Vector3 finalPos = pos + new Vector3(0, 0, -worldOffset) + graphic.DrawOffset(Rot4.South);
+                Material mat = graphic.MatSingle;
+                var matrix = Matrix4x4.TRS(finalPos, rot, new Vector3(graphic.drawSize.x, 1f, graphic.drawSize.y));
+
+                Graphics.DrawMesh(MeshPool.plane10, matrix, mat, 0, null, 0, block);
             }
 
             Color? colorLeft = workAlloyDef.GetMoltenColor(1);

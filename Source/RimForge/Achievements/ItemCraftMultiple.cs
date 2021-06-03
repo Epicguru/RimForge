@@ -92,9 +92,6 @@ namespace RimForge.Achievements
 
         public override bool Trigger(Thing thing)
         {
-            Log.Warning(@"HEREREERERERE:");
-            Log.Warning(string.Join("\n", DebugText));
-            DebugWriter.Log(DebugText);
             if (!defToIndex.TryGetValue(thing.def, out int index))
                 return false;
 

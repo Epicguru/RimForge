@@ -32,13 +32,16 @@ It's also very pretty to look at.</description>
       <commonality>0</commonality>
       <color>(165, 250, 231)</color>
       <statFactors>
-        <MaxHitPoints>3</MaxHitPoints>
-        <Beauty>3</Beauty>
+        <MaxHitPoints>2.5</MaxHitPoints>
+        <Beauty>2.2</Beauty>
         <Flammability>0</Flammability>
-        <WorkToMake>1.2</WorkToMake>
-        <WorkToBuild>1.2</WorkToBuild>
+        <WorkToMake>1.5</WorkToMake>
+        <WorkToBuild>1.3</WorkToBuild>
         <MeleeWeapon_CooldownMultiplier>0.8</MeleeWeapon_CooldownMultiplier>
       </statFactors>
+      <statOffsets>
+        <Beauty>5</Beauty>
+      </statOffsets>
     </stuffProps>
     <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
 
