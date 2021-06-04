@@ -53,7 +53,7 @@ People who hold this weapon feel it's warmth radiating through them, increased e
       </li>
     </tools>
     <comps>
-      <li Class="CompOversizedWeapon.CompProperties_OversizedWeapon"></li>
+      <li Class="RimForge.Comps.CompProperties_OversizedWeapon"></li>
     </comps>
   </ThingDef>
 

@@ -261,5 +261,21 @@ namespace RimForge
             var memberwiseClone = AccessTools.Method(typeof(T), "MemberwiseClone");
             return (T)memberwiseClone.Invoke(obj, new object[]{});
         }
+
+        public static CompOversizedWeapon GetCompOversizedWeapon(this ThingWithComps thing)
+        {
+            var comps = thing.AllComps;
+            for (int i = 0, count = comps.Count; i < count; i++)
+            {
+                if (comps[i] is CompOversizedWeapon comp)
+                    return comp;
+            }
+            return null;
+        }
+
+        public static CompOversizedWeapon TryGetCompOversizedWeapon(this Thing thing)
+        {
+            return thing is ThingWithComps thingWithComps ? thingWithComps.GetCompOversizedWeapon() : null;
+        }
     }
 }

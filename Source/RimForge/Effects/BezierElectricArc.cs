@@ -3,6 +3,7 @@ using Verse;
 
 namespace RimForge.Effects
 {
+    [StaticConstructorOnStartup]
     public class BezierElectricArc : ElectricArc
     {
         private static readonly Material redMaterial = MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.MoteGlow, new Color(1f, 115f / 255f, 0));

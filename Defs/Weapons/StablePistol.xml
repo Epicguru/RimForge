@@ -23,7 +23,7 @@ Made using metal alloys.</description>
       <MarketValue>2300</MarketValue>
     </statBases>
     <thingSetMakerTags><li>RewardStandardQualitySuper</li></thingSetMakerTags>
-    <soundInteract>Interact_Pistol</soundInteract>
+    <soundInteract>Interact_Rifle</soundInteract>
     <costList>
       <Plasteel>10</Plasteel>
       <ComponentIndustrial>4</ComponentIndustrial>
@@ -46,7 +46,7 @@ Made using metal alloys.</description>
         <range>34.5</range>
         <burstShotCount>1</burstShotCount>
         <soundCast>RF_Sound_StableRifleShot</soundCast>
-        <soundCastTail>GunTail_Small</soundCastTail>
+        <soundCastTail>GunTail_Medium</soundCastTail>
         <muzzleFlashScale>10</muzzleFlashScale>
       </li>
     </verbs>

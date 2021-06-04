@@ -3,6 +3,7 @@ using Verse;
 
 namespace RimForge.Effects
 {
+    [StaticConstructorOnStartup]
     public class BombShadowEffect : MapEffect
     {
         private static MaterialPropertyBlock block;

@@ -24,7 +24,7 @@
           <warmupTime>0.25</warmupTime>
           <range>40</range>
           <soundCast>RF_Sound_StableRifleShot</soundCast>
-          <soundCastTail>GunTail_Small</soundCastTail>
+          <soundCastTail>GunTail_Medium</soundCastTail>
           <muzzleFlashScale>9</muzzleFlashScale>
         </Properties>
         <AmmoUser>

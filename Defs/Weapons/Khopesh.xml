@@ -47,7 +47,7 @@ It was sought after as an ornamental sidearm, and quickly gained popularity acro
       </li>
     </tools>
     <comps>
-      <li Class="CompOversizedWeapon.CompProperties_OversizedWeapon"></li>
+      <li Class="RimForge.Comps.CompProperties_OversizedWeapon"></li>
     </comps>
   </ThingDef>
 

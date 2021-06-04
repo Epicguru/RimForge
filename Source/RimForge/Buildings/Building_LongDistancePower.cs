@@ -433,7 +433,7 @@ namespace RimForge.Buildings
                 return false;
 
             float dst = (Position - other.Position).LengthHorizontalSquared;
-            if (dst > MaxLinkDistance)
+            if (dst > MaxLinkDistance * MaxLinkDistance)
                 return false;
 
             if (!CanHaveConnectionsUnderRoof && IsUnderRoof)

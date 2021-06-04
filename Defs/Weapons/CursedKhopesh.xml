@@ -43,7 +43,7 @@ People who's mind has not be corrupted by Zir will feel terrible if they equip t
       </li>
     </tools>
     <comps>
-      <li Class="CompOversizedWeapon.CompProperties_OversizedWeapon"></li>
+      <li Class="RimForge.Comps.CompProperties_OversizedWeapon"></li>
     </comps>
   </ThingDef>
 

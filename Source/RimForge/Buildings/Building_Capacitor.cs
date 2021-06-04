@@ -5,6 +5,7 @@ using Verse;
 
 namespace RimForge.Buildings
 {
+    [StaticConstructorOnStartup]
     public class Building_Capacitor : Building
     {
         public static Material ChargeMat;

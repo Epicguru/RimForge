@@ -44,9 +44,6 @@ namespace RimForge.Buildings
             points ??= new List<Vector2>(128);
             points.Clear();
 
-            if (pointCount < 3)
-                pointCount = 3;
-
             Vector2 start = poleA.GetFlatConnectionPoint();
             Vector2 end = poleB.GetFlatConnectionPoint();
 
@@ -62,10 +59,10 @@ namespace RimForge.Buildings
             }
 
             int pc = pointCount ?? GetCablePointCount(start, end);
-            if (pc < 2)
-                pc = 2;
+            if (pc < 3)
+                pc = 3;
             
-            for (int i = 0; i < pointCount; i++)
+            for (int i = 0; i < pc; i++)
             {
                 float t = (float)i / (pc - 1);
                 Vector2 bezier = Bezier.Evaluate(t, start, p1.Value, p2.Value, end);

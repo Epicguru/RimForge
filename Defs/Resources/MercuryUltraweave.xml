@@ -25,7 +25,7 @@ Highly durable and resistant to even heavy gunfire.</description>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
       <workSkill>Crafting</workSkill>
       <effectWorking>Tailor</effectWorking>
-      <soundWorking>Recipe_Tailoring</soundWorking>
+      <soundWorking>Recipe_Tailor</soundWorking>
       <recipeUsers>
         <li>ElectricTailoringBench</li>
         <li>HandTailoringBench</li>

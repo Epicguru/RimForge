@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using RimWorld;
 using Verse;
@@ -19,6 +20,7 @@ namespace RimForge.Comps
         public bool IsOnCooldown => cooldownTicksRemaining > 0;
         public bool NeedsCustomTick => parent == null || parent.def.tickerType != TickerType.Normal;
         public float DrawAngleOffset;
+        public bool Enabled = true;
 
         private int cooldownTicksRemaining;
         private float angleOffsetVel;
@@ -35,6 +37,30 @@ namespace RimForge.Comps
             base.PostDestroy(mode, previousMap);
             if (NeedsCustomTick)
                 CompDeflectorTickerComp.Current.Remove(this);
+        }
+
+        public override void PostExposeData()
+        {
+            base.PostExposeData();
+
+            Scribe_Values.Look(ref Enabled, "rf_deflectEnabled", true);
+        }
+
+        public Gizmo GetToggleCommand()
+        {
+            return new Command_Toggle()
+            {
+                defaultLabel = "RF.Comps.DeflectLabel".Translate(),
+                defaultDesc = "RF.Comps.DeflectDesc".Translate((100f * Props.deflectChance).ToString("F0")),
+                alsoClickIfOtherInGroupClicked = true,
+                activateIfAmbiguous = true,
+                isActive = () => Enabled,
+                toggleAction = () =>
+                {
+                    Enabled = !Enabled;
+                },
+                icon = Content.DeflectIcon
+            };
         }
 
         public override void CompTick()
@@ -201,7 +227,7 @@ namespace RimForge.Comps
             props.burstShotCount = 2;
 
             // TODO add deflect sound.
-            //props.soundCast = null;
+            props.soundCast = SoundDefOf.MetalHitImportant;
 
             created.verbProps = props;
             created.verbTracker = pawn.VerbTracker;
@@ -253,6 +279,12 @@ namespace RimForge.Comps
 
         public void WielderPostPreApplyDamage(DamageInfo dinfo, out bool absorbed)
         {
+            if (!Enabled)
+            {
+                absorbed = false;ModMetaData
+                return;
+            }
+
             bool canDeflect = CanDeflect(dinfo);
             if (!canDeflect)
             {

@@ -9,7 +9,7 @@ namespace RimForge
     {
         public static readonly Texture2D SignalIcon, CopyIcon, PasteIcon, LinkIcon, RitualStartIcon;
         public static readonly Texture2D BuildBlueprintIcon, RitualGearTexture, CapacitorCharge;
-        public static readonly Texture2D ArrowIcon, CoilgunShootIcon, MissilesIcon;
+        public static readonly Texture2D ArrowIcon, CoilgunShootIcon, MissilesIcon, DeflectIcon;
 
         public static Graphic ForgeIdle, ForgeGlowAll, ForgeGlowSides;
         public static Graphic HEFueledIdle, HEFueledGlow;
@@ -38,6 +38,7 @@ namespace RimForge
             BuildBlueprintIcon = ContentFinder<Texture2D>.Get("RF/UI/BuildBlueprint");
             CoilgunShootIcon   = ContentFinder<Texture2D>.Get("RF/UI/CoilgunFire");
             MissilesIcon       = ContentFinder<Texture2D>.Get("RF/UI/Missiles");
+            DeflectIcon        = ContentFinder<Texture2D>.Get("RF/UI/Deflect");
             RitualGearTexture  = ContentFinder<Texture2D>.Get("RF/Effects/RitualGear");
             CapacitorCharge    = ContentFinder<Texture2D>.Get("RF/Effects/CapacitorCharge");
 

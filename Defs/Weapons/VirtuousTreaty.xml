@@ -69,7 +69,7 @@ Memories from another time stir within its pearly blade.</description>
       </li>
     </tools>
     <comps>
-      <li Class="CompOversizedWeapon.CompProperties_OversizedWeapon">
+      <li Class="RimForge.Comps.CompProperties_OversizedWeapon">
         <southOffset>(0.4, 0, 0.3)</southOffset>
         <northOffset>(0.4, 0, 0.3)</northOffset>
         <eastOffset>(0.3, 0, 0.38)</eastOffset>

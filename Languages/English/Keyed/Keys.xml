@@ -193,4 +193,60 @@ There must be at least {0} cells between these two positions.</RF.DL.NotEnoughDi
 <RC.AC.AlreadyGoodStanding>Your colonists are already in good standing with Machine God Zir.</RC.AC.AlreadyGoodStanding>
 <RC.AC.IncreasedStanding>Your offering has been accepted by the Machine God. Chance of ritual failure has decreased to {0}.</RC.AC.IncreasedStanding>
 
+<RF.Comps.DeflectLabel>Deflect projectiles</RF.Comps.DeflectLabel>
+<RF.Comps.DeflectDesc>Toggles this weapon's ability to deflect projectiles.
+Deflecting a projectile will slightly slow down the wielder's movement, so consider turning this off if moving faster is more imporant that not catching a bullet.
+This weapon's bullet deflection rate is {0}%.</RF.Comps.DeflectDesc>
+
+<!-- Settings -->
+<RFS.Header>Hover over the option to show a description. Right-click on an option to reset it to default.</RFS.Header>
+<RFS.Default>Default: {0}</RFS.Default>
+<RFS.Yes>Yes</RFS.Yes>
+<RFS.No>No</RFS.No>
+<RFS.ShowAdvanced>Show advanced settings</RFS.ShowAdvanced>
+<RFS.ShowAdvancedDesc>Shows or hides advanced settings. You should only adjust advanced settings if you know what you are doing!</RFS.ShowAdvancedDesc>
+
+<RFS.CatGeneral>General</RFS.CatGeneral>
+<RFS.UseCustomTab>Add RimForge tab:Enables or disables the RimForge architect tab. Disable this if you already have loads of architect tabs.\nRequires a game restart to take effect.</RFS.UseCustomTab>
+<RFS.GenerateCopper>Generate Copper ore:Enables or disables natural copper ore generation. Requires a new map to take effect.</RFS.GenerateCopper>
+<RFS.GenerateTin>Generate Tin ore:Enables or disables natural tin ore generation. Requires a new map to take effect.</RFS.GenerateTin>
+
+<RFS.CatCables>Power Poles</RFS.CatCables>
+<RFS.CableSegmentsPerCell>Power cable resolution:Changes the resolution of power pole's cables. Increasing means smoother cables, but possibly lower performance.</RFS.CableSegmentsPerCell>
+<RFS.CableMaxDistance>Power cable range:Changes the maximum distance allowed between power poles. This is personal preference, and does not affect performance.</RFS.CableMaxDistance>
+
+<RFS.CatCoilgun>Coilgun</RFS.CatCoilgun>
+<RFS.CoilgunBaseDamageMultiplier>Base damage multiplier:A multiplier on the base damage of every shell type.</RFS.CoilgunBaseDamageMultiplier>
+<RFS.CoilgunSplatterBlood>Extra gore:Toggles the extra gore and blood splatters when pawns are hit by the coilgun.</RFS.CoilgunSplatterBlood>
+<RFS.CoilgunDisplayDamageReport>Show damage report:Toggles the message that appears after every coilgun shot, that states hit count and total damage.</RFS.CoilgunDisplayDamageReport>
+<RFS.CoilgunPenDamageMultiplier>Penetration damage multiplier:Changes damage dropoff after shells penetrate solid walls. Lower values mean less damage after penetration.</RFS.CoilgunPenDamageMultiplier>
+<RFS.CoilgunBuildingDamageMulti>Building damage multiplier:Multiplier on the amount of damage that is dealt to buildings (including walls). Does not affect HE shells.</RFS.CoilgunBuildingDamageMulti>
+<RFS.CoilgunBasePowerReq>Charge per shot multiplier:Multiplier on the amount of capacitor charge required per shot. Lower values mean less capacitors are required.</RFS.CoilgunBasePowerReq>
+
+<RFS.CatTesla>Tesla Coils</RFS.CatTesla>
+<RFS.TeslaMaxDistance>Max range:The maximum distance, in cells, that is allowed between Tesla Coils. Higher values can affect performance.</RFS.TeslaMaxDistance>
+<RFS.TeslaCooldown>Cooldown:The cooldown of Tesla Coils after firing, measured in ticks. There are 60 ticks in a second.</RFS.TeslaCooldown>
+<RFS.TeslaStunDuration>Stun duration:The duration of the Tesla Coils stun effect, measured in ticks. There are 60 ticks in a second.</RFS.TeslaStunDuration>
+<RFS.TeslaDamage>Damage:The damage dealt by Tesla Coils.</RFS.TeslaDamage>
+<RFS.TeslaTickInterval>Tick interval:Changes the Tesla coils to update every X ticks. Higher values INCREASE performance, but may result in fast-moving raiders being able to slip through the coils undetected.</RFS.TeslaTickInterval>
+<RFS.TeslaMechanoidDamageMulti>Mechanoid damage multiplier:Tesla Coil damage is multiplied by this value when hitting mechanoids.</RFS.TeslaMechanoidDamageMulti>
+
+<RFS.CatRitual>Blessing Ritual</RFS.CatRitual>
+<RFS.RitualFailCoefficient>Fail chance multiplier:Adjusts the likelyhood of a ritual failing. The first ritual is always successful.</RFS.RitualFailCoefficient>
+<RFS.RitualMustBeAtNight>Night-time only:Toggles the requirement of the ritual needing to be performed at night-time.</RFS.RitualMustBeAtNight>
+<RFS.RitualFailMajorChance>Major fail chance:In the event of a ritual failure, this is the chance of the failure killing the colonist, rather than maiming them.</RFS.RitualFailMajorChance>
+
+<RFS.CatGreenhouse>Greenhouse</RFS.CatGreenhouse>
+<RFS.GreenhouseGrowthAccelerationFactor>Growth acceleration power:Adjusts how powerful the growth acceleration effect is. Higher values are very OP.</RFS.GreenhouseGrowthAccelerationFactor>
+<RFS.MaxGreenhouseSize>Max size (in cells):Changes the max size that a greenhouse room can be. Higher values can reduce performance quite significantly.</RFS.MaxGreenhouseSize>
+<RFS.GreenWattsPerCell>Power requirement per cell:The Watts required per cell in the greenhouse. Personal preference, no affect on performance.</RFS.GreenWattsPerCell>
+
+<RFS.CatRaids>Raids and Cursed Raiders</RFS.CatRaids>
+<RFS.CursedRaidersNumberScale>Cursed raiders multiplier:A general multiplier on the number of cursed raiders that will appear.\nSet to 0% to disable cursed raiders.</RFS.CursedRaidersNumberScale>
+<RFS.CursedRaidersNumberMultiplierMin>Cursed raiders per blessed colonist (min):Relative number of cursed raiders per blessed colonist (min).</RFS.CursedRaidersNumberMultiplierMin>
+<RFS.CursedRaidersNumberMultiplierMax>Cursed raiders per blessed colonist (max):Relative number of cursed raiders per blessed colonist (max).</RFS.CursedRaidersNumberMultiplierMax>
+<RFS.SendRaiderLetter>Send cursed raiders warning letter:Toggles the cursed raider warning letter.</RFS.SendRaiderLetter>
+<RFS.HateWaveRadius>Wave of Hate radius:Adjusts the radius, in cells, of the Wave of Hate that cursed raiders emmit upon death.\nSet to 0 to disable the Wave of Hate mechanic.</RFS.HateWaveRadius>
+<RFS.HateWaveStunDuration>Wave of Hate stun duration:Sets the duration of the stun effect of the Wave of Hate, measured in ticks. There are 60 ticks in a second.\nSet to 0 to disable the stun.</RFS.HateWaveStunDuration>
+
  </LanguageData>

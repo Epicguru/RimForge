@@ -48,7 +48,7 @@ It has more spikey bits to make it easier to poke people with.</description>
       </li>
     </tools>
     <comps>
-      <li Class="CompOversizedWeapon.CompProperties_OversizedWeapon"></li>
+      <li Class="RimForge.Comps.CompProperties_OversizedWeapon"></li>
     </comps>
   </ThingDef>
 

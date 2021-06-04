@@ -5,10 +5,10 @@ using Verse;
 namespace RimForge.Effects
 {
     // An arc of electricity. ZZZT!
+    [StaticConstructorOnStartup]
     public abstract class ElectricArc : MapEffect
     {
         private static readonly Material defaultMaterial = MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.MoteGlow, Color.cyan);
-
 
         public virtual Vector2 Start { get; set; }
         public virtual Vector2 End { get; set; }
