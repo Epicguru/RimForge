@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using RimWorld;
 using Verse;
 
 namespace RimForge
@@ -53,7 +52,7 @@ namespace RimForge
                     }
                 }
                 str.Append("\nRequires forge temperature: <color=#ff5555ff>").Append(alloy.MinTemperature.ToStringTemperature()).Append("</color>");
-                return $"Make {alloy.output.resource.label} x{alloy.output.count * multi} using:\n\n{str.ToString()}";
+                return $"{alloy.description?.TrimEnd()}\n\nMake {alloy.output.resource.label} x{alloy.output.count * multi} using:\n\n{str.ToString().TrimEnd()}".TrimStart();
             }
 
             RecipeDef CreateDef(AlloyDef alloy, bool bulk)

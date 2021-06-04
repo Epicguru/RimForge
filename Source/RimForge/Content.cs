@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimForge
@@ -7,6 +8,8 @@ namespace RimForge
     public static class Content
     {
         public static readonly Texture2D SignalIcon, CopyIcon, PasteIcon, LinkIcon, RitualStartIcon;
+        public static readonly Texture2D BuildBlueprintIcon, RitualGearTexture, CapacitorCharge;
+        public static readonly Texture2D ArrowIcon, CoilgunShootIcon, MissilesIcon, DeflectIcon;
 
         public static Graphic ForgeIdle, ForgeGlowAll, ForgeGlowSides;
         public static Graphic HEFueledIdle, HEFueledGlow;
@@ -20,14 +23,39 @@ namespace RimForge
 
         public static Graphic RitualCircle, RitualCircleText, RitualGear, RitualBall;
         public static Graphic RitualSymbolA, RitualSymbolB;
+        public static Graphic[] GreenhouseActiveFrames;
+        public static Graphic DroneShadowGraphic, FallingBombGraphic, BombShadowGraphic;
+        public static Graphic DroneNorth, DroneEast, DroneSouth, DroneWest;
 
         static Content()
         {
-            SignalIcon      = ContentFinder<Texture2D>.Get("RF/UI/Signal");
-            CopyIcon        = ContentFinder<Texture2D>.Get("RF/UI/Copy");
-            PasteIcon       = ContentFinder<Texture2D>.Get("RF/UI/Paste");
-            LinkIcon        = ContentFinder<Texture2D>.Get("RF/UI/Link");
-            RitualStartIcon = ContentFinder<Texture2D>.Get("RF/UI/RitualStart");
+            SignalIcon         = ContentFinder<Texture2D>.Get("RF/UI/Signal");
+            ArrowIcon          = ContentFinder<Texture2D>.Get("RF/UI/Arrow");
+            CopyIcon           = ContentFinder<Texture2D>.Get("RF/UI/Copy");
+            PasteIcon          = ContentFinder<Texture2D>.Get("RF/UI/Paste");
+            LinkIcon           = ContentFinder<Texture2D>.Get("RF/UI/Link");
+            RitualStartIcon    = ContentFinder<Texture2D>.Get("RF/UI/RitualStart");
+            BuildBlueprintIcon = ContentFinder<Texture2D>.Get("RF/UI/BuildBlueprint");
+            CoilgunShootIcon   = ContentFinder<Texture2D>.Get("RF/UI/CoilgunFire");
+            MissilesIcon       = ContentFinder<Texture2D>.Get("RF/UI/Missiles");
+            DeflectIcon        = ContentFinder<Texture2D>.Get("RF/UI/Deflect");
+            RitualGearTexture  = ContentFinder<Texture2D>.Get("RF/Effects/RitualGear");
+            CapacitorCharge    = ContentFinder<Texture2D>.Get("RF/Effects/CapacitorCharge");
+
+            const float DRONE_RATIO = 343f / 214f;
+            const float DRONE_SCALE = 5f;
+            DroneShadowGraphic = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneShadowSoft", ShaderTypeDefOf.Transparent.Shader, new Vector2(DRONE_SCALE, DRONE_SCALE * DRONE_RATIO), new Color(1, 1, 1, 0.5f), Color.white);
+            BombShadowGraphic = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/BombShadow", ShaderTypeDefOf.Transparent.Shader, new Vector2(1, 1), new Color(1, 1, 1, 1), Color.white);
+            FallingBombGraphic = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/FallingBomb", ShaderTypeDefOf.Transparent.Shader, new Vector2(1, 1), new Color(1, 1, 1, 1), Color.white);
+
+            const float SCALE = 3.5f;
+            float ratio = 867f / 597f;
+            DroneEast = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneEast", ShaderTypeDefOf.Cutout.Shader, new Vector2(SCALE, SCALE * ratio), new Color(1, 1, 1, 1), Color.white);
+            DroneWest = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneWest", ShaderTypeDefOf.Cutout.Shader, new Vector2(SCALE, SCALE * ratio), new Color(1, 1, 1, 1), Color.white);
+            ratio = 986f / 536f;
+            DroneNorth = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneNorth", ShaderTypeDefOf.Cutout.Shader, new Vector2(SCALE * ratio, SCALE), new Color(1, 1, 1, 1), Color.white);
+            ratio = 986f / 584f;
+            DroneSouth = GraphicDatabase.Get(typeof(Graphic_Single), "RF/Other/DroneSouth", ShaderTypeDefOf.Cutout.Shader, new Vector2(SCALE * ratio, SCALE), new Color(1, 1, 1, 1), Color.white);
         }
 
         internal static void LoadForgeTextures(Building forge)
@@ -120,6 +148,24 @@ namespace RimForge
             HEPoweredIdle = Make("RF/Buildings/HeatingElement_PoweredIdle");
             HEPoweredPowerOn = Make("RF/Buildings/HeatingElement_PoweredPowerOn");
             HEPoweredGlow = Make("RF/Buildings/HeatingElement_PoweredGlow");
+        }
+
+        internal static void LoadGreenhouseFrames(Building greenhouse)
+        {
+            var gd = greenhouse.DefaultGraphic.data;
+            Graphic Make(string path)
+            {
+                return GraphicDatabase.Get(gd.graphicClass, path, gd.shaderType.Shader, Vector2.one, Color.white, Color.white, gd, gd.shaderParameters);
+            }
+
+            GreenhouseActiveFrames = new Graphic[15];
+            for (int i = 0; i < GreenhouseActiveFrames.Length; i++)
+            {
+                int frameNum = i * 2;
+                string name = frameNum.ToString().PadLeft(4, '0');
+                string path = $"RF/Buildings/Greenhouse/{name}";
+                GreenhouseActiveFrames[i] = Make(path);
+            }
         }
     }
 }

@@ -50,6 +50,9 @@
         <basePowerConsumption>0</basePowerConsumption>
       </li>
     </comps>
+    <researchPrerequisites>
+      <li>Electricity</li>
+    </researchPrerequisites>
   </ThingDef>
 
   <!-- Normal version -->

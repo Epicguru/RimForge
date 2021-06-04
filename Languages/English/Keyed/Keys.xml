@@ -80,15 +80,14 @@ WARNING: Firing cannot be cancelled once started!</RF.Coilgun.AttackDesc>
 <RF.Coilgun.DisabledNoCaps>Cannot fire: not enough capacitors or not enough energy stored in capacitors.</RF.Coilgun.DisabledNoCaps>
 <RF.Coilgun.DisabledNoPower>Cannot fire: not powered.</RF.Coilgun.DisabledNoPower>
 <RF.Coilgun.DisabledNoShell>Cannot fire: shell not loaded.</RF.Coilgun.DisabledNoShell>
-<RF.Coilgun.CapState>{0} Wd stored in {1} connected capacitors. (min. {2} Wd to fire)</RF.Coilgun.CapState>
+<RF.Coilgun.CapState>Capacitor power: {0}% across {1} capacitors. (req. {2}% to fire)</RF.Coilgun.CapState>
 <RF.Coilgun.ChangeShellLabel>Change shell type</RF.Coilgun.ChangeShellLabel>
 <RF.Coilgun.ChangeShellDesc>Change the type of shell that is loaded into this coilgun.
 This action ejects the current shell onto the ground, and a colonist will have to load a new one.</RF.Coilgun.ChangeShellDesc>
+<RF.Coilgun.DamageReport>The {0} hit {1} objects for a total of {2} damage.</RF.Coilgun.DamageReport>
+<RF.Coilgun.DamageReportStopped>The {0} hit {1} objects for a total of {2} damage, before disintegrated upon hitting {3}.</RF.Coilgun.DamageReportStopped>
 
-<RF.Cap.Stored>Stored: {0} Wd of power ({1}%)</RF.Cap.Stored>
-<RF.Cap.NotConnected>Not connected to power grid!</RF.Cap.NotConnected>
-<RF.Cap.NoBatteries>There are no batteries on the power grid! There must be at least 1 battery on the same power grid as this capacitor!</RF.Cap.NoBatteries>
-<RF.Cap.NoPower>There is not enough power to recharge this capacitor!</RF.Cap.NoPower>
+<RF.Cap.Stored>Stored power: {0}%</RF.Cap.Stored>
 
 <RF.LR.FailNoPowerNet>Lightning rod caught lightning bolt, but is not connected to a power grid!</RF.LR.FailNoPowerNet>
 <RF.LR.FailNoBatteries>Lightning rod caught lightning bolt, but there are no batteries on the power grid! The power was harmlessly passed into the ground.</RF.LR.FailNoBatteries>
@@ -140,13 +139,165 @@ There is a {1}% chance of failure.</RF.Ritual.FailWarning>
 <RF.LDP.RemovedLinkRoofBuilt>A roof was built over {0}, so the connection to it has been severed.</RF.LDP.RemovedLinkRoofBuilt>
 <RF.LDP.RemovedLinkRoofBuiltSelf>A roof was built over this {0}, so all connections to it have been severed.</RF.LDP.RemovedLinkRoofBuiltSelf>
 
-<RF.Forge.BillNotHot>Forge not capable of reaching temperature ({0})</RF.Forge.BillNotHot>
+<RF.Forge.BillNotHot>Forge not capable of temperature ({0})</RF.Forge.BillNotHot>
 <RF.Forge.Providing> providing up to </RF.Forge.Providing> <!-- The leading and trailing whitespace is important -->
 <RF.Forge.HeatingElementsHeader>Connected heating elements:</RF.Forge.HeatingElementsHeader>
+<RF.Forge.Temperature>Capable of temperature: {0}</RF.Forge.Temperature>
+<RF.Forge.MissingElement>Build at least 1 heating element directly adjacent (left or right) to begin making alloys.</RF.Forge.MissingElement>
+
 <RF.HeatingElement.CurrentPowerLevel>Current power level: {0}</RF.HeatingElement.CurrentPowerLevel>
+<RF.HeatingElement.Build>Build a {0}</RF.HeatingElement.Build>
 
 <RF.Blessing.IncreasedMessage>Blessing of Zir: Increased quality to {0}</RF.Blessing.IncreasedMessage>
 
 <RF.WallConnector.MustPlaceWithFreeSpace>There must be an empty space for the cables to connect to.</RF.WallConnector.MustPlaceWithFreeSpace>
+
+<RF.Disco.DJArrived>The DJ has arrived. Let's get this party started!</RF.Disco.DJArrived>
+<RF.Disco.AtTheDisco>At the disco</RF.Disco.AtTheDisco>
+
+<RF.Thoughts.CarryingBlessed>Carrying blessed weapon: {0}</RF.Thoughts.CarryingBlessed>
+<RF.Thoughts.CarryingCursed>Carrying cursed weapon: {0}</RF.Thoughts.CarryingCursed>
+
+<RF.Raiders.WarningTitle>Corrupted raiders</RF.Raiders.WarningTitle>
+<RF.Raiders.WarningContent>The members of {0} have heard about your colonists performing Zir's Blessing Ritual, and believe it to be the highest form of heresy.
+{1} of the raiders are so obsessed and enfuriated that they have lost their minds are are hellbent on slaughtering your colonists at any cost!
+
+These {2} have 'Zir's Corruption', and they move faster, hit harder and carry unique and powerful weapons. Furthermore, upon death they will unleash a wave of pure hatred that will temporarily paralyze all nearby people and will cause a large mood debuff.
+You should focus on taking out these attackers first, ideally from a distance.
+
+These Corrupted raiders are:
+{3}</RF.Raiders.WarningContent>
+
+<RF.Greenhouse.RoomMissing>There is no greenhouse room!</RF.Greenhouse.RoomMissing>
+<RF.Greenhouse.RoomOutdoors>The greenhouse area is not an enclosed room!</RF.Greenhouse.RoomOutdoors>
+<RF.Greenhouse.RoomNotSealed>The greenhouse room does not have a roof.</RF.Greenhouse.RoomNotSealed>
+<RF.Greenhouse.RoomTooBig>The greenhouse room is too large. Max size is {0} cells, current size is {1} cells.</RF.Greenhouse.RoomTooBig>
+<RF.Greenhouse.Rotate>Change gas output side</RF.Greenhouse.Rotate>
+<RF.Greenhouse.RotateDesc>Adjust the side where this controller will input and output gas (the blue circle).
+Allows you to build the controller into a wall and target the correct room.</RF.Greenhouse.RotateDesc>
+
+<RF.DL.ChangeShellLabel>Change bomb type</RF.DL.ChangeShellLabel>
+<RF.DL.ChangeShellDesc>Change the type of bombs loaded into the drone. Any mortar shell can be loaded as a bomb (81mm in Combat Extended).
+Any bombs that are already loaded will be safely ejected onto the ground.</RF.DL.ChangeShellDesc>
+<RF.DL.TargetLabel>Launch strike</RF.DL.TargetLabel>
+<RF.DL.TargetDesc>Select a position for a drone strike on this map.</RF.DL.TargetDesc>
+<RF.DL.AlreadyTargeting>Already targeting.</RF.DL.AlreadyTargeting>
+<RF.DL.Blocked>Cannot launch, the done is blocked by {0}!</RF.DL.Blocked>
+<RF.DL.NoShells>Cannot launch, there must be at least 1 shell loaded.</RF.DL.NoShells>
+<RF.DL.NotEnoughDistance>There is not enough distance between the bombing start and end positions!
+Click once to select the start position, then move your mouse and click on the end position.
+There must be at least {0} cells between these two positions.</RF.DL.NotEnoughDistance>
+
+<RF.LoadLabel>RimForge is crunching numbers...</RF.LoadLabel>
+
+<RF.AC.AlreadyGoodStanding>Your colonists are already in good standing with Machine God Zir.</RF.AC.AlreadyGoodStanding>
+<RF.AC.IncreasedStanding>Your offering has been accepted by the Machine God. Chance of ritual failure has decreased to {0}.</RF.AC.IncreasedStanding>
+
+<!-- Settings -->
+<RFS.Header>Hover over the option to show a description. Right-click on an option to reset it to default.</RFS.Header>
+<RFS.Default>Default: {0}</RFS.Default>
+<RFS.Yes>Yes</RFS.Yes>
+<RFS.No>No</RFS.No>
+<RFS.ShowAdvanced>Show advanced settings</RFS.ShowAdvanced>
+<RFS.ShowAdvancedDesc>Shows or hides advanced settings. You should only adjust advanced settings if you know what you are doing!</RFS.ShowAdvancedDesc>
+
+<RFS.CatGeneral>General</RFS.CatGeneral>
+<RFS.UseCustomTab>Add RimForge tab:Enables or disables the RimForge architect tab. Disable this if you already have loads of architect tabs.\nRequires a game restart to take effect.</RFS.UseCustomTab>
+<RFS.GenerateCopper>Generate Copper ore:Enables or disables natural copper ore generation. Requires a new map to take effect.</RFS.GenerateCopper>
+<RFS.GenerateTin>Generate Tin ore:Enables or disables natural tin ore generation. Requires a new map to take effect.</RFS.GenerateTin>
+
+<RFS.CatCables>Power Poles</RFS.CatCables>
+<RFS.CableSegmentsPerCell>Power cable resolution:Changes the resolution of power pole's cables. Increasing means smoother cables, but possibly lower performance.</RFS.CableSegmentsPerCell>
+<RFS.CableMaxDistance>Power cable range:Changes the maximum distance allowed between power poles. This is personal preference, and does not affect performance.</RFS.CableMaxDistance>
+
+<RFS.CatCoilgun>Coilgun</RFS.CatCoilgun>
+<RFS.CoilgunBaseDamageMultiplier>Base damage multiplier:A multiplier on the base damage of every shell type.</RFS.CoilgunBaseDamageMultiplier>
+<RFS.CoilgunSplatterBlood>Extra gore:Toggles the extra gore and blood splatters when pawns are hit by the coilgun.</RFS.CoilgunSplatterBlood>
+<RFS.CoilgunDisplayDamageReport>Show damage report:Toggles the message that appears after every coilgun shot, that states hit count and total damage.</RFS.CoilgunDisplayDamageReport>
+<RFS.CoilgunPenDamageMultiplier>Penetration damage multiplier:Changes damage dropoff after shells penetrate solid walls. Lower values mean less damage after penetration.</RFS.CoilgunPenDamageMultiplier>
+<RFS.CoilgunBuildingDamageMulti>Building damage multiplier:Multiplier on the amount of damage that is dealt to buildings (including walls). Does not affect HE shells.</RFS.CoilgunBuildingDamageMulti>
+<RFS.CoilgunBasePowerReq>Charge per shot multiplier:Multiplier on the amount of capacitor charge required per shot. Lower values mean less capacitors are required.</RFS.CoilgunBasePowerReq>
+
+<RFS.CatTesla>Tesla Coils</RFS.CatTesla>
+<RFS.TeslaMaxDistance>Max range:The maximum distance, in cells, that is allowed between Tesla Coils. Higher values can affect performance.</RFS.TeslaMaxDistance>
+<RFS.TeslaCooldown>Cooldown:The cooldown of Tesla Coils after firing, measured in ticks. There are 60 ticks in a second.</RFS.TeslaCooldown>
+<RFS.TeslaStunDuration>Stun duration:The duration of the Tesla Coils stun effect, measured in ticks. There are 60 ticks in a second.</RFS.TeslaStunDuration>
+<RFS.TeslaDamage>Damage:The damage dealt by Tesla Coils.</RFS.TeslaDamage>
+<RFS.TeslaTickInterval>Tick interval:Changes the Tesla coils to update every X ticks. Higher values INCREASE performance, but may result in fast-moving raiders being able to slip through the coils undetected.</RFS.TeslaTickInterval>
+<RFS.TeslaMechanoidDamageMulti>Mechanoid damage multiplier:Tesla Coil damage is multiplied by this value when hitting mechanoids.</RFS.TeslaMechanoidDamageMulti>
+
+<RFS.CatRitual>Blessing Ritual</RFS.CatRitual>
+<RFS.RitualFailCoefficient>Fail chance multiplier:Adjusts the likelyhood of a ritual failing. The first ritual is always successful.</RFS.RitualFailCoefficient>
+<RFS.RitualMustBeAtNight>Night-time only:Toggles the requirement of the ritual needing to be performed at night-time.</RFS.RitualMustBeAtNight>
+<RFS.RitualFailMajorChance>Major fail chance:In the event of a ritual failure, this is the chance of the failure killing the colonist, rather than maiming them.</RFS.RitualFailMajorChance>
+
+<RFS.CatGreenhouse>Greenhouse</RFS.CatGreenhouse>
+<RFS.GreenhouseGrowthAccelerationFactor>Growth acceleration power:Adjusts how powerful the growth acceleration effect is. Higher values are very OP.</RFS.GreenhouseGrowthAccelerationFactor>
+<RFS.MaxGreenhouseSize>Max size (in cells):Changes the max size that a greenhouse room can be. Higher values can reduce performance quite significantly.</RFS.MaxGreenhouseSize>
+<RFS.GreenWattsPerCell>Power requirement per cell:The Watts required per cell in the greenhouse. Personal preference, no affect on performance.</RFS.GreenWattsPerCell>
+
+<RFS.CatRaids>Raids and Cursed Raiders</RFS.CatRaids>
+<RFS.CursedRaidersNumberScale>Cursed raiders multiplier:A general multiplier on the number of cursed raiders that will appear.\nSet to 0% to disable cursed raiders.</RFS.CursedRaidersNumberScale>
+<RFS.CursedRaidersNumberMultiplierMin>Cursed raiders per blessed colonist (min):Relative number of cursed raiders per blessed colonist (min).</RFS.CursedRaidersNumberMultiplierMin>
+<RFS.CursedRaidersNumberMultiplierMax>Cursed raiders per blessed colonist (max):Relative number of cursed raiders per blessed colonist (max).</RFS.CursedRaidersNumberMultiplierMax>
+<RFS.SendRaiderLetter>Send cursed raiders warning letter:Toggles the cursed raider warning letter.</RFS.SendRaiderLetter>
+<RFS.HateWaveRadius>Wave of Hate radius:Adjusts the radius, in cells, of the Wave of Hate that cursed raiders emmit upon death.\nSet to 0 to disable the Wave of Hate mechanic.</RFS.HateWaveRadius>
+<RFS.HateWaveStunDuration>Wave of Hate stun duration:Sets the duration of the stun effect of the Wave of Hate, measured in ticks. There are 60 ticks in a second.\nSet to 0 to disable the stun.</RFS.HateWaveStunDuration>
+
+<RF.Comps.DeflectLabel>Deflect projectiles</RF.Comps.DeflectLabel>
+<RF.Comps.DeflectDesc>Toggles this weapon's ability to deflect projectiles.
+Deflecting a projectile will slightly slow down the wielder's movement, so consider turning this off if moving faster is more imporant that not catching a bullet.
+This weapon's bullet deflection rate is {0}%.</RF.Comps.DeflectDesc>
+
+<!-- Settings -->
+<RFS.Header>Hover over the option to show a description. Right-click on an option to reset it to default.</RFS.Header>
+<RFS.Default>Default: {0}</RFS.Default>
+<RFS.Yes>Yes</RFS.Yes>
+<RFS.No>No</RFS.No>
+<RFS.ShowAdvanced>Show advanced settings</RFS.ShowAdvanced>
+<RFS.ShowAdvancedDesc>Shows or hides advanced settings. You should only adjust advanced settings if you know what you are doing!</RFS.ShowAdvancedDesc>
+
+<RFS.CatGeneral>General</RFS.CatGeneral>
+<RFS.UseCustomTab>Add RimForge tab:Enables or disables the RimForge architect tab. Disable this if you already have loads of architect tabs.\nRequires a game restart to take effect.</RFS.UseCustomTab>
+<RFS.GenerateCopper>Generate Copper ore:Enables or disables natural copper ore generation. Requires a new map to take effect.</RFS.GenerateCopper>
+<RFS.GenerateTin>Generate Tin ore:Enables or disables natural tin ore generation. Requires a new map to take effect.</RFS.GenerateTin>
+
+<RFS.CatCables>Power Poles</RFS.CatCables>
+<RFS.CableSegmentsPerCell>Power cable resolution:Changes the resolution of power pole's cables. Increasing means smoother cables, but possibly lower performance.</RFS.CableSegmentsPerCell>
+<RFS.CableMaxDistance>Power cable range:Changes the maximum distance allowed between power poles. This is personal preference, and does not affect performance.</RFS.CableMaxDistance>
+
+<RFS.CatCoilgun>Coilgun</RFS.CatCoilgun>
+<RFS.CoilgunBaseDamageMultiplier>Base damage multiplier:A multiplier on the base damage of every shell type.</RFS.CoilgunBaseDamageMultiplier>
+<RFS.CoilgunSplatterBlood>Extra gore:Toggles the extra gore and blood splatters when pawns are hit by the coilgun.</RFS.CoilgunSplatterBlood>
+<RFS.CoilgunDisplayDamageReport>Show damage report:Toggles the message that appears after every coilgun shot, that states hit count and total damage.</RFS.CoilgunDisplayDamageReport>
+<RFS.CoilgunPenDamageMultiplier>Penetration damage multiplier:Changes damage dropoff after shells penetrate solid walls. Lower values mean less damage after penetration.</RFS.CoilgunPenDamageMultiplier>
+<RFS.CoilgunBuildingDamageMulti>Building damage multiplier:Multiplier on the amount of damage that is dealt to buildings (including walls). Does not affect HE shells.</RFS.CoilgunBuildingDamageMulti>
+<RFS.CoilgunBasePowerReq>Charge per shot multiplier:Multiplier on the amount of capacitor charge required per shot. Lower values mean less capacitors are required.</RFS.CoilgunBasePowerReq>
+
+<RFS.CatTesla>Tesla Coils</RFS.CatTesla>
+<RFS.TeslaMaxDistance>Max range:The maximum distance, in cells, that is allowed between Tesla Coils. Higher values can affect performance.</RFS.TeslaMaxDistance>
+<RFS.TeslaCooldown>Cooldown:The cooldown of Tesla Coils after firing, measured in ticks. There are 60 ticks in a second.</RFS.TeslaCooldown>
+<RFS.TeslaStunDuration>Stun duration:The duration of the Tesla Coils stun effect, measured in ticks. There are 60 ticks in a second.</RFS.TeslaStunDuration>
+<RFS.TeslaDamage>Damage:The damage dealt by Tesla Coils.</RFS.TeslaDamage>
+<RFS.TeslaTickInterval>Tick interval:Changes the Tesla coils to update every X ticks. Higher values INCREASE performance, but may result in fast-moving raiders being able to slip through the coils undetected.</RFS.TeslaTickInterval>
+<RFS.TeslaMechanoidDamageMulti>Mechanoid damage multiplier:Tesla Coil damage is multiplied by this value when hitting mechanoids.</RFS.TeslaMechanoidDamageMulti>
+
+<RFS.CatRitual>Blessing Ritual</RFS.CatRitual>
+<RFS.RitualFailCoefficient>Fail chance multiplier:Adjusts the likelyhood of a ritual failing. The first ritual is always successful.</RFS.RitualFailCoefficient>
+<RFS.RitualMustBeAtNight>Night-time only:Toggles the requirement of the ritual needing to be performed at night-time.</RFS.RitualMustBeAtNight>
+<RFS.RitualFailMajorChance>Major fail chance:In the event of a ritual failure, this is the chance of the failure killing the colonist, rather than maiming them.</RFS.RitualFailMajorChance>
+
+<RFS.CatGreenhouse>Greenhouse</RFS.CatGreenhouse>
+<RFS.GreenhouseGrowthAccelerationFactor>Growth acceleration power:Adjusts how powerful the growth acceleration effect is. Higher values are very OP.</RFS.GreenhouseGrowthAccelerationFactor>
+<RFS.MaxGreenhouseSize>Max size (in cells):Changes the max size that a greenhouse room can be. Higher values can reduce performance quite significantly.</RFS.MaxGreenhouseSize>
+<RFS.GreenWattsPerCell>Power requirement per cell:The Watts required per cell in the greenhouse. Personal preference, no affect on performance.</RFS.GreenWattsPerCell>
+
+<RFS.CatRaids>Raids and Cursed Raiders</RFS.CatRaids>
+<RFS.CursedRaidersNumberScale>Cursed raiders multiplier:A general multiplier on the number of cursed raiders that will appear.\nSet to 0% to disable cursed raiders.</RFS.CursedRaidersNumberScale>
+<RFS.CursedRaidersNumberMultiplierMin>Cursed raiders per blessed colonist (min):Relative number of cursed raiders per blessed colonist (min).</RFS.CursedRaidersNumberMultiplierMin>
+<RFS.CursedRaidersNumberMultiplierMax>Cursed raiders per blessed colonist (max):Relative number of cursed raiders per blessed colonist (max).</RFS.CursedRaidersNumberMultiplierMax>
+<RFS.SendRaiderLetter>Send cursed raiders warning letter:Toggles the cursed raider warning letter.</RFS.SendRaiderLetter>
+<RFS.HateWaveRadius>Wave of Hate radius:Adjusts the radius, in cells, of the Wave of Hate that cursed raiders emmit upon death.\nSet to 0 to disable the Wave of Hate mechanic.</RFS.HateWaveRadius>
+<RFS.HateWaveStunDuration>Wave of Hate stun duration:Sets the duration of the stun effect of the Wave of Hate, measured in ticks. There are 60 ticks in a second.\nSet to 0 to disable the stun.</RFS.HateWaveStunDuration>
 
  </LanguageData>

@@ -32,6 +32,7 @@ namespace RimForge.Buildings
                 base.DrawColor = value;
             }
         }
+        public override float MaxLinkDistance => Settings.CableMaxDistance;
 
         private readonly Dictionary<Building_LongDistanceCabled, List<Vector2>> connectionToPoints = new Dictionary<Building_LongDistanceCabled, List<Vector2>>();
         private Material cableMatCached;
@@ -43,9 +44,6 @@ namespace RimForge.Buildings
 
             points ??= new List<Vector2>(128);
             points.Clear();
-
-            if (pointCount < 3)
-                pointCount = 3;
 
             Vector2 start = poleA.GetFlatConnectionPoint();
             Vector2 end = poleB.GetFlatConnectionPoint();
@@ -62,10 +60,10 @@ namespace RimForge.Buildings
             }
 
             int pc = pointCount ?? GetCablePointCount(start, end);
-            if (pc < 2)
-                pc = 2;
+            if (pc < 3)
+                pc = 3;
             
-            for (int i = 0; i < pointCount; i++)
+            for (int i = 0; i < pc; i++)
             {
                 float t = (float)i / (pc - 1);
                 Vector2 bezier = Bezier.Evaluate(t, start, p1.Value, p2.Value, end);
@@ -94,7 +92,7 @@ namespace RimForge.Buildings
 
         public virtual int GetCablePointCount(Vector2 a, Vector2 b)
         {
-            return Mathf.RoundToInt((a - b).magnitude * Settings.CableSegmentsPerCell);
+            return Mathf.Max(5, Mathf.RoundToInt((a - b).magnitude * Settings.CableSegmentsPerCell));
         }
 
         /// <summary>
@@ -163,7 +161,7 @@ namespace RimForge.Buildings
                 return;
 
             if(to is Building_LongDistanceCabled cabled)
-                GeneratePointsAsync(this, cabled, 50);
+                GeneratePointsAsync(this, cabled);
         }
 
         protected override void UponLinkRemoved(Building_LongDistancePower from, bool isOwner)
@@ -184,7 +182,7 @@ namespace RimForge.Buildings
             foreach (var conn in base.OwnedConnectionsSanitized)
             {
                 if (conn is Building_LongDistanceCabled cabled)
-                    GeneratePointsAsync(this, cabled, 50);
+                    GeneratePointsAsync(this, cabled);
             }
         }
     }

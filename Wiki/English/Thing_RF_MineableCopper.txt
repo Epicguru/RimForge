@@ -1,0 +1,8 @@
+
+ENDTAGS
+
+#Copper ore that generates naturally in the world, and in underground deposits accessible via Deep Drilling.
+
+<b>Note:</b> If you have added RimForge to an existing save, the ores will not exist on your current map(s). Travel to a new map to find this ore, or purchase from traders.#
+
+@RF_Copper@

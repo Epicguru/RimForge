@@ -1,0 +1,18 @@
+
+ENDTAGS
+
+#!How to use#
+#The drone launcher must be loaded with mortar shells.
+By default it uses regular High Explosive mortar shells, but the type of ammo can be changed by clicking the <i>Change bomb type</i> button.
+
+Your colonists will automatically load the drone with the shells (it is a refuelling job).
+<b>Note: You can change how many bombs are loaded by clicking the <i>Change max fuel</i> button.</b>#
+
+#!Launching a drone strike#
+#Once at least 1 bomb is loaded, you can click the <i>Launch Strike</i> button.
+This will activate the targeting mode.
+
+<b> - Click once to select the starting position.
+ - Move your mouse and click again to select the end position.</b>
+ 
+ Bombs will be dropped uniformly between these two positions.#

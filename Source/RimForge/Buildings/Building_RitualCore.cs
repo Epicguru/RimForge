@@ -4,6 +4,7 @@ using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RimForge.Achievements;
 using UnityEngine;
 using Verse;
 
@@ -103,7 +104,7 @@ namespace RimForge.Buildings
         }
 
         private static readonly List<IntVec3> tempCells = new List<IntVec3>(8);
-
+        
         // Ex-tweakValues
         private static float ArcDuration = 1;
         private static float ArcMag = 0.55f;
@@ -305,8 +306,10 @@ namespace RimForge.Buildings
 
                 if (failLevel > 0)
                 {
+                    GenericEventTracker.Fire(AchievementEvent.RitualFailure);
+
                     // Kill the sacrifice.
-                    if(SacrificePawn != null)
+                    if (SacrificePawn != null)
                         TakeHeart(SacrificePawn);
 
                     if (failLevel == 2)
@@ -335,6 +338,8 @@ namespace RimForge.Buildings
                 Trait trait = new Trait(RFDefOf.RF_BlessingOfZir, forced: true);
                 TargetPawn.story.traits.GainTrait(trait);
                 TargetPawn.TryGiveThought(RFDefOf.RF_RitualBlessed);
+
+                GenericEventTracker.Fire(AchievementEvent.RitualPerformed);
 
                 // Give negative thoughts to all colonists.
                 int thoughtLevel = SacrificePawn.guilt.IsGuilty ? 1 : 0;
@@ -489,9 +494,16 @@ namespace RimForge.Buildings
                     {
                         Text = "RF.Ritual.FailWarning".Translate(GetPrettyTimesString(timesPerformed), (chanceToFail * 100f).ToString("F0")),
                         ButtonText = "RF.Ritual.IUnderstand".Translate(),
-                        OnAccept = act
+                        OnAccept = () =>
+                        {
+                            if (chanceToFail > 0.5f)
+                                GenericEventTracker.Fire(AchievementEvent.Ritual50ChanceFailure);
+                            act();
+                        }
                     });
-                }
+                },
+                disabled = GetReasonsCannotStartRitual().Any(),
+                disabledReason = GetReasonsCannotStartRitual().FirstOrDefault()
             };
 
             string label = DrawGuide ? "RF.Ritual.DrawGuideHideLabel".Translate() : "RF.Ritual.DrawGuideShowLabel".Translate();
@@ -499,6 +511,7 @@ namespace RimForge.Buildings
 
             yield return new Command_Action()
             {
+                icon = Content.BuildBlueprintIcon,
                 defaultLabel = label,
                 defaultDesc = desc,
                 action = () =>
@@ -686,6 +699,8 @@ namespace RimForge.Buildings
                         continue;
                     if (pawn.story?.traits?.HasTrait(RFDefOf.RF_BlessingOfZir) ?? false)
                         continue;
+                    if (pawn.story?.traits?.HasTrait(RFDefOf.RF_ZirsCorruption) ?? false)
+                        continue;
 
                     if (prefer != null && pawn != prefer)
                         continue;
@@ -698,6 +713,9 @@ namespace RimForge.Buildings
 
         public bool IsValidTimePeriod()
         {
+            if (!Settings.RitualMustBeAtNight)
+                return true;
+
             var map = Map;
             int hour = GenLocalDate.HourOfDay(map);
             
@@ -751,7 +769,7 @@ namespace RimForge.Buildings
 
         public override void DoWindowContents(Rect inRect)
         {
-            Verse.Text.Font = GameFont.Medium;
+            Verse.Text.Font = GameFont.Small;
             Rect textRect = inRect;
             textRect.height -= 150;
             Widgets.Label(textRect, Text);

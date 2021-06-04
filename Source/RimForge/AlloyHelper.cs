@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
+using HarmonyLib;
 using RimForge.Comps;
 using RimWorld;
 using UnityEngine;
@@ -229,6 +231,51 @@ namespace RimForge
                 return;
 
             pawn?.needs?.mood?.thoughts?.memories?.TryGainMemory(ThoughtMaker.MakeThought(def, level), otherPawn);
+        }
+
+        /// <summary>
+        /// This is more performant that doing GetComp<CompDeflector>()
+        /// </summary>
+        public static CompDeflector GetDeflectorComp(this ThingWithComps thing)
+        {
+            for (int i = 0; i < thing.AllComps.Count; i++)
+            {
+                var comp = thing.AllComps[i];
+                if (comp is CompDeflector d)
+                    return d;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Clones a object via shallow copy, using reflection to access MemberwiseClone.
+        /// </summary>
+        /// <typeparam name="T">Object Type to clone.</typeparam>
+        /// <param name="obj">Object to clone.</param>
+        /// <returns>The new Object reference.</returns>
+        public static T CloneObject<T>(this T obj) where T : class
+        {
+            if (obj == null)
+                return null;
+
+            var memberwiseClone = AccessTools.Method(typeof(T), "MemberwiseClone");
+            return (T)memberwiseClone.Invoke(obj, new object[]{});
+        }
+
+        public static CompOversizedWeapon GetCompOversizedWeapon(this ThingWithComps thing)
+        {
+            var comps = thing.AllComps;
+            for (int i = 0, count = comps.Count; i < count; i++)
+            {
+                if (comps[i] is CompOversizedWeapon comp)
+                    return comp;
+            }
+            return null;
+        }
+
+        public static CompOversizedWeapon TryGetCompOversizedWeapon(this Thing thing)
+        {
+            return thing is ThingWithComps thingWithComps ? thingWithComps.GetCompOversizedWeapon() : null;
         }
     }
 }

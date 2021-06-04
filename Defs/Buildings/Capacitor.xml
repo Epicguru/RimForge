@@ -23,7 +23,7 @@
     <size>(1, 1)</size>
     <costList>
       <Steel>20</Steel>
-      <ComponentIndustrial>4</ComponentIndustrial>
+      <ComponentSpacer>4</ComponentSpacer>
       <RF_Copper>50</RF_Copper>
     </costList>
     <statBases>
@@ -41,17 +41,18 @@
     <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
     <comps>
       <li Class="RimForge.Comps.CompProperties_Capacitor">
-        <maxStoredWd>2000</maxStoredWd>
+        <powerRequirement>2000</powerRequirement>
+        <ticksToCharge>2500</ticksToCharge>
       </li>
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
         <transmitsPower>false</transmitsPower>
+        <basePowerConsumption>2000</basePowerConsumption>
         <shortCircuitInRain>false</shortCircuitInRain>
-        <basePowerConsumption>0</basePowerConsumption>
       </li>
     </comps>
     <researchPrerequisites>
-      <li>Batteries</li>
+      <li>RF_Research_Coilgun</li>
     </researchPrerequisites>
     <descriptionHyperlinks>
       <ThingDef>RF_Coilgun</ThingDef>
@@ -63,7 +64,8 @@
     <defName>RF_Capacitor</defName>
     <label>coilgun capacitor</label>
     <description>An electrical capacitor that is required to fire a Liandry Coilgun.
-Rather than taking in energy directly, these capacitors drain energy from batteries, so at least 1 battery must be placed in the same power grid as this capacitor.</description>
+Charges up over time.
+Note: Will not output electricity like a normal battery.</description>
   </ThingDef>
 
 </Defs>

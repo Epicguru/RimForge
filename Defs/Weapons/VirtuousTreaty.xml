@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <ThingDef ParentName="BaseMeleeWeapon_Sharp_Quality">
+  <ThingDef ParentName="BaseMeleeWeapon_Sharp">
     <defName>RF_VirtuousTreaty</defName>
-    <label>virtuous treaty</label>
+    <label>Virtuous Treaty</label>
     <description>A huge longsword with a strange offset blade. Deals huge damage with high armor penetration.
+Has a 75% chance to deflect bullets back at the attacker.
 
 Memories from another time stir within its pearly blade.</description>
     <graphicData>
@@ -32,8 +33,9 @@ Memories from another time stir within its pearly blade.</description>
       <li>RewardStandardQualitySuper</li>
     </thingSetMakerTags>
     <statBases>
+      <MarketValue>3500</MarketValue>
       <MaxHitPoints>500</MaxHitPoints>
-      <WorkToMake>32000</WorkToMake>
+      <WorkToMake>22000</WorkToMake>
       <Mass>8</Mass>
     </statBases>
     <equippedStatOffsets>
@@ -52,8 +54,8 @@ Memories from another time stir within its pearly blade.</description>
         <capacities>
           <li>Stab</li>
         </capacities>
-        <power>35</power>
-        <armorPenetration>1.3</armorPenetration>
+        <power>30</power>
+        <armorPenetration>1.1</armorPenetration>
         <cooldownTime>2</cooldownTime>
       </li>
       <li>
@@ -61,17 +63,21 @@ Memories from another time stir within its pearly blade.</description>
         <capacities>
           <li>Cut</li>
         </capacities>
-        <power>40</power>
+        <power>35</power>
         <armorPenetration>0.9</armorPenetration>
-        <cooldownTime>2.5</cooldownTime>
+        <cooldownTime>2.25</cooldownTime>
       </li>
     </tools>
     <comps>
-      <li Class="CompOversizedWeapon.CompProperties_OversizedWeapon">
+      <li Class="RimForge.Comps.CompProperties_OversizedWeapon">
         <southOffset>(0.4, 0, 0.3)</southOffset>
         <northOffset>(0.4, 0, 0.3)</northOffset>
         <eastOffset>(0.3, 0, 0.38)</eastOffset>
         <westOffset>(-0.3, 0, 0.38)</westOffset>
+      </li>
+      <li Class="RimForge.Comps.CompProperties_Deflector">
+        <deflectChance>0.75</deflectChance>
+        <reflectChance>1</reflectChance>
       </li>
     </comps>
   </ThingDef>

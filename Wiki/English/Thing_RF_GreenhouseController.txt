@@ -1,0 +1,14 @@
+
+ENDTAGS
+
+#!How to use#
+#<b>1.</b> Build a room and make sure that it has a roof.
+<b>2.</b> Inside this room, plant crops directly into the ground or build hydroponic basins.
+<b>3.</b> Place this controller down inside the room or built into one of its walls. You may need to adjust the gas port direction by clicking the ‘Change gas output side’ button. Make sure that the controller has power. The amount of power consumed depends on the room size.
+
+You will know that the controller is working when its fan begins to spin and green particles appear above crops.#
+
+#!Notes#
+# - You may need to add heaters or coolers to regulate the temperature.
+ - <b>You do not need to build sun lamps!</b> The greenhouse controller includes a <b>built-in sun lamp</b> that illuminates the entire room (although not visually).
+#

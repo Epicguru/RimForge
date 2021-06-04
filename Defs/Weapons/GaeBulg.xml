@@ -23,7 +23,7 @@ It has more spikey bits to make it easier to poke people with.</description>
     </thingSetMakerTags>
     <statBases>
       <MaxHitPoints>300</MaxHitPoints>
-      <WorkToMake>24000</WorkToMake>
+      <WorkToMake>19000</WorkToMake>
       <Mass>5</Mass>
     </statBases>
     <equippedStatOffsets>
@@ -48,7 +48,7 @@ It has more spikey bits to make it easier to poke people with.</description>
       </li>
     </tools>
     <comps>
-      <li Class="CompOversizedWeapon.CompProperties_OversizedWeapon"></li>
+      <li Class="RimForge.Comps.CompProperties_OversizedWeapon"></li>
     </comps>
   </ThingDef>
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <TraitDef>
+    <defName>RF_ZirsCorruption</defName>
+    <commonality>0.05</commonality>
+    <degreeDatas>
+      <li>
+        <label>Zir's Corruption</label>
+        <description>[PAWN_nameDef]'s mind has been twisted by Zir!
+An obsession or hatred revolving around Machine God Zir has lead this individual to madness, but also unlocked previously unknown physical prowess.</description>
+        <statFactors>
+          <GeneralLaborSpeed>0.25</GeneralLaborSpeed>
+          <MoveSpeed>3</MoveSpeed>
+          <MentalBreakThreshold>4</MentalBreakThreshold>
+          <MeleeHitChance>1.5</MeleeHitChance>
+        </statFactors>
+      </li>
+    </degreeDatas>
+    <conflictingTraits>
+      <li>RF_BlessingOfZir</li>
+    </conflictingTraits>
+  </TraitDef>
+
+</Defs>

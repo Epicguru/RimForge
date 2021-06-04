@@ -6,12 +6,12 @@
     <thingClass>RimForge.Buildings.Building_Coilgun</thingClass>
     <label>liandry coilgun</label>
     <description>A coilgun, also called a gauss rifle, accelerates a kinetic projectile using an electrical current similarly to the way a railgun works.
-
-Requires Coilgun Capacitors to be connected to the same power grid in order to fire.
 This particular coilgun is a huge mounted cannon, firing a 4kg staballoy armor piercing slug at over 5000 m/s, capable of literally firing through a mountain.
 
 When fired, it's projectile will pass through everything and anything along it's path, including normally un-penetrable surfaces such as walls or even mountains.
-However, damage is reduced after passing through solid objects.</description>
+However, damage is reduced after passing through solid objects.
+
+Requires Coilgun Capacitors to be connected to the same power grid in order to fire.</description>
     <uiIconPath>RF/Buildings/Coilgun/Icon</uiIconPath>
     <descriptionHyperlinks>
       <ThingDef>RF_Capacitor</ThingDef>
@@ -34,6 +34,12 @@ However, damage is reduced after passing through solid objects.</description>
       <Mass>400</Mass>
       <Beauty>-25</Beauty>
     </statBases>
+    <costList>
+      <Steel>300</Steel>
+      <RF_Copper>150</RF_Copper>
+      <ComponentSpacer>5</ComponentSpacer>
+      <RF_Staballoy>50</RF_Staballoy>
+    </costList>
     <tickerType>Normal</tickerType>
     <passability>PassThroughOnly</passability>
     <pathCost>150</pathCost>
@@ -45,6 +51,9 @@ However, damage is reduced after passing through solid objects.</description>
     <building>
       <ai_combatDangerous>true</ai_combatDangerous>
     </building>
+    <researchPrerequisites>
+      <li>RF_Research_Coilgun</li>
+    </researchPrerequisites>
     <designationHotKey>Misc3</designationHotKey>
     <uiIconScale>1</uiIconScale>
     <comps>
@@ -60,7 +69,6 @@ However, damage is reduced after passing through solid objects.</description>
         <fuelCapacity>1</fuelCapacity>
         <fuelFilter>
           <thingDefs>
-            <li>RF_CoilgunShellAP</li>
           </thingDefs>
         </fuelFilter>
         <autoRefuelPercent>0.1</autoRefuelPercent>

@@ -53,7 +53,7 @@ Makes for very good tools, weapons and armor, at the cost of beauty and construc
 
   <RimForge.AlloyDef>
     <defName>RF_Adamantium</defName>
-    <label>make bronze</label>
+    <label>make adamantium</label>
     <description>Make adamantium, a complex alloy of Bronze, Staballoy and Gilded Plasteel.
 It is unbelievably strong, and can be sharpened to a razor's edge without risk of it fracturing.
 It's dark surface is strangely beautiful.</description>

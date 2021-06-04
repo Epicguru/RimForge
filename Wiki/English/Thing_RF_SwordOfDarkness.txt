@@ -1,0 +1,15 @@
+
+ENDTAGS
+
+#This weapon is not craftable.
+It is carried by attackers who are afflicted by Zir's Corruption.
+Whenever a raid starts that contains these special raiders, you will receive a unique warning notification next to the raid notification.
+This allows you to prepare for these raiders, as they are very strong, mostly due to them carrying this powerful sword.
+
+<b>Any pawn that equips this weapon will receive a large mood debuff unless they are corrupted.</b>
+
+These swords are a valuable artifact and can be sold for a hefty sum to traders.
+However, you may also want to convert this cursed weapon into its purified counterpart:#
+@RF_SwordOfRapture@
+#In order to craft the Sword of Rapture, you will need a colonist that has the <color=\#f0e516>Blessing of Zir</color> trait, which is obtained through the Blessing Ritual:#
+~RF_BlessingOfZir~

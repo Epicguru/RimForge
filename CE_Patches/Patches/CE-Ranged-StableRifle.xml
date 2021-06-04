@@ -14,7 +14,6 @@
           <ShotSpread>0.04</ShotSpread>
           <SwayFactor>0.85</SwayFactor>
           <Bulk>7.5</Bulk>
-          <WorkToMake>34000</WorkToMake>
         </statBases>
         <Properties>
           <recoilAmount>0.1</recoilAmount>

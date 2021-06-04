@@ -1,6 +1,8 @@
-﻿using System;
-using HarmonyLib;
+﻿using HarmonyLib;
 using RimForge.Effects;
+using System;
+using RimForge.CombatExtended;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -8,6 +10,7 @@ namespace RimForge
 {
     public class Core : Mod
     {
+        public static SkillDef BlessingSkillDef { get; private set; }
         public static ModContentPack ContentPack { get; private set; }
         public static Core Instance { get; private set; }
 
@@ -28,6 +31,8 @@ namespace RimForge
                 Verse.Log.Error(exception.ToString());
         }
 
+        public readonly Harmony HarmonyInstance; 
+
         public Core(ModContentPack content) : base(content)
         {
             Log("Hello, world!");
@@ -35,10 +40,10 @@ namespace RimForge
             ContentPack = content;
 
             // Apply harmony patches.
-            var harmony = new Harmony("co.uk.epicguru.rimforge");
+            HarmonyInstance = new Harmony("co.uk.epicguru.rimforge");
             try
             {
-                harmony.PatchAll();
+                HarmonyInstance.PatchAll();
             }
             catch (Exception e)
             {
@@ -46,19 +51,43 @@ namespace RimForge
             }
             finally
             {
-                Log($"Patched {harmony.GetPatchedMethods().EnumerableCount()} methods:\n{string.Join(",\n", harmony.GetPatchedMethods())}");
+                Log($"Patched {HarmonyInstance.GetPatchedMethods().EnumerableCount()} methods:\n{string.Join(",\n", HarmonyInstance.GetPatchedMethods())}");
             }
 
             // Create MonoBehaviour hook.
             var go = new GameObject("RimForge hook");
             go.AddComponent<UnityHook>();
-            Log("Created Unity hook game object.");
 
             // When the game closes, shut down this particle processing thread.
             UnityHook.UponApplicationQuit += () =>
             {
                 MapEffectHandler.ThreadedHandler?.Stop();
             };
+
+            if (CECompat.IsCEActive)
+                Log("Combat Extended detected! Running in Combat Extended mode.");
+
+            // Blessing skill def, used to make recipes that only blessed pawns can do.
+            BlessingSkillDef = new SkillDef()
+            {
+                defName = "RF_BlessingSkill_RuntimeGenerated",
+                label = "Blessing of Zir (trait)",
+                skillLabel = "Blessing of Zir (trait)",
+                description = "Requirement: pawn must have the Blessing of Zir trait.",
+                modContentPack = Content,
+                usuallyDefinedInBackstories = false,
+                pawnCreatorSummaryVisible = false
+            };
+
+            LongEventHandler.QueueLongEvent(StartupLoading.DoLoadLate, "RF.LoadLabel", false, null);
         }
+
+        public override void DoSettingsWindowContents(Rect inRect)
+        {
+            Settings.DrawUI(inRect);
+        }
+
+        public override string SettingsCategory() => "RimForge";
+        
     }
 }

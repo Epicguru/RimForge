@@ -1,23 +1,25 @@
-﻿using RimForge.Comps;
-using RimForge.Effects;
+﻿using RimForge.Effects;
 using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AchievementsExpanded;
+using RimForge.Achievements;
+using RimForge.Patches;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
 
 namespace RimForge.Buildings
 {
-    public class Building_Coilgun : Building
+    public class Building_Coilgun : Building, ICustomTargetingUser
     {
         [TweakValue("RimForge", 0, 20)]
         public static float CoilgunRecoil = 0.6f;
         [TweakValue("RimForge", 1, 100)]
         public static int BloodTrailLength = 20;
-        public static readonly Vector2 FuelBarSize = new Vector2(3f, 0.4f);
         public static List<CoilgunShellDef> ShellDefs = new List<CoilgunShellDef>();
+        private static bool? isVEAActive;
 
         private const float TurretTurnSpeed = 60f / 60f;
         private const int FINISH_READYING = 120;
@@ -52,6 +54,20 @@ namespace RimForge.Buildings
 
         public DrawPart Top, Cables, LeftPivot, RightPivot;
         public DrawPart BarLeft, BarRight;
+        public CoilgunShellDef CurrentShellDef
+        {
+            get
+            {
+                return FuelComp.Props.fuelFilter.AnyAllowedDef as CoilgunShellDef;
+            }
+            set
+            {
+                FuelComp.Props.fuelFilter.SetDisallowAll();
+                if(value != null)
+                    FuelComp.Props.fuelFilter.SetAllow(value, true);
+                shellDef = value;
+            }
+        }
 
         private List<LinearElectricArc> backArcs = new List<LinearElectricArc>();
         private List<LinearElectricArc> frontArcs = new List<LinearElectricArc>();
@@ -61,6 +77,7 @@ namespace RimForge.Buildings
         private List<Building_Capacitor> rawCapacitors = new List<Building_Capacitor>();
         private int ticksSinceCapacitorRefresh;
         private int tickCounter;
+        private CoilgunShellDef shellDef;
         private Dictionary<int, List<Action>> tickActions = new Dictionary<int, List<Action>>(128);
 
         public override void ExposeData()
@@ -76,6 +93,13 @@ namespace RimForge.Buildings
             Scribe_Values.Look(ref ticksSinceCapacitorRefresh, "coil_ticksSinceCapRefresh");
             Scribe_Collections.Look(ref rawCapacitors, "coil_rawCaps", LookMode.Reference);
             rawCapacitors ??= new List<Building_Capacitor>();
+
+            Scribe_Defs.Look(ref shellDef, "coil_shellDef");
+
+            if (Scribe.mode == LoadSaveMode.LoadingVars)
+                ReplaceFuelProps(GetComp<CompRefuelable>());
+
+            CurrentShellDef = shellDef;
         }
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
@@ -83,6 +107,22 @@ namespace RimForge.Buildings
             base.SpawnSetup(map, respawningAfterLoad);
 
             DrawAffectedCells = false;
+            CurrentShellDef ??= RFDefOf.RF_CoilgunShellAP;
+        }
+
+        public override void PostMake()
+        {
+            base.PostMake();
+            ReplaceFuelProps(FuelComp);
+            CurrentShellDef = shellDef;
+        }
+
+        public void ReplaceFuelProps(CompRefuelable comp)
+        {
+            var props = comp.Props;
+            var newProps = props.CloneObject();
+            newProps.fuelFilter = new ThingFilter();
+            comp.props = newProps;
         }
 
         public virtual void Setup()
@@ -149,17 +189,17 @@ namespace RimForge.Buildings
                 tickActions.Remove(tickCounter);
             }
 
-            FuelComp.Props.fuelLabel = GetCurrentShellType().LabelCap;
-            FuelComp.Props.fuelGizmoLabel = GetCurrentShellType().LabelCap;
+            FuelComp.Props.fuelLabel = CurrentShellDef.LabelCap;
+            FuelComp.Props.fuelGizmoLabel = CurrentShellDef.LabelCap;
 
-            Graphic topGraphic()
+            Graphic TopGraphic()
             {
                 bool wantsFrontArcs = ArmLerp >= 0.7f;
                 if (wantsFrontArcs)
                     return Content.CoilgunTopGlow;
                 return Content.CoilgunTop;
             }
-            Graphic cableGraphic()
+            Graphic CableGraphic()
             {
                 bool wantsFrontArcs = ArmLerp >= 0.7f;
                 if (wantsFrontArcs)
@@ -169,8 +209,8 @@ namespace RimForge.Buildings
 
             if (Top != null)
             {
-                Top.Graphic = topGraphic();
-                Cables.Graphic = cableGraphic();
+                Top.Graphic = TopGraphic();
+                Cables.Graphic = CableGraphic();
             }
 
             TickState();
@@ -242,20 +282,6 @@ namespace RimForge.Buildings
         {
             base.DrawExtraSelectionOverlays();
 
-            GetCapacitorState(out int count, out float stored);
-            if (count > 0 && stored < Settings.CoilgunBasePowerReq)
-            {
-                GenDraw.FillableBarRequest r = new GenDraw.FillableBarRequest();
-                r.center = this.DrawPos + new Vector3(0, 0, -3);
-                r.size = FuelBarSize;
-                r.fillPercent = stored / Settings.CoilgunBasePowerReq;
-                r.filledMat = CompCapacitor.FuelBarFilledMat;
-                r.unfilledMat = CompCapacitor.FuelBarUnfilledMatSolid;
-                r.margin = 0.15f;
-                r.rotation = Rot4.North;
-                GenDraw.DrawFillableBar(r);
-            }
-
             if (!DrawAffectedCells)
                 return;
 
@@ -267,31 +293,49 @@ namespace RimForge.Buildings
             //Core.Log($"{endPos} - {Position} = {dir}, {Position} + {dir} * {mapSize} = {newEndPos}");
             var list = GetAffectedCells(newEndPos);
             GenDraw.DrawFieldEdges(list, Color.red);
+
+            var currentShell = CurrentShellDef;
+            if (currentShell?.explosionDamageType == null || currentShell.explosionRadius <= 0f)
+                return;
+
+            list.Sort((a, b) =>
+            {
+                int sqrDstA = (a - Position).LengthHorizontalSquared;
+                int sqrDstB = (b - Position).LengthHorizontalSquared;
+                return sqrDstA - sqrDstB;
+            });
+
+            foreach (var cell in list)
+            {
+                if (!cell.InBounds(map))
+                    break;
+
+                foreach(var thing in map.thingGrid.ThingsListAtFast(cell))
+                {
+                    if (thing == null || thing.Destroyed)
+                        continue;
+
+                    if ((thing is Building b && b.def.altitudeLayer >= AltitudeLayer.DoorMoveable) || thing is Pawn {Dead: false, Downed: false})
+                    {
+                        GenDraw.DrawTargetHighlightWithLayer(cell, AltitudeLayer.MoteOverhead);
+                        GenExplosion.RenderPredictedAreaOfEffect(cell, currentShell.explosionRadius);
+                        return;
+                    }
+                }
+            }
         }
 
-        public CoilgunShellDef GetLoadedShell()
+        public bool HasLoadedShell()
         {
-            return FuelComp.Fuel > 0 ? GetCurrentShellType() : null;
-        }
-
-        public CoilgunShellDef GetCurrentShellType()
-        {
-            return FuelComp.Props.fuelFilter.AnyAllowedDef as CoilgunShellDef;
-        }
-
-        public void SetCurrentShellType(ThingDef def)
-        {
-            FuelComp.Props.fuelFilter.SetDisallowAll();
-            FuelComp.Props.fuelFilter.SetAllow(def, true);
+            return FuelComp.Fuel > 0;
         }
 
         public void EjectLoadedShell()
         {
-            var loaded = GetLoadedShell();
-            if (loaded == null)
+            if (!HasLoadedShell())
                 return;
 
-            var thing = ThingMaker.MakeThing(loaded);
+            var thing = ThingMaker.MakeThing(CurrentShellDef);
             GenPlace.TryPlaceThing(thing, Position - new IntVec3(0, 0, 3), Map, ThingPlaceMode.Near);
 
             ClearLoadedShell();
@@ -327,21 +371,21 @@ namespace RimForge.Buildings
             }
         }
 
-        private void RemoveCapacitorPower(float wd)
+        private void RemoveCapacitorPower(float capacitors)
         {
-            float toRemove = wd;
+            float toRemove = capacitors;
             foreach(var cap in GetConnectedCapacitors())
             {
                 if (toRemove <= 0f)
                     return;
 
-                float take = Mathf.Min(toRemove, cap.CompCap.StoredWd);
-                cap.CompCap.StoredWd -= take;
+                float take = Mathf.Min(toRemove, cap.CompCap.PercentageStored);
+                cap.CompCap.PercentageStored -= take;
                 toRemove -= take;
             }
 
             if (toRemove > 0)
-                Core.Error($"Tried to remove {wd} Wd of power from capacitors, could only remove {wd - toRemove} Wd.");
+                Core.Error($"Tried to remove {capacitors} capacitor percentage of power from capacitors, could only remove {capacitors - toRemove}.");
         }
 
         private void GetCapacitorState(out int count, out float stored)
@@ -351,7 +395,7 @@ namespace RimForge.Buildings
             foreach (var cap in GetConnectedCapacitors())
             {
                 count++;
-                stored += cap.CompCap.StoredWd;
+                stored += cap.CompCap.PercentageStored;
             }
         }
 
@@ -429,10 +473,9 @@ namespace RimForge.Buildings
             var list = GetAffectedCells(newEndPos);
             CurrentTargetInfo = LocalTargetInfo.Invalid;
 
-            var shellDef = GetCurrentShellType();
+            var shellDef = CurrentShellDef;
 
             float damage = shellDef.baseDamage * Settings.CoilgunBaseDamageMultiplier;
-            //Core.Log($"Base damage: {damage}, multi: {Settings.CoilgunPenDamageMultiplier}, building multi: {Settings.CoilgunBuildingDamageMulti}");
 
             int affected = 0;
             int cells = 0;
@@ -453,6 +496,9 @@ namespace RimForge.Buildings
             Color bloodSplatterColor = default;
             Vector2 bloodStartPos = default;
             string bloodPawnName = null;
+
+            if (isVEAActive == null)
+                isVEAActive = ModLister.GetActiveModWithIdentifier("vanillaexpanded.achievements") != null;
 
             void MakeBloodAt(IntVec3 cell, int remaining)
             {
@@ -484,6 +530,9 @@ namespace RimForge.Buildings
                 }
             }
 
+            bool hasDoneExplosion = false;
+            string stoppedAfterHitting = null;
+            int pawnKills = 0;
             foreach (var cell in list.TakeWhile(cell => cell.InBounds(map)))
             {
                 cells++;
@@ -510,24 +559,40 @@ namespace RimForge.Buildings
                             continue;
                         if (thing is Pawn p && (p.Downed || p.Dead))
                             continue;
-
-                        if (thing is Building b)
-                        {
-                            if (b.def.altitudeLayer < AltitudeLayer.DoorMoveable)
-                                continue;
-                            damage *= shellDef.penDamageMultiplier * Settings.CoilgunPenDamageMultiplier;
-                            penDepth++;
-                        }
-
+                        
                         Pawn pawn = thing as Pawn;
-                        if (thing is Building || pawn != null)
+                        Building b = thing as Building;
+                        if (b != null || pawn != null)
                         {
-                            var info = new DamageInfo(RFDefOf.RF_CoilgunDamage, damage * Settings.CoilgunBuildingDamageMulti, 100, instigator: this);
+                            var info = new DamageInfo(RFDefOf.RF_CoilgunDamage, damage * (b == null ? 1f : Settings.CoilgunBuildingDamageMulti), 100, instigator: this);
+                            info.SetIgnoreArmor(true);
                             var result = thing.TakeDamage(info);
                             affected++;
                             totalDamage += result.totalDamageDealt;
 
-                            if(Settings.CoilgunSplatterBlood && pawn?.RaceProps?.BloodDef != null)
+                            #region VEA
+                            if (isVEAActive.Value && pawn != null && (pawn.Dead || pawn.Destroyed))
+                            {
+                                pawnKills++;
+                                foreach (var card in AchievementPointManager.GetCards<CoilgunKillTracker>())
+                                {
+                                    try
+                                    {
+                                        if ((card.tracker as CoilgunKillTracker).Trigger(penDepth, pawn, shellDef))
+                                        {
+                                            card.UnlockCard();
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Core.Error($"Unable to trigger event for card validation. To avoid further errors {card.def.LabelCap} has been automatically unlocked.\n\nException={ex.Message}");
+                                        card.UnlockCard();
+                                    }
+                                }
+                            }
+                            #endregion
+
+                            if (Settings.CoilgunSplatterBlood && pawn?.RaceProps?.BloodDef != null)
                             {
                                 Color defaultBlood = pawn.RaceProps.meatColor == Color.white ? Color.red : pawn.RaceProps.meatColor;
                                 bloodToSplatter = pawn.RaceProps.BloodDef;
@@ -549,10 +614,29 @@ namespace RimForge.Buildings
                                 MoteMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
                                 MoteMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
                             }
+                            
+                            if (!hasDoneExplosion && shellDef.explosionDamageType != null && shellDef.explosionRadius > 0 && (b == null || b.def.altitudeLayer >= AltitudeLayer.DoorMoveable))
+                            {
+                                if(shellDef.useHEKillTracker)
+                                    HEShellKillTracker.BeginCapture();
+                                GenExplosion.DoExplosion(cell, map, shellDef.explosionRadius, shellDef.explosionDamageType, this, shellDef.explosionDamage ?? -1, shellDef.explosionArmorPen ?? -1f);
+                                hasDoneExplosion = true;
+                            }
                         }
+                        if (b != null || (pawn != null && shellDef.pawnsCountAsPen))
+                        {
+                            if (b != null && b.def.altitudeLayer < AltitudeLayer.DoorMoveable)
+                                continue;
 
-                        if (shellDef.maxPen >= 0 && penDepth > shellDef.maxPen)
-                            keepGoing = false;
+                            damage *= shellDef.penDamageMultiplier * Settings.CoilgunPenDamageMultiplier;
+                            penDepth++;
+
+                            if (shellDef.maxPen >= 0 && penDepth > shellDef.maxPen)
+                            {
+                                keepGoing = false;
+                                stoppedAfterHitting = b?.GetCustomLabelNoCount(false) ?? pawn.LabelCap;
+                            }
+                        }
                     }
                     catch (Exception e)
                     {
@@ -562,6 +646,27 @@ namespace RimForge.Buildings
                 if (!keepGoing)
                     break;
             }
+
+            #region VEA
+            if (isVEAActive.Value)
+            {
+                foreach (var card in AchievementPointManager.GetCards<CoilgunPostFireTracker>())
+                {
+                    try
+                    {
+                        if ((card.tracker as CoilgunPostFireTracker).Trigger(pawnKills, totalDamage, shellDef))
+                        {
+                            card.UnlockCard();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Core.Error($"Unable to trigger event for card validation. To avoid further errors {card.def.LabelCap} has been automatically unlocked.\n\nException={ex.Message}");
+                        card.UnlockCard();
+                    }
+                }
+            }
+            #endregion
 
             Vector3 moteStart = firstCell.Value.ToVector3ShiftedWithAltitude(AltitudeLayer.MoteOverhead);
             Vector3 moteEnd = lastCell.Value.ToVector3ShiftedWithAltitude(AltitudeLayer.MoteOverhead);
@@ -573,6 +678,14 @@ namespace RimForge.Buildings
             RemoveCapacitorPower(Settings.CoilgunBasePowerReq);
             ClearLoadedShell();
             Core.Log($"Hit {affected} things for total {totalDamage} damage, scanned {cells} of {list.Count} cells.");
+
+            if (Settings.CoilgunDisplayDamageReport)
+            {
+                if(stoppedAfterHitting != null)
+                    Messages.Message("RF.Coilgun.DamageReportStopped".Translate(shellDef.LabelCap, affected, totalDamage, stoppedAfterHitting), MessageTypeDefOf.NeutralEvent, false);
+                else
+                    Messages.Message("RF.Coilgun.DamageReport".Translate(shellDef.LabelCap, affected, totalDamage), MessageTypeDefOf.NeutralEvent, false);
+            }
         }
 
         private void DoMuzzleFlash()
@@ -683,7 +796,7 @@ namespace RimForge.Buildings
             if (Top == null)
                 Setup();
 
-            GetCapacitorState(out int capCount, out float stored);
+            GetCapacitorState(out int capCount, out var _);
 
             if (capCount == 0)
             {
@@ -723,7 +836,6 @@ namespace RimForge.Buildings
                 float rot = TurretRotation * Mathf.Deg2Rad;
                 Vector3 dir = new Vector3(Mathf.Cos(rot), 0f, Mathf.Sin(rot)) * 500f;
                 Vector3 pos = DrawPos + dir;
-                //Core.Log($"Drawing {beamLerp} at {pos}, {TurretRotation}");
 
                 Content.CoilgunBeam.MatSouth.color = color;
                 //Content.CoilgunBeam.MatSouth.SetTextureOffset("_MainTex", new Vector2(-BeamPct, 0));
@@ -738,7 +850,7 @@ namespace RimForge.Buildings
 
             GetCapacitorState(out int capCount, out float capPower);
             bool hasPower = PowerComp.PowerOn;
-            bool hasShell = GetLoadedShell() != null;
+            bool hasShell = HasLoadedShell();
 
             yield return new Command_TargetCustom()
             {
@@ -748,7 +860,7 @@ namespace RimForge.Buildings
                 {
                     canTargetLocations = true
                 },
-                action = target =>
+                action = (target, _) =>
                 {
                     if (!target.IsValid)
                         return;
@@ -759,7 +871,9 @@ namespace RimForge.Buildings
                     CurrentTargetInfo = target;
                     LastKnowPos = Position;
                 },
-                gun = this,
+                icon = Content.CoilgunShootIcon,
+                defaultIconColor = new Color32(252, 194, 3, 255),
+                user = this,
                 disabled = capCount <= 0 || capPower < Settings.CoilgunBasePowerReq || !hasPower || !hasShell,
                 disabledReason = !hasPower ? "RF.Coilgun.DisabledNoPower".Translate() : !hasShell ? "RF.Coilgun.DisabledNoShell".Translate() : "RF.Coilgun.DisabledNoCaps".Translate()
             };
@@ -770,16 +884,34 @@ namespace RimForge.Buildings
                 action = () =>
                 {
                     Func<ThingDef, string> labelGetter  = shell => shell.LabelCap;
-                    Func<ThingDef, Action> actionGetter = shell => () =>
+                    Func<ThingDef, Action> actionGetter = shell =>
                     {
-                        if (GetCurrentShellType() == shell)
-                            return;
-                        EjectLoadedShell();
-                        SetCurrentShellType(shell);
+                        if (shell == CurrentShellDef)
+                            return null;
+                        return () =>
+                        {
+                            EjectLoadedShell();
+                            CurrentShellDef = (CoilgunShellDef) shell;
+                        };
                     };
                     FloatMenuUtility.MakeMenu(ShellDefs, labelGetter, actionGetter);
                 },
-                icon = GetCurrentShellType()?.uiIcon
+                icon = CurrentShellDef?.uiIcon
+            };
+            yield return new Command_Target()
+            {
+                defaultLabel = "check props",
+                targetingParams = new TargetingParameters()
+                {
+                    canTargetLocations = true
+                },
+                action = t =>
+                {
+                    if (t is Building_Coilgun coilgun)
+                    {
+                        Log.Warning($"Other: {coilgun.CurrentShellDef}, self: {this.CurrentShellDef}, Equal props: {coilgun.GetComp<CompRefuelable>().Props == this.GetComp<CompRefuelable>().Props}, equal comp: {coilgun.GetComp<CompRefuelable>() == this.GetComp<CompRefuelable>()}");
+                    }
+                }
             };
         }
 
@@ -788,36 +920,66 @@ namespace RimForge.Buildings
             string basic = base.GetInspectString();
             GetCapacitorState(out int connected, out float stored);
 
-            string capState = "RF.Coilgun.CapState".Translate(stored.ToString("F0"), connected, Settings.CoilgunBasePowerReq);
+            string capState = "RF.Coilgun.CapState".Translate((stored * 100f).ToString("F0"), connected, (Settings.CoilgunBasePowerReq * 100f).ToString("F0"));
 
             if(!string.IsNullOrWhiteSpace(basic))
                 return $"{basic.TrimEnd()}\n{capState}";
             return capState;
         }
+
+        public void OnStartTargeting(int _)
+        {
+            DrawAffectedCells = true;
+        }
+
+        public void OnStopTargeting(int _)
+        {
+            DrawAffectedCells = false;
+        }
+
+        public void SetTargetInfo(LocalTargetInfo info, int _)
+        {
+            CurrentTargetInfo = info;
+        }
     }
 
     public class Command_TargetCustom : Command
     {
-        public Action<LocalTargetInfo> action;
+        public Action<LocalTargetInfo, int> action;
         public TargetingParameters targetingParams;
-        public Building_Coilgun gun;
+        public ICustomTargetingUser user;
+        public int times = 1;
+        public Func<bool> continueCheck;
 
         public override void ProcessInput(Event ev)
         {
             base.ProcessInput(ev);
+            StartTargeting(0);
+        }
+
+        private void StartTargeting(int index)
+        {
             SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
-            Find.Targeter.BeginTargeting(this.targetingParams, action, targ =>
+            user.OnStartTargeting(index);
+            Find.Targeter.BeginTargeting(targetingParams, t => action(t, index), targ =>
             {
                 if (targ.IsValid)
                 {
-                    gun.CurrentTargetInfo = targ;
+                    user.SetTargetInfo(targ, index);
                     GenDraw.DrawTargetHighlight(targ);
                 }
             }, null, actionWhenFinished: () =>
             {
-                gun.DrawAffectedCells = false;
+                user.OnStopTargeting(index);
+                int nextIndex = index + 1;
+                if (nextIndex < times && (continueCheck?.Invoke() ?? true))
+                {
+                    Patch_Targeter_StopTargeting.PerformOnce = () =>
+                    {
+                        StartTargeting(nextIndex);
+                    };
+                }
             });
-            gun.DrawAffectedCells = true;
         }
 
         public override bool InheritInteractionsFrom(Gizmo other) => false;

@@ -1,6 +1,31 @@
 
 ENDTAGS
 
-#!WIP#
-#See:#
+#!How to set up#
+#You must build at least 1 capacitor and connect it to the same power grid as the Coilgun:#
 @RF_Capacitor@
+#This capacitor will charge over time. Note that it does not output power like a regular battery.
+Now you can build the Coilgun in a strategic location.#
+#<b>Important:</b>
+The Coilgun has a minimum range that is approximately as large as the radius of it's barrel.
+After this minimum range, anything and anyone standing between the gun and it's target will be killed, including friendly pawns.#
+
+#!Ammo#
+#There are a few different ammunition types that have different effects, strengths and weaknesses.
+They are all <b>crafted at the Machining Bench</b>.
+The Coilgun must be reloaded by a colonist after every shot.
+You can change what ammo type the Coilgun uses by selecting it and pressing <i>Change shell type</i>#
+@RF_CoilgunShellAP@
+@RF_CoilgunShellSP@
+@RF_CoilgunShellHE@
+@TableMachining@
+
+#!Firing#
+#There are 3 conditions for the Coilgun to fire:#
+#<b>1.</b> The Coilgun must have power, just like a regular turret.
+<b>2.</b> There must be at least 1 fully charged Capacitor on the power grid.
+<b>3.</b> There must be a shell loaded in the gun.#
+#Once these conditions are met, select the Coilgun and click <i>Fire at target</i>.
+You can then select your target.
+The red squares will indicate what positions will be hit by the projectile.
+However, depending on the ammo used, the projectile may not travel the full distance indicated by the red squares if there are obstacles in the way.#

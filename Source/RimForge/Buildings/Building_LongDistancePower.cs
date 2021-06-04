@@ -326,13 +326,13 @@ namespace RimForge.Buildings
             }
 
             // Choose a random pole for the first one to go on the grid. It would make more sense to choose a pole
-            // closest to the center of mass...
+            // closest to the center of mass... But picking a random one generally works fine.
             int starterIndex = Rand.Range(0, open.Count);
             var starter = open[starterIndex];
             open.RemoveAt(starterIndex);
             grid.Add(starter); 
 
-            // This algorithm can take quite a few itterations to make the network.
+            // This algorithm can take quite a few iterations to make the network.
             // In some cases, it could go on forever. Using stopwatch to limit the max time and prevent an infinite loop.
             Stopwatch timer = new Stopwatch();
             timer.Start();
@@ -433,7 +433,7 @@ namespace RimForge.Buildings
                 return false;
 
             float dst = (Position - other.Position).LengthHorizontalSquared;
-            if (dst > MaxLinkDistance)
+            if (dst > MaxLinkDistance * MaxLinkDistance)
                 return false;
 
             if (!CanHaveConnectionsUnderRoof && IsUnderRoof)

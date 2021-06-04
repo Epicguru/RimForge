@@ -1,0 +1,11 @@
+
+ENDTAGS
+
+#!About Mercury Ultraweave#
+#A silky cloth that is more beautiful and much more resistant to damage than even devilstrand or hyperweave.
+It is made by combining <color=\#15eded><b>Plasteel</b></color> and <color=\#e82309><b>Devilstrand</b></color> with <b>Mercury</b>:#
+@RF_Mercury@
+#It can be crafted at a tailoring bench after finishing the <color=\#e82309><b>Devilstrand</b></color> research.
+However due to the complexity of this material only a colonist with the <color=\#f0e516>Blessing of Zir</color> trait will be able to craft it.
+Learn more about the Blessing of Zir and how to obtain it by visiting the wiki page:#
+~RF_BlessingOfZir~

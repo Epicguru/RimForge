@@ -1,15 +1,32 @@
 ﻿using System;
 using UnityEngine;
+using Verse;
 
 namespace RimForge
 {
     public class UnityHook : MonoBehaviour
     {
+        public static event Action<bool> OnPauseChange;
+
         public static event Action UponApplicationQuit;
+        private bool lastPaused;
 
         private void Awake()
         {
             DontDestroyOnLoad(this.gameObject);
+        }
+
+        private void Update()
+        {
+            if (Current.Game == null)
+                return;
+
+            bool currentPaused = Find.TickManager?.Paused ?? false;
+            if (lastPaused != currentPaused)
+            {
+                OnPauseChange?.Invoke(currentPaused);
+                lastPaused = currentPaused;
+            }
         }
 
         private void OnApplicationQuit()
