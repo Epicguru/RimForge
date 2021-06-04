@@ -13,7 +13,7 @@ namespace RimForge.Achievements.Rewards
             {
                 string parent = base.Disabled;
                 if (RitualTracker.Current == null || RitualTracker.Current.PlayerPerformedRituals <= 0)
-                    parent += '\n' + "RC.AC.AlreadyGoodStanding".Translate();
+                    parent += '\n' + "RF.AC.AlreadyGoodStanding".Translate();
                 return parent;
             }
         }
@@ -25,7 +25,7 @@ namespace RimForge.Achievements.Rewards
 
             int count = --RitualTracker.Current.PlayerPerformedRituals;
             float chance = Building_RitualCore.ChanceToFailRitual(count);
-            Messages.Message("RC.AC.IncreasedStanding".Translate($"{chance * 100f:F0}%"), MessageTypeDefOf.PositiveEvent);
+            Messages.Message("RF.AC.IncreasedStanding".Translate($"{chance * 100f:F0}%"), MessageTypeDefOf.PositiveEvent);
 
             return true;
         }

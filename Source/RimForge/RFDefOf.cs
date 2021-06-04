@@ -16,7 +16,9 @@ namespace RimForge
         public static DamageDef RF_RitualDamage;
         public static ThingDef RF_Coilgun;
         public static ThingDef RF_Copper;
+        public static ThingDef RF_MineableCopper;
         public static ThingDef RF_Tin;
+        public static ThingDef RF_MineableTin;
         public static StatCategoryDef RF_RimForgeStats;
         public static ShaderTypeDef TransparentPostLight;
         public static SoundDef RF_Sound_CoilgunFire;

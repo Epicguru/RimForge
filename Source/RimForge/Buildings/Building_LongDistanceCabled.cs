@@ -32,6 +32,7 @@ namespace RimForge.Buildings
                 base.DrawColor = value;
             }
         }
+        public override float MaxLinkDistance => Settings.CableMaxDistance;
 
         private readonly Dictionary<Building_LongDistanceCabled, List<Vector2>> connectionToPoints = new Dictionary<Building_LongDistanceCabled, List<Vector2>>();
         private Material cableMatCached;
@@ -91,7 +92,7 @@ namespace RimForge.Buildings
 
         public virtual int GetCablePointCount(Vector2 a, Vector2 b)
         {
-            return Mathf.RoundToInt((a - b).magnitude * Settings.CableSegmentsPerCell);
+            return Mathf.Max(5, Mathf.RoundToInt((a - b).magnitude * Settings.CableSegmentsPerCell));
         }
 
         /// <summary>
@@ -160,7 +161,7 @@ namespace RimForge.Buildings
                 return;
 
             if(to is Building_LongDistanceCabled cabled)
-                GeneratePointsAsync(this, cabled, 50);
+                GeneratePointsAsync(this, cabled);
         }
 
         protected override void UponLinkRemoved(Building_LongDistancePower from, bool isOwner)
@@ -181,7 +182,7 @@ namespace RimForge.Buildings
             foreach (var conn in base.OwnedConnectionsSanitized)
             {
                 if (conn is Building_LongDistanceCabled cabled)
-                    GeneratePointsAsync(this, cabled, 50);
+                    GeneratePointsAsync(this, cabled);
             }
         }
     }
