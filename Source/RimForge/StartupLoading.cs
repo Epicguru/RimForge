@@ -122,6 +122,7 @@ namespace RimForge
             }
 
             Core.Log($"There were a total of {DefDatabase<AlloyDef>.AllDefsListForReading.Count} alloy defs (Bronze: {RFDefOf.RF_BronzeAlloy})");
+            Core.Log($"For reference there are {DefDatabase<DamageDef>.AllDefsListForReading.Count} damage defs loaded.");
 
             // Loop through every single ThingDef, see if it has the Extension on it, if it does
             // then it is considered 'part' of this mod's resources.
