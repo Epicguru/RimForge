@@ -23,7 +23,8 @@ Make sure that there is not already a power cable in the spot you are trying to 
     <tickerType>Rare</tickerType>
     <drawOffscreen>true</drawOffscreen>
     <category>Building</category>
-    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <altitudeLayer>PawnUnused</altitudeLayer>
+    <fillPercent>0.99</fillPercent>
     <size>(1, 1)</size>
     <costStuffCount>10</costStuffCount>
     <stuffCategories>
@@ -39,6 +40,7 @@ Make sure that there is not already a power cable in the spot you are trying to 
 			<canPlaceOverWall>false</canPlaceOverWall>
 			<isEdifice>false</isEdifice>
 		</building>
+    <clearBuildingArea>false</clearBuildingArea>
     <placeWorkers>
       <li>RimForge.Buildings.PlaceWorker_WallConnector</li>
     </placeWorkers>

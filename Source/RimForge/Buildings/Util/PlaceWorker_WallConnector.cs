@@ -13,6 +13,9 @@ namespace RimForge.Buildings
             Thing thingToIgnore = null,
             Thing thing = null)
         {
+            if (!center.Impassable(map))
+                return "Must place on a wall.";
+
             IntVec3 c2 = center + IntVec3.North.RotatedBy(rot);
             if (c2.Impassable(map))
                 return "RF.WallConnector.MustPlaceWithFreeSpace".Translate();

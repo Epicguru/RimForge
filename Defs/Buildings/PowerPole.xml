@@ -28,7 +28,7 @@ Connect to other power poles using the 'link' button, or select multiple power p
     <tickerType>Rare</tickerType>
     <drawOffscreen>true</drawOffscreen>
     <category>Building</category>
-    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <altitudeLayer>PawnUnused</altitudeLayer>
     <pathCost>20</pathCost>
     <size>(1, 1)</size>
     <costStuffCount>10</costStuffCount>

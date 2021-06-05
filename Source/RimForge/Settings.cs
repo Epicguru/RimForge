@@ -22,7 +22,7 @@ namespace RimForge
         [TweakValue("RimForge", 5, 100)]
         public static float CableMaxDistance = 20;
         [TweakValue("RimForge", 0, 10)]
-        public static int CableSegmentsPerCell = 3;
+        public static int CableSegmentsPerCell = 6;
 
         // COILGUN
         [SettingsCategory("RFS.CatCoilgun")]
