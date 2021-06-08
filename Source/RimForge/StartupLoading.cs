@@ -85,7 +85,10 @@ namespace RimForge
             foreach (var def in DefDatabase<AlloyDef>.AllDefsListForReading)
             {
                 if (!def.IsValid)
+                {
+                    Core.Error($"Invalid alloy def: {def}");
                     continue;
+                }
 
                 AlloyHelper.AllAlloyDefs.Add(def);
 
@@ -118,6 +121,9 @@ namespace RimForge
                 }
             }
 
+            Core.Log($"There were a total of {DefDatabase<AlloyDef>.AllDefsListForReading.Count} alloy defs (Bronze: {RFDefOf.RF_BronzeAlloy})");
+            Core.Log($"For reference there are {DefDatabase<DamageDef>.AllDefsListForReading.Count} damage defs loaded.");
+
             // Loop through every single ThingDef, see if it has the Extension on it, if it does
             // then it is considered 'part' of this mod's resources.
             foreach (var def in DefDatabase<ThingDef>.AllDefsListForReading)
@@ -138,6 +144,10 @@ namespace RimForge
                 if (extension.equivalentTo != null)
                 {
                     AlloyHelper.AddEquivalentResource(def, extension.equivalentTo);
+                }
+                if (!def.HasComp(typeof(CompShowAlloyInfo)))
+                {
+                    def.comps.Add(new CompProperties_ShowAlloyInfo());
                 }
             }
 

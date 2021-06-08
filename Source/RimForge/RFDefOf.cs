@@ -40,6 +40,7 @@ namespace RimForge
         public static ThingDef RF_Motes_Growth;
         public static ThingDef RF_Motes_Air;
         public static CoilgunShellDef RF_CoilgunShellAP;
+        public static AlloyDef RF_BronzeAlloy;
 
         // Vanilla ones.
         public static ThingDef Column;

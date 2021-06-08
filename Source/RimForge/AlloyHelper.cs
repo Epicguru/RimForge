@@ -51,7 +51,7 @@ namespace RimForge
         {
             var extension = def?.GetModExtension<Extension>();
             if (extension != null)
-                return extension.meltingPoint ?? DEFAULT_MELTING_POINT;
+                return extension.meltingPoint ?? extension.equivalentTo?.GetMeltingPoint() ?? DEFAULT_MELTING_POINT;
 
             return DEFAULT_MELTING_POINT;
         }

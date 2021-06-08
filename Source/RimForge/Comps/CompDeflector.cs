@@ -281,7 +281,7 @@ namespace RimForge.Comps
         {
             if (!Enabled)
             {
-                absorbed = false;ModMetaData
+                absorbed = false;
                 return;
             }
 

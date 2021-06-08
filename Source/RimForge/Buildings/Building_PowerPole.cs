@@ -8,9 +8,9 @@ namespace RimForge.Buildings
         public static Color GetTinCopperOrDefaultColor(Building building)
         {
             var stuff = building.Stuff;
-            if (stuff == RFDefOf.RF_Copper)
+            if (stuff == RFDefOf.RF_Copper || stuff.defName.ToLower().Contains("copper"))
                 return Building_LongDistanceCabled.DefaultCableColor;
-            if (stuff == RFDefOf.RF_Tin)
+            if (stuff == RFDefOf.RF_Tin || stuff.defName.ToLower().Contains("tin"))
                 return new Color32(140, 160, 160, 255);
             return stuff.stuffProps.color;
         }

@@ -6,7 +6,7 @@ namespace RimForge
 {
     public class AlloyDef : Def
     {
-        public bool IsValid { get; protected set; }
+        public bool IsValid { get; protected set; } = true;
         public RatioHolder LargestRatio
         {
             get
@@ -125,8 +125,6 @@ namespace RimForge
 
         public override IEnumerable<string> ConfigErrors()
         {
-            IsValid = true;
-
             // Child errors. Shouldn't be any.
             foreach (var thing in base.ConfigErrors())
                 yield return thing;
