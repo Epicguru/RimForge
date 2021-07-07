@@ -200,11 +200,11 @@ namespace RimForge.Buildings
 
             // Make motes.
             for (int i = 0; i < 4; i++)
-                MoteMaker.ThrowLightningGlow(TopPos, Map, 1);
+                FleckMaker.ThrowLightningGlow(TopPos, Map, 1);
             if (LinkedTo != null)
             {
                 for (int i = 0; i < 4; i++)
-                    MoteMaker.ThrowLightningGlow(LinkedTo.TopPos, Map, 1);
+                    FleckMaker.ThrowLightningGlow(LinkedTo.TopPos, Map, 1);
             }
 
             // TODO play sound.
@@ -233,7 +233,7 @@ namespace RimForge.Buildings
             {
                 var stunner = pawn.stances?.stunner;
                 if (stunner != null)
-                    stunner.StunFor_NewTmp(Settings.TeslaStunDuration, this);
+                    stunner.StunFor(Settings.TeslaStunDuration, this);
                 else
                     Core.Warn($"Failed to stun pawn '{pawn.LabelCap}' because they do not have a <stance?.stunner>");
             }
@@ -470,7 +470,7 @@ namespace RimForge.Buildings
                     action = (thing) =>
                     {
                         // Try link to this.
-                        if (thing is not Building_TeslaCoil coil)
+                        if (!(thing.Thing is Building_TeslaCoil coil))
                             return;
 
                         // Target coil is already linked to me. Don't allow double-links.

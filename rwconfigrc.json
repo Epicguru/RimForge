@@ -1,0 +1,19 @@
+{
+    "folders": {
+        "new-version": {
+            "About": "About",
+            "DefReferences": [
+                "..\\..\\Data\\Core"
+            ],
+            "AssemblyReferences": [
+                "1.3\\Assemblies",
+                "..\\..\\RimWorldWin64_Data\\Managed"
+            ],
+            "Assemblies": "1.3\\Assemblies",
+            "Defs": "1.3\\Defs",
+            "Textures": "",
+            "Sounds": "",
+            "Patches": ""
+        }
+    }
+}

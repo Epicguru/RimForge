@@ -68,9 +68,9 @@ namespace RimForge.Patches
                 Vector3 vector3Shifted = ___strikeLoc.ToVector3Shifted();
                 for (int index = 0; index < 4; ++index)
                 {
-                    MoteMaker.ThrowSmoke(vector3Shifted, ___map, 1.5f);
-                    MoteMaker.ThrowMicroSparks(vector3Shifted, ___map);
-                    MoteMaker.ThrowLightningGlow(vector3Shifted, ___map, 1.5f);
+                    FleckMaker.ThrowSmoke(vector3Shifted, ___map, 1.5f);
+                    FleckMaker.ThrowMicroSparks(vector3Shifted, ___map);
+                    FleckMaker.ThrowLightningGlow(vector3Shifted, ___map, 1.5f);
                 }
             }
             SoundInfo info = SoundInfo.InMap(new TargetInfo(___strikeLoc, ___map));

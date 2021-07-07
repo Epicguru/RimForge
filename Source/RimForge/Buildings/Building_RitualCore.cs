@@ -249,8 +249,8 @@ namespace RimForge.Buildings
 
                 for (int i = 0; i < 2; i++)
                 {
-                    MoteMaker.ThrowLightningGlow(start, Map, 0.8f);
-                    MoteMaker.ThrowLightningGlow(end, Map, 0.8f);
+                    FleckMaker.ThrowLightningGlow(start, Map, 0.8f);
+                    FleckMaker.ThrowLightningGlow(end, Map, 0.8f);
                 }
 
                 Vector2 gravTowards = TargetPawn?.DrawPos.WorldToFlat() ?? Position.ToVector3Shifted().WorldToFlat();
@@ -331,7 +331,7 @@ namespace RimForge.Buildings
                 // BSpawn some motes. Flashy.
                 for (int i = 0; i < 4; i++)
                 {
-                    MoteMaker.ThrowLightningGlow(TargetPawn.DrawPos + Rand.InsideUnitCircleVec3 * 0.5f, Map, 2f);
+                    FleckMaker.ThrowLightningGlow(TargetPawn.DrawPos + Rand.InsideUnitCircleVec3 * 0.5f, Map, 2f);
                 }
 
                 // Give blessing and thought.
@@ -452,7 +452,7 @@ namespace RimForge.Buildings
                 Message = "RF.Ritual.StartMessage".Translate(),
                 action = thing =>
                 {
-                    Pawn sacrifice = thing as Pawn;
+                    Pawn sacrifice = thing.Pawn;
                     if (sacrifice.DestroyedOrNull())
                         return;
 
@@ -554,11 +554,13 @@ namespace RimForge.Buildings
 
         public void SpawnDistortion()
         {
-            Mote mote = (Mote)ThingMaker.MakeThing(RFDefOf.RF_Motes_RitualDistort);
-            mote.Scale = 1;
-            mote.exactRotation = 0;
-            mote.exactPosition = DrawPos;
-            GenSpawn.Spawn(mote, Position, Map);
+            Map map = base.Map;
+
+            FleckCreationData dataStatic = FleckMaker.GetDataStatic(DrawPos, map, RFDefOf.RF_Motes_RitualDistort, 1f);
+            dataStatic.rotationRate = 0f;
+            dataStatic.velocityAngle = 0f;
+            dataStatic.velocitySpeed = 0f;
+            map.flecks.CreateFleck(dataStatic);
         }
 
         private void DrawGhosts()
@@ -689,8 +691,9 @@ namespace RimForge.Buildings
 
                 foreach (var thing in things)
                 {
-                    if (thing is not Pawn pawn)
+                    if (!(thing is Pawn pawn))
                         continue;
+
                     if (!pawn.IsColonistPlayerControlled || pawn.IsPrisoner)
                         continue;
                     if (pawn.Dead || pawn.Downed)

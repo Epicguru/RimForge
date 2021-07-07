@@ -1,0 +1,247 @@
+<Defs>
+  <RimForge.CoilgunShellDef Name="RF_CoilgunShellBase" ParentName="ResourceBase" Abstract="true">
+    <thingClass>ThingWithComps</thingClass>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <useHitPoints>true</useHitPoints>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <thingCategories>
+      <li>Items</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Mass>4</Mass>
+      <DeteriorationRate>0.5</DeteriorationRate>
+      <Flammability>0</Flammability>
+    </statBases>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <researchPrerequisites>
+      <li>RF_Research_Coilgun</li>
+    </researchPrerequisites>
+    <techLevel>Spacer</techLevel>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Metal_Drop</soundDrop>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <tradeability>Sellable</tradeability>
+    <stackLimit>10</stackLimit>
+    <burnableByRecipe>false</burnableByRecipe>
+    <smeltable>false</smeltable>
+  </RimForge.CoilgunShellDef>
+
+  <!-- DEFS -->
+
+  <RimForge.CoilgunShellDef ParentName="RF_CoilgunShellBase">
+    <defName>RF_CoilgunShellAP</defName>
+    <label>Coilgun shell (AP)</label>
+    <description>A shell fired by the Liandry Coilgun.
+This is the armor-piercing variant, that can travel through many surfaces and hit many targets.
+Very effective against infantry and small mechanoids and useful for destroying specific enemy structures.</description>
+    <graphicData>
+      <texPath>RF/Items/CoilgunShell_AP</texPath>
+    </graphicData>
+
+    <!-- Shell properties -->
+    <maxPen>-1</maxPen> <!-- Does not have a maximum pen depth, it just keeps going -->
+    <baseDamage>120</baseDamage>
+    <penDamageMultiplier>0.985</penDamageMultiplier> <!-- Slightly less damage after each surface pen. -->
+
+  </RimForge.CoilgunShellDef>
+
+  <RimForge.CoilgunShellDef ParentName="RF_CoilgunShellBase">
+    <defName>RF_CoilgunShellSP</defName>
+    <label>Coilgun shell (SP)</label>
+    <description>A shell fired by the Liandry Coilgun.
+This is the soft-point variant. It will penetrate only a few surfaces but will deal much higher damage upon impact.
+Because of this poor penetration, it requires line of sight to be effective. Very effective against large mechanoids and large groups of enemies.</description>
+    <graphicData>
+      <texPath>RF/Items/CoilgunShell_SP</texPath>
+    </graphicData>
+
+    <!-- Shell properties -->
+    <maxPen>5</maxPen> <!-- Can only go through 5 surfaces before completely stopping. --> 
+    <baseDamage>700</baseDamage>
+    <penDamageMultiplier>0.75</penDamageMultiplier>
+
+  </RimForge.CoilgunShellDef>
+
+  <RimForge.CoilgunShellDef ParentName="RF_CoilgunShellBase">
+    <defName>RF_CoilgunShellHE</defName>
+    <label>Coilgun shell (HE)</label>
+    <description>A shell fired by the Liandry Coilgun.
+This is the high-explosive variant. It will violently explode upon hitting a solid object, killing the target and anyone standing within a 7m radius.
+Vegetation such as trees and bushes will not interrupt the projectile's flight.
+Most effective against large groups of enemies.</description>
+    <graphicData>
+      <texPath>RF/Items/CoilgunShell_HE</texPath>
+    </graphicData>
+    <tickerType>Normal</tickerType>
+    <comps>
+      <li Class="CompProperties_Explosive">
+        <explosiveRadius>3.5</explosiveRadius>
+        <explosiveDamageType>Bomb</explosiveDamageType>
+        <explosiveExpandPerStackcount>0.75</explosiveExpandPerStackcount>
+        <startWickHitPointsPercent>0.7</startWickHitPointsPercent>
+        <wickTicks>30~60</wickTicks>
+      </li>
+    </comps>
+
+    <!-- Shell properties -->
+    <maxPen>0</maxPen> <!-- Can only go through 5 surfaces before completely stopping. --> 
+    <baseDamage>200</baseDamage> <!-- Directly deals 200 damage -->
+    <useHEKillTracker>true</useHEKillTracker>
+    <explosionDamage>65</explosionDamage> <!-- The explosion damage. Decreases based on distance from explosion center -->
+    <explosionDamageType>RF_ShellHE_Bomb</explosionDamageType>
+    <explosionArmorPen>1.3</explosionArmorPen>
+    <explosionRadius>10</explosionRadius>
+    <pawnsCountAsPen>true</pawnsCountAsPen>
+  </RimForge.CoilgunShellDef>
+
+  <!-- RECIPES -->
+  <RecipeDef>
+    <defName>RF_Make_CoilgunShellAP</defName>
+    <label>make a coilgun shell (AP)</label>
+    <description>Make an armor-piercing coilgun shell.</description>
+    <jobString>Making a coilgun shell (AP).</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <recipeUsers>
+      <li>TableMachining</li>
+    </recipeUsers>
+    <researchPrerequisite>RF_Research_Coilgun</researchPrerequisite>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>1100</workAmount>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RF_Staballoy</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RF_Staballoy</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RF_CoilgunShellAP>1</RF_CoilgunShellAP>
+    </products>
+    <skillRequirements>
+      <Crafting>7</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RF_Make_CoilgunShellSP</defName>
+    <label>make a coilgun shell (SP)</label>
+    <description>Make a soft-point coilgun shell.</description>
+    <jobString>Making a coilgun shell (SP).</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <recipeUsers>
+      <li>TableMachining</li>
+    </recipeUsers>
+    <researchPrerequisite>RF_Research_Coilgun</researchPrerequisite>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>1100</workAmount>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RF_Staballoy</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </filter>
+        <count>15</count>
+      </li>
+    </ingredients>
+
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RF_Staballoy</li>
+        <li>Steel</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RF_CoilgunShellSP>1</RF_CoilgunShellSP>
+    </products>
+    <skillRequirements>
+      <Crafting>7</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RF_Make_CoilgunShellHE</defName>
+    <label>make a coilgun shell (HE)</label>
+    <description>Make a high-explosive coilgun shell.</description>
+    <jobString>Making a coilgun shell (HE).</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <recipeUsers>
+      <li>TableMachining</li>
+    </recipeUsers>
+    <researchPrerequisite>RF_Research_Coilgun</researchPrerequisite>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>1100</workAmount>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RF_Staballoy</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RF_Staballoy</li>
+        <li>Steel</li>
+        <li>Chemfuel</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RF_CoilgunShellHE>1</RF_CoilgunShellHE>
+    </products>
+    <skillRequirements>
+      <Crafting>7</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+  </RecipeDef>
+
+</Defs>

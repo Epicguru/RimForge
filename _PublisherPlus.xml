@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Configuration>
   <Excluded>
-    <exclude>E:\Steam Games\steamapps\common\RimWorld\Mods\RimForge\.git</exclude>
-    <exclude>E:\Steam Games\steamapps\common\RimWorld\Mods\RimForge\Source</exclude>
+    <exclude>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimForge\.git</exclude>
+    <exclude>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimForge\rwconfigrc.json</exclude>
+    <exclude>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimForge\Source</exclude>
   </Excluded>
 </Configuration>

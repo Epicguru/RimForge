@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RF_WirelessPowerPylon</defName>
+    <thingClass>RimForge.Buildings.Building_WirelessPowerPylon</thingClass>
+    <label>wireless power pylon</label>
+    <description>Transmits or receives electrical power wirelessly. No more ugly cables.</description>
+    <graphicData>
+      <texPath>RF/Buildings/PylonIdle</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,2)</drawSize>
+      <drawOffset>(0, 0, 0.5)</drawOffset>
+    </graphicData>
+    <passability>PassThroughOnly</passability>
+    <designationCategory>Power</designationCategory>
+    <drawerType>RealtimeOnly</drawerType>
+    <selectable>true</selectable>
+    <canOverlapZones>true</canOverlapZones>
+    <castEdgeShadows>true</castEdgeShadows>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <tickerType>Normal</tickerType>
+    <category>Building</category>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <pathCost>20</pathCost>
+    <size>(1, 1)</size>
+    <costList>
+      <Steel>20</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+      <RF_Copper>30</RF_Copper>
+    </costList>
+    <statBases>
+        <MaxHitPoints>100</MaxHitPoints>
+        <WorkToBuild>5000</WorkToBuild>
+        <Flammability>0.25</Flammability>
+        <Beauty>-2</Beauty>
+        <Cleanliness>1</Cleanliness>
+        <Mass>10</Mass>
+      </statBases>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsPower</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3</glowRadius>
+        <glowColor>(200,200,255,255)</glowColor>
+      </li>
+      <li Class="CompProperties_Flickable"/>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <transmitsPower>true</transmitsPower>
+        <shortCircuitInRain>false</shortCircuitInRain>
+        <basePowerConsumption>0</basePowerConsumption>
+      </li>
+      <li Class="RimForge.Comps.CompProperties_WirelessPower">
+        <buildingName>pylon</buildingName>
+        <canSendPower>true</canSendPower>
+      </li>
+    </comps>
+    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+    <researchPrerequisites>
+      <li>MicroelectronicsBasics</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+</Defs>

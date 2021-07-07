@@ -40,7 +40,9 @@ namespace RimForge.Buildings
 
             tickCounter++;
             if (tickCounter % 15 == 0)
-                MoteMaker.ThrowSmoke(Position.ToVector3ShiftedWithAltitude(AltitudeLayer.MoteOverhead) + new Vector3(0.5f, 0, 2f), Map, 0.65f);
+            {
+                FleckMaker.ThrowSmoke(Position.ToVector3ShiftedWithAltitude(AltitudeLayer.MoteOverhead) + new Vector3(0.5f, 0, 2f), Map, 0.65f);
+            }
 
             FuelComp.ConsumeFuel(FuelComp.Props.fuelConsumptionRate / 60000f);
             return HEDef.maxAddedHeat;

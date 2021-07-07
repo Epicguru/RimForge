@@ -607,12 +607,12 @@ namespace RimForge.Buildings
                                 var basePos = pawn.DrawPos;
                                 basePos.y = AltitudeLayer.MoteOverhead.AltitudeFor();
 
-                                MoteMaker.ThrowLightningGlow(basePos, map, 0.5f);
-                                MoteMaker.ThrowLightningGlow(basePos, map, 0.5f);
-
-                                MoteMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
-                                MoteMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
-                                MoteMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
+                                FleckMaker.ThrowLightningGlow(basePos, map, 0.5f);
+                                FleckMaker.ThrowLightningGlow(basePos, map, 0.5f);
+                                
+                                FleckMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
+                                FleckMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
+                                FleckMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
                             }
                             
                             if (!hasDoneExplosion && shellDef.explosionDamageType != null && shellDef.explosionRadius > 0 && (b == null || b.def.altitudeLayer >= AltitudeLayer.DoorMoveable))
@@ -670,7 +670,8 @@ namespace RimForge.Buildings
 
             Vector3 moteStart = firstCell.Value.ToVector3ShiftedWithAltitude(AltitudeLayer.MoteOverhead);
             Vector3 moteEnd = lastCell.Value.ToVector3ShiftedWithAltitude(AltitudeLayer.MoteOverhead);
-            MoteMaker.MakeConnectingLine(moteStart, moteEnd, ThingDefOf.Mote_FireGlow, map, 1);
+            // Legacy 1.2 (although I don't think it ever worked even in 1.2)
+            //MoteMaker.MakeConnectingLine(moteStart, moteEnd, ThingDefOf.Mote_FireGlow, map, 1);
             DoMuzzleFlash();
 
             Current.CameraDriver.shaker.DoShake(5);
@@ -907,7 +908,7 @@ namespace RimForge.Buildings
                 },
                 action = t =>
                 {
-                    if (t is Building_Coilgun coilgun)
+                    if (t.Thing is Building_Coilgun coilgun)
                     {
                         Log.Warning($"Other: {coilgun.CurrentShellDef}, self: {this.CurrentShellDef}, Equal props: {coilgun.GetComp<CompRefuelable>().Props == this.GetComp<CompRefuelable>().Props}, equal comp: {coilgun.GetComp<CompRefuelable>() == this.GetComp<CompRefuelable>()}");
                     }

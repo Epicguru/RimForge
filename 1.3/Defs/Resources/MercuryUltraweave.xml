@@ -1,0 +1,72 @@
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RF_MercuryUltraweave</defName>
+    <label>mercury ultraweave</label>
+    <description>A cloth made out of devilstrand strengthened by mercury and plasteel.
+Highly durable and resistant to even heavy gunfire.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Cloth</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(220,30,120)</color>
+    </graphicData>
+
+    <costList>
+      <RF_Mercury>10</RF_Mercury>
+      <Plasteel>10</Plasteel>
+      <DevilstrandCloth>20</DevilstrandCloth>
+    </costList>
+
+    <recipeMaker>
+      <skillRequirements>
+        <RF_BlessingOfZir>0</RF_BlessingOfZir>
+      </skillRequirements>
+      <productCount>25</productCount>
+      <researchPrerequisite>RF_Research_Mercury</researchPrerequisite>   
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Tailor</effectWorking>
+      <soundWorking>Recipe_Tailor</soundWorking>
+      <recipeUsers>
+        <li>ElectricTailoringBench</li>
+        <li>HandTailoringBench</li>
+      </recipeUsers>
+    </recipeMaker>
+
+    <statBases>
+      <StuffPower_Armor_Sharp>2.3</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.7</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>1.2</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>25</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>25</StuffPower_Insulation_Heat>
+      <MaxHitPoints>80</MaxHitPoints>
+      <MarketValue>3</MarketValue>
+      <Mass>0.03</Mass>
+      <Flammability>0.1</Flammability>
+      <DeteriorationRate>0.25</DeteriorationRate>
+    </statBases>
+    <burnableByRecipe>true</burnableByRecipe>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <minRewardCount>30</minRewardCount>
+    <stuffProps>
+
+      <statFactors>
+        <Flammability>0.4</Flammability>
+        <Beauty>3</Beauty>
+      </statFactors>
+
+      <categories>
+        <li>Fabric</li>
+      </categories>
+      <color>(220,30,120)</color>
+      <commonality>0.1</commonality>
+    </stuffProps>
+    <thingCategories>
+      <li>Textiles</li>
+    </thingCategories>
+    <comps>
+      <li>
+        <compClass>CompColorable</compClass>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

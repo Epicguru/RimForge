@@ -143,8 +143,8 @@ namespace RimForge.Comps
         {
             var pawn = Wielder;
             var map = pawn.Map;
-            MoteMaker.ThrowMicroSparks(pawn.DrawPos, map);
-            MoteMaker.ThrowLightningGlow(pawn.DrawPos, map, 0.5f);
+            FleckMaker.ThrowMicroSparks(pawn.DrawPos, map);
+            FleckMaker.ThrowLightningGlow(pawn.DrawPos, map, 0.5f);
         }
 
         protected void TakeWeaponDamage()

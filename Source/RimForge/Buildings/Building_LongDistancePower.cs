@@ -119,7 +119,7 @@ namespace RimForge.Buildings
                     action = (thing) =>
                     {
                         // Try link to this.
-                        bool worked = TryAddLink(thing as Building_LongDistancePower);
+                        bool worked = TryAddLink(thing.Thing as Building_LongDistancePower);
                         if (!worked)
                             Core.Warn("Failed to link!");
 
@@ -157,7 +157,7 @@ namespace RimForge.Buildings
                         action = (thing) =>
                         {
                             // Try un-link to this.
-                            bool worked = TryRemoveLink(thing as Building_LongDistancePower);
+                            bool worked = TryRemoveLink(thing.Thing as Building_LongDistancePower);
                             if (!worked)
                                 Core.Warn("Failed to un-link!");
 
