@@ -20,7 +20,7 @@
     <description>Investigate the ritual that grants the Blessing of Zir at the cost of a human sacrifice.
 Enables you to build the Ritual Core.</description>
     <baseCost>1000</baseCost>
-    <techLevel>Industrial</techLevel>
+    <techLevel>Medieval</techLevel>
     <researchViewX>0.00</researchViewX>
     <researchViewY>5.45</researchViewY>
   </ResearchProjectDef>
