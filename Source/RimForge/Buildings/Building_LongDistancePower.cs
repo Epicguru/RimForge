@@ -116,10 +116,15 @@ namespace RimForge.Buildings
                 yield return new Command_Target()
                 {
                     defaultLabel = "RF.LDP.LinkLabel".Translate(Name),
-                    action = (thing) =>
+                    action = (t) =>
                     {
+#if V13
+                        Thing thing = t.Thing;
+#else
+                        Thing thing = t;
+#endif
                         // Try link to this.
-                        bool worked = TryAddLink(thing.Thing as Building_LongDistancePower);
+                        bool worked = TryAddLink(thing as Building_LongDistancePower);
                         if (!worked)
                             Core.Warn("Failed to link!");
 
@@ -154,10 +159,15 @@ namespace RimForge.Buildings
                     yield return new Command_TargetWithDropdown()
                     {
                         defaultLabel = "RF.LDP.UnLinkLabel".Translate(Name),
-                        action = (thing) =>
+                        action = (t) =>
                         {
+#if V13
+                            Thing thing = t.Thing;
+#else
+                            Thing thing = t;
+#endif
                             // Try un-link to this.
-                            bool worked = TryRemoveLink(thing.Thing as Building_LongDistancePower);
+                            bool worked = TryRemoveLink(thing as Building_LongDistancePower);
                             if (!worked)
                                 Core.Warn("Failed to un-link!");
 

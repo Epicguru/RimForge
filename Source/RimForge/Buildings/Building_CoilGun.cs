@@ -607,12 +607,21 @@ namespace RimForge.Buildings
                                 var basePos = pawn.DrawPos;
                                 basePos.y = AltitudeLayer.MoteOverhead.AltitudeFor();
 
+#if V13
                                 FleckMaker.ThrowLightningGlow(basePos, map, 0.5f);
                                 FleckMaker.ThrowLightningGlow(basePos, map, 0.5f);
                                 
                                 FleckMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
                                 FleckMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
                                 FleckMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
+#else
+                                MoteMaker.ThrowLightningGlow(basePos, map, 0.5f);
+                                MoteMaker.ThrowLightningGlow(basePos, map, 0.5f);
+
+                                MoteMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
+                                MoteMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
+                                MoteMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
+#endif
                             }
                             
                             if (!hasDoneExplosion && shellDef.explosionDamageType != null && shellDef.explosionRadius > 0 && (b == null || b.def.altitudeLayer >= AltitudeLayer.DoorMoveable))
@@ -647,7 +656,7 @@ namespace RimForge.Buildings
                     break;
             }
 
-            #region VEA
+#region VEA
             if (isVEAActive.Value)
             {
                 foreach (var card in AchievementPointManager.GetCards<CoilgunPostFireTracker>())
@@ -666,7 +675,7 @@ namespace RimForge.Buildings
                     }
                 }
             }
-            #endregion
+#endregion
 
             Vector3 moteStart = firstCell.Value.ToVector3ShiftedWithAltitude(AltitudeLayer.MoteOverhead);
             Vector3 moteEnd = lastCell.Value.ToVector3ShiftedWithAltitude(AltitudeLayer.MoteOverhead);
@@ -908,7 +917,12 @@ namespace RimForge.Buildings
                 },
                 action = t =>
                 {
-                    if (t.Thing is Building_Coilgun coilgun)
+#if V13
+                    Thing thing = t.Thing;
+#else
+                    Thing thing = t;
+#endif
+                    if (thing is Building_Coilgun coilgun)
                     {
                         Log.Warning($"Other: {coilgun.CurrentShellDef}, self: {this.CurrentShellDef}, Equal props: {coilgun.GetComp<CompRefuelable>().Props == this.GetComp<CompRefuelable>().Props}, equal comp: {coilgun.GetComp<CompRefuelable>() == this.GetComp<CompRefuelable>()}");
                     }

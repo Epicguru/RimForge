@@ -4,51 +4,49 @@
     <TargetFramework>net472</TargetFramework>
     <OutputType>Library</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <!--<NoStdLib>true</NoStdLib>-->
+    <NoStdLib>true</NoStdLib>
     <LangVersion>preview</LangVersion>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <OutputPath>..\..\1.3\Assemblies\</OutputPath>
-    <Optimize>true</Optimize>
+    <Configurations>v1.2;v1.3</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AchievementsExpanded" Version="1.0.8" />
+    <PackageReference Include="AchievementsExpanded" Version="1.3.10" />
     <PackageReference Include="Lib.Harmony" Version="2.1.0" ExcludeAssets="runtime" />
     <PackageReference Include="Lib.InGameWiki">
       <Version>1.7.1</Version>
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
+  <!-- _____ 1.2 _____ -->
+
+  <!-- Rimworld assembly refs needed for older 1.2 -->
+  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='v1.2|AnyCPU'">
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.2.2905" />
   </ItemGroup>
+
+  <!-- Output -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='v1.2|AnyCPU'">
+    <DebugType>none</DebugType>
+    <OutputPath>..\..\1.2\Assemblies\</OutputPath>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE;V12</DefineConstants>
+  </PropertyGroup>
+
+  <!-- _____ 1.3 _____ -->
+
+  <!-- Rimworld assembly refs for latest 1.3 -->
+  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='v1.3|AnyCPU'">
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.3.3056-beta" />
+  </ItemGroup>
+
+  <!-- Output -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='v1.3|AnyCPU'">
+    <DebugType>none</DebugType>
+    <OutputPath>..\..\1.3\Assemblies\</OutputPath>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE;V13</DefineConstants>
+  </PropertyGroup>
 
 </Project>
