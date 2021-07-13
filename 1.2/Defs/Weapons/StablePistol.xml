@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Gun -->
+  <ThingDef ParentName="BaseHumanMakeableGun">
+    <defName>RF_StablePistol</defName>
+    <label>stable pistol</label>
+    <techLevel>Industrial</techLevel>
+    <description>An advanced military pistol with excellent accuracy, range and rate of fire, but very poor damage.
+Made using metal alloys.</description>
+    <graphicData>
+      <texPath>RF/Weapons/StablePistol</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <WorkToMake>9000</WorkToMake>
+      <Mass>2.0</Mass>
+      <AccuracyTouch>0.9</AccuracyTouch>
+      <AccuracyShort>0.95</AccuracyShort>
+      <AccuracyMedium>0.8</AccuracyMedium>
+      <AccuracyLong>0.75</AccuracyLong>
+      <RangedWeapon_Cooldown>0.2</RangedWeapon_Cooldown>
+      <MarketValue>2300</MarketValue>
+    </statBases>
+    <thingSetMakerTags><li>RewardStandardQualitySuper</li></thingSetMakerTags>
+    <soundInteract>Interact_Rifle</soundInteract>
+    <costList>
+      <Plasteel>10</Plasteel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+      <RF_Bronze>25</RF_Bronze>
+    </costList>
+    <recipeMaker>
+      <skillRequirements>
+        <Crafting>6</Crafting>
+      </skillRequirements>
+    </recipeMaker>
+    <weaponTags>
+      <li>IndustrialGunAdvanced</li>
+    </weaponTags>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>RF_Bullet_StablePistol</defaultProjectile>
+        <warmupTime>0.25</warmupTime>
+        <range>34.5</range>
+        <burstShotCount>1</burstShotCount>
+        <soundCast>RF_Sound_StableRifleShot</soundCast>
+        <soundCastTail>GunTail_Medium</soundCastTail>
+        <muzzleFlashScale>10</muzzleFlashScale>
+      </li>
+    </verbs>
+    <tools>
+      <li>
+        <label>stock</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+      </li>
+      <li>
+        <label>barrel</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+      </li>
+    </tools>
+  </ThingDef>
+
+  <!-- Bullet -->
+  <ThingDef ParentName="BaseBullet">
+    <defName>RF_Bullet_StablePistol</defName>
+    <label>stable pistol bullet</label>
+    <graphicData>
+      <texPath>Things/Projectile/Bullet_Small</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <projectile>
+      <damageDef>Bullet</damageDef>
+      <damageAmountBase>5</damageAmountBase>
+      <stoppingPower>0.5</stoppingPower>
+      <speed>120</speed>
+    </projectile>
+  </ThingDef>
+
+
+</Defs>

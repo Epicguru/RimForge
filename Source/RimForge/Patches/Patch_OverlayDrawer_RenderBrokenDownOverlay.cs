@@ -42,7 +42,7 @@ namespace RimForge.Patches
                 }
                 if (mat == null)
                 {
-                    Log.ErrorOnce($"Failed to load meta overlay material from texture path '{texPath}' for building '{t.LabelCap}'.", texPath.GetHashCode(), true);
+                    Log.ErrorOnce($"Failed to load meta overlay material from texture path '{texPath}' for building '{t.LabelCap}'.", texPath.GetHashCode());
                     return false;
                 }
 

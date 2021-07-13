@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+    <ThingDef ParentName="MoteBase">
+        <defName>RF_Motes_Air</defName>
+        <graphicData>
+            <texPath>RF/Motes/Air</texPath>
+            <shaderType>MoteGlow</shaderType>
+        </graphicData>
+        <altitudeLayer>MoteOverhead</altitudeLayer>
+        <drawOffscreen>false</drawOffscreen>
+        <mote>
+            <fadeInTime>0.25</fadeInTime>
+            <solidTime>0.3</solidTime>
+            <fadeOutTime>1.0</fadeOutTime>
+            <growthRate>-0.2</growthRate>
+        </mote>
+    </ThingDef>
+
+</Defs>

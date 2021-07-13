@@ -7,7 +7,6 @@ namespace RimForge.Patches
     [HarmonyPatch(typeof(LogEntry), "ToGameStringFromPOV_Worker")]
     static class Patch_LogEntry_ToGameStringFromPOV_Worker
     {
-        private static MethodInfo genGrammarMethod;
         private static FieldInfo weaponDef;
         private static FieldInfo projectileDef;
         private static FieldInfo recipientThing;

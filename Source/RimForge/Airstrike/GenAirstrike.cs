@@ -15,7 +15,14 @@ namespace RimForge.Airstrike
 
         private static void MoteAt(IntVec3 cell)
         {
+#if V13
+            FleckMaker.ThrowExplosionCell(cell, Find.CurrentMap, FleckDefOf.ExplosionFlash, Color.yellow);
+#else
             MoteMaker.ThrowExplosionCell(cell, Find.CurrentMap, ThingDefOf.Mote_ExplosionFlash, Color.yellow);
+#endif
+
+            // Legacy 1.2:
+            //MoteMaker.ThrowExplosionCell(cell, Find.CurrentMap, ThingDefOf.Mote_ExplosionFlash, Color.yellow);
         }
 
         [DebugAction("RimForge", "Airstrike (3)", actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]

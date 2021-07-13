@@ -8,7 +8,7 @@ namespace RimForge.Patches
     [HarmonyPatch(typeof(PawnRenderer), "DrawEquipmentAiming")]
     static class Patch_PawnRenderer_DrawEquipmentAiming_Oversized
     {
-        [HarmonyPriority(Priority.Last)]
+        [HarmonyPriority(Priority.First)]
         static bool Prefix(Pawn ___pawn, Thing eq, Vector3 drawLoc, float aimAngle)
         {
             var comp = eq.TryGetCompOversizedWeapon();

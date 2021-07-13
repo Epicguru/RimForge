@@ -40,7 +40,7 @@ namespace RimForge.Buildings
         }
 
         public bool IsRunning { get; private set; }
-        public Room GreenhouseRoom => GreenhouseCell.Impassable(Map) ? null : GreenhouseCell.GetRoom(Map, RegionType.Set_All);
+        public Room GreenhouseRoom => GreenhouseCell.Impassable(Map) ? null : GreenhouseCell.GetRoom(Map);
         public IntVec3 GreenhouseCell => Position + new Rot4(cellRotation).AsVector2.FlatToWorld(0).ToIntVec3();
         public CompPowerTrader PowerTrader => trader ??= GetComp<CompPowerTrader>();
 

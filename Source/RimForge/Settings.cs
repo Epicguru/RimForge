@@ -171,11 +171,11 @@ namespace RimForge
         public static void DrawUI(Rect area)
         {
             var listingArea = area;
-            listingArea.width = Mathf.Min(450, area.width);
+            listingArea.width = Mathf.Min(460, area.width);
 
             Listing_Standard listing = new Listing_Standard();
-            //listing.Begin(listingArea);
-            listing.BeginScrollView(listingArea, ref scroll, ref viewRect);
+            Widgets.BeginScrollView(listingArea, ref scroll, viewRect);
+            listing.Begin(new Rect(0, 0, listingArea.width - 24, 99999));
             listing.Gap();
             listing.Label("RFS.Header".Translate());
             listing.CheckboxLabeled("RFS.ShowAdvanced".Translate(), ref showAdvanced, "RFS.ShowAdvancedDesc".Translate());
@@ -200,7 +200,10 @@ namespace RimForge
                 }
             }
 
-            listing.EndScrollView(ref viewRect);
+            float h = listing.CurHeight;
+            listing.End();
+            Widgets.EndScrollView();
+            viewRect = new Rect(0, 0, listingArea.width - 25, h);
         }
     }
 

@@ -185,12 +185,16 @@ namespace RimForge.Buildings
                     Vector3 pos2 = droneDrawPos + Rand.InsideUnitCircleVec3 * 0.5f;
                     if (pos2.ToIntVec3().InBounds(map))
                     {
+#if V13
+                        FleckMaker.ThrowFireGlow(pos2, map, 1f);
+#else
                         MoteThrown moteThrown2 = (MoteThrown)ThingMaker.MakeThing(ThingDefOf.Mote_FireGlow);
                         moteThrown2.Scale = Rand.Range(4f, 6f) * 1f;
                         moteThrown2.rotationRate = Rand.Range(-3f, 3f);
                         moteThrown2.exactPosition = pos2;
                         moteThrown2.SetVelocity(Rand.Range(0, 360), 0.12f);
                         GenSpawn.Spawn(moteThrown2, pos2.ToIntVec3(), map);
+#endif
                     }
                 }
                 if (spawnSmoke)
@@ -200,12 +204,21 @@ namespace RimForge.Buildings
                         Vector3 pos = droneDrawPos + Rand.InsideUnitCircleVec3 * 2f;
                         if (pos.ToIntVec3().InBounds(map))
                         {
+#if V13
+                            FleckCreationData dataStatic = FleckMaker.GetDataStatic(pos, map, FleckDefOf.Smoke, Rand.Range(1.5f, 2.5f) * 1f);
+                            dataStatic.spawnPosition = pos;
+                            dataStatic.rotationRate = Rand.Range(-30f, 30f);
+                            dataStatic.velocityAngle = (float)Rand.Range(30, 40);
+                            dataStatic.velocitySpeed = Rand.Range(0.5f, 0.7f);
+                            map.flecks.CreateFleck(dataStatic);
+#else
                             MoteThrown moteThrown = (MoteThrown)ThingMaker.MakeThing(ThingDefOf.Mote_Smoke);
                             moteThrown.Scale = Rand.Range(1.5f, 2.5f) * 1f;
                             moteThrown.rotationRate = Rand.Range(-30f, 30f);
                             moteThrown.exactPosition = pos;
                             moteThrown.SetVelocity(Rand.Range(30, 40), Rand.Range(0.5f, 0.7f));
                             GenSpawn.Spawn(moteThrown, pos.ToIntVec3(), map);
+#endif
                         }
                     }
                 }

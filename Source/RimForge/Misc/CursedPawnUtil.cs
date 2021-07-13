@@ -157,7 +157,10 @@ namespace RimForge.Misc
             if (pawn?.apparel == null)
                 return;
 
+#if V12
             bool changedAny = false;
+#endif
+
             int colorIndex = 0;
             foreach (var item in pawn.apparel.WornApparel)
             {
@@ -168,16 +171,22 @@ namespace RimForge.Misc
                 Color color = ClothesColors[colorIndex % ClothesColors.Length];
                 colorIndex++;
 
+#if V13
+                comp.SetColor(color);
+#else
                 comp.Color = color;
                 changedAny = true;
+#endif
             }
 
+#if V12
             if (!changedAny)
                 return;
 
-            // Update apparel graphics.
+            // Update apparel graphics. 
             pawn.Drawer.renderer.graphics.SetApparelGraphicsDirty();
             PortraitsCache.SetDirty(pawn);
+#endif
         }
 
         public enum Validity

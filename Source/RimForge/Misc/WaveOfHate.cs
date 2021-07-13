@@ -53,7 +53,7 @@ namespace RimForge.Misc
                     {
                         var stunner = pawn.stances?.stunner;
                         if (stunner != null)
-                            stunner.StunFor_NewTmp(stunDuration, null);
+                            stunner.StunFor(stunDuration, null);
                         else
                             Core.Warn($"Failed to stun pawn '{pawn.LabelCap}' because they do not have a <stance?.stunner>");
                     }

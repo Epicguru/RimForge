@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="BaseWeapon">
+    <defName>RF_SwordOfDarkness</defName>
+    <label>Ea, Sword of Darkness</label>
+    <description>A cursed weapon, it's great power comes from the corrupted mind of it's wielder.
+Can be reforged into 'Sen, Sword of Rapture' at a smithing table.
+
+People who's mind has not be corrupted by Zir will feel terrible if they equip this weapon.</description>
+
+    <techLevel>Spacer</techLevel>
+    <smeltable>true</smeltable>
+    <burnableByRecipe>true</burnableByRecipe>
+    <tradeability>Sellable</tradeability>
+    <thingCategories>
+      <li>WeaponsMelee</li>
+    </thingCategories>
+
+    <graphicData>
+      <texPath>RF/Weapons/SwordOfDarkness</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.35,1.35)</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>6000</MarketValue>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Mass>5</Mass>
+    </statBases>
+
+    <equippedStatOffsets>
+      <MoveSpeed>0.5</MoveSpeed> <!-- Gives +0.5 cps movement boost. Because I can. -->
+    </equippedStatOffsets>    
+    <equippedAngleOffset>-40</equippedAngleOffset>
+    <tools>
+      <li>
+        <label>blade</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>50</power>
+        <armorPenetration>1.4</armorPenetration>
+        <cooldownTime>1.1</cooldownTime>
+      </li>
+    </tools>
+    <comps>
+      <li Class="RimForge.Comps.CompProperties_OversizedWeapon"></li>
+    </comps>
+  </ThingDef>
+
+</Defs>

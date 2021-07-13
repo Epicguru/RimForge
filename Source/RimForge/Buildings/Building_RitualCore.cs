@@ -12,19 +12,19 @@ namespace RimForge.Buildings
 {
     public class Building_RitualCore : Building, IConditionalGlower
     {
-        [DebugAction("RimForge", null, actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        [DebugAction("RimForge", actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void MakeRed()
         {
             MakeColor(Color.red);
         }
 
-        [DebugAction("RimForge", null, actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        [DebugAction("RimForge", actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void MakeDarkGrey()
         {
             MakeColor(new Color(0.2f, 0.2f, 0.2f ,1f));
         }
 
-        [DebugAction("RimForge", null, actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        [DebugAction("RimForge", actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void TryDestroyHeart()
         {
             foreach (Thing thing in Find.CurrentMap.thingGrid.ThingsAt(UI.MouseCell()))
@@ -32,15 +32,15 @@ namespace RimForge.Buildings
                 TakeHeart(thing as Pawn);
             }
         }
-        
-        [DebugAction("RimForge", null, actionType = DebugActionType.Action, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+
+        [DebugAction("RimForge", actionType = DebugActionType.Action, allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void ResetPlayerPerformedRituals()
         {
             RitualTracker.Current.PlayerPerformedRituals = 0;
             Core.Log("Reset the number of player performed rituals to zero.");
         }
 
-        [DebugAction("RimForge", null, actionType = DebugActionType.Action, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        [DebugAction("RimForge", actionType = DebugActionType.Action, allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void IncrementPlayerPerformedRituals()
         {
             RitualTracker.Current.PlayerPerformedRituals++;
@@ -249,8 +249,13 @@ namespace RimForge.Buildings
 
                 for (int i = 0; i < 2; i++)
                 {
+#if V13
+                    FleckMaker.ThrowLightningGlow(start, Map, 0.8f);
+                    FleckMaker.ThrowLightningGlow(end, Map, 0.8f);
+#else
                     MoteMaker.ThrowLightningGlow(start, Map, 0.8f);
                     MoteMaker.ThrowLightningGlow(end, Map, 0.8f);
+#endif
                 }
 
                 Vector2 gravTowards = TargetPawn?.DrawPos.WorldToFlat() ?? Position.ToVector3Shifted().WorldToFlat();
@@ -331,7 +336,11 @@ namespace RimForge.Buildings
                 // BSpawn some motes. Flashy.
                 for (int i = 0; i < 4; i++)
                 {
+#if V13
+                    FleckMaker.ThrowLightningGlow(TargetPawn.DrawPos + Rand.InsideUnitCircleVec3 * 0.5f, Map, 2f);
+#else
                     MoteMaker.ThrowLightningGlow(TargetPawn.DrawPos + Rand.InsideUnitCircleVec3 * 0.5f, Map, 2f);
+#endif
                 }
 
                 // Give blessing and thought.
@@ -452,7 +461,11 @@ namespace RimForge.Buildings
                 Message = "RF.Ritual.StartMessage".Translate(),
                 action = thing =>
                 {
+#if V13
+                    Pawn sacrifice = thing.Pawn;
+#else
                     Pawn sacrifice = thing as Pawn;
+#endif
                     if (sacrifice.DestroyedOrNull())
                         return;
 
@@ -554,11 +567,21 @@ namespace RimForge.Buildings
 
         public void SpawnDistortion()
         {
+            Map map = base.Map;
+
+#if V13
+            FleckCreationData dataStatic = FleckMaker.GetDataStatic(DrawPos, map, RFDefOf.RF_Motes_RitualDistort, 1f);
+            dataStatic.rotationRate = 0f;
+            dataStatic.velocityAngle = 0f;
+            dataStatic.velocitySpeed = 0f;
+            map.flecks.CreateFleck(dataStatic);
+#else
             Mote mote = (Mote)ThingMaker.MakeThing(RFDefOf.RF_Motes_RitualDistort);
             mote.Scale = 1;
             mote.exactRotation = 0;
             mote.exactPosition = DrawPos;
             GenSpawn.Spawn(mote, Position, Map);
+#endif
         }
 
         private void DrawGhosts()
@@ -689,8 +712,9 @@ namespace RimForge.Buildings
 
                 foreach (var thing in things)
                 {
-                    if (thing is not Pawn pawn)
+                    if (!(thing is Pawn pawn))
                         continue;
+
                     if (!pawn.IsColonistPlayerControlled || pawn.IsPrisoner)
                         continue;
                     if (pawn.Dead || pawn.Downed)
