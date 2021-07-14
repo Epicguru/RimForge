@@ -46,6 +46,16 @@ namespace RimForge
         [TweakValue("RimForge", 0, 5)]
         public static float CoilgunBuildingDamageMulti = 1f;
 
+        // Blessing
+        [SettingsCategory("RFS.BlessingCat")]
+        [TweakValue("RimForge", 0f, 1f)]
+        [SettingsPercentage]
+        public static float BlessingIncreaseChance = 0.5f;
+        [TweakValue("RimForge")]
+        public static bool BlessingCreateMasterwork = true;
+        [TweakValue("RimForge")]
+        public static bool BlessingCreateLegendary = true;
+
         // TESLA COILS
         [SettingsCategory("RFS.CatTesla")]
         [TweakValue("RimForge", 1, 250)]

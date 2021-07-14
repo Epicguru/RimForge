@@ -24,20 +24,38 @@ namespace RimForge.Patches
 
             // Bump up quality one level.
             // For reference, an inspiration increases it 2 levels.
+
+            bool didIncrease = false;
+
             var old = __result;
             if (__result < QualityCategory.Normal)
+            {
                 __result = QualityCategory.Normal;
+                didIncrease = true;
+            }
             else
-                __result += 1;
+            {
+                bool canIncrease = true;
+                if (__result >= QualityCategory.Excellent && !Settings.BlessingCreateMasterwork)
+                    canIncrease = false;
+                if (__result >= QualityCategory.Masterwork && !Settings.BlessingCreateLegendary)
+                    canIncrease = false;
 
-            if (pawn.IsColonist)
+                if (Rand.Chance(Settings.BlessingIncreaseChance) && canIncrease)
+                {
+                    __result += 1;
+                    didIncrease = true;
+                }
+            }
+
+            if (pawn.IsColonist && didIncrease)
             { 
                 Vector3 pos = pawn.DrawPos + new Vector3(0, 0, 1);
                 pos.y = AltitudeLayer.MoteOverhead.AltitudeFor();
                 MoteMaker.ThrowText(pos, pawn.Map, "RF.Blessing.IncreasedMessage".Translate(__result.GetLabel()), Color.green);
             }
 
-            Core.Log($"Running Blessing of Zir on {pawn.LabelCap}: increased quality to {__result} from {old}");
+            //Core.Log($"Running Blessing of Zir on {pawn.LabelCap}: increased quality to {__result} from {old}");
         }
     }
 }
