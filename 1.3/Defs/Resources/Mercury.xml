@@ -18,6 +18,7 @@ Can be refined into Mercury Ultraweave at fabrication bench by a colonist if the
     <statBases>
       <Mass>0.02</Mass>
       <Flammability>0</Flammability>
+      <MarketValue>4.5</MarketValue>
     </statBases>
     <tradeTags>
       <li>ExoticMisc</li>

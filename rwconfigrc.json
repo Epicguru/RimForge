@@ -6,8 +6,8 @@
                 "..\\..\\Data\\Core"
             ],
             "AssemblyReferences": [
-                "1.3\\Assemblies",
-                "..\\..\\RimWorldWin64_Data\\Managed"
+                "..\\..\\RimWorldWin64_Data\\Managed",
+                "1.3\\Assemblies"
             ],
             "Assemblies": "1.3\\Assemblies",
             "Defs": "1.3\\Defs",

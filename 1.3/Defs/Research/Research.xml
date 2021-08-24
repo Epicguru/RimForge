@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream:1.2/Defs/Research/Research.xml
 
 <Defs>
 
@@ -20,7 +21,7 @@
     <description>Investigate the ritual that grants the Blessing of Zir at the cost of a human sacrifice.
 Enables you to build the Ritual Core.</description>
     <baseCost>1000</baseCost>
-    <techLevel>Medieval</techLevel>
+    <techLevel>Industrial</techLevel>
     <researchViewX>0.00</researchViewX>
     <researchViewY>5.45</researchViewY>
   </ResearchProjectDef>
@@ -60,6 +61,19 @@ Mercury is essential in the crafting of Mercury Ultraweave.</description>
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>Hydroponics</li>
+    </prerequisites>
+    <researchViewX>7.00</researchViewX>
+    <researchViewY>0.00</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RF_Research_StrikeDrone</defName>
+    <label>strike drone</label>
+    <description>Enables the construction of an unmanned strike drone, capable of bombing targets on the local map.</description>
+    <baseCost>3000</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Mortars</li>
     </prerequisites>
     <researchViewX>7.00</researchViewX>
     <researchViewY>0.00</researchViewY>
