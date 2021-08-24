@@ -52,6 +52,7 @@ Highly durable and resistant to even heavy gunfire.</description>
       <statFactors>
         <Flammability>0.4</Flammability>
         <Beauty>3</Beauty>
+        <MaxHitPoints>3</MaxHitPoints>
       </statFactors>
 
       <categories>

@@ -42,6 +42,11 @@ namespace RimForge.Buildings
         /// </summary>
         public virtual bool CanConnectedBeUnderRoof => true;
 
+        /// <summary>
+        /// Pretty self explainatory.
+        /// </summary>
+        public virtual bool DrawLinkRadiusWhenPlacing => true;
+
         public virtual bool IsUnderRoof => isUnderRoofCache;
 
         public string OverlayTexturePath => "RF/UI/NoUnderRoofIcon"; 

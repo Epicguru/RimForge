@@ -46,6 +46,7 @@ Connect to other power poles using the 'link' button, or select multiple power p
     </comps>
     <placeWorkers>
       <li>PlaceWorker_NotUnderRoof</li>
+      <li>RimForge.Buildings.PlaceWorker_ShowConnectRadius</li>
     </placeWorkers>
     <holdsRoof>true</holdsRoof>
     <fillPercent>1</fillPercent>
