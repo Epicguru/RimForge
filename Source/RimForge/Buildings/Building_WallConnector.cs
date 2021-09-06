@@ -28,10 +28,11 @@ namespace RimForge.Buildings
             return root;
         }
 
-        public override bool CanLinkTo(Building_LongDistancePower other, bool checkOther = true)
-        {
-            return base.CanLinkTo(other, checkOther) && other != null && other is not Building_WallConnector;
-        }
+        // Update: Wall connectors are now allowed to connect to other wall connectors, per popular request.
+        //public override bool CanLinkTo(Building_LongDistancePower other, bool checkOther = true)
+        //{
+        //    return base.CanLinkTo(other, checkOther) && other != null && other is not Building_WallConnector;
+        //}
 
         public override Color GetCableColor()
         {

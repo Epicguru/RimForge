@@ -9,8 +9,8 @@ Connect to other power poles using the 'link' button, or select multiple power p
     <thingClass>RimForge.Buildings.Building_PowerPole</thingClass>
     <graphicData>
       <texPath>RF/Buildings/PowerPole</texPath>
-      <graphicClass>RimForge.Graphic_MultiNoRot</graphicClass>
-      <drawSize>(1,2)</drawSize>
+      <graphicClass>Graphic_Multi</graphicClass>     
+      <drawSize>(2,2)</drawSize>
       <drawOffset>(0,0,0.5)</drawOffset>
       <drawRotated>true</drawRotated>
       <shadowData>

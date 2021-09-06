@@ -73,10 +73,9 @@ namespace RimForge
                     Core.Error("Failed to patch CombatExtended suppression:", e);
                 }
 
-                foreach (var item in CECompat.GetCEMortarShells())
-                {
-                    Building_DroneLauncher.LoadableBombs.Add(item);
-                }
+                CECompat.FindCEMortarShells();
+                foreach(var shell in CECompat.LoadableShells)
+                    Building_DroneLauncher.LoadableBombs.Add(shell);
             }
         }
 
