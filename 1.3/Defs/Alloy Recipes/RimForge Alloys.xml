@@ -61,21 +61,21 @@ It's dark surface is strangely beautiful.</description>
     <input>
       <li>
         <resource>RF_Bronze</resource>
-        <count>1</count>
+        <count>2</count>
       </li>
       <li>
         <resource>RF_Staballoy</resource>
-        <count>2</count>
+        <count>3</count>
       </li>
       <li>
         <resource>RF_GildedPlasteel</resource>
-        <count>2</count>
+        <count>3</count>
       </li>
     </input>
 
     <output>
       <resource>RF_Adamantium</resource>
-      <count>4</count>
+      <count>3</count>
     </output>
   </RimForge.AlloyDef>
 

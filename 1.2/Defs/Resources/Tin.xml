@@ -23,7 +23,7 @@ In this pure state, it is a very soft metal, and so is not well suited for weapo
     <thingCategories>
       <li>ResourcesRaw</li>
     </thingCategories>
-    <deepCommonality>3</deepCommonality>
+    <deepCommonality>1.25</deepCommonality>
     <deepCountPerPortion>70</deepCountPerPortion>
     <deepLumpSizeRange>40~45</deepLumpSizeRange>
     <stuffProps>

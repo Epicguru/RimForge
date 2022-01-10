@@ -23,7 +23,7 @@ However, it is very malleable, making it fast to work with.</description>
     <thingCategories>
       <li>ResourcesRaw</li>
     </thingCategories>
-    <deepCommonality>3</deepCommonality>
+    <deepCommonality>1.25</deepCommonality>
     <deepCountPerPortion>60</deepCountPerPortion>
     <deepLumpSizeRange>30~40</deepLumpSizeRange>
     <stuffProps>

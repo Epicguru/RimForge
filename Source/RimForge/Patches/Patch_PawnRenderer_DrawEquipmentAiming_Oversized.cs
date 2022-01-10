@@ -8,7 +8,7 @@ namespace RimForge.Patches
     [HarmonyPatch(typeof(PawnRenderer), "DrawEquipmentAiming")]
     static class Patch_PawnRenderer_DrawEquipmentAiming_Oversized
     {
-        [HarmonyPriority(Priority.First)]
+        [HarmonyPriority(Priority.First - 1)]
         static bool Prefix(Pawn ___pawn, Thing eq, Vector3 drawLoc, float aimAngle)
         {
             var comp = eq.TryGetCompOversizedWeapon();
@@ -51,7 +51,7 @@ namespace RimForge.Patches
             }
 
             // CHANGED
-            Vector3 scale = new Vector3(eq.Graphic.drawSize.x, 1f, eq.Graphic.drawSize.y);
+            Vector3 scale = new Vector3(eq.def.graphicData.drawSize.x, 1f, eq.def.graphicData.drawSize.y);
             var curOffset = comp.Props != null ? OffsetFromRotation(___pawn.Rotation, comp.Props) : Vector3.zero;
             Graphics.DrawMesh(mesh, Matrix4x4.TRS(drawLoc + curOffset, Quaternion.AngleAxis(num, Vector3.up), scale), matSingle, 0);
             return false;

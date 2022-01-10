@@ -14,13 +14,13 @@ Melee weapons built out of this material have a 50% chance to stop or deflect a 
     <statBases>
       <MarketValue>20</MarketValue>
       <Mass>0.8</Mass>
-      <StuffPower_Armor_Sharp>2.4</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Sharp>2.2</StuffPower_Armor_Sharp>
       <StuffPower_Armor_Blunt>2</StuffPower_Armor_Blunt>
       <StuffPower_Armor_Heat>1.3</StuffPower_Armor_Heat>
       <StuffPower_Insulation_Cold>2</StuffPower_Insulation_Cold>
       <StuffPower_Insulation_Heat>2</StuffPower_Insulation_Heat>
-      <SharpDamageMultiplier>2.2</SharpDamageMultiplier>
-      <BluntDamageMultiplier>2.5</BluntDamageMultiplier>
+      <SharpDamageMultiplier>2.05</SharpDamageMultiplier>
+      <BluntDamageMultiplier>2.2</BluntDamageMultiplier>
     </statBases>
     <thingCategories>
       <li>Alloys</li>

@@ -54,9 +54,9 @@ The drone can be sent to carpet bomb invading raiders.</description>
       </li>
       <li Class="CompProperties_Flickable"></li>
     </comps>
-    <!-- <researchPrerequisites>
-      <li>RF_Research_Greenhouses</li>
-    </researchPrerequisites> -->
+    <researchPrerequisites>
+      <li>RF_Research_StrikeDrone</li>
+    </researchPrerequisites>
     <statBases>
       <MaxHitPoints>500</MaxHitPoints>
       <WorkToBuild>8000</WorkToBuild>

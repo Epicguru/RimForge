@@ -43,6 +43,7 @@ Make sure that there is not already a power cable in the spot you are trying to 
     <clearBuildingArea>false</clearBuildingArea>
     <placeWorkers>
       <li>RimForge.Buildings.PlaceWorker_WallConnector</li>
+      <li>RimForge.Buildings.PlaceWorker_ShowConnectRadius</li>
     </placeWorkers>
     <statBases>
       <MaxHitPoints>40</MaxHitPoints>

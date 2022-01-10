@@ -206,6 +206,11 @@ There must be at least {0} cells between these two positions.</RF.DL.NotEnoughDi
 <RFS.GenerateCopper>Generate Copper ore:Enables or disables natural copper ore generation. Requires a new map to take effect.</RFS.GenerateCopper>
 <RFS.GenerateTin>Generate Tin ore:Enables or disables natural tin ore generation. Requires a new map to take effect.</RFS.GenerateTin>
 
+<RFS.BlessingCat>Blessing of Zir (trait)</RFS.BlessingCat>
+<RFS.BlessingIncreaseChance>Quality increase chance:The percentage chance for the pawn's built or crafted items to increase in quality. Quality is always increased to normal regardless of this setting.</RFS.BlessingIncreaseChance>
+<RFS.BlessingCreateMasterwork>Allow creating masterwork:Enables or disables the creation of masterwork items via the increased quality mechanic.</RFS.BlessingCreateMasterwork>
+<RFS.BlessingCreateLegendary>Allow creating legendary:MUST HAVE MASTERWORK ENABLED.\nEnables or disables the creation of legendary items via the increased quality mechanic.</RFS.BlessingCreateLegendary>
+
 <RFS.CatCables>Power Poles</RFS.CatCables>
 <RFS.CableSegmentsPerCell>Power cable resolution:Changes the resolution of power pole's cables. Increasing means smoother cables, but possibly lower performance.</RFS.CableSegmentsPerCell>
 <RFS.CableMaxDistance>Power cable range:Changes the maximum distance allowed between power poles. This is personal preference, and does not affect performance.</RFS.CableMaxDistance>

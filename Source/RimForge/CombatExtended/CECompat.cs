@@ -1,4 +1,4 @@
-﻿using System;
+﻿using HarmonyLib;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -9,78 +9,49 @@ namespace RimForge.CombatExtended
     public static class CECompat
     {
         public static bool IsCEActive { get; }
+        public static IEnumerable<ThingDef> LoadableShells => shells.Keys;
 
         private static readonly Dictionary<ThingDef, ThingDef> shells = new Dictionary<ThingDef, ThingDef>();
+        private static readonly HashSet<string> includeShells = new HashSet<string>() // There are vanilla shells that don't have 81mm in the def name, but must be included.
+        {
+            "Shell_HighExplosive",
+            "Shell_Incendiary",
+            "Shell_EMP",
+            "Shell_Firefoam",
+            "Shell_Smoke",
+            "Shell_AntigrainWarhead"
+        };
 
         static CECompat()
         {
             IsCEActive = ModLister.GetActiveModWithIdentifier("CETeam.CombatExtended") != null;
         }
 
-        public static IEnumerable<ThingDef> GetCEMortarShells()
+        public static void FindCEMortarShells()
         {
-            FieldInfo isMortarAmmo = null;
-            PropertyInfo ammoSetDefs = null;
-            FieldInfo ammoTypes = null;
-            FieldInfo ammo = null;
-            FieldInfo projectile = null;
+            var ammoSetDefType = AccessTools.TypeByName("CombatExtended.AmmoSetDef");
+            FieldInfo ammoTypes = ammoSetDefType.GetField("ammoTypes", BindingFlags.Public | BindingFlags.Instance);
+            FieldInfo ammo = AccessTools.TypeByName("CombatExtended.AmmoLink").GetField("ammo", BindingFlags.Public | BindingFlags.Instance);
+            FieldInfo projectile = AccessTools.TypeByName("CombatExtended.AmmoLink").GetField("projectile", BindingFlags.Public | BindingFlags.Instance);
 
-            bool cache = shells.Count == 0;
+            var allAmmoDefs = GenGeneric.GetStaticPropertyOnGenericType(typeof(DefDatabase<>), ammoSetDefType, "AllDefsListForReading") as IList;
+            Core.Log($"Starting scan of {allAmmoDefs.Count} CE AmmoSetDef...");
 
-            ThingDef GetProjectile(ThingDef ammoDef)
+            var ammoDef = GenGeneric.InvokeStaticMethodOnGenericType(typeof(DefDatabase<>), ammoSetDefType, "GetNamed", "AmmoSet_81mmMortarShell", true) as Def;
+
+            var types = ammoTypes.GetValue(ammoDef) as IList;
+
+            Core.Log($"Scanning: {ammoDef.defName} ({ammoDef.label}) ({types?.Count ?? -1})");
+            foreach(var item in types)
             {
-                ammoSetDefs ??= ammoDef.GetType().GetProperty("AmmoSetDefs", BindingFlags.Public | BindingFlags.Instance);
-                ammoTypes ??= GenTypes.GetTypeInAnyAssembly("CombatExtended.AmmoSetDef").GetField("ammoTypes", BindingFlags.Public | BindingFlags.Instance);
-                ammo ??= GenTypes.GetTypeInAnyAssembly("CombatExtended.AmmoLink").GetField("ammo", BindingFlags.Public | BindingFlags.Instance);
-                projectile ??= GenTypes.GetTypeInAnyAssembly("CombatExtended.AmmoLink").GetField("projectile", BindingFlags.Public | BindingFlags.Instance);
-
-                IEnumerable list = ammoSetDefs.GetValue(ammoDef) as IEnumerable;
-                foreach (object set in list)
-                {
-                    IEnumerable list2 = ammoTypes.GetValue(set) as IEnumerable;
-                    foreach (var link in list2)
-                    {
-                        var foundAmmo = ammo.GetValue(link);
-                        if (foundAmmo == ammoDef)
-                        {
-                            return projectile.GetValue(link) as ThingDef;
-                        }
-                    }
-                }
-                return null;
-            }
-
-            foreach (var def in DefDatabase<ThingDef>.AllDefsListForReading)
-            {
-                if (def.GetType().FullName != "CombatExtended.AmmoDef")
+                if (item == null)
                     continue;
 
-                isMortarAmmo ??= def.GetType().GetField("isMortarAmmo", BindingFlags.Public | BindingFlags.Instance);
-
-                if ((bool)isMortarAmmo.GetValue(def) == false)
-                    continue;
-
-                if (!def.label.Contains("81mm"))
-                    continue;
-
-                if (cache)
-                {
-                    ThingDef proj;
-                    try
-                    {
-                        proj = GetProjectile(def);
-                    }
-                    catch (Exception e)
-                    {
-                        Core.Error($"Exception extracting projectile for CE shell '{def.LabelCap}' ({def.defName}):", e);
-                        continue;
-                    }
-                    Log.Message($"{def.defName} -> {proj?.defName ?? "<null>"}");
-                    shells.Add(def, proj);
-                }
-
-                yield return def;
-            }
+                var ammoThingDef = ammo.GetValue(item) as ThingDef;
+                var proj = projectile.GetValue(item) as ThingDef;
+                shells[ammoThingDef] = proj;
+                Core.Log($"{ammoThingDef.defName} -> {proj.defName}");
+            }            
         }
 
         public static ThingDef GetProjectile(ThingDef shell)
