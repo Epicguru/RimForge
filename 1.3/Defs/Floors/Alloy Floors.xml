@@ -82,6 +82,9 @@
     <researchPrerequisites>
       <li>Smithing</li>
     </researchPrerequisites>
+    <tags>
+      <li>FineFloor</li>
+    </tags>
   </TerrainDef>
 
 </Defs>
