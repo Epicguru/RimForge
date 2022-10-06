@@ -15,7 +15,7 @@ namespace RimForge.Airstrike
 
         private static void MoteAt(IntVec3 cell)
         {
-#if V13
+#if !V12
             FleckMaker.ThrowExplosionCell(cell, Find.CurrentMap, FleckDefOf.ExplosionFlash, Color.yellow);
 #else
             MoteMaker.ThrowExplosionCell(cell, Find.CurrentMap, ThingDefOf.Mote_ExplosionFlash, Color.yellow);

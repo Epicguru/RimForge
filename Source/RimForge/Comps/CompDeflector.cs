@@ -143,7 +143,7 @@ namespace RimForge.Comps
         {
             var pawn = Wielder;
             var map = pawn.Map;
-#if V13
+#if !V12
             FleckMaker.ThrowMicroSparks(pawn.DrawPos, map);
             FleckMaker.ThrowLightningGlow(pawn.DrawPos, map, 0.5f);
 #else

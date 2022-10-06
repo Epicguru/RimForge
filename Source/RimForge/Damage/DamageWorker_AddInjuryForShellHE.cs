@@ -67,7 +67,11 @@ namespace RimForge.Damage
             damageResult.AssociateWithLog(battleLogEntry_ExplosionImpact);
             if (pawn != null && damageResult.wounded && pawn.stances != null)
             {
+#if V14
+                pawn.stances.stagger.StaggerFor(95);
+#else
                 pawn.stances.StaggerFor(95);
+#endif
             }
 
             if (pawn?.Dead ?? false)

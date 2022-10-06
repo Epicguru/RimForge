@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="RF_AlloyResource">
+    <defName>RF_Adamantium</defName>
+    <label>adamantium</label>
+    <description>A complex alloy of Bronze, Staballoy and Gilded Plasteel.
+Unbelievably strong, and can be sharpened to a razor's edge without risk of it fracturing.
+Melee weapons built out of this material have a 50% chance to stop or deflect a bullet back at the shooter.</description>
+    <graphicData>
+      <texPath>RF/Resources/Adamantium</texPath>
+    </graphicData>
+    
+    <statBases>
+      <MarketValue>20</MarketValue>
+      <Mass>0.8</Mass>
+      <StuffPower_Armor_Sharp>2.2</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>2</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>1.3</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>2</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>2</StuffPower_Insulation_Heat>
+      <SharpDamageMultiplier>2.05</SharpDamageMultiplier>
+      <BluntDamageMultiplier>2.2</BluntDamageMultiplier>
+    </statBases>
+    <thingCategories>
+      <li>Alloys</li>
+    </thingCategories>
+    <deepCommonality>0</deepCommonality>
+    <stuffProps>
+      <categories>
+        <li>Metallic</li>
+      </categories>
+      <commonality>0</commonality>
+      <color>(37, 26, 54)</color>
+      <statFactors>
+        <MaxHitPoints>6</MaxHitPoints>
+        <Beauty>4.5</Beauty>
+        <Flammability>0</Flammability>
+        <WorkToMake>2.5</WorkToMake>
+        <WorkToBuild>3.0</WorkToBuild>
+        <MeleeWeapon_CooldownMultiplier>0.6</MeleeWeapon_CooldownMultiplier>
+      </statFactors>
+    </stuffProps>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+
+    <modExtensions>
+
+      <li Class="RimForge.Extension">
+        <meltingPoint>2000</meltingPoint>
+      </li>
+
+      <!-- Melee weapons made from adamantium deflect bullets. Nice. -->
+      <li Class="Rimforge.StuffCompGiver">
+        <onlyMeleeWeapons>true</onlyMeleeWeapons>
+        <compClass>RimForge.Comps.CompDeflector</compClass>
+        <props Class="RimForge.Comps.CompProperties_Deflector">
+          <deflectChance>0.5</deflectChance>
+          <reflectChance>0.5</reflectChance>
+        </props>
+      </li>
+
+    </modExtensions>
+
+  </ThingDef>
+
+</Defs>

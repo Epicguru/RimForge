@@ -1,9 +1,8 @@
-﻿using System;
+﻿using RimForge.Comps;
 using RimForge.Effects;
 using RimWorld;
+using System;
 using System.Collections.Generic;
-using RimForge.Achievements;
-using RimForge.Comps;
 using UnityEngine;
 using Verse;
 
@@ -201,7 +200,7 @@ namespace RimForge.Buildings
             // Make motes.
             for (int i = 0; i < 4; i++)
             {
-#if V13
+#if !V12
                 FleckMaker.ThrowLightningGlow(TopPos, Map, 1);
 #else
                 MoteMaker.ThrowLightningGlow(TopPos, Map, 1);
@@ -212,7 +211,7 @@ namespace RimForge.Buildings
             {
                 for (int i = 0; i < 4; i++)
                 {
-#if V13
+#if !V12
                     FleckMaker.ThrowLightningGlow(LinkedTo.TopPos, Map, 1);
 #else
                     MoteMaker.ThrowLightningGlow(LinkedTo.TopPos, Map, 1);
@@ -235,7 +234,7 @@ namespace RimForge.Buildings
                 }
             }
 
-            GenericEventTracker.Fire(AchievementEvent.CoilsFire);
+            Core.GenericAchievementEvent(Core.AchievementEvent.CoilsFire);
 
             CooldownTicksRemaining = Settings.TeslaCooldown;
         }
@@ -483,7 +482,7 @@ namespace RimForge.Buildings
                     action = (t) =>
                     {
                         // Try link to this.
-#if V13
+#if !V12
                         Thing thing = t.Thing;
 #else
                         Thing thing = t;

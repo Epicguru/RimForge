@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef Name="RF_LightningRodBase" ParentName="BuildingBase" Abstract="True">
+    <thingClass>RimForge.Buildings.Building_LightningRod</thingClass>
+    <graphicData>
+      <texPath>RF/Buildings/LightningRod</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,2)</drawSize>
+      <drawOffset>(0, 0, 0.5)</drawOffset>
+    </graphicData>
+    <passability>PassThroughOnly</passability>
+    <designationCategory>Power</designationCategory>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <selectable>true</selectable>
+    <canOverlapZones>true</canOverlapZones>
+    <castEdgeShadows>false</castEdgeShadows>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <tickerType>Never</tickerType>
+    <category>Building</category>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <pathCost>20</pathCost>
+    <size>(1, 1)</size>
+    <costList>
+      <Steel>20</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+      <RF_Copper>50</RF_Copper>
+    </costList>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <WorkToBuild>5000</WorkToBuild>
+      <Flammability>0.25</Flammability>
+      <Beauty>-2</Beauty>
+      <Cleanliness>2</Cleanliness>
+      <Mass>30</Mass>
+    </statBases>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <placeWorkers>
+      <li>PlaceWorker_NotUnderRoof</li>
+    </placeWorkers>
+    <thingCategories>
+      <li>BuildingsPower</li>
+    </thingCategories>
+    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <transmitsPower>true</transmitsPower>
+        <shortCircuitInRain>false</shortCircuitInRain>
+        <basePowerConsumption>0</basePowerConsumption>
+      </li>
+    </comps>
+    <researchPrerequisites>
+      <li>Electricity</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+  <!-- Normal version -->
+  <ThingDef ParentName="RF_LightningRodBase">
+    <defName>RF_LightningRod</defName>
+    <label>lightning rod</label>
+    <description>A tall metal structure designed to attract lightning strikes.
+All lightning bolts in a large area around this rod will be attracted to it, and will generate large amount of power!</description>
+  </ThingDef>
+
+</Defs>

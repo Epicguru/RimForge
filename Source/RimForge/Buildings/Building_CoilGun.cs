@@ -3,8 +3,6 @@ using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AchievementsExpanded;
-using RimForge.Achievements;
 using RimForge.Patches;
 using UnityEngine;
 using Verse;
@@ -19,7 +17,6 @@ namespace RimForge.Buildings
         [TweakValue("RimForge", 1, 100)]
         public static int BloodTrailLength = 20;
         public static List<CoilgunShellDef> ShellDefs = new List<CoilgunShellDef>();
-        private static bool? isVEAActive;
 
         private const float TurretTurnSpeed = 60f / 60f;
         private const int FINISH_READYING = 120;
@@ -497,9 +494,6 @@ namespace RimForge.Buildings
             Vector2 bloodStartPos = default;
             string bloodPawnName = null;
 
-            if (isVEAActive == null)
-                isVEAActive = ModLister.GetActiveModWithIdentifier("vanillaexpanded.achievements") != null;
-
             void MakeBloodAt(IntVec3 cell, int remaining)
             {
                 float p = 1f - ((float)remaining / BloodTrailLength);
@@ -571,24 +565,10 @@ namespace RimForge.Buildings
                             totalDamage += result.totalDamageDealt;
 
                             #region VEA
-                            if (isVEAActive.Value && pawn != null && (pawn.Dead || pawn.Destroyed))
+                            if (Core.CoilgunHitPawn != null && pawn != null && (pawn.Dead || pawn.Destroyed))
                             {
                                 pawnKills++;
-                                foreach (var card in AchievementPointManager.GetCards<CoilgunKillTracker>())
-                                {
-                                    try
-                                    {
-                                        if ((card.tracker as CoilgunKillTracker).Trigger(penDepth, pawn, shellDef))
-                                        {
-                                            card.UnlockCard();
-                                        }
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Core.Error($"Unable to trigger event for card validation. To avoid further errors {card.def.LabelCap} has been automatically unlocked.\n\nException={ex.Message}");
-                                        card.UnlockCard();
-                                    }
-                                }
+                                Core.CoilgunHitPawn(pawn, shellDef, penDepth);
                             }
                             #endregion
 
@@ -607,7 +587,7 @@ namespace RimForge.Buildings
                                 var basePos = pawn.DrawPos;
                                 basePos.y = AltitudeLayer.MoteOverhead.AltitudeFor();
 
-#if V13
+#if !V12
                                 FleckMaker.ThrowLightningGlow(basePos, map, 0.5f);
                                 FleckMaker.ThrowLightningGlow(basePos, map, 0.5f);
                                 
@@ -656,26 +636,7 @@ namespace RimForge.Buildings
                     break;
             }
 
-#region VEA
-            if (isVEAActive.Value)
-            {
-                foreach (var card in AchievementPointManager.GetCards<CoilgunPostFireTracker>())
-                {
-                    try
-                    {
-                        if ((card.tracker as CoilgunPostFireTracker).Trigger(pawnKills, totalDamage, shellDef))
-                        {
-                            card.UnlockCard();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Core.Error($"Unable to trigger event for card validation. To avoid further errors {card.def.LabelCap} has been automatically unlocked.\n\nException={ex.Message}");
-                        card.UnlockCard();
-                    }
-                }
-            }
-#endregion
+            Core.CoilgunPostFire?.Invoke(pawnKills, totalDamage, shellDef);
 
             Vector3 moteStart = firstCell.Value.ToVector3ShiftedWithAltitude(AltitudeLayer.MoteOverhead);
             Vector3 moteEnd = lastCell.Value.ToVector3ShiftedWithAltitude(AltitudeLayer.MoteOverhead);
@@ -917,7 +878,7 @@ namespace RimForge.Buildings
                 },
                 action = t =>
                 {
-#if V13
+#if !V12
                     Thing thing = t.Thing;
 #else
                     Thing thing = t;

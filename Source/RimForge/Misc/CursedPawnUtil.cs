@@ -171,7 +171,7 @@ namespace RimForge.Misc
                 Color color = ClothesColors[colorIndex % ClothesColors.Length];
                 colorIndex++;
 
-#if V13
+#if !V12
                 comp.SetColor(color);
 #else
                 comp.Color = color;

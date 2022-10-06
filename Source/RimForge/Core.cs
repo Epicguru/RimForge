@@ -10,21 +10,37 @@ namespace RimForge
 {
     public class Core : Mod
     {
+        public static Action<Pawn, CoilgunShellDef, int> CoilgunHitPawn;
+        public static Action<int, float, CoilgunShellDef> CoilgunPostFire;
+        public static Action<Explosion, int> CoilgunExplosion;
+        public static Action<AchievementEvent> GenericAchievementEvent = _ => { }; // Default implementation do avoid null checks elsewhere.
+
         public static SkillDef BlessingSkillDef { get; private set; }
         public static ModContentPack ContentPack { get; private set; }
         public static Core Instance { get; private set; }
 
-        internal static void Log(string msg)
+        public enum AchievementEvent
+        {
+            None,
+            CoilsFire,
+            DroneAntimatter,
+            DroneAntimatterFull,
+            RitualPerformed,
+            Ritual50ChanceFailure,
+            RitualFailure
+        }
+
+        public static void Log(string msg)
         {
             Verse.Log.Message($"<color=#b7ff1c>[RimForge]</color> {msg ?? "<null>"}");
         }
 
-        internal static void Warn(string msg)
+        public static void Warn(string msg)
         {
             Verse.Log.Warning($"[RimForge] {msg ?? "<null>"}");
         }
 
-        internal static void Error(string msg, Exception exception = null)
+        public static void Error(string msg, Exception exception = null)
         {
             Verse.Log.Error($"[RimForge] {msg ?? "<null>"}");
             if(exception != null)
