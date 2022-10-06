@@ -108,7 +108,11 @@ namespace RimForge.Buildings
             foreach (var cell in room.Cells) // Note: It may be better to use the Room's ThingLister. Not sure which is faster.
             {
                 int index = map.cellIndices.CellToIndex(cell);
+#if V14
+                map.glowGrid.glowGrid[index] = new ColorInt(light);
+#else
                 map.glowGrid.glowGrid[index] = light;
+#endif
                 var list = map.thingGrid.ThingsListAtFast(index);
                 for(int i = 0; i < list.Count; i++)
                 {

@@ -25,9 +25,9 @@ namespace RimForge
         public static SoundDef RF_Sound_DroneLaunch;
         public static SoundDef RF_Sound_Drone;
         public static ThingDef RF_Motes_MuzzleFlash;
-#if V13
+#if !V12
         public static FleckDef RF_Motes_RitualDistort;
-#elif V12
+#else
         public static ThingDef RF_Motes_RitualDistort;
 #endif
         public static TraitDef RF_BlessingOfZir;

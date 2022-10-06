@@ -8,14 +8,12 @@
     <LangVersion>preview</LangVersion>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-    <Configurations>v1.2;v1.3</Configurations>
+    <Configurations>v1.2;v1.3;v1.4</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Lib.Harmony" Version="2.1.1" ExcludeAssets="runtime" />
-    <PackageReference Include="Lib.InGameWiki">
-      <Version>1.7.1</Version>
-    </PackageReference>
+    <PackageReference Include="Lib.Harmony" Version="2.2.2" ExcludeAssets="runtime" />
+    <PackageReference Include="Lib.InGameWiki" Version="1.7.1" />
   </ItemGroup>
 
   <!-- _____ 1.2 _____ -->
@@ -23,9 +21,6 @@
   <!-- Rimworld assembly refs needed for older 1.2 -->
   <ItemGroup Condition="'$(Configuration)|$(Platform)'=='v1.2|AnyCPU'">
     <PackageReference Include="Krafs.Rimworld.Ref" Version="1.2.2905" />
-    <Reference Include="AchievementsExpanded">
-      <HintPath>AchievementsExpanded_Old_v12.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <!-- Output -->
@@ -40,8 +35,7 @@
 
   <!-- Rimworld assembly refs for latest 1.3 -->
   <ItemGroup Condition="'$(Configuration)|$(Platform)'=='v1.3|AnyCPU'">
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.3.3087" />
-    <PackageReference Include="AchievementsExpanded" Version="1.3.7862" />
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.3.3389" />
   </ItemGroup>
 
   <!-- Output -->
@@ -50,6 +44,20 @@
     <OutputPath>..\..\1.3\Assemblies\</OutputPath>
     <Optimize>true</Optimize>
     <DefineConstants>TRACE;V13</DefineConstants>
+  </PropertyGroup>
+
+  <!-- _____ 1.4 _____ -->
+
+  <!-- Rimworld assembly refs for latest 1.4 -->
+  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='v1.4|AnyCPU'">
+	  <PackageReference Include="Krafs.Rimworld.Ref" Version="1.4.3507-beta" />
+  </ItemGroup>
+  <!-- Output -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='v1.4|AnyCPU'">
+    <DebugType>none</DebugType>
+    <OutputPath>..\..\1.4\Assemblies\</OutputPath>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE;V14</DefineConstants>
   </PropertyGroup>
 
 </Project>

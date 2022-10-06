@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using System;
+using HarmonyLib;
 using Verse;
 
 namespace RimForge.Patches
@@ -13,11 +14,19 @@ namespace RimForge.Patches
             if (absorbed)
                 return;
 
-            if (!(__instance is Pawn pawn))
+            if (__instance is not Pawn pawn)
                 return;
 
-            var deflector = pawn.equipment?.Primary?.GetDeflectorComp();
-            deflector?.WielderPostPreApplyDamage(dinfo, out absorbed);
+            try
+            {
+                var deflector = pawn.equipment?.Primary?.GetDeflectorComp();
+                deflector?.WielderPostPreApplyDamage(dinfo, out absorbed);
+            }
+            catch (Exception e)
+            {
+                Verse.Log.Error(e.ToString());
+            }
+            
         }
     }
 }

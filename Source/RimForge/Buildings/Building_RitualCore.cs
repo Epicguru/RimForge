@@ -4,7 +4,6 @@ using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using RimForge.Achievements;
 using UnityEngine;
 using Verse;
 
@@ -249,7 +248,7 @@ namespace RimForge.Buildings
 
                 for (int i = 0; i < 2; i++)
                 {
-#if V13
+#if !V12
                     FleckMaker.ThrowLightningGlow(start, Map, 0.8f);
                     FleckMaker.ThrowLightningGlow(end, Map, 0.8f);
 #else
@@ -311,7 +310,7 @@ namespace RimForge.Buildings
 
                 if (failLevel > 0)
                 {
-                    GenericEventTracker.Fire(AchievementEvent.RitualFailure);
+                    Core.GenericAchievementEvent(Core.AchievementEvent.RitualFailure);
 
                     // Kill the sacrifice.
                     if (SacrificePawn != null)
@@ -336,7 +335,7 @@ namespace RimForge.Buildings
                 // BSpawn some motes. Flashy.
                 for (int i = 0; i < 4; i++)
                 {
-#if V13
+#if !V12
                     FleckMaker.ThrowLightningGlow(TargetPawn.DrawPos + Rand.InsideUnitCircleVec3 * 0.5f, Map, 2f);
 #else
                     MoteMaker.ThrowLightningGlow(TargetPawn.DrawPos + Rand.InsideUnitCircleVec3 * 0.5f, Map, 2f);
@@ -348,7 +347,7 @@ namespace RimForge.Buildings
                 TargetPawn.story.traits.GainTrait(trait);
                 TargetPawn.TryGiveThought(RFDefOf.RF_RitualBlessed);
 
-                GenericEventTracker.Fire(AchievementEvent.RitualPerformed);
+                Core.GenericAchievementEvent(Core.AchievementEvent.RitualPerformed);
 
                 // Give negative thoughts to all colonists.
                 int thoughtLevel = SacrificePawn.guilt.IsGuilty ? 1 : 0;
@@ -461,7 +460,7 @@ namespace RimForge.Buildings
                 Message = "RF.Ritual.StartMessage".Translate(),
                 action = thing =>
                 {
-#if V13
+#if !V12
                     Pawn sacrifice = thing.Pawn;
 #else
                     Pawn sacrifice = thing as Pawn;
@@ -510,7 +509,7 @@ namespace RimForge.Buildings
                         OnAccept = () =>
                         {
                             if (chanceToFail > 0.5f)
-                                GenericEventTracker.Fire(AchievementEvent.Ritual50ChanceFailure);
+                                Core.GenericAchievementEvent(Core.AchievementEvent.Ritual50ChanceFailure);
                             act();
                         }
                     });
@@ -533,7 +532,11 @@ namespace RimForge.Buildings
                 }
             };
 
+#if V14
+            var allowedDesignator = BuildCopyCommandUtility.BuildCommand(RFDefOf.Column, RFDefOf.RF_Copper, null, null, false, "RF.Ritual.BuildColumnLabel".Translate(), "RF.Ritual.BuildColumnDesc".Translate(), true);
+#else
             var allowedDesignator = BuildCopyCommandUtility.BuildCommand(RFDefOf.Column, RFDefOf.RF_Copper, "RF.Ritual.BuildColumnLabel".Translate(), "RF.Ritual.BuildColumnDesc".Translate(), true);
+#endif
             if (allowedDesignator != null)
                 yield return allowedDesignator;
 
@@ -569,7 +572,7 @@ namespace RimForge.Buildings
         {
             Map map = base.Map;
 
-#if V13
+#if !V12
             FleckCreationData dataStatic = FleckMaker.GetDataStatic(DrawPos, map, RFDefOf.RF_Motes_RitualDistort, 1f);
             dataStatic.rotationRate = 0f;
             dataStatic.velocityAngle = 0f;

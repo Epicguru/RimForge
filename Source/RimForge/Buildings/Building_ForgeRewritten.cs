@@ -249,7 +249,11 @@ namespace RimForge.Buildings
 
             foreach (var item in allHeatingElements)
             {
+#if V14
+                var allowedDesignator = BuildCopyCommandUtility.BuildCommand(item, null, null, null, false, "RF.HeatingElement.Build".Translate(item.label), "", true);
+#else
                 var allowedDesignator = BuildCopyCommandUtility.BuildCommand(item, null, "RF.HeatingElement.Build".Translate(item.label), null, true);
+#endif
                 if (allowedDesignator != null)
                     yield return allowedDesignator;
             }

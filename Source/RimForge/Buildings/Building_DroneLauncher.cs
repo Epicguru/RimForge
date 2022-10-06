@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using RimForge.Achievements;
-using RimForge.Airstrike;
+﻿using RimForge.Airstrike;
 using RimForge.CombatExtended;
 using RimWorld;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
@@ -185,7 +184,7 @@ namespace RimForge.Buildings
                     Vector3 pos2 = droneDrawPos + Rand.InsideUnitCircleVec3 * 0.5f;
                     if (pos2.ToIntVec3().InBounds(map))
                     {
-#if V13
+#if !V12
                         FleckMaker.ThrowFireGlow(pos2, map, 1f);
 #else
                         MoteThrown moteThrown2 = (MoteThrown)ThingMaker.MakeThing(ThingDefOf.Mote_FireGlow);
@@ -204,7 +203,7 @@ namespace RimForge.Buildings
                         Vector3 pos = droneDrawPos + Rand.InsideUnitCircleVec3 * 2f;
                         if (pos.ToIntVec3().InBounds(map))
                         {
-#if V13
+#if !V12
                             FleckCreationData dataStatic = FleckMaker.GetDataStatic(pos, map, FleckDefOf.Smoke, Rand.Range(1.5f, 2.5f) * 1f);
                             dataStatic.spawnPosition = pos;
                             dataStatic.rotationRate = Rand.Range(-30f, 30f);
@@ -396,11 +395,11 @@ namespace RimForge.Buildings
 
             if (isAntimatter)
             {
-                GenericEventTracker.Fire(AchievementEvent.DroneAntimatter);
+                Core.GenericAchievementEvent(Core.AchievementEvent.DroneAntimatter);
 
                 if (LoadedShellCount >= MaxLoadedShellCount)
                 {
-                    GenericEventTracker.Fire(AchievementEvent.DroneAntimatterFull);
+                    Core.GenericAchievementEvent(Core.AchievementEvent.DroneAntimatterFull);
                 }
             }
 
