@@ -29,7 +29,7 @@ namespace RimForge.Buildings
 
             float lerp = CompCap.PercentageStored;
 
-            Vector3 pos = DrawPos + new Vector3(0, float.Epsilon, OffY - SizeY * (1 - lerp) * 0.5f);
+            Vector3 pos = DrawPos + new Vector3(0, float.Epsilon * 3, OffY - SizeY * (1 - lerp) * 0.5f);
             Vector3 size = new Vector3(SizeX, 1f, Mathf.Max(SizeY * lerp, 0.05f));
             var matrix = Matrix4x4.TRS(pos, Quaternion.identity, size);
 
