@@ -12,8 +12,8 @@
         <onCamera>true</onCamera>
         <tempoAffectedByGameSpeed>true</tempoAffectedByGameSpeed>
         <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>RF/CoilgunFire</clipFolderPath>
+          <li Class="AudioGrain_Clip">
+            <clipPath>RF/CoilgunFire</clipPath>
           </li>
         </grains>
         <sustainLoop>false</sustainLoop>
