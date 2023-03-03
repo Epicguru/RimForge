@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RimForge.Effects;
+using System;
 using UnityEngine;
 using Verse;
 
@@ -20,6 +21,8 @@ namespace RimForge
         {
             if (Current.Game == null)
                 return;
+
+            ThreadedEffectHandler.TickRate = Find.TickManager.TickRateMultiplier;
 
             bool currentPaused = Find.TickManager?.Paused ?? false;
             if (lastPaused != currentPaused)

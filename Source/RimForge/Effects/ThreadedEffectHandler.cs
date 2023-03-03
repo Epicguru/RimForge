@@ -18,11 +18,12 @@ namespace RimForge.Effects
         [TweakValue("RimForge", 0, (float)FRAME_TIME_MS)]
         public static float InfoParticleTickTimeMs = 0f;
 
+        public static float TickRate = 1f;
+
         public bool IsRunning { get; private set; }
 
-        private List<ThreadedEffect> effects = new List<ThreadedEffect>();
+        private readonly List<ThreadedEffect> effects = new List<ThreadedEffect>();
         private Thread thread;
-
 
         public void Start()
         {
@@ -31,8 +32,10 @@ namespace RimForge.Effects
 
             IsRunning = true;
 
-            thread = new Thread(Run);
-            thread.Name = "RimForge Particle Thread";
+            thread = new Thread(Run)
+            {
+                Name = "RimForge Particle Thread"
+            };
             thread.Start();
 
             effects.Clear();
@@ -62,24 +65,20 @@ namespace RimForge.Effects
         private void Run()
         {
             var watch = new Stopwatch();
-            var tm = Find.TickManager;
 
             while (IsRunning)
             {
                 // If the game is paused, not focused whatever then don't bother ticking particles.
-                if (tm.Paused)
+                if (TickRate <= 0f)
                 {
                     Thread.Sleep(FRAME_TIME_MS_INT);
                     continue;
                 }
 
-                // Find the game speed multiplier. Should be compatible with mods such as TimeControl.
-                float gameSpeed = tm.TickRateMultiplier;
-
                 watch.Restart();
                 try
                 {
-                    TickAll((float)(FRAME_TIME * gameSpeed));
+                    TickAll((float)(FRAME_TIME * TickRate));
                 }
                 catch(Exception e)
                 {
