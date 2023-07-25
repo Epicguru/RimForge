@@ -4,7 +4,7 @@
     <TargetFramework>net472</TargetFramework>
     <OutputType>Library</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <NoStdLib>true</NoStdLib>
+    <NoStdLib>false</NoStdLib>
     <LangVersion>preview</LangVersion>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
@@ -50,7 +50,7 @@
 
   <!-- Rimworld assembly refs for latest 1.4 -->
   <ItemGroup Condition="'$(Configuration)|$(Platform)'=='v1.4|AnyCPU'">
-	  <PackageReference Include="Krafs.Rimworld.Ref" Version="1.4.3507-beta" />
+	  <PackageReference Include="Krafs.Rimworld.Ref" Version="1.4.3704" />
   </ItemGroup>
   <!-- Output -->
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='v1.4|AnyCPU'">
