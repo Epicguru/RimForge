@@ -17,9 +17,12 @@ namespace RimForge.Buildings
 
         private MaterialPropertyBlock block;
 
-        public override void Draw()
+        public override void DynamicDrawPhaseAt(DrawPhase phase, Vector3 drawLoc, bool flip = false)
         {
-            base.Draw();
+            base.DynamicDrawPhaseAt(phase, drawLoc, flip);
+
+            if (phase != DrawPhase.Draw)
+                return;
 
             if (ChargeMat == null)
             {

@@ -5,7 +5,7 @@ namespace RimForge.Thoughts
 {
     public class ThoughtWorker_SpecialWeapon : ThoughtWorker
     {
-        protected override ThoughtState CurrentStateInternal(Pawn p)
+        public override ThoughtState CurrentStateInternal(Pawn p)
         {
             var holdingDef = p.equipment?.Primary?.def;
             if (holdingDef == null)

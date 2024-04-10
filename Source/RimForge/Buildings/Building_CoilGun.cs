@@ -3,6 +3,7 @@ using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LudeonTK;
 using RimForge.Patches;
 using UnityEngine;
 using Verse;
@@ -53,10 +54,7 @@ namespace RimForge.Buildings
         public DrawPart BarLeft, BarRight;
         public CoilgunShellDef CurrentShellDef
         {
-            get
-            {
-                return FuelComp.Props.fuelFilter.AnyAllowedDef as CoilgunShellDef;
-            }
+            get => FuelComp.Props.fuelFilter.AnyAllowedDef as CoilgunShellDef;
             set
             {
                 FuelComp.Props.fuelFilter.SetDisallowAll();
@@ -315,7 +313,7 @@ namespace RimForge.Buildings
                     if ((thing is Building b && b.def.altitudeLayer >= AltitudeLayer.DoorMoveable) || thing is Pawn {Dead: false, Downed: false})
                     {
                         GenDraw.DrawTargetHighlightWithLayer(cell, AltitudeLayer.MoteOverhead);
-                        GenExplosion.RenderPredictedAreaOfEffect(cell, currentShell.explosionRadius);
+                        GenExplosion.RenderPredictedAreaOfEffect(cell, currentShell.explosionRadius, Color.red);
                         return;
                     }
                 }
@@ -587,21 +585,12 @@ namespace RimForge.Buildings
                                 var basePos = pawn.DrawPos;
                                 basePos.y = AltitudeLayer.MoteOverhead.AltitudeFor();
 
-#if !V12
                                 FleckMaker.ThrowLightningGlow(basePos, map, 0.5f);
                                 FleckMaker.ThrowLightningGlow(basePos, map, 0.5f);
                                 
                                 FleckMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
                                 FleckMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
                                 FleckMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
-#else
-                                MoteMaker.ThrowLightningGlow(basePos, map, 0.5f);
-                                MoteMaker.ThrowLightningGlow(basePos, map, 0.5f);
-
-                                MoteMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
-                                MoteMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
-                                MoteMaker.ThrowMicroSparks(basePos + Rand.InsideUnitCircleVec3 * 0.5f, map);
-#endif
                             }
                             
                             if (!hasDoneExplosion && shellDef.explosionDamageType != null && shellDef.explosionRadius > 0 && (b == null || b.def.altitudeLayer >= AltitudeLayer.DoorMoveable))
@@ -760,9 +749,12 @@ namespace RimForge.Buildings
             }
         }
 
-        public override void Draw()
+        public override void DynamicDrawPhaseAt(DrawPhase phase, Vector3 drawLoc, bool flip = false)
         {
-            base.Draw();
+            base.DynamicDrawPhaseAt(phase, drawLoc, flip);
+
+            if (phase != DrawPhase.Draw)
+                return;
 
             if (Top == null)
                 Setup();
@@ -878,11 +870,8 @@ namespace RimForge.Buildings
                 },
                 action = t =>
                 {
-#if !V12
                     Thing thing = t.Thing;
-#else
-                    Thing thing = t;
-#endif
+
                     if (thing is Building_Coilgun coilgun)
                     {
                         Log.Warning($"Other: {coilgun.CurrentShellDef}, self: {this.CurrentShellDef}, Equal props: {coilgun.GetComp<CompRefuelable>().Props == this.GetComp<CompRefuelable>().Props}, equal comp: {coilgun.GetComp<CompRefuelable>() == this.GetComp<CompRefuelable>()}");

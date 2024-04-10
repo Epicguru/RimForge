@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef Name="RF_AlloyResource" ParentName="ResourceBase" Abstract="True">
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Metal_Drop</soundDrop>
+    <useHitPoints>false</useHitPoints>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <tradeability>Sellable</tradeability>
+    <stackLimit>200</stackLimit>
+    <burnableByRecipe>false</burnableByRecipe>
+    <smeltable>true</smeltable>
+    <graphicData>
+      <texPath>RF/Resources/Copper</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <stuffProps>
+      <constructEffect>ConstructMetal</constructEffect>
+      <soundImpactMelee>BulletImpact_Metal</soundImpactMelee>
+      <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
+      <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
+    </stuffProps>
+    <comps>
+      <li Class="RimForge.Comps.CompProperties_ShowAlloyInfo"></li>
+    </comps>
+  </ThingDef>
+
+</Defs>

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using LudeonTK;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -7,11 +8,11 @@ namespace RimForge.Misc
 {
     public static class CursedPawnUtil
     {
-        public static Color[] ClothesColors = new Color[]
-        {
+        public static readonly Color[] ClothesColors =
+        [
             new Color32(59, 156, 47, 255),
             new Color32(48, 48, 48, 255)
-        };
+        ];
 
         [DebugAction("RimForge", "Make cursed raider", actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void DebugMakeCursed()

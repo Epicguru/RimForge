@@ -1,5 +1,6 @@
 ﻿using RimWorld;
 using System.Collections.Generic;
+using LudeonTK;
 using RimForge.Comps;
 using UnityEngine;
 using Verse;
@@ -108,33 +109,32 @@ namespace RimForge.Buildings
             foreach (var cell in room.Cells) // Note: It may be better to use the Room's ThingLister. Not sure which is faster.
             {
                 int index = map.cellIndices.CellToIndex(cell);
-#if V14
-                map.glowGrid.glowGrid[index] = new ColorInt(light);
-#else
-                map.glowGrid.glowGrid[index] = light;
-#endif
+
+                map.glowGrid.cachedAccumulatedGlow[index] = light;
+                map.glowGrid.cachedAccumulatedGlowNoCavePlants[index] = light;
+
                 var list = map.thingGrid.ThingsListAtFast(index);
                 for(int i = 0; i < list.Count; i++)
                 {
                     var thing = list[i];
-                    if (thing is Plant plant)
+                    if (thing is not Plant plant)
+                        continue;
+
+                    float growthPerTick = GetSpecialPlantGrowthPerTick(plant);
+
+                    float growthInt = plant.Growth;
+                    int num = plant.LifeStage == PlantLifeStage.Mature ? 1 : 0;
+                    plant.Growth += growthPerTick;
+                    if ((num == 0 && plant.LifeStage == PlantLifeStage.Mature || (int)(growthInt * 10.0) != (int)(plant.Growth * 10.0)))
+                        map.mapDrawer.MapMeshDirty(plant.Position, MapMeshFlagDefOf.Things);
+
+                    if (!Rand.Chance(MoteChance))
+                        continue;
+
+                    var mote = MoteMaker.MakeStaticMote(cell.ToVector3Shifted() + Rand.InsideUnitCircleVec3 * MoteOffsetRadius, map, RFDefOf.RF_Motes_Growth, Rand.Range(MoteScaleMin, MoteScaleMax));
+                    if (mote != null)
                     {
-                        float growthPerTick = GetSpecialPlantGrowthPerTick(plant);
-
-                        float growthInt = plant.Growth;
-                        int num = plant.LifeStage == PlantLifeStage.Mature ? 1 : 0;
-                        plant.Growth += growthPerTick;
-                        if ((num == 0 && plant.LifeStage == PlantLifeStage.Mature || (int)(growthInt * 10.0) != (int)(plant.Growth * 10.0)))
-                            map.mapDrawer.MapMeshDirty(plant.Position, MapMeshFlag.Things);
-
-                        if (Rand.Chance(MoteChance))
-                        {
-                            var mote = MoteMaker.MakeStaticMote(cell.ToVector3Shifted() + Rand.InsideUnitCircleVec3 * MoteOffsetRadius, map, RFDefOf.RF_Motes_Growth, Rand.Range(MoteScaleMin, MoteScaleMax));
-                            if (mote != null)
-                            {
-                                mote.rotationRate = Rand.Value * MoteRotation * Rand.Sign;
-                            }
-                        }
+                        mote.rotationRate = Rand.Value * MoteRotation * Rand.Sign;
                     }
                 }
             }
@@ -180,9 +180,12 @@ namespace RimForge.Buildings
             return null;
         }
 
-        public override void Draw()
+        public override void DynamicDrawPhaseAt(DrawPhase phase, Vector3 drawLoc, bool flip = false)
         {
-            base.Draw();
+            base.DynamicDrawPhaseAt(phase, drawLoc, flip);
+
+            if (phase != DrawPhase.Draw)
+                return;
 
             // There is power but there is an error with the room. Let the user know.
             if (PowerTrader.PowerOn && GetRoomError(GreenhouseRoom) != null)

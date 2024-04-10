@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using LudeonTK;
 using UnityEngine;
 using Verse;
 
@@ -16,13 +17,6 @@ namespace RimForge
         public static bool GenerateTin = true;
         [TweakValue("RimForge")]
         public static bool GenerateCopper = true;
-
-        // Power poles and similar
-        [SettingsCategory("RFS.CatCables")]
-        [TweakValue("RimForge", 5, 100)]
-        public static float CableMaxDistance = 20;
-        [TweakValue("RimForge", 0, 10)]
-        public static int CableSegmentsPerCell = 6;
 
         // COILGUN
         [SettingsCategory("RFS.CatCoilgun")]
@@ -307,7 +301,7 @@ namespace RimForge
                 labelRect = listing.Label(label, tooltip: Description);
                 float changed = listing.Slider(value, TweakValue.min, TweakValue.max);
                 value = Mathf.RoundToInt(changed);
-                if(old != value)
+                if (old != value)
                     SetValue(value);
             }
             else if (type == typeof(float))
@@ -326,7 +320,7 @@ namespace RimForge
                 var old = value;
                 string label = isChanged ? Label + $": <color=yellow>{(value ? "RFS.Yes" : "RFS.No").Translate()}</color>" : Label + $": {(value ? "RFS.Yes" : "RFS.No").Translate()}";
                 listing.CheckboxLabeled(label, ref value, Description);
-                if(old != value)
+                if (old != value)
                     SetValue(value);
             }
 

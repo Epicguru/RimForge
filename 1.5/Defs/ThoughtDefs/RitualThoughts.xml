@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThoughtDef>
+    <defName>RF_RitualBlessed</defName>
+    <durationDays>2</durationDays>
+    <stages>
+      <li>
+        <label>blessed by zir</label>
+        <description>I've just been blessed by Zir. I can see a whole new world of possibility.</description>
+        <baseMoodEffect>8</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RF_RitualBadThought</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>3</stackLimit>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+      <li>Bloodlust</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>sacrificed prisoner</label>
+        <description>One of our prisoners was sacrificed to Machine God Zir.
+We gained the blessing, but somebody in our care had to die for it...</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+      <li>
+        <label>sacrificed prisoner</label>
+        <description>One of our prisoners was sacrificed to Machine God Zir.
+The prisoner was guilty, but it still doesn't feel right...</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

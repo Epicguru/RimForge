@@ -19,7 +19,7 @@ namespace RimForge.Damage
             return result;
         }
 
-        protected override void ExplosionDamageThing(Explosion explosion, Thing t, List<Thing> damagedThings, List<Thing> ignoredThings, IntVec3 cell)
+        public override void ExplosionDamageThing(Explosion explosion, Thing t, List<Thing> damagedThings, List<Thing> ignoredThings, IntVec3 cell)
         {
             // Clone of the vanilla code, I don't want to fuck with transpilers right now.
             // It's a custom worker so it's fine.
@@ -67,11 +67,7 @@ namespace RimForge.Damage
             damageResult.AssociateWithLog(battleLogEntry_ExplosionImpact);
             if (pawn != null && damageResult.wounded && pawn.stances != null)
             {
-#if V14
                 pawn.stances.stagger.StaggerFor(95);
-#else
-                pawn.stances.StaggerFor(95);
-#endif
             }
 
             if (pawn?.Dead ?? false)

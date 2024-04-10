@@ -33,7 +33,7 @@ namespace RimForge.Patches
 
         static DesignationCategoryDef MakeCategoryDef()
         {
-            return new DesignationCategoryDef()
+            return new DesignationCategoryDef
             {
                 defName = "RF_DesignationCategory_Generated",
                 label = "RimForge",

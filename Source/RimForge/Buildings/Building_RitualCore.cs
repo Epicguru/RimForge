@@ -4,6 +4,7 @@ using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LudeonTK;
 using UnityEngine;
 using Verse;
 
@@ -248,13 +249,8 @@ namespace RimForge.Buildings
 
                 for (int i = 0; i < 2; i++)
                 {
-#if !V12
                     FleckMaker.ThrowLightningGlow(start, Map, 0.8f);
                     FleckMaker.ThrowLightningGlow(end, Map, 0.8f);
-#else
-                    MoteMaker.ThrowLightningGlow(start, Map, 0.8f);
-                    MoteMaker.ThrowLightningGlow(end, Map, 0.8f);
-#endif
                 }
 
                 Vector2 gravTowards = TargetPawn?.DrawPos.WorldToFlat() ?? Position.ToVector3Shifted().WorldToFlat();
@@ -335,11 +331,7 @@ namespace RimForge.Buildings
                 // BSpawn some motes. Flashy.
                 for (int i = 0; i < 4; i++)
                 {
-#if !V12
                     FleckMaker.ThrowLightningGlow(TargetPawn.DrawPos + Rand.InsideUnitCircleVec3 * 0.5f, Map, 2f);
-#else
-                    MoteMaker.ThrowLightningGlow(TargetPawn.DrawPos + Rand.InsideUnitCircleVec3 * 0.5f, Map, 2f);
-#endif
                 }
 
                 // Give blessing and thought.
@@ -428,9 +420,12 @@ namespace RimForge.Buildings
                 missing.Add("RF.Ritual.Missing".Translate($"{RFDefOf.RF_Copper.LabelCap} {RFDefOf.Column.label}", missingPillars));
         }
 
-        public override void Draw()
+        public override void DynamicDrawPhaseAt(DrawPhase phase, Vector3 drawLoc, bool flip = false)
         {
-            base.Draw();
+            base.DynamicDrawPhaseAt(phase, drawLoc, flip);
+
+            if (phase != DrawPhase.Draw)
+                return;
 
             if(DrawGuide && !IsActive)
                 DrawGhosts();
@@ -460,11 +455,8 @@ namespace RimForge.Buildings
                 Message = "RF.Ritual.StartMessage".Translate(),
                 action = thing =>
                 {
-#if !V12
                     Pawn sacrifice = thing.Pawn;
-#else
-                    Pawn sacrifice = thing as Pawn;
-#endif
+
                     if (sacrifice.DestroyedOrNull())
                         return;
 
@@ -532,11 +524,8 @@ namespace RimForge.Buildings
                 }
             };
 
-#if V14
             var allowedDesignator = BuildCopyCommandUtility.BuildCommand(RFDefOf.Column, RFDefOf.RF_Copper, null, null, false, "RF.Ritual.BuildColumnLabel".Translate(), "RF.Ritual.BuildColumnDesc".Translate(), true);
-#else
-            var allowedDesignator = BuildCopyCommandUtility.BuildCommand(RFDefOf.Column, RFDefOf.RF_Copper, "RF.Ritual.BuildColumnLabel".Translate(), "RF.Ritual.BuildColumnDesc".Translate(), true);
-#endif
+
             if (allowedDesignator != null)
                 yield return allowedDesignator;
 
@@ -572,19 +561,11 @@ namespace RimForge.Buildings
         {
             Map map = base.Map;
 
-#if !V12
             FleckCreationData dataStatic = FleckMaker.GetDataStatic(DrawPos, map, RFDefOf.RF_Motes_RitualDistort, 1f);
             dataStatic.rotationRate = 0f;
             dataStatic.velocityAngle = 0f;
             dataStatic.velocitySpeed = 0f;
             map.flecks.CreateFleck(dataStatic);
-#else
-            Mote mote = (Mote)ThingMaker.MakeThing(RFDefOf.RF_Motes_RitualDistort);
-            mote.Scale = 1;
-            mote.exactRotation = 0;
-            mote.exactPosition = DrawPos;
-            GenSpawn.Spawn(mote, Position, Map);
-#endif
         }
 
         private void DrawGhosts()

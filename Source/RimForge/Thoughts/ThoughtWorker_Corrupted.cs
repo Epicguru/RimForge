@@ -5,12 +5,12 @@ namespace RimForge.Thoughts
 {
     public class ThoughtWorker_Corrupted : ThoughtWorker
     {
-        protected override ThoughtState CurrentStateInternal(Pawn p)
+        public override ThoughtState CurrentStateInternal(Pawn p)
         {
             return IsCursed(p);
         }
 
-        private bool IsCursed(Pawn pawn)
+        private static bool IsCursed(Pawn pawn)
         {
             var traits = pawn?.story?.traits;
             if (traits == null)
