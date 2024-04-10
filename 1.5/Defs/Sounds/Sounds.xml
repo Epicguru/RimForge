@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <SoundDef>
+    <defName>RF_Sound_CoilgunFire</defName>
+    <sustain>true</sustain>
+    <context>MapOnly</context>
+    <maxSimultaneous>8</maxSimultaneous>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <onCamera>true</onCamera>
+        <tempoAffectedByGameSpeed>true</tempoAffectedByGameSpeed>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>RF/CoilgunFire</clipPath>
+          </li>
+        </grains>
+        <sustainLoop>false</sustainLoop>
+        <volumeRange>40~40</volumeRange>
+        <pitchRange>1~1</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RF_Sound_DroneLaunch</defName>
+    <sustain>false</sustain>
+    <context>MapOnly</context>
+    <maxSimultaneous>8</maxSimultaneous>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <onCamera>false</onCamera>
+        <tempoAffectedByGameSpeed>true</tempoAffectedByGameSpeed>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>RF/DroneLaunch</clipPath>
+          </li>
+        </grains>
+        <sustainLoop>false</sustainLoop>
+        <volumeRange>100~100</volumeRange>
+        <pitchRange>0.95~1.05</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RF_Sound_Drone</defName>
+    <sustain>false</sustain>
+    <context>MapOnly</context>
+    <maxSimultaneous>8</maxSimultaneous>
+    <subSounds>
+      <li>
+        <onCamera>true</onCamera>
+        <tempoAffectedByGameSpeed>true</tempoAffectedByGameSpeed>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>RF/Drone</clipPath>
+          </li>
+        </grains>
+        <sustainLoop>false</sustainLoop>
+        <volumeRange>70~70</volumeRange>
+        <pitchRange>1~1</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+</Defs>

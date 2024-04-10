@@ -124,9 +124,12 @@ namespace RimForge.Buildings
             
         }
 
-        public override void Draw()
+        public override void DynamicDrawPhaseAt(DrawPhase phase, Vector3 drawLoc, bool flip = false)
         {
-            base.Draw();
+            base.DynamicDrawPhaseAt(phase, drawLoc, flip);
+
+            if (phase != DrawPhase.Draw)
+                return;
 
             if (!IsBeingUsed || workAlloyDef == null)
                 return;
@@ -249,11 +252,7 @@ namespace RimForge.Buildings
 
             foreach (var item in allHeatingElements)
             {
-#if V14
                 var allowedDesignator = BuildCopyCommandUtility.BuildCommand(item, null, null, null, false, "RF.HeatingElement.Build".Translate(item.label), "", true);
-#else
-                var allowedDesignator = BuildCopyCommandUtility.BuildCommand(item, null, "RF.HeatingElement.Build".Translate(item.label), null, true);
-#endif
                 if (allowedDesignator != null)
                     yield return allowedDesignator;
             }

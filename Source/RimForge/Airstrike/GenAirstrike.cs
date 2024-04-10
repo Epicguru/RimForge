@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using LudeonTK;
 using RimForge.CombatExtended;
 using RimForge.Effects;
 using RimWorld;
@@ -107,7 +108,7 @@ namespace RimForge.Airstrike
         {
             if (start == end)
             {
-                GenExplosion.RenderPredictedAreaOfEffect(start, explosionRadius);
+                GenExplosion.RenderPredictedAreaOfEffect(start, explosionRadius, Color.red);
                 return;
             }
 
@@ -124,7 +125,7 @@ namespace RimForge.Airstrike
 
                 if (explosionRadius > 0 && drawRadius && !thickRoof)
                 {
-                    GenExplosion.RenderPredictedAreaOfEffect(cell, explosionRadius);
+                    GenExplosion.RenderPredictedAreaOfEffect(cell, explosionRadius, Color.red);
                 }
 
                 index++;

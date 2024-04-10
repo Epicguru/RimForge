@@ -10,7 +10,7 @@ namespace RimForge.Damage
             DamageResult damageResult = base.Apply(dinfo, victim);
             if (!damageResult.deflected && !dinfo.InstantPermanentInjury && Rand.Chance(FireUtility.ChanceToAttachFireFromEvent(victim) * 0.25f))
             {
-                victim.TryAttachFire(Rand.Range(0.15f, 0.25f));
+                victim.TryAttachFire(Rand.Range(0.15f, 0.25f), dinfo.Instigator);
             }
             return damageResult;
         }
