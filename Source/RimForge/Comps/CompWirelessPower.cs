@@ -100,11 +100,11 @@ namespace RimForge.Comps
             this.currentPower = -Mathf.Abs(watts);
         }
 
-        public override void PostDeSpawn(Map map)
+        public override void PostDeSpawn(Map map, DestroyMode mode)
         {
             // Note: Not really necessary, since this lists in the channel are constantly sanitized.
             // However, it is good practice anyway.
-            base.PostDeSpawn(map);
+            base.PostDeSpawn(map, mode);
             Channel?.UnRegister(this);
         }
 

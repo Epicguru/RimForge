@@ -342,14 +342,18 @@ namespace RimForge.Buildings
                 Core.GenericAchievementEvent(Core.AchievementEvent.RitualPerformed);
 
                 // Give negative thoughts to all colonists.
+                IEnumerable<Pawn> mapPawns = this.Map.mapPawns.FreeColonistsAndPrisoners;
+                IEnumerable<Pawn> worldPawns = Find.WorldPawns.AllPawnsAlive;
+                Func<Pawn, bool> keep = p =>
+                p.IsColonistPlayerControlled
+                || p.IsPrisonerOfColony;
                 int thoughtLevel = SacrificePawn.guilt.IsGuilty ? 1 : 0;
-                foreach (var pawn in PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_FreeColonistsAndPrisoners)
-                {
-                    if (!pawn.IsColonist)
-                        continue;
-
+                var targets = mapPawns
+                    .Concat(worldPawns)
+                    .Where(keep)
+                    .Distinct();
+                foreach (var pawn in targets)
                     pawn.TryGiveThought(RFDefOf.RF_RitualBadThought, thoughtLevel);
-                }
 
                 // Kill the sacrifice.
                 TakeHeart(SacrificePawn);

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Expanded Materials - Metals</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <success>Always</success>
+      <operations>
+
+        <li Class="PatchOperationAddModExtension">
+          <xpath>Defs/ThingDef[defName="VMEu_Copper"]</xpath>
+          <value>
+            <li Class="RimForge.Extension">
+              <equivalentTo>RF_Copper</equivalentTo>
+            </li>
+          </value>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="VMEu_Copper"]/stuffProps/categories</xpath>
+          <value>
+            <li>RF_PowerPoleMetals</li>
+          </value>
+        </li>
+
+        <li Class="PatchOperationAddModExtension">
+          <xpath>Defs/ThingDef[defName="VMEu_Tin"]</xpath>
+          <value>
+            <li Class="RimForge.Extension">
+              <equivalentTo>RF_Tin</equivalentTo>
+            </li>
+          </value>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="VMEu_Tin"]/stuffProps/categories</xpath>
+          <value>
+            <li>RF_PowerPoleMetals</li>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

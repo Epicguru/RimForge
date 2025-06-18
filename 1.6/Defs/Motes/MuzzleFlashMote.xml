@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+    <ThingDef ParentName="MoteBase">
+        <defName>RF_Motes_MuzzleFlash</defName>
+        <graphicData>
+            <texPath>RF/Motes/MuzzleFlash</texPath>
+            <shaderType>MoteGlow</shaderType>
+        </graphicData>
+        <altitudeLayer>MoteOverhead</altitudeLayer>
+        <drawOffscreen>true</drawOffscreen>
+        <mote>
+            <fadeInTime>0</fadeInTime>
+            <solidTime>0</solidTime>
+            <fadeOutTime>1.2</fadeOutTime>
+        </mote>
+    </ThingDef>
+
+</Defs>

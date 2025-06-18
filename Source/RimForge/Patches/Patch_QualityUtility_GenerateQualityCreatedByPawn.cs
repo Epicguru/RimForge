@@ -5,11 +5,13 @@ using Verse;
 
 namespace RimForge.Patches
 {
-    [HarmonyPatch(typeof(QualityUtility), "GenerateQualityCreatedByPawn", typeof(Pawn), typeof(SkillDef))]
+    [HarmonyPatch(typeof(QualityUtility), nameof(QualityUtility.GenerateQualityCreatedByPawn),
+        new[] { typeof(Pawn), typeof(SkillDef), typeof(bool) })]
     static class Patch_QualityUtility_GenerateQualityCreatedByPawn
     {
-        static void Postfix(Pawn pawn, SkillDef relevantSkill, ref QualityCategory __result)
+        static void Postfix(Pawn pawn, SkillDef relevantSkill, bool consumeInspiration, ref QualityCategory __result)
         {
+            
             if (__result == QualityCategory.Legendary)
                 return; // Can't improve.
 
@@ -49,10 +51,12 @@ namespace RimForge.Patches
             }
 
             if (pawn.IsColonist && didIncrease)
-            { 
-                Vector3 pos = pawn.DrawPos + new Vector3(0, 0, 1);
+            {
+                Vector3 pos = pawn.DrawPos;
                 pos.y = AltitudeLayer.MoteOverhead.AltitudeFor();
-                MoteMaker.ThrowText(pos, pawn.Map, "RF.Blessing.IncreasedMessage".Translate(__result.GetLabel()), Color.green);
+                MoteMaker.ThrowText(pos, pawn.Map,
+                    "RF.Blessing.IncreasedMessage".Translate(__result.GetLabel()),
+                    Color.green);
             }
 
             //Core.Log($"Running Blessing of Zir on {pawn.LabelCap}: increased quality to {__result} from {old}");

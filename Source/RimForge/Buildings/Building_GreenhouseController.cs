@@ -4,6 +4,8 @@ using LudeonTK;
 using RimForge.Comps;
 using UnityEngine;
 using Verse;
+using System.Reflection;
+using Unity.Collections;
 
 namespace RimForge.Buildings
 {
@@ -50,6 +52,11 @@ namespace RimForge.Buildings
         private int cellRotation;
         private int tickCounter;
         private int tickCounter2;
+
+        static readonly FieldInfo _fiAccumulatedGlow =
+            typeof(GlowGrid).GetField("accumulatedGlow", BindingFlags.Instance | BindingFlags.NonPublic);
+        static readonly FieldInfo _fiAccumulatedGlowNoCavePlants =
+            typeof(GlowGrid).GetField("accumulatedGlowNoCavePlants", BindingFlags.Instance | BindingFlags.NonPublic);
 
         public virtual float GetSpecialPlantGrowthPerTick(Plant plant)
         {
@@ -110,8 +117,11 @@ namespace RimForge.Buildings
             {
                 int index = map.cellIndices.CellToIndex(cell);
 
-                map.glowGrid.cachedAccumulatedGlow[index] = light;
-                map.glowGrid.cachedAccumulatedGlowNoCavePlants[index] = light;
+                var gg = map.glowGrid;
+                var glowArr = (NativeArray<Color32>)_fiAccumulatedGlow.GetValue(gg);
+                glowArr[index] = light;
+                var glowNoCaveArr = (NativeArray<Color32>)_fiAccumulatedGlowNoCavePlants.GetValue(gg);
+                glowNoCaveArr[index] = light;
 
                 var list = map.thingGrid.ThingsListAtFast(index);
                 for(int i = 0; i < list.Count; i++)
