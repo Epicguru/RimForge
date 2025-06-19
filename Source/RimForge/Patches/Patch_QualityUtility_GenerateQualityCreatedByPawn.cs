@@ -52,7 +52,7 @@ namespace RimForge.Patches
 
             if (pawn.IsColonist && didIncrease)
             {
-                Vector3 pos = pawn.DrawPos;
+                Vector3 pos = pawn.DrawPos + new Vector3(0, 0, 1);
                 pos.y = AltitudeLayer.MoteOverhead.AltitudeFor();
                 MoteMaker.ThrowText(pos, pawn.Map,
                     "RF.Blessing.IncreasedMessage".Translate(__result.GetLabel()),
