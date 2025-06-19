@@ -95,9 +95,9 @@ namespace RimForge
             explosionEffects ??= new List<ExplosionEffect>();
         }
 
-        public override void FinalizeInit()
+        public override void FinalizeInit(bool fromLoad)
         {
-            base.FinalizeInit();
+            base.FinalizeInit(fromLoad);
             HEShellKillTracker.Init();
         }
 

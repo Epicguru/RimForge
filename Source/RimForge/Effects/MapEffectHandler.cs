@@ -69,9 +69,9 @@ namespace RimForge.Effects
             
         }
 
-        public override void FinalizeInit()
+        public override void FinalizeInit(bool fromLoad)
         {
-            base.FinalizeInit();
+            base.FinalizeInit(fromLoad);
             Patch_DynamicDrawManager_DrawDynamicThings.TryRegisterListener(OnDrawLate);
 
             if (ThreadedHandler.IsRunning)
