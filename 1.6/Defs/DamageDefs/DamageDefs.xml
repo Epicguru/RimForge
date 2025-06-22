@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <DamageDef ParentName="StunBase">
+    <defName>RF_Electrocution</defName>
+    <label>Electrical</label>
+    <workerClass>RimForge.Damage.DamageWorker_Electrical</workerClass>
+    <externalViolence>true</externalViolence>
+    <deathMessage>{0} has been electocuted to death.</deathMessage>
+    <harmsHealth>true</harmsHealth>
+    <impactSoundType>Electric</impactSoundType>
+    <defaultDamage>35</defaultDamage>
+    <explosionSnowMeltAmount>0</explosionSnowMeltAmount>
+    <explosionCellFleck>BlastEMP</explosionCellFleck>
+    <explosionColorEdge>(0.8, 0.8, 0.8, 0.8)</explosionColorEdge>
+    <explosionInteriorFleck>ElectricalSpark</explosionInteriorFleck>
+    <soundExplosion>Explosion_EMP</soundExplosion>
+    <combatLogRules>Damage_EMP</combatLogRules>
+    <armorCategory>Heat</armorCategory> <!-- IDK why not -->
+    <hediff>RF_ElectricalBurn</hediff>
+  </DamageDef>
+
+  <!-- Electrical burn hediff -->
+  <HediffDef ParentName="InjuryBase">
+    <defName>RF_ElectricalBurn</defName>
+    <label>electrical burn</label>
+    <labelNoun>an electrical burn</labelNoun>
+    <description>An electrical burn, the result of a high amperage electrical current flowing through the body.
+Very painful.</description>
+    <comps>
+      <li Class="HediffCompProperties_TendDuration">
+        <labelTendedWell>bandaged</labelTendedWell>
+        <labelTendedWellInner>tended</labelTendedWellInner>
+        <labelSolidTendedWell>tended</labelSolidTendedWell>
+      </li>
+      <li Class="HediffCompProperties_Infecter">
+        <infectionChance>0.3</infectionChance>
+      </li>
+      <li Class="HediffCompProperties_GetsPermanent">
+        <permanentLabel>electrical burn scar</permanentLabel>
+      </li>
+    </comps>
+    <injuryProps>
+      <painPerSeverity>0.036</painPerSeverity> <!-- Very high -->
+      <averagePainPerSeverityPermanent>0.00325</averagePainPerSeverityPermanent>
+      <canMerge>true</canMerge>
+      <destroyedLabel>Burned off (electrical)</destroyedLabel>
+      <destroyedOutLabel>Burned out (electrical)</destroyedOutLabel>
+    </injuryProps>
+  </HediffDef>
+
+  <DamageDef>
+    <defName>RF_CoilgunDamage</defName>
+    <label>coilgun slug</label>
+    <workerClass>RimForge.Damage.DamageWorker_Propagate</workerClass>
+    <externalViolence>true</externalViolence>
+    <deathMessage>{0} has been killed by a coilgun blast.</deathMessage>
+    <hediff>RF_CoilgunSlugHediff</hediff>
+    <harmAllLayersUntilOutside>true</harmAllLayersUntilOutside>
+    <impactSoundType>Bullet</impactSoundType>
+    <armorCategory>Sharp</armorCategory>
+    <overkillPctToDestroyPart>0~0.7</overkillPctToDestroyPart>
+    <minDamageToFragment>50</minDamageToFragment>
+    <isRanged>true</isRanged>
+    <makesAnimalsFlee>true</makesAnimalsFlee>
+  </DamageDef>
+
+  <!-- Coilgun shot hediff -->
+  <HediffDef ParentName="InjuryBase">
+    <defName>RF_CoilgunSlugHediff</defName>
+    <label>coilgun cannon gunshot</label>
+    <labelNoun>a coilgun cannon wound</labelNoun>
+    <description>A would caused by being directly hit by a Liandry Coilgun. Ouch.</description>
+    <comps>
+      <li Class="HediffCompProperties_TendDuration">
+        <labelTendedWell>bandaged</labelTendedWell>
+        <labelTendedWellInner>sutured</labelTendedWellInner>
+        <labelSolidTendedWell>set</labelSolidTendedWell>
+      </li>
+      <li Class="HediffCompProperties_Infecter">
+        <infectionChance>0.15</infectionChance>
+      </li>
+      <li Class="HediffCompProperties_GetsPermanent">
+        <permanentLabel>old coilgun gunshot</permanentLabel>
+        <instantlyPermanentLabel>permanent coilgun gunshot injury</instantlyPermanentLabel>
+      </li>
+    </comps>
+    <injuryProps>
+      <painPerSeverity>0.0225</painPerSeverity>
+      <averagePainPerSeverityPermanent>0.00725</averagePainPerSeverityPermanent>
+      <bleedRate>0.15</bleedRate>
+      <canMerge>false</canMerge>
+      <destroyedLabel>Shot off (coilgun)</destroyedLabel>
+      <destroyedOutLabel>Shot out (coilgun)</destroyedOutLabel>
+    </injuryProps>
+  </HediffDef>
+
+  <DamageDef>
+    <defName>RF_RitualDamage</defName>
+    <label>offering</label>
+    <workerClass>DamageWorker_AddInjury</workerClass>
+    <externalViolence>true</externalViolence>
+    <deathMessage>{0} has been sacrificed to machine god Zir.</deathMessage>
+    <hediff>RF_RitualDamageHediff</hediff>
+  </DamageDef>
+
+  <!-- Ritual hediff -->
+  <HediffDef ParentName="InjuryBase">
+    <defName>RF_RitualDamageHediff</defName>
+    <label>consumed by Zir</label>
+    <labelNoun>offered to machine god Zir</labelNoun>
+    <description>Machine god Zir has exchanged this mortal flesh for a blessing.</description>
+    <injuryProps>
+      <painPerSeverity>1</painPerSeverity>
+      <averagePainPerSeverityPermanent>0.00725</averagePainPerSeverityPermanent>
+      <bleedRate>0</bleedRate>
+      <canMerge>false</canMerge>
+      <destroyedLabel>Consumed by Zir</destroyedLabel>
+      <destroyedOutLabel>Consumed by Zir</destroyedOutLabel>
+    </injuryProps>
+  </HediffDef>
+
+  <!-- Custom HE shell damage worker, to track explosion kills -->
+  <DamageDef ParentName="Bomb">
+    <defName>RF_ShellHE_Bomb</defName>
+    <workerClass>RimForge.Damage.DamageWorker_AddInjuryForShellHE</workerClass>
+  </DamageDef>
+
+</Defs>

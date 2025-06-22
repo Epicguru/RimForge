@@ -12,4 +12,10 @@
     <li IfModActive="vanillaexpanded.achievements">1.5/Achievements</li>
     <li IfModActive="CETeam.CombatExtended">1.5/CE_Patches</li>
   </v1.5>
+  <v1.6>
+    <li>/</li>
+    <li>1.6</li>
+    <li IfModActive="vanillaexpanded.achievements">1.6/Achievements</li>
+    <li IfModActive="CETeam.CombatExtended">1.6/CE_Patches</li>
+  </v1.6>
 </loadFolders>
