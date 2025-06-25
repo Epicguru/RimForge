@@ -20,7 +20,7 @@
 			<Private>false</Private>
 			<ExcludeAssets>runtime</ExcludeAssets>
 		</ProjectReference>
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4494-beta" />
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4498-beta" />
   </ItemGroup>    
   
 	<!-- Output -->

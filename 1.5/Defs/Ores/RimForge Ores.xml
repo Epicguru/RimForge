@@ -22,6 +22,7 @@ Copper is also used in complex electronics.</description>
       <mineableYield>60</mineableYield>
       <mineableScatterCommonality>0.5</mineableScatterCommonality>
       <mineableScatterLumpSizeRange>20~30</mineableScatterLumpSizeRange>
+      <veinMineable>true</veinMineable>
     </building>
   </ThingDef>
 
@@ -46,6 +47,7 @@ Tin is a soft metal with a low melting point, making it unsuitable for use as an
       <mineableYield>50</mineableYield>
       <mineableScatterCommonality>0.5</mineableScatterCommonality>
       <mineableScatterLumpSizeRange>15~30</mineableScatterLumpSizeRange>
+      <veinMineable>true</veinMineable>
     </building>
   </ThingDef>
 
