@@ -1,11 +1,16 @@
-﻿using AchievementsExpanded;
+﻿using System;
+using AchievementsExpanded;
 using System.Collections.Generic;
+using System.Reflection;
+using HarmonyLib;
+using JetBrains.Annotations;
 using UnityEngine;
 using Verse;
 using RimWorld;
 
 namespace RimForge.Achievements
 {
+    [UsedImplicitly]
     public class ItemCraftMultiple : ItemCraftTracker
     {
         public List<ThingDef> toCraft = new List<ThingDef>();
@@ -44,13 +49,13 @@ namespace RimForge.Achievements
             }
         }
 
-        protected override string[] DebugText => new string[]
-        {
+        protected override string[] DebugText =>
+        [
             $"toCraft: {string.Join(",", toCraft)}",
             $"crafted: {string.Join(", ", crafted)}",
             $"Percentage: {PercentComplete.percent}",
             PercentComplete.text
-        };
+        ];
 
         public ItemCraftMultiple() { }
 

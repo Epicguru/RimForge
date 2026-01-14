@@ -7,18 +7,12 @@ namespace RimForge.Achievements
     {
         public CoilgunAnyKillTracker() {}
 
-        public CoilgunAnyKillTracker(CoilgunAnyKillTracker other)
-            : base(other)
-        { }
+        public CoilgunAnyKillTracker(CoilgunAnyKillTracker other) : base(other) { }
 
         public override bool Trigger(Pawn pawn, DamageInfo? dinfo)
         {
             if (pawn == null)
                 return false;
-
-            if (killedThings.Contains(pawn.GetUniqueLoadID()))
-                return false;
-
             if (dinfo?.Instigator?.def != RFDefOf.RF_Coilgun)
                 return false;
 

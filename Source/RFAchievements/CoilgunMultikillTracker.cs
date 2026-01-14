@@ -2,13 +2,13 @@
 
 namespace RimForge.Achievements
 {
-    public class CoilgunMultikillTracker : CoilgunPostFireTracker
+    public sealed class CoilgunMultikillTracker : CoilgunPostFireTracker
     {
         public int minKills;
         public CoilgunShellDef exceptShell;
         public CoilgunShellDef onlyShell;
 
-        public CoilgunMultikillTracker() {}
+        public CoilgunMultikillTracker() { }
 
         public CoilgunMultikillTracker(CoilgunMultikillTracker other)
             : base(other)

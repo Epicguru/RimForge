@@ -12,16 +12,54 @@
 		<AssemblyName>ZRFAchievements</AssemblyName>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<AchievementsExpanded_Version>3.01</AchievementsExpanded_Version>
+	</PropertyGroup>
+
+	<Target Name="DownloadAchievementsExpanded" BeforeTargets="BeforeBuild">
+		<PropertyGroup>
+			<AchievementsExpandedPath>$(MSBuildProjectDirectory)\lib\AchievementsExpanded.dll</AchievementsExpandedPath>
+			<AchievementsExpandedUrl>https://github.com/Vanilla-Expanded/VanillaAchievementsExpanded/archive/refs/tags/v$(AchievementsExpanded_Version).zip</AchievementsExpandedUrl>
+			<TempDir>$(MSBuildProjectDirectory)\obj\DownloadAchievementsExpanded</TempDir>
+			<ZipPath>$(TempDir)\AchievementsExpanded.zip</ZipPath>
+			<ExtractedDir>$(TempDir)\Extracted</ExtractedDir>
+			<ExtractedDllPath>$(ExtractedDir)\VanillaAchievementsExpanded-$(AchievementsExpanded_Version)\$(RimworldVersion)\Assemblies\AchievementsExpanded.dll</ExtractedDllPath>
+		</PropertyGroup>
+
+		<Message Text="AchievementsExpanded.dll not found. Downloading and extracting from source..." Importance="high" Condition="!Exists('$(AchievementsExpandedPath)')" />
+
+		<MakeDir Directories="$(MSBuildProjectDirectory)\lib" Condition="!Exists('$(MSBuildProjectDirectory)\lib')" />
+
+		<DownloadFile
+            SourceUrl="$(AchievementsExpandedUrl)"
+            DestinationFolder="$(TempDir)"
+            DestinationFileName="AchievementsExpanded.zip"
+            SkipUnchangedFiles="true"
+            Condition="!Exists('$(AchievementsExpandedPath)')" />
+		<Unzip SourceFiles="$(ZipPath)" DestinationFolder="$(ExtractedDir)" Condition="!Exists('$(AchievementsExpandedPath)')" />
+		<Copy SourceFiles="$(ExtractedDllPath)" DestinationFiles="$(AchievementsExpandedPath)" Condition="!Exists('$(AchievementsExpandedPath)')" />
+
+		<RemoveDir Directories="$(TempDir)" Condition="Exists('$(TempDir)')" />
+	</Target>
+
+	<Target Name="CleanAchievementsExpanded" AfterTargets="AfterClean">
+		<RemoveDir Directories="$(MSBuildProjectDirectory)\lib" Condition="Exists('$(MSBuildProjectDirectory)\lib')" />
+		<RemoveDir Directories="..\..\$(RimworldVersion)\Achievements\Assemblies" Condition="Exists('..\..\$(RimworldVersion)\Achievements\Assemblies')" />
+	</Target>
+
 	<ItemGroup>
-		<PackageReference Include="AchievementsExpanded" Version="1.4.82" />
+		<Reference Include="VanillaAchievments">
+			<HintPath>$(MSBuildProjectDirectory)\lib\AchievementsExpanded.dll</HintPath>
+			<Private>True</Private>
+		</Reference>
 		<PackageReference Include="Lib.Harmony" Version="2.3.6" ExcludeAssets="runtime" />
 		<ProjectReference Include="..\RimForge\RimForge.csproj">
 			<CopyLocal>false</CopyLocal>
 			<Private>false</Private>
 			<ExcludeAssets>runtime</ExcludeAssets>
 		</ProjectReference>
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4494-beta" />
-  </ItemGroup>    
+		<PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4528" />
+	</ItemGroup>
   
 	<!-- Output -->
 	<PropertyGroup>

@@ -3,7 +3,7 @@ using Verse;
 
 namespace RimForge.Achievements
 {
-    public class CoilgunDamageTracker : CoilgunPostFireTracker
+    public sealed class CoilgunDamageTracker : CoilgunPostFireTracker
     {
         public int minKills;
         public float minDamage;

@@ -3,17 +3,21 @@ using Verse;
 
 namespace RimForge.Achievements
 {
-    public abstract class CoilgunKillTracker : Tracker3<int, Pawn, CoilgunShellDef>
+    public class CoilgunKillTracker : Tracker3<int, Pawn, CoilgunShellDef>
     {
-        public override string Key => nameof(CoilgunKillTracker);
-        protected override string[] DebugText => new string[] {nameof(CoilgunKillTracker)};
+        public override string Key
+        {
+            get => nameof(CoilgunKillTracker);
+            set { }
+        }
 
-        protected CoilgunKillTracker() {}
+        protected override string[] DebugText => [nameof(CoilgunKillTracker)];
+
+        public CoilgunKillTracker() {}
 
         protected CoilgunKillTracker(CoilgunKillTracker other)
             :base(other)
         {
-
         }
     }
 }
